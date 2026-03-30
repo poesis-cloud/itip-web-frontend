@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Conformance Dashboard</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .conformance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); }
+    .conformance-grid .card--wide { grid-column: 1 / -1; }
+    .gauge-row { display: flex; gap: var(--sp-lg); justify-content: center; flex-wrap: wrap; }
+    .gauge-item { text-align: center; }
+    .gauge-ring {
+      width: 100px; height: 100px; border-radius: 50%;
+      border: 8px solid var(--itip-border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--sp-sm);
+      position: relative;
+    }
+    .gauge-ring--high { border-color: var(--compliance-pass); }
+    .gauge-ring--mid { border-color: var(--compliance-warn); }
+    .gauge-ring--low { border-color: var(--compliance-fail); }
+    .gauge-value { font-size: var(--fs-xl); font-weight: 700; }
+    .gauge-label { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+    .trend-row { display: flex; align-items: center; gap: var(--sp-md); padding: var(--sp-sm) 0; border-bottom: 1px solid var(--itip-border); }
+    .trend-row:last-child { border-bottom: none; }
+    .trend-bar { flex: 1; height: 8px; background: var(--itip-border); border-radius: 4px; overflow: hidden; }
+    .trend-bar__fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+    .gap-item { padding: var(--sp-md); border: 1px solid var(--itip-border); border-radius: var(--radius-md); margin-bottom: var(--sp-sm); }
+    .gap-item--critical { border-left: 4px solid var(--compliance-fail); }
+    .gap-item--moderate { border-left: 4px solid var(--compliance-warn); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">137</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Compliance</span><span>/</span>
+        <strong>Conformance</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">Export Report</button>
+        <button class="btn btn--primary btn--sm">Run Evaluation</button>
+        <div class="avatar">CA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Conformance Dashboard</h1>
+      <p class="page-subtitle">Framework-by-framework compliance posture and trend analysis</p>
+
+      <!-- Gauge row -->
+      <div class="card mb-lg">
+        <div class="card__body">
+          <div class="gauge-row">
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--high"><span class="gauge-value">91%</span></div>
+              <div class="gauge-label">Overall</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--high"><span class="gauge-value">94%</span></div>
+              <div class="gauge-label">TOGAF</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--mid"><span class="gauge-value">88%</span></div>
+              <div class="gauge-label">ISO 25010</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--high"><span class="gauge-value">92%</span></div>
+              <div class="gauge-label">ISO 25012</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--mid"><span class="gauge-value">86%</span></div>
+              <div class="gauge-label">NIS2</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--high"><span class="gauge-value">95%</span></div>
+              <div class="gauge-label">GDPR</div>
+            </div>
+            <div class="gauge-item">
+              <div class="gauge-ring gauge-ring--low"><span class="gauge-value">75%</span></div>
+              <div class="gauge-label">SCAP</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="conformance-grid">
+
+        <!-- Trend by framework -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Compliance Trend (last 8 weeks)</span>
+          </div>
+          <div class="card__body">
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">TOGAF</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:94%;background:var(--compliance-pass)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">94%</span>
+              <span class="text-xs" style="color:var(--compliance-pass)">↑ 2%</span>
+            </div>
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">ISO 25010</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:88%;background:var(--compliance-warn)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">88%</span>
+              <span class="text-xs" style="color:var(--compliance-pass)">↑ 5%</span>
+            </div>
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">ISO 25012</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:92%;background:var(--compliance-pass)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">92%</span>
+              <span class="text-xs" style="color:var(--compliance-pass)">↑ 1%</span>
+            </div>
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">NIS2</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:86%;background:var(--compliance-warn)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">86%</span>
+              <span class="text-xs" style="color:var(--compliance-fail)">↓ 1%</span>
+            </div>
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">GDPR</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:95%;background:var(--compliance-pass)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">95%</span>
+              <span class="text-xs" style="color:var(--compliance-pass)">↑ 3%</span>
+            </div>
+            <div class="trend-row">
+              <span class="text-sm" style="width:80px;font-weight:600">SCAP</span>
+              <div class="trend-bar"><div class="trend-bar__fill" style="width:75%;background:var(--compliance-fail)"></div></div>
+              <span class="text-sm" style="width:40px;text-align:right;font-weight:600">75%</span>
+              <span class="text-xs" style="color:var(--compliance-fail)">↓ 8%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coverage summary -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Coverage Summary</span>
+          </div>
+          <div class="card__body">
+            <table>
+              <thead>
+                <tr><th>Framework</th><th>Norms</th><th>Structures Covered</th><th>Uncovered</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>TOGAF</strong></td><td>32</td><td>89 / 156 (57%)</td><td>67</td></tr>
+                <tr><td><strong>ISO 25010</strong></td><td>24</td><td>72 / 156 (46%)</td><td>84</td></tr>
+                <tr><td><strong>ISO 25012</strong></td><td>18</td><td>38 / 156 (24%)</td><td>118</td></tr>
+                <tr><td><strong>NIS2</strong></td><td>21</td><td>45 / 156 (29%)</td><td>111</td></tr>
+                <tr><td><strong>GDPR</strong></td><td>38</td><td>52 / 156 (33%)</td><td>104</td></tr>
+                <tr><td><strong>SCAP</strong></td><td>4</td><td>18 / 156 (12%)</td><td>138</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Gap analysis (full width) -->
+        <div class="card card--wide">
+          <div class="card__header">
+            <span class="card__title">Gap Analysis — Critical & Moderate</span>
+            <button class="btn btn--ghost btn--sm">View all gaps →</button>
+          </div>
+          <div class="card__body">
+
+            <div class="gap-item gap-item--critical">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm" style="font-weight:600">SCAP vulnerability scan coverage gap</div>
+                  <div class="text-xs text-muted">Only 18 of 156 structures have SCAP CPE identifiers. 3 active scans failing.</div>
+                </div>
+                <span class="badge badge--fail">Critical</span>
+              </div>
+              <div class="text-xs text-muted mt-sm"><strong>Recommendation:</strong> Assign CPE identifiers to all TechnologyComponent structures. Run initial vulnerability assessment.</div>
+            </div>
+
+            <div class="gap-item gap-item--critical">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm" style="font-weight:600">AuditService log retention non-compliance</div>
+                  <div class="text-xs text-muted">NIS2 Art.21 §2(g) requires 90-day retention. Current: 30 days.</div>
+                </div>
+                <span class="badge badge--fail">Critical</span>
+              </div>
+              <div class="text-xs text-muted mt-sm"><strong>Recommendation:</strong> Update AuditService log retention config. Priority: immediate.</div>
+            </div>
+
+            <div class="gap-item gap-item--moderate">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm" style="font-weight:600">ISO 25010 Performance Efficiency gaps</div>
+                  <div class="text-xs text-muted">12 structures lack performance norms. Response time and throughput not measured.</div>
+                </div>
+                <span class="badge badge--warn">Moderate</span>
+              </div>
+              <div class="text-xs text-muted mt-sm"><strong>Recommendation:</strong> Add performance norms to high-traffic ApplicationService structures.</div>
+            </div>
+
+            <div class="gap-item gap-item--moderate">
+              <div class="flex justify-between items-center">
+                <div>
+                  <div class="text-sm" style="font-weight:600">GDPR data minimization warnings</div>
+                  <div class="text-xs text-muted">5 DataEntity structures collecting PII without documented purpose limitation.</div>
+                </div>
+                <span class="badge badge--warn">Moderate</span>
+              </div>
+              <div class="text-xs text-muted mt-sm"><strong>Recommendation:</strong> Document purpose and legal basis for each PII-holding DataEntity. GDPR Art.5(1)(b).</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+</body>
+</html>

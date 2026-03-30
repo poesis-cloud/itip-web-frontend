@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP Workflow — Appraisal Status Transition</title>
+  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <style>
+    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+
+    .workflow-header { margin-bottom: var(--sp-2xl); }
+    .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
+    .workflow-header .role-badge {
+      display: inline-flex; align-items: center; gap: var(--sp-sm);
+      background: #dbeafe; color: #1e40af;
+      padding: 4px 12px; border-radius: var(--radius-full);
+      font-size: var(--fs-xs); font-weight: 600; margin-top: var(--sp-sm);
+    }
+
+    .flow { display: flex; flex-direction: column; gap: 0; max-width: 900px; }
+    .flow-step { display: grid; grid-template-columns: 56px 1fr; gap: var(--sp-md); position: relative; }
+    .flow-connector { display: flex; flex-direction: column; align-items: center; }
+    .flow-number {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--itip-primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: var(--fs-sm); flex-shrink: 0; z-index: 1;
+    }
+    .flow-number--api { background: #7c3aed; }
+    .flow-line { flex: 1; width: 2px; background: var(--itip-border-strong); }
+    .flow-step:last-child .flow-line { display: none; }
+
+    .step-card {
+      background: var(--itip-surface); border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg); padding: var(--sp-lg);
+      margin-bottom: var(--sp-lg); box-shadow: var(--shadow-sm);
+    }
+    .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
+    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+    .step-card--api { border-left: 4px solid #7c3aed; }
+
+    .screen-ref {
+      display: inline-flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); color: var(--itip-primary);
+      background: #eff6ff; padding: 3px 10px;
+      border-radius: var(--radius-full); font-weight: 500;
+    }
+    .api-ref {
+      display: inline-flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); color: #7c3aed;
+      background: #f5f3ff; padding: 3px 10px;
+      border-radius: var(--radius-full); font-weight: 500;
+    }
+
+    .step-sketch {
+      background: #f8fafc; border: 1px dashed var(--itip-border-strong);
+      border-radius: var(--radius-md); padding: var(--sp-md);
+      margin-top: var(--sp-md); font-size: var(--fs-xs);
+      color: var(--itip-text-muted); font-family: var(--font-mono); white-space: pre-line;
+    }
+
+    .decision-box {
+      background: #fef9c3; border: 1px solid #fde68a;
+      border-radius: var(--radius-md); padding: var(--sp-md); margin-top: var(--sp-sm);
+    }
+    .decision-box strong { color: #92400e; }
+    .decision-paths { display: flex; gap: var(--sp-md); margin-top: var(--sp-sm); }
+    .decision-path {
+      flex: 1; padding: var(--sp-sm) var(--sp-md);
+      border-radius: var(--radius-sm); font-size: var(--fs-xs);
+    }
+    .decision-path--pass { background: #dcfce7; }
+    .decision-path--block { background: #fef2f2; }
+
+    .finding { padding: var(--sp-sm) var(--sp-md); border-radius: var(--radius-sm); margin-bottom: var(--sp-xs); font-size: 12px; }
+    .finding--pass { background: #dcfce7; border-left: 3px solid var(--compliance-pass); }
+    .finding--block { background: #fef2f2; border-left: 3px solid var(--compliance-fail); }
+    .finding--warn { background: #fef3c7; border-left: 3px solid var(--compliance-warn); }
+
+    .lifecycle-diagram { display: flex; align-items: center; gap: var(--sp-sm); flex-wrap: wrap; margin-top: var(--sp-sm); }
+    .lifecycle-state {
+      padding: 6px 14px; border-radius: var(--radius-full);
+      font-size: 11px; font-weight: 600; border: 2px solid;
+    }
+    .lifecycle-state--draft { border-color: #94a3b8; color: #64748b; background: #f1f5f9; }
+    .lifecycle-state--active { border-color: var(--compliance-pass); color: #15803d; background: #dcfce7; }
+    .lifecycle-state--current { border-color: var(--itip-accent); color: var(--itip-accent); background: #f0faf8; box-shadow: 0 0 0 3px rgba(20,184,166,0.15); }
+    .lifecycle-arrow { font-size: 18px; color: var(--itip-text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="workflow-header">
+    <h1>Appraisal: Status Transition</h1>
+    <p style="color:var(--itip-text-muted);font-size:var(--fs-sm);max-width:700px;margin-top:var(--sp-sm)">
+      When an Ascription requests a lifecycle state transition (e.g., Draft → Active),
+      the Definition Manager API runs an <strong>appraisal</strong> — a rule-checking pass
+      that evaluates all applicable Starlark rules and CEL norms to determine if the
+      transition is permissible. This workflow shows the full appraisal cycle.
+    </p>
+    <div class="role-badge">⚙ Definition Manager API (automated)</div>
+
+    <div style="margin-top:var(--sp-md)">
+      <span class="text-xs text-muted" style="font-weight:600">Ascription Lifecycle:</span>
+      <div class="lifecycle-diagram">
+        <span class="lifecycle-state lifecycle-state--draft">Draft</span>
+        <span class="lifecycle-arrow">→</span>
+        <span class="lifecycle-state lifecycle-state--current">Proposed</span>
+        <span class="lifecycle-arrow">→</span>
+        <span class="lifecycle-state lifecycle-state--active">Active</span>
+        <span class="lifecycle-arrow">→</span>
+        <span class="lifecycle-state" style="border-color:#f59e0b;color:#b45309;background:#fef3c7">Suspended</span>
+        <span class="lifecycle-arrow">→</span>
+        <span class="lifecycle-state" style="border-color:#94a3b8;color:#64748b;background:#f1f5f9">Retired</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">1</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Request Transition</h3>
+        <p>User or Review Board requests a state change on an Ascription.
+           The request is submitted via the Definition Manager API or the UI.</p>
+        <span class="screen-ref">📋 Screen: 07-ascriptions-view.html</span>
+        <div class="step-sketch">┌──────────────────────────────────────────┐
+│ Ascription: ASC-2024-271                 │
+│ Subject: API Gateway                     │
+│ Current State: Draft                     │
+│ Requested State: Active                  │
+│                                          │
+│ Archetype Layers:                        │
+│  • TOGAF: LogicalApplicationComponent    │
+│  • ISO 25010: Security                   │
+│  • NIS2: AccessControl                   │
+│                                          │
+│ [Submit Transition Request]              │
+└──────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 2: API call -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number flow-number--api">2</div><div class="flow-line"></div></div>
+      <div class="step-card step-card--api">
+        <h3>Appraisal Engine: Collect Applicable Rules</h3>
+        <p>The Definition Manager identifies all rules that apply to this transition:
+           Starlark lifecycle rules, CEL norm assertions, and archetype-specific constraints
+           from each layer.</p>
+        <span class="api-ref">⚙ API: POST /api/v1/ascriptions/{id}/appraise</span>
+        <div class="step-sketch">┌──────────────────────────────────────────────┐
+│ Appraisal Context                            │
+├──────────────────────────────────────────────┤
+│ Transition: Draft → Active                   │
+│ Subject: API Gateway                         │
+│                                              │
+│ Applicable Rules:                            │
+│  [1] lifecycle.starlark — Draft→Active guard │
+│  [2] togaf_arch_principle_compliance.cel     │
+│  [3] nis2_encryption_at_rest.cel             │
+│  [4] iso25010_security_confidentiality.cel   │
+│  [5] nis2_access_control_mfa.cel             │
+│  [6] gdpr_data_minimization.cel (if PII)     │
+│                                              │
+│ Total: 6 rules to evaluate                   │
+└──────────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 3: Evaluate -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number flow-number--api">3</div><div class="flow-line"></div></div>
+      <div class="step-card step-card--api">
+        <h3>Appraisal Engine: Evaluate Rules</h3>
+        <p>Each rule is evaluated against the subject's current state and properties.
+           Results are categorized as PASS, WARN, or BLOCK.</p>
+        <span class="api-ref">⚙ Starlark Rule API + CEL Evaluator</span>
+
+        <div style="margin-top:var(--sp-md)">
+          <div class="finding finding--pass">
+            <strong>✅ PASS</strong> — lifecycle.starlark: Draft→Active transition allowed (all prerequisite fields populated)
+          </div>
+          <div class="finding finding--pass">
+            <strong>✅ PASS</strong> — togaf_arch_principle_compliance.cel: API Gateway conforms to 3/3 applicable architecture principles
+          </div>
+          <div class="finding finding--block">
+            <strong>✕ BLOCK</strong> — nis2_encryption_at_rest.cel: <code>subject.properties.encryption_at_rest</code> is <code>false</code>.
+            Required: <code>true</code> (NIS2 Art.21 §2(d))
+          </div>
+          <div class="finding finding--pass">
+            <strong>✅ PASS</strong> — iso25010_security_confidentiality.cel: Confidentiality measures verified
+          </div>
+          <div class="finding finding--warn">
+            <strong>⚠ WARN</strong> — nis2_access_control_mfa.cel: MFA configured but fallback to single-factor exists.
+            Tolerance: advisory (non-blocking)
+          </div>
+          <div class="finding finding--pass">
+            <strong>✅ PASS</strong> — gdpr_data_minimization.cel: Not applicable (subject does not hold PII)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Decision -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number flow-number--api">4</div><div class="flow-line"></div></div>
+      <div class="step-card step-card--api">
+        <h3>Appraisal Verdict</h3>
+        <p>The appraisal aggregates findings into a final verdict.
+           Any BLOCK finding prevents the transition. WARN findings are reported but non-blocking
+           (unless the norm has strict tolerance).</p>
+
+        <div class="decision-box">
+          <strong>Appraisal Decision:</strong>
+          <div class="decision-paths">
+            <div class="decision-path decision-path--pass">
+              <strong>✅ CLEAR</strong><br>
+              All rules pass (or only advisory warnings). Transition proceeds automatically.
+              Ascription moves to requested state. Activity log records the transition.
+            </div>
+            <div class="decision-path decision-path--block">
+              <strong>✕ BLOCKED</strong><br>
+              One or more BLOCK findings. Transition is denied. Findings are attached to the
+              Ascription. Owner must remediate and re-request, or escalate to Review Board.
+            </div>
+          </div>
+        </div>
+
+        <div class="step-sketch" style="margin-top:var(--sp-md)">┌──────────────────────────────────────────┐
+│ Appraisal Result: BLOCKED                │
+├──────────────────────────────────────────┤
+│ Rules evaluated:  6                      │
+│ Passed:           4                      │
+│ Warnings:         1 (advisory)           │
+│ Blocked:          1                      │
+│                                          │
+│ Blocking finding:                        │
+│  nis2_encryption_at_rest.cel             │
+│  "encryption_at_rest must be true"       │
+│                                          │
+│ Verdict: TRANSITION DENIED               │
+└──────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 5: Remediate -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">5</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Remediate & Re-Request</h3>
+        <p>The owner reviews blocking findings, updates the subject's properties or
+           configuration, and re-submits the transition request. The appraisal runs again.</p>
+        <span class="screen-ref">📋 Screen: 07-ascriptions-view.html (detail panel)</span>
+        <div class="step-sketch">┌──────────────────────────────────────────────┐
+│ Remediation on ASC-2024-271                  │
+├──────────────────────────────────────────────┤
+│ Finding: nis2_encryption_at_rest.cel BLOCK   │
+│                                              │
+│ Action: Set encryption_at_rest = true        │
+│ Updated by: Infra Team (2026-01-15)          │
+│                                              │
+│ [Re-submit Transition Request]               │
+│                                              │
+│ — OR —                                       │
+│                                              │
+│ [Escalate to Review Board]                   │
+│ (board can override with documented waiver)  │
+└──────────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 6: Success -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">6</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Transition Complete</h3>
+        <p>After remediation, the re-appraisal passes. The Ascription transitions to the
+           requested state. Event is published to the event bus and recorded in the activity log.</p>
+        <span class="screen-ref">📋 Screen: 05-activity-log.html</span>
+
+        <div style="margin-top:var(--sp-md)">
+          <div class="finding finding--pass">
+            <strong>✅ Re-appraisal: ALL CLEAR</strong> — 6/6 rules passed. Transition Draft → Active executed.
+          </div>
+        </div>
+
+        <div class="step-sketch">┌──────────────────────────────────────────┐
+│ ASC-2024-271 — API Gateway               │
+│ State: ● Active                          │
+│ Transitioned: 2026-01-15T14:32:00Z       │
+│ Appraisal: CLEAR (6/6 pass)              │
+│                                          │
+│ Events emitted:                          │
+│  • ascription.state.changed (Kafka)      │
+│  • activity.log.entry (Dashboard)        │
+│  • compliance.recalculate (triggered)    │
+└──────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

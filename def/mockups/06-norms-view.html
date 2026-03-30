@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Norms</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .norms-layout { display: flex; gap: 0; min-height: calc(100vh - 56px); }
+    .norms-content { flex: 1; padding: var(--sp-lg); overflow-y: auto; }
+    .norm-row {
+      display: grid; grid-template-columns: 1fr 160px 140px 100px 80px 100px;
+      align-items: center; gap: var(--sp-md);
+      padding: var(--sp-md) var(--sp-lg);
+      background: var(--itip-surface); border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md); margin-bottom: var(--sp-sm);
+      cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .norm-row:hover { border-color: var(--itip-primary); box-shadow: var(--shadow-md); }
+    .norm-name { font-weight: 600; font-size: var(--fs-sm); }
+    .norm-subject { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+    .norm-framework { font-size: var(--fs-xs); font-family: var(--font-mono); }
+    .norms-header {
+      display: grid; grid-template-columns: 1fr 160px 140px 100px 80px 100px;
+      gap: var(--sp-md); padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--itip-text-muted);
+    }
+    .detail-panel { width: 380px; background: var(--itip-surface); border-left: 1px solid var(--itip-border); }
+    .detail-panel__header { padding: var(--sp-md) var(--sp-lg); border-bottom: 1px solid var(--itip-border); display: flex; justify-content: space-between; align-items: center; }
+    .detail-panel__body { padding: var(--sp-lg); overflow-y: auto; }
+    .detail-section { margin-bottom: var(--sp-lg); }
+    .detail-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--itip-text-muted); margin-bottom: var(--sp-sm); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
+        </div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">137</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Governance</span><span>/</span>
+        <strong>Norms</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="btn btn--primary btn--sm">+ New Norm</button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main" style="padding:0">
+      <div class="norms-layout">
+
+        <!-- Filter sidebar -->
+        <div class="filter-sidebar" style="border-radius:0">
+          <div class="filter-section">
+            <div class="filter-section__title">Framework</div>
+            <label class="filter-option"><input type="checkbox" checked> TOGAF (32)</label>
+            <label class="filter-option"><input type="checkbox" checked> ISO 25010 (24)</label>
+            <label class="filter-option"><input type="checkbox" checked> ISO 25012 (18)</label>
+            <label class="filter-option"><input type="checkbox" checked> NIS2 (21)</label>
+            <label class="filter-option"><input type="checkbox" checked> GDPR (38)</label>
+            <label class="filter-option"><input type="checkbox" checked> SCAP (4)</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">State</div>
+            <label class="filter-option"><input type="checkbox"> Draft (18)</label>
+            <label class="filter-option"><input type="checkbox"> Proposed (21)</label>
+            <label class="filter-option"><input type="checkbox" checked> Active (98)</label>
+            <label class="filter-option"><input type="checkbox"> Deprecated (0)</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">Tolerance</div>
+            <label class="filter-option"><input type="checkbox" checked> Strict (84)</label>
+            <label class="filter-option"><input type="checkbox" checked> Tolerant (41)</label>
+            <label class="filter-option"><input type="checkbox" checked> Advisory (12)</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">Last Evaluation</div>
+            <label class="filter-option"><input type="checkbox"> Pass only</label>
+            <label class="filter-option"><input type="checkbox"> Warnings</label>
+            <label class="filter-option"><input type="checkbox"> Failures</label>
+          </div>
+        </div>
+
+        <!-- Norm list -->
+        <div class="norms-content">
+          <div class="flex justify-between items-center mb-md">
+            <input class="form-input" type="text" placeholder="Search norms..." style="max-width:320px">
+            <span class="text-xs text-muted">Showing 98 active norms of 137 total</span>
+          </div>
+
+          <div class="norms-header">
+            <span>Norm</span>
+            <span>Framework</span>
+            <span>Directive</span>
+            <span>Tolerance</span>
+            <span>State</span>
+            <span>Last Eval</span>
+          </div>
+
+          <div class="norm-row" style="border-color:var(--itip-primary)">
+            <div><div class="norm-name">encryption_at_rest</div><div class="norm-subject">ON UserDatabase, CustomerDB · WHEN data.classification == "PII"</div></div>
+            <div class="norm-framework">GDPR</div>
+            <div class="text-xs">Data Encryption Policy</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--pass">Pass</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">rate_limit_enforcement</div><div class="norm-subject">ON ExternalEndpoints · WHEN request enters gateway</div></div>
+            <div class="norm-framework">NIS2</div>
+            <div class="text-xs">API Security Policy</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--proposed">Proposed</span></div>
+            <div class="text-xs text-muted">—</div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">arch_principle_compliance</div><div class="norm-subject">ON ALL Structures · WHEN archetype == "LogicalApplicationComponent"</div></div>
+            <div class="norm-framework">TOGAF</div>
+            <div class="text-xs">Architecture Principles</div>
+            <div><span class="badge" style="background:#eff6ff;color:#1d4ed8;font-size:10px">Tolerant</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--pass">Pass</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">data_accuracy_threshold</div><div class="norm-subject">ON DataEntity · WHEN data.quality.measured == true</div></div>
+            <div class="norm-framework">ISO 25012</div>
+            <div class="text-xs">Data Quality Standards</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--pass">Pass</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">logging_retention</div><div class="norm-subject">ON AuditService · WHEN subject.logging.enabled == true</div></div>
+            <div class="norm-framework">NIS2</div>
+            <div class="text-xs">Incident Response Protocol</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--fail">Fail</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">functional_suitability</div><div class="norm-subject">ON ALL ApplicationService · WHEN state == "ACTIVE"</div></div>
+            <div class="norm-framework">ISO 25010</div>
+            <div class="text-xs">Product Quality Baseline</div>
+            <div><span class="badge" style="background:#eff6ff;color:#1d4ed8;font-size:10px">Tolerant</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--pass">Pass</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">gdpr_data_minimization</div><div class="norm-subject">ON DataEntity, DataStore · WHEN data.containsPII == true</div></div>
+            <div class="norm-framework">GDPR</div>
+            <div class="text-xs">GDPR Art.5 Principles</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--warn">Warn</span></div>
+          </div>
+
+          <div class="norm-row">
+            <div><div class="norm-name">scap_vulnerability_scan</div><div class="norm-subject">ON TechnologyComponent · WHEN subject.cpe != null</div></div>
+            <div class="norm-framework">SCAP</div>
+            <div class="text-xs">SCAP Platform Security</div>
+            <div><span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div><span class="badge badge--fail">Fail</span></div>
+          </div>
+
+        </div>
+
+        <!-- Detail panel (selected norm) -->
+        <div class="detail-panel">
+          <div class="detail-panel__header">
+            <h3 style="font-size:var(--fs-base);font-weight:600">Norm Detail</h3>
+            <button class="btn btn--ghost btn--sm">✕</button>
+          </div>
+          <div class="detail-panel__body">
+
+            <div class="detail-section">
+              <div class="detail-label">Name</div>
+              <div class="text-sm"><strong>encryption_at_rest</strong></div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Grammar</div>
+              <div class="grammar-preview" style="font-size:var(--fs-xs)">
+                <span class="structure">UserDatabase</span> ON <span class="qualifier">EncryptionAtRest</span>:
+                WHEN <em>data.classification == "PII"</em>
+                ASSERT <em>subject.encryption.algorithm in ["AES-256", "ChaCha20"]</em>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Directive</div>
+              <div class="text-sm">Data Encryption Policy <span class="badge badge--active" style="font-size:10px">Active</span></div>
+              <div class="text-xs text-muted">GDPR Art.32 §1(a) — encryption of personal data</div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">CEL Expressions</div>
+              <div class="cel-editor" style="font-size:11px">
+<span style="color:#7dd3fc">// Applicability</span>
+subject.data.classification == "PII"
+  || subject.data.classification == "SENSITIVE"
+
+<span style="color:#7dd3fc">// Assertion</span>
+subject.encryption.atRest == <span style="color:#fbbf24">true</span>
+  && subject.encryption.algorithm in [<span style="color:#a5f3fc">"AES-256"</span>, <span style="color:#a5f3fc">"ChaCha20"</span>]
+  && subject.encryption.keyRotationDays &lt;= <span style="color:#fbbf24">90</span>
+              </div>
+              <div class="text-xs text-muted mt-sm">CEL Profile: governance-assertion · <span style="color:var(--compliance-pass)">✓ Valid</span></div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Evaluation History</div>
+              <div class="text-xs" style="padding:4px 0"><span class="badge badge--pass">Pass</span> Today 08:00 — AES-256 detected, key rotated 12d ago</div>
+              <div class="text-xs" style="padding:4px 0"><span class="badge badge--pass">Pass</span> Yesterday 08:00</div>
+              <div class="text-xs" style="padding:4px 0"><span class="badge badge--warn">Warn</span> 3 days ago — key rotation approaching 90d threshold</div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Affected Structures</div>
+              <div class="text-sm" style="padding:2px 0">UserDatabase <span class="badge badge--pass" style="font-size:10px">Pass</span></div>
+              <div class="text-sm" style="padding:2px 0">CustomerDB <span class="badge badge--pass" style="font-size:10px">Pass</span></div>
+              <div class="text-sm" style="padding:2px 0">AnalyticsStore <span class="badge badge--warn" style="font-size:10px">Warn</span></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+</body>
+</html>

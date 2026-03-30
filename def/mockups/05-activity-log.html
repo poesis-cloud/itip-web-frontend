@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Activity Log</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .activity-layout { display: flex; gap: 0; min-height: calc(100vh - 56px); }
+    .activity-content { flex: 1; padding: var(--sp-lg); overflow-y: auto; }
+    .activity-toolbar { display: flex; gap: var(--sp-md); align-items: center; margin-bottom: var(--sp-lg); flex-wrap: wrap; }
+    .activity-toolbar select { padding: 6px 10px; border: 1px solid var(--itip-border-strong); border-radius: var(--radius-sm); font-size: var(--fs-sm); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">137</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Overview</span><span>/</span>
+        <strong>Activity Log</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">Export</button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Activity Log</h1>
+      <p class="page-subtitle">Comprehensive audit trail of all governance, compliance, and lifecycle events</p>
+
+      <!-- Toolbar / Filters -->
+      <div class="activity-toolbar">
+        <select>
+          <option>All Types</option>
+          <option>Directives</option>
+          <option>Norms</option>
+          <option>Structures</option>
+          <option>Ascriptions</option>
+          <option>Evaluations</option>
+          <option>Reviews</option>
+          <option>Appraisals</option>
+        </select>
+        <select>
+          <option>Last 24 hours</option>
+          <option selected>Last 7 days</option>
+          <option>Last 30 days</option>
+          <option>Custom range</option>
+        </select>
+        <select>
+          <option>All Users</option>
+          <option>E. Archer</option>
+          <option>M. Chen</option>
+          <option>A. Kumar</option>
+          <option>L. Garcia</option>
+          <option>R. Patel</option>
+          <option>J. Park</option>
+        </select>
+        <input class="form-input" type="text" placeholder="Search events..." style="max-width:240px">
+        <span class="text-xs text-muted" style="margin-left:auto">247 events in range</span>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card__body">
+          <div class="timeline">
+
+            <!-- Today -->
+            <div class="text-xs text-muted mb-md" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:600;padding-left:60px">Today</div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--pass"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Norm approved:</strong> encryption_at_rest on UserDatabase — passed CEL validation</div>
+                <div class="text-xs text-muted">12 min ago · by E. Archer (Enterprise Architect) · <span class="badge badge--active" style="font-size:10px">ACTIVE</span></div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--info"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Directive proposed:</strong> "API Gateway MUST ENFORCE rate limiting ON ExternalEndpoints"</div>
+                <div class="text-xs text-muted">2 hours ago · by M. Chen (Security Officer) · NIS2 Art.21 §2(a)</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--fail"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Violation detected:</strong> logging_retention on AuditService — retention below 90-day minimum</div>
+                <div class="text-xs text-muted">3 hours ago · automated evaluation · NIS2 Art.21 §2(g)</div>
+                <div style="margin-top:6px;padding:6px 10px;background:#fef2f2;border-radius:var(--radius-sm);border:1px solid #fecaca;font-size:var(--fs-xs)">
+                  <strong style="color:#991b1b">Remediation:</strong> Increase log retention to ≥90 days in AuditService config
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--pass"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Appraisal passed:</strong> Payment Service → PROPOSED → ACTIVE transition cleared (4/4 rules passed)</div>
+                <div class="text-xs text-muted">4 hours ago · automated appraisal · Review Board session #42</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--warn"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Review Board decision:</strong> "Data Encryption Policy" approved with conditions — 3 APPROVE / 1 CONDITIONALLY</div>
+                <div class="text-xs text-muted">5 hours ago · Review Board session #41 · chaired by E. Archer</div>
+              </div>
+            </div>
+
+            <!-- Yesterday -->
+            <div class="text-xs text-muted mb-md mt-md" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:600;padding-left:60px">Yesterday</div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--pass"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Structure activated:</strong> NotificationService promoted PROPOSED → ACTIVE</div>
+                <div class="text-xs text-muted">Yesterday 14:30 · by A. Kumar (Solution Architect)</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--warn"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Structure deprecated:</strong> LegacyAuthBridge — scheduled for RETIRED in Q2 2025</div>
+                <div class="text-xs text-muted">Yesterday 11:00 · by E. Archer (Enterprise Architect)</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--info"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Ascription created:</strong> TOGAF.LogicalApplicationComponent bound to "Payment Service"</div>
+                <div class="text-xs text-muted">Yesterday 09:15 · by A. Kumar · Multi-layer: +SoftwareTechnology +ISO25010</div>
+              </div>
+            </div>
+
+            <!-- 2 days ago -->
+            <div class="text-xs text-muted mb-md mt-md" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:600;padding-left:60px">2 days ago</div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--info"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Framework sourced:</strong> SCAP v1.3 — 2 archetypes, 4 directives, 12 norms generated</div>
+                <div class="text-xs text-muted">2 days ago · by R. Patel (Compliance Analyst)</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--pass"></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Evaluation cycle completed:</strong> 137 norms evaluated across 156 structures — 91% compliance</div>
+                <div class="text-xs text-muted">2 days ago · automated · 7 violations, 38 warnings</div>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-connector">
+                <div class="timeline-dot timeline-dot--fail"></div>
+              </div>
+              <div class="timeline-content">
+                <div class="text-sm"><strong>Appraisal blocked:</strong> LegacyAuthBridge → ACTIVE transition denied (2/5 rules failed)</div>
+                <div class="text-xs text-muted">2 days ago · automated appraisal · missing NIS2 access control, SCAP CVE scan</div>
+              </div>
+            </div>
+
+          </div><!-- /timeline -->
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-between items-center mt-lg">
+        <span class="text-xs text-muted">Showing 1–12 of 247 events</span>
+        <div class="flex gap-sm">
+          <button class="btn btn--secondary btn--sm" disabled>← Previous</button>
+          <button class="btn btn--secondary btn--sm">Next →</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+</body>
+</html>

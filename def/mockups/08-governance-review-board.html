@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Governance Review Board</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .review-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-lg); min-height: calc(100vh - 56px - var(--sp-lg) * 2); }
+    .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--sp-lg); }
+    .session-meta { display: flex; gap: var(--sp-lg); font-size: var(--fs-xs); color: var(--itip-text-muted); }
+    .vote-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--itip-border-strong); background: var(--itip-surface); cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .vote-btn:hover { transform: scale(1.1); }
+    .vote-btn--approve { color: var(--compliance-pass); }
+    .vote-btn--approve.voted { background: var(--compliance-pass); color: #fff; border-color: var(--compliance-pass); }
+    .vote-btn--reject { color: var(--compliance-fail); }
+    .vote-btn--conditional { color: var(--compliance-warn); }
+    .agenda-number { width: 28px; height: 28px; border-radius: 50%; background: var(--itip-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700; flex-shrink: 0; }
+    .session-card { border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-md) var(--sp-lg); margin-bottom: var(--sp-sm); cursor: pointer; transition: border-color 0.15s; }
+    .session-card:hover { border-color: var(--itip-primary); }
+    .session-card.active { border-color: var(--itip-primary); border-width: 2px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">137</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Governance</span><span>/</span>
+        <strong>Review Board</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--primary btn--sm">+ New Session</button>
+        <button class="btn btn--secondary btn--sm">Schedule Ceremony</button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="review-layout">
+
+        <!-- Left: Active session -->
+        <div>
+          <div class="session-header">
+            <div>
+              <h1 class="page-title" style="margin-bottom:4px">Review Session #42</h1>
+              <div class="session-meta">
+                <span>📅 Today 10:00 – 11:30</span>
+                <span>👤 Chaired by E. Archer</span>
+                <span>🔵 In Progress</span>
+              </div>
+            </div>
+            <div class="flex gap-sm">
+              <button class="btn btn--secondary btn--sm">Minutes</button>
+              <button class="btn btn--primary btn--sm">Close Session</button>
+            </div>
+          </div>
+
+          <!-- Participants -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Participants</span>
+              <span class="text-xs text-muted">4 of 5 present</span>
+            </div>
+            <div class="card__body">
+              <div class="flex gap-md" style="flex-wrap:wrap">
+                <div class="flex gap-sm items-center">
+                  <div class="avatar" style="width:32px;height:32px;font-size:11px">EA</div>
+                  <div><div class="text-sm" style="font-weight:600">E. Archer</div><div class="text-xs text-muted">Enterprise Architect · Chair</div></div>
+                </div>
+                <div class="flex gap-sm items-center">
+                  <div class="avatar" style="width:32px;height:32px;font-size:11px">MC</div>
+                  <div><div class="text-sm" style="font-weight:600">M. Chen</div><div class="text-xs text-muted">Security Officer</div></div>
+                </div>
+                <div class="flex gap-sm items-center">
+                  <div class="avatar" style="width:32px;height:32px;font-size:11px">AK</div>
+                  <div><div class="text-sm" style="font-weight:600">A. Kumar</div><div class="text-xs text-muted">Solution Architect</div></div>
+                </div>
+                <div class="flex gap-sm items-center">
+                  <div class="avatar" style="width:32px;height:32px;font-size:11px">RP</div>
+                  <div><div class="text-sm" style="font-weight:600">R. Patel</div><div class="text-xs text-muted">Compliance Analyst</div></div>
+                </div>
+                <div class="flex gap-sm items-center" style="opacity:0.4">
+                  <div class="avatar" style="width:32px;height:32px;font-size:11px">LG</div>
+                  <div><div class="text-sm" style="font-weight:600">L. Garcia</div><div class="text-xs text-muted">Data Protection Officer · Absent</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agenda items -->
+          <div class="card">
+            <div class="card__header">
+              <span class="card__title">Agenda Items</span>
+              <span class="text-xs text-muted">5 items · 2 decided · 1 in review</span>
+            </div>
+            <div class="card__body">
+
+              <div class="review-agenda-item" style="border-color:var(--compliance-pass);background:#f0fdf4">
+                <div class="agenda-number" style="background:var(--compliance-pass)">1</div>
+                <div style="flex:1">
+                  <div class="text-sm" style="font-weight:600">Directive: "Data Encryption Policy"</div>
+                  <div class="text-xs text-muted">PROPOSED → ACTIVE · GDPR Art.32 §1(a) · Proposed by M. Chen</div>
+                  <div class="flex gap-sm items-center mt-sm">
+                    <span class="badge badge--clear">✓ Approved (3/4)</span>
+                    <span class="text-xs text-muted">EA: ✓ · MC: ✓ · AK: ✓ · RP: Absent</span>
+                  </div>
+                  <div class="text-xs text-muted mt-sm" style="font-style:italic">Decision: Approved. Appraisal passed (6/6 rules). Effective immediately.</div>
+                </div>
+              </div>
+
+              <div class="review-agenda-item" style="border-color:var(--compliance-warn);background:#fffbeb">
+                <div class="agenda-number" style="background:var(--compliance-warn)">2</div>
+                <div style="flex:1">
+                  <div class="text-sm" style="font-weight:600">Structure: "LegacyAuthBridge" deprecation</div>
+                  <div class="text-xs text-muted">ACTIVE → DEPRECATED · Migration plan required · Proposed by E. Archer</div>
+                  <div class="flex gap-sm items-center mt-sm">
+                    <span class="badge" style="background:#fffbeb;color:#92400e">Conditionally approved (2 approve, 1 conditional)</span>
+                  </div>
+                  <div class="text-xs text-muted mt-sm" style="font-style:italic">Condition: Migration plan for downstream consumers must be filed within 2 weeks.</div>
+                </div>
+              </div>
+
+              <div class="review-agenda-item" style="border-color:var(--itip-primary)">
+                <div class="agenda-number">3</div>
+                <div style="flex:1">
+                  <div class="text-sm" style="font-weight:600">Directive: "API Gateway MUST ENFORCE rate limiting"</div>
+                  <div class="text-xs text-muted">PROPOSED → ACTIVE · NIS2 Art.21 §2(a) · Proposed by M. Chen</div>
+                  <div class="text-xs mt-sm"><strong>Appraisal result:</strong> <span class="badge badge--clear" style="font-size:10px">4/4 rules passed</span></div>
+                  <div class="flex gap-sm mt-md">
+                    <span class="text-xs text-muted" style="padding-top:6px">Your vote:</span>
+                    <button class="vote-btn vote-btn--approve voted" title="Approve">✓</button>
+                    <button class="vote-btn vote-btn--conditional" title="Conditional">?</button>
+                    <button class="vote-btn vote-btn--reject" title="Reject">✗</button>
+                  </div>
+                  <div class="flex gap-sm items-center mt-sm">
+                    <span class="text-xs text-muted">Votes: EA: ✓ · MC: ✓ · AK: pending · RP: pending</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-agenda-item">
+                <div class="agenda-number" style="background:var(--itip-text-light)">4</div>
+                <div style="flex:1">
+                  <div class="text-sm" style="font-weight:600">Norm: "scap_vulnerability_scan" violation review</div>
+                  <div class="text-xs text-muted">3 structures failing SCAP vulnerability scans · R. Patel reporting</div>
+                  <div class="text-xs mt-sm text-muted">⏳ Pending review</div>
+                </div>
+              </div>
+
+              <div class="review-agenda-item">
+                <div class="agenda-number" style="background:var(--itip-text-light)">5</div>
+                <div style="flex:1">
+                  <div class="text-sm" style="font-weight:600">Framework sourcing: ISO 25011 (IT Service Quality)</div>
+                  <div class="text-xs text-muted">Proposed addition to framework stack · A. Kumar presenting</div>
+                  <div class="text-xs mt-sm text-muted">⏳ Pending review</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Session history -->
+        <div>
+          <div class="card" style="height:100%">
+            <div class="card__header">
+              <span class="card__title">Session History</span>
+            </div>
+            <div class="card__body">
+
+              <div class="session-card active">
+                <div class="flex justify-between items-center">
+                  <strong class="text-sm">#42 · Today</strong>
+                  <span class="badge" style="background:#eff6ff;color:#1d4ed8;font-size:10px">In Progress</span>
+                </div>
+                <div class="text-xs text-muted mt-sm">5 agenda items · Chair: E. Archer</div>
+              </div>
+
+              <div class="session-card">
+                <div class="flex justify-between items-center">
+                  <strong class="text-sm">#41 · Last week</strong>
+                  <span class="badge badge--active" style="font-size:10px">Completed</span>
+                </div>
+                <div class="text-xs text-muted mt-sm">3 items · 3 approved · Chair: E. Archer</div>
+              </div>
+
+              <div class="session-card">
+                <div class="flex justify-between items-center">
+                  <strong class="text-sm">#40 · 2 weeks ago</strong>
+                  <span class="badge badge--active" style="font-size:10px">Completed</span>
+                </div>
+                <div class="text-xs text-muted mt-sm">6 items · 5 approved, 1 rejected · Chair: M. Chen</div>
+              </div>
+
+              <div class="session-card">
+                <div class="flex justify-between items-center">
+                  <strong class="text-sm">#39 · 3 weeks ago</strong>
+                  <span class="badge badge--active" style="font-size:10px">Completed</span>
+                </div>
+                <div class="text-xs text-muted mt-sm">4 items · 4 approved · Chair: E. Archer</div>
+              </div>
+
+              <div class="text-xs text-muted mt-lg" style="padding:var(--sp-sm)">
+                <strong>Ceremony Schedule:</strong><br>
+                Weekly Architecture Review — Tuesdays 10:00<br>
+                Monthly Security Committee — 1st Wednesday 14:00<br>
+                Quarterly Compliance Board — Last Friday of quarter
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+</body>
+</html>

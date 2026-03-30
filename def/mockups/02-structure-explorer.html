@@ -101,33 +101,35 @@
 <body>
   <div class="app-shell">
 
-    <!-- Sidebar (same as dashboard, different active) -->
+    <!-- Sidebar -->
     <aside class="app-sidebar">
-      <div class="app-sidebar__logo">
-        <span class="logo-icon">IT</span> ITIP
-      </div>
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
         <div class="nav-item">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
         </div>
-        <div class="nav-item active">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          Structure Explorer
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
         </div>
         <div class="nav-section">Governance</div>
         <div class="nav-item">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-          Directives <span class="nav-badge">24</span>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
         </div>
         <div class="nav-item">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
-          Norms <span class="nav-badge">87</span>
+          Norms <span class="nav-badge">137</span>
         </div>
         <div class="nav-item">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          Ascriptions
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
         </div>
         <div class="nav-section">Compliance</div>
         <div class="nav-item">
@@ -135,8 +137,17 @@
           Adherence Matrix
         </div>
         <div class="nav-item">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
           Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
         </div>
         <div class="nav-section">Frameworks</div>
         <div class="nav-item">
@@ -144,10 +155,14 @@
           Catalog <span class="nav-badge">5</span>
         </div>
         <div class="nav-item">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
           Stack Composer
         </div>
       </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
     </aside>
 
     <!-- Header -->
@@ -189,6 +204,7 @@
             <div class="filter-section__title">Framework</div>
             <label class="filter-option"><input type="checkbox" checked> TOGAF</label>
             <label class="filter-option"><input type="checkbox" checked> ISO 25010</label>
+            <label class="filter-option"><input type="checkbox" checked> ISO 25012</label>
             <label class="filter-option"><input type="checkbox" checked> NIS2</label>
             <label class="filter-option"><input type="checkbox" checked> GDPR</label>
             <label class="filter-option"><input type="checkbox"> SCAP</label>
@@ -206,7 +222,7 @@
           <div class="search-bar">
             <input class="form-input" type="text" placeholder="Search structures, archetypes, frameworks...">
             <button class="btn btn--secondary btn--sm">Filters</button>
-            <span class="text-xs text-muted" style="margin-left:auto">Showing 135 of 142 structures</span>
+            <span class="text-xs text-muted" style="margin-left:auto">Showing 147 of 156 structures</span>
           </div>
 
           <div class="list-header">
@@ -225,7 +241,7 @@
                 <div class="structure-type">Structure · Application Component</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">LogicalApplicationComponent</div>
               <div class="structure-norms">8</div>
               <div class="structure-score" style="color:var(--compliance-pass)">100%</div>
             </div>
@@ -236,7 +252,7 @@
                 <div class="structure-type">Structure · Data Store</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">DataEntity</div>
               <div class="structure-norms">12</div>
               <div class="structure-score" style="color:var(--compliance-pass)">96%</div>
             </div>
@@ -247,7 +263,7 @@
                 <div class="structure-type">Structure · Application Service</div>
               </div>
               <div><span class="badge badge--proposed">Proposed</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">ApplicationService</div>
               <div class="structure-norms">—</div>
               <div class="structure-score text-muted">—</div>
             </div>
@@ -258,7 +274,7 @@
                 <div class="structure-type">Structure · Application Service</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">ApplicationService</div>
               <div class="structure-norms">6</div>
               <div class="structure-score" style="color:var(--compliance-fail)">67%</div>
             </div>
@@ -269,7 +285,7 @@
                 <div class="structure-type">Structure · Application Service</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">ApplicationService</div>
               <div class="structure-norms">4</div>
               <div class="structure-score" style="color:var(--compliance-pass)">100%</div>
             </div>
@@ -280,7 +296,7 @@
                 <div class="structure-type">Structure · Integration Component</div>
               </div>
               <div><span class="badge badge--deprecated">Deprecated</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">PhysicalApplicationComponent</div>
               <div class="structure-norms">3</div>
               <div class="structure-score" style="color:var(--compliance-warn)">78%</div>
             </div>
@@ -291,7 +307,7 @@
                 <div class="structure-type">Mechanism · Messaging Infrastructure</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">TechnologyComponent</div>
               <div class="structure-norms">5</div>
               <div class="structure-score" style="color:var(--compliance-pass)">100%</div>
             </div>
@@ -302,7 +318,7 @@
                 <div class="structure-type">Interaction · Data Exchange</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">DataEntity</div>
               <div class="structure-norms">9</div>
               <div class="structure-score" style="color:var(--compliance-warn)">82%</div>
             </div>
@@ -313,7 +329,7 @@
                 <div class="structure-type">Mechanism · Build Automation</div>
               </div>
               <div><span class="badge badge--draft">Draft</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">TechnologyComponent</div>
               <div class="structure-norms">—</div>
               <div class="structure-score text-muted">—</div>
             </div>
@@ -324,9 +340,32 @@
                 <div class="structure-type">Structure · Observability Platform</div>
               </div>
               <div><span class="badge badge--active">Active</span></div>
-              <div class="structure-archetype">SoftwareTechnology</div>
+              <div class="structure-archetype">PlatformService</div>
               <div class="structure-norms">7</div>
               <div class="structure-score" style="color:var(--compliance-pass)">95%</div>
+            </div>
+
+            <!-- Organizational structures -->
+            <div class="structure-row">
+              <div>
+                <div class="structure-name">IT Operations Division</div>
+                <div class="structure-type">Structure · Organizational Unit</div>
+              </div>
+              <div><span class="badge badge--active">Active</span></div>
+              <div class="structure-archetype">OrganizationUnit</div>
+              <div class="structure-norms">4</div>
+              <div class="structure-score" style="color:var(--compliance-pass)">100%</div>
+            </div>
+
+            <div class="structure-row">
+              <div>
+                <div class="structure-name">Chief Security Officer</div>
+                <div class="structure-type">Structure · Stakeholder</div>
+              </div>
+              <div><span class="badge badge--active">Active</span></div>
+              <div class="structure-archetype">Actor</div>
+              <div class="structure-norms">2</div>
+              <div class="structure-score" style="color:var(--compliance-pass)">100%</div>
             </div>
 
           </div><!-- /structure-list -->
@@ -334,5 +373,11 @@
       </div><!-- /explorer-layout -->
     </main>
   </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
 </body>
 </html>

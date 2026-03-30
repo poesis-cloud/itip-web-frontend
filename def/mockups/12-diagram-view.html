@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Diagram View</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .diagram-layout { display: grid; grid-template-columns: 240px 1fr; gap: var(--sp-lg); }
+    .diagram-toolbar { display: flex; gap: var(--sp-sm); align-items: center; margin-bottom: var(--sp-md); padding: var(--sp-sm) var(--sp-md); background: var(--itip-bg-muted); border-radius: var(--radius-md); flex-wrap: wrap; }
+    .diagram-toolbar__group { display: flex; gap: 4px; }
+    .diagram-toolbar__btn {
+      padding: 4px 10px; border: 1px solid var(--itip-border); border-radius: var(--radius-sm);
+      background: white; font-size: 12px; cursor: pointer;
+    }
+    .diagram-toolbar__btn--active { background: var(--itip-accent); color: white; border-color: var(--itip-accent); }
+    .diagram-panel { border: 1px solid var(--itip-border); border-radius: var(--radius-md); padding: var(--sp-md); }
+    .diagram-panel h3 { font-size: var(--fs-sm); font-weight: 600; margin-bottom: var(--sp-sm); }
+    .layer-toggle { display: flex; align-items: center; gap: var(--sp-sm); padding: 4px 0; font-size: 12px; }
+    .layer-toggle input[type="checkbox"] { accent-color: var(--itip-accent); }
+    .node {
+      position: absolute; border-radius: var(--radius-md); padding: 10px 14px;
+      font-size: 11px; font-weight: 600; text-align: center; cursor: pointer;
+      border: 2px solid; min-width: 100px; background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .node--structure { border-color: #2dd4bf; color: #0d9488; }
+    .node--mechanism { border-color: #60a5fa; color: #2563eb; }
+    .node--interaction { border-color: #f59e0b; color: #b45309; border-style: dashed; }
+    .node--effector { border-color: #a78bfa; color: #7c3aed; }
+    .node--receptor { border-color: #fb923c; color: #c2410c; }
+    .node__type { font-size: 9px; font-weight: 400; opacity: 0.7; display: block; margin-bottom: 2px; }
+    .node__badge { position: absolute; top: -6px; right: -6px; width: 14px; height: 14px; border-radius: 50%; font-size: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+    .edge {
+      position: absolute; pointer-events: none;
+    }
+    .edge line { stroke: #94a3b8; stroke-width: 1.5; }
+    .edge line.edge--interaction { stroke: #f59e0b; stroke-dasharray: 4 3; }
+    .edge line.edge--mechanism { stroke: #60a5fa; }
+    .legend { display: flex; gap: var(--sp-md); flex-wrap: wrap; padding: var(--sp-sm) var(--sp-md); background: var(--itip-bg-muted); border-radius: var(--radius-md); margin-top: var(--sp-md); }
+    .legend__item { display: flex; align-items: center; gap: 4px; font-size: 11px; }
+    .legend__color { width: 12px; height: 12px; border-radius: 3px; border: 2px solid; }
+    .selected-info { margin-top: var(--sp-md); padding: var(--sp-md); background: #f0faf8; border-radius: var(--radius-md); border: 1px solid var(--itip-accent); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
+          Directives <span class="nav-badge">42</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">137</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          Ascriptions <span class="nav-badge">384</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Exploration</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          Structures
+        </div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
+          Diagram View
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>by <strong>Poesis</strong></span>
+        <span>© 2024–2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Exploration</span><span>/</span>
+        <strong>Diagram View</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">Export SVG</button>
+        <button class="btn btn--primary btn--sm">Auto Layout</button>
+        <div class="avatar">CA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Diagram View</h1>
+      <p class="page-subtitle">Structure relationship graph — GSM primitives as visual nodes</p>
+
+      <!-- Toolbar -->
+      <div class="diagram-toolbar">
+        <span class="text-xs" style="font-weight:600;margin-right:var(--sp-sm)">View:</span>
+        <div class="diagram-toolbar__group">
+          <button class="diagram-toolbar__btn diagram-toolbar__btn--active">All Primitives</button>
+          <button class="diagram-toolbar__btn">Structures Only</button>
+          <button class="diagram-toolbar__btn">Governance</button>
+        </div>
+        <span style="margin: 0 var(--sp-sm);color:var(--itip-border)">|</span>
+        <span class="text-xs" style="font-weight:600;margin-right:var(--sp-sm)">Layout:</span>
+        <div class="diagram-toolbar__group">
+          <button class="diagram-toolbar__btn diagram-toolbar__btn--active">Force</button>
+          <button class="diagram-toolbar__btn">Hierarchical</button>
+          <button class="diagram-toolbar__btn">Radial</button>
+        </div>
+        <span style="margin: 0 var(--sp-sm);color:var(--itip-border)">|</span>
+        <span class="text-xs" style="font-weight:600;margin-right:var(--sp-sm)">Zoom:</span>
+        <div class="diagram-toolbar__group">
+          <button class="diagram-toolbar__btn">−</button>
+          <span class="text-xs" style="padding:0 6px">100%</span>
+          <button class="diagram-toolbar__btn">+</button>
+          <button class="diagram-toolbar__btn">Fit</button>
+        </div>
+      </div>
+
+      <div class="diagram-layout">
+        <!-- Layer filter panel -->
+        <div class="diagram-panel">
+          <h3>Layers</h3>
+          <div class="layer-toggle"><input type="checkbox" checked><span style="width:8px;height:8px;border-radius:2px;background:#2dd4bf;display:inline-block"></span> Structure (56)</div>
+          <div class="layer-toggle"><input type="checkbox" checked><span style="width:8px;height:8px;border-radius:2px;background:#60a5fa;display:inline-block"></span> Mechanism (18)</div>
+          <div class="layer-toggle"><input type="checkbox" checked><span style="width:8px;height:8px;border-radius:2px;background:#f59e0b;display:inline-block"></span> Interaction (24)</div>
+          <div class="layer-toggle"><input type="checkbox" checked><span style="width:8px;height:8px;border-radius:2px;background:#a78bfa;display:inline-block"></span> Effector (12)</div>
+          <div class="layer-toggle"><input type="checkbox" checked><span style="width:8px;height:8px;border-radius:2px;background:#fb923c;display:inline-block"></span> Receptor (8)</div>
+
+          <h3 style="margin-top:var(--sp-md)">Frameworks</h3>
+          <div class="layer-toggle"><input type="checkbox" checked> TOGAF</div>
+          <div class="layer-toggle"><input type="checkbox" checked> ISO 25000</div>
+          <div class="layer-toggle"><input type="checkbox" checked> NIS2</div>
+          <div class="layer-toggle"><input type="checkbox" checked> GDPR</div>
+          <div class="layer-toggle"><input type="checkbox"> SCAP</div>
+
+          <h3 style="margin-top:var(--sp-md)">Search</h3>
+          <input type="text" placeholder="Find node..." style="width:100%;padding:6px 10px;border:1px solid var(--itip-border);border-radius:var(--radius-sm);font-size:12px">
+
+          <!-- Selected node info -->
+          <div class="selected-info">
+            <div class="text-xs text-muted">Selected</div>
+            <div class="text-sm" style="font-weight:700;margin:4px 0">API Gateway</div>
+            <div class="text-xs">TOGAF: LogicalApplicationComponent</div>
+            <div class="text-xs text-muted" style="margin-top:4px">5 connections · 3 layers · 4 norms</div>
+            <div style="margin-top:var(--sp-sm)">
+              <span class="badge badge--pass" style="font-size:9px">Compliant</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="diagram-canvas" style="position:relative;min-height:500px">
+
+          <!-- SVG edges -->
+          <svg class="edge" style="position:absolute;top:0;left:0;width:100%;height:100%">
+            <!-- API Gateway → Auth Service -->
+            <line x1="300" y1="130" x2="530" y2="90" class="edge--mechanism"/>
+            <!-- API Gateway → Service Mesh -->
+            <line x1="300" y1="130" x2="180" y2="260" class="edge--interaction" style="stroke:#f59e0b;stroke-dasharray:4 3"/>
+            <!-- API Gateway → Postgres -->
+            <line x1="300" y1="130" x2="460" y2="280"/>
+            <!-- Service Mesh → Kafka -->
+            <line x1="180" y1="260" x2="320" y2="380"/>
+            <!-- Auth Service → AD Connector -->
+            <line x1="530" y1="90" x2="650" y2="200"/>
+            <!-- Postgres → Kafka -->
+            <line x1="460" y1="280" x2="320" y2="380"/>
+            <!-- IT Ops Division → Service Mesh -->
+            <line x1="60" y1="400" x2="180" y2="260" style="stroke:#2dd4bf;stroke-dasharray:2 3"/>
+            <!-- CSO → Auth Service -->
+            <line x1="600" y1="380" x2="530" y2="90" style="stroke:#2dd4bf;stroke-dasharray:2 3"/>
+          </svg>
+
+          <!-- Nodes -->
+          <div class="node node--structure" style="left:230px;top:100px">
+            <span class="node__type">TOGAF: LogicalAppComponent</span>
+            API Gateway
+            <div class="node__badge" style="background:#2dd4bf">5</div>
+          </div>
+
+          <div class="node node--mechanism" style="left:460px;top:60px">
+            <span class="node__type">GSM: Mechanism</span>
+            Auth Service
+            <div class="node__badge" style="background:#60a5fa">3</div>
+          </div>
+
+          <div class="node node--interaction" style="left:110px;top:230px">
+            <span class="node__type">GSM: Interaction</span>
+            Service Mesh
+            <div class="node__badge" style="background:#f59e0b">4</div>
+          </div>
+
+          <div class="node node--structure" style="left:390px;top:250px">
+            <span class="node__type">TOGAF: TechnologyComponent</span>
+            PostgreSQL
+            <div class="node__badge" style="background:#2dd4bf">2</div>
+          </div>
+
+          <div class="node node--effector" style="left:580px;top:170px">
+            <span class="node__type">GSM: Effector</span>
+            AD Connector
+            <div class="node__badge" style="background:#a78bfa">1</div>
+          </div>
+
+          <div class="node node--receptor" style="left:250px;top:350px">
+            <span class="node__type">GSM: Receptor</span>
+            Kafka Event Bus
+            <div class="node__badge" style="background:#fb923c">6</div>
+          </div>
+
+          <div class="node node--structure" style="left:20px;top:370px">
+            <span class="node__type">TOGAF: OrganizationUnit</span>
+            IT Ops Division
+          </div>
+
+          <div class="node node--structure" style="left:530px;top:350px">
+            <span class="node__type">TOGAF: Actor</span>
+            Chief Security Officer
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend__item"><div class="legend__color" style="background:#e0faf5;border-color:#2dd4bf"></div> Structure</div>
+        <div class="legend__item"><div class="legend__color" style="background:#dbeafe;border-color:#60a5fa"></div> Mechanism</div>
+        <div class="legend__item"><div class="legend__color" style="background:#fef3c7;border-color:#f59e0b"></div> Interaction</div>
+        <div class="legend__item"><div class="legend__color" style="background:#ede9fe;border-color:#a78bfa"></div> Effector</div>
+        <div class="legend__item"><div class="legend__color" style="background:#ffedd5;border-color:#fb923c"></div> Receptor</div>
+        <span style="margin:0 var(--sp-sm);color:var(--itip-border)">|</span>
+        <div class="legend__item" style="font-size:10px">── solid = structural</div>
+        <div class="legend__item" style="font-size:10px">╌╌ dashed = interaction</div>
+        <div class="legend__item" style="font-size:10px">·· dotted = ownership</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+</body>
+</html>

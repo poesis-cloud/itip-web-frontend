@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP Workflow — Governance Review Ceremony</title>
+  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <style>
+    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+
+    .workflow-header { margin-bottom: var(--sp-2xl); }
+    .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
+    .workflow-header .role-badge {
+      display: inline-flex; align-items: center; gap: var(--sp-sm);
+      background: #ede9fe; color: #5b21b6;
+      padding: 4px 12px; border-radius: var(--radius-full);
+      font-size: var(--fs-xs); font-weight: 600; margin-top: var(--sp-sm);
+    }
+
+    .flow { display: flex; flex-direction: column; gap: 0; max-width: 900px; }
+    .flow-step { display: grid; grid-template-columns: 56px 1fr; gap: var(--sp-md); position: relative; }
+    .flow-connector { display: flex; flex-direction: column; align-items: center; }
+    .flow-number {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--itip-primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: var(--fs-sm); flex-shrink: 0; z-index: 1;
+    }
+    .flow-line { flex: 1; width: 2px; background: var(--itip-border-strong); }
+    .flow-step:last-child .flow-line { display: none; }
+
+    .step-card {
+      background: var(--itip-surface); border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg); padding: var(--sp-lg);
+      margin-bottom: var(--sp-lg); box-shadow: var(--shadow-sm);
+    }
+    .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
+    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+
+    .screen-ref {
+      display: inline-flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); color: var(--itip-primary);
+      background: #eff6ff; padding: 3px 10px;
+      border-radius: var(--radius-full); font-weight: 500;
+    }
+
+    .step-sketch {
+      background: #f8fafc; border: 1px dashed var(--itip-border-strong);
+      border-radius: var(--radius-md); padding: var(--sp-md);
+      margin-top: var(--sp-md); font-size: var(--fs-xs);
+      color: var(--itip-text-muted); font-family: var(--font-mono); white-space: pre-line;
+    }
+
+    .decision-box {
+      background: #fef9c3; border: 1px solid #fde68a;
+      border-radius: var(--radius-md); padding: var(--sp-md); margin-top: var(--sp-sm);
+    }
+    .decision-box strong { color: #92400e; }
+    .decision-paths { display: flex; gap: var(--sp-md); margin-top: var(--sp-sm); }
+    .decision-path {
+      flex: 1; padding: var(--sp-sm) var(--sp-md);
+      border-radius: var(--radius-sm); font-size: var(--fs-xs);
+    }
+    .decision-path--yes { background: #dcfce7; }
+    .decision-path--conditional { background: #fef3c7; }
+    .decision-path--no { background: #fef2f2; }
+
+    .participants { display: flex; gap: var(--sp-sm); flex-wrap: wrap; margin-top: var(--sp-sm); }
+    .participant {
+      display: flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: var(--radius-full);
+      font-size: 11px; background: #f1f5f9; border: 1px solid var(--itip-border);
+    }
+    .participant__role { font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="workflow-header">
+    <h1>Governance Review Ceremony</h1>
+    <p style="color:var(--itip-text-muted);font-size:var(--fs-sm);max-width:700px;margin-top:var(--sp-sm)">
+      Periodic session where governance stakeholders review pending directive proposals,
+      norm changes, and ascription transitions. Decisions are recorded and enforced via
+      the Ascription lifecycle.
+    </p>
+    <div class="role-badge">👥 Review Board Committee</div>
+    <div class="participants">
+      <div class="participant"><span class="participant__role">Chair:</span> Chief Architect</div>
+      <div class="participant"><span class="participant__role">Security:</span> CISO</div>
+      <div class="participant"><span class="participant__role">Compliance:</span> DPO</div>
+      <div class="participant"><span class="participant__role">Quality:</span> QA Lead</div>
+      <div class="participant"><span class="participant__role">Scribe:</span> Governance Analyst</div>
+    </div>
+  </div>
+
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">1</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Prepare Agenda</h3>
+        <p>Governance Analyst collects pending items: proposed directives, norm changes requiring approval,
+           ascriptions blocked by appraisal, and follow-ups from previous sessions.</p>
+        <span class="screen-ref">📋 Screen: 08-governance-review-board.html</span>
+        <div class="step-sketch">┌─────────────────────────────────────┐
+│ Auto-populated Agenda               │
+├─────────────────────────────────────┤
+│ ▸ 2 new directive proposals         │
+│ ▸ 1 norm tolerance change           │
+│ ▸ 3 ascriptions blocked by appraisal│
+│ ▸ 1 follow-up from session #41      │
+├─────────────────────────────────────┤
+│ [Add Item]    [Reorder]    [Notify] │
+└─────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">2</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Open Session</h3>
+        <p>Chair calls the session. Quorum is verified (minimum 3 of 5 members present).
+           Previous session minutes are confirmed.</p>
+        <div class="step-sketch">┌──────────────────────────────────────┐
+│ Session #42         Date: 2026-01-15 │
+│ Quorum: ✅ 4/5 Present               │
+│ Previous Minutes: ✅ Confirmed        │
+│                                      │
+│ [Begin Review]                       │
+└──────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">3</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Review Each Agenda Item</h3>
+        <p>For each item, the relevant owner presents context. Board members discuss impact,
+           review appraisal findings, and check norm compliance implications.</p>
+        <span class="screen-ref">📋 Screen: 03-governance-authoring.html (directive detail)</span>
+        <span class="screen-ref" style="margin-left:var(--sp-xs)">📋 Screen: 06-norms-view.html (norm detail)</span>
+        <div class="step-sketch">┌───────────────────────────────────────────┐
+│ Item 3/7: "NIS2 Encryption Directive"     │
+│ Owner: CISO                               │
+│ Type: Directive Proposal                  │
+│ Impact: 45 structures, 12 norms affected  │
+├───────────────────────────────────────────┤
+│ Appraisal: ⚠ 2 warnings (see findings)    │
+│ Dependencies: GDPR Art.32, ISO 25010 Sec  │
+│                                           │
+│ Discussion notes: ___________________     │
+│                                           │
+│ [Approve] [Conditional] [Reject] [Defer]  │
+└───────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 4: Decision -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">4</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Record Decision</h3>
+        <p>Each item receives a decision. Votes are recorded per member.
+           Conditions and remediation actions are captured if applicable.</p>
+        <div class="decision-box">
+          <strong>Decision outcomes:</strong>
+          <div class="decision-paths">
+            <div class="decision-path decision-path--yes">
+              <strong>✅ Approved</strong><br>
+              Item proceeds. Ascription transitions to next lifecycle state.
+              Activity log entry created.
+            </div>
+            <div class="decision-path decision-path--conditional">
+              <strong>⚠ Conditional</strong><br>
+              Item approved with conditions. Conditions tracked as follow-up items
+              for next session.
+            </div>
+            <div class="decision-path decision-path--no">
+              <strong>✕ Rejected / Deferred</strong><br>
+              Rejection rationale recorded. Owner must revise and re-submit.
+              Deferred items auto-appear in next session agenda.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">5</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Execute Transitions</h3>
+        <p>Approved items trigger Ascription lifecycle transitions via the Definition Manager API.
+           Appraisal is invoked to validate the transition is still permissible.</p>
+        <span class="screen-ref">📋 Workflow: wf-appraisal-status-transition.html</span>
+        <div class="step-sketch">┌─────────────────────────────────────────┐
+│ Transition Queue                        │
+├─────────────────────────────────────────┤
+│ ✅ DIR-2024-039  Draft → Active         │
+│ ✅ NRM-2024-112  Draft → Active         │
+│ ⚠  ASC-2024-271  Draft → Active         │
+│    └─ Appraisal: 1 blocking finding     │
+│       "Missing CEL assertion on NIS2    │
+│        encryption norm"                 │
+│    └─ Action: Remediate before activate │
+│ ⏳ DIR-2024-041  Deferred (next session) │
+└─────────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">6</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Close Session & Record Minutes</h3>
+        <p>Scribe finalizes minutes. Summary is posted to Activity log. Follow-up items
+           are auto-scheduled for the next ceremony. Session moves to "Closed" status.</p>
+        <span class="screen-ref">📋 Screen: 05-activity-log.html</span>
+        <div class="step-sketch">┌──────────────────────────────────────┐
+│ Session #42 — Summary                │
+├──────────────────────────────────────┤
+│ Items reviewed:     7                │
+│ Approved:           4                │
+│ Conditional:        1                │
+│ Rejected:           1                │
+│ Deferred:           1                │
+│ Follow-ups:         3                │
+│                                      │
+│ Next session:  2026-01-22 (weekly)   │
+│                                      │
+│ [Publish Minutes]   [Close Session]  │
+└──────────────────────────────────────┘</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

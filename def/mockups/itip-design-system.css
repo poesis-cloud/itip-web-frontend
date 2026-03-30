@@ -525,3 +525,163 @@ tr:hover td { background: #f8fafc; }
   border: 1px solid #334155;
   min-height: 60px;
 }
+
+/* ============================================================
+   Sidebar Footer
+   ============================================================ */
+.app-sidebar__footer {
+  padding: var(--sp-md) var(--sp-lg);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: var(--fs-xs);
+  color: var(--itip-text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: auto;
+}
+.app-sidebar__footer strong { color: #fff; }
+
+/* ============================================================
+   Copilot Agent Chat Toggle
+   ============================================================ */
+.copilot-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+  z-index: 100;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.copilot-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+}
+.copilot-toggle__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 12px;
+}
+
+/* ============================================================
+   Timeline (Activity Log)
+   ============================================================ */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item { display: grid; grid-template-columns: 48px 1fr; gap: var(--sp-md); }
+.timeline-connector { display: flex; flex-direction: column; align-items: center; }
+.timeline-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--itip-border-strong);
+  background: var(--itip-surface);
+  z-index: 1; flex-shrink: 0;
+}
+.timeline-dot--pass { border-color: var(--compliance-pass); background: var(--compliance-pass); }
+.timeline-dot--fail { border-color: var(--compliance-fail); background: var(--compliance-fail); }
+.timeline-dot--warn { border-color: var(--compliance-warn); background: var(--compliance-warn); }
+.timeline-dot--info { border-color: var(--state-proposed); background: var(--state-proposed); }
+.timeline-line { flex: 1; width: 2px; background: var(--itip-border); }
+.timeline-item:last-child .timeline-line { display: none; }
+.timeline-content { padding-bottom: var(--sp-lg); }
+
+/* ============================================================
+   Appraisal / Review Board
+   ============================================================ */
+.badge--blocked { background: #fef2f2; color: var(--compliance-fail); }
+.badge--clear { background: #f0fdf4; color: var(--compliance-pass); }
+.badge--pending-appraisal { background: #eff6ff; color: var(--state-proposed); }
+
+.review-agenda-item {
+  display: flex; align-items: flex-start; gap: var(--sp-md);
+  padding: var(--sp-md);
+  border: 1px solid var(--itip-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-sm);
+  background: var(--itip-surface);
+}
+.review-agenda-item:hover { border-color: var(--itip-primary); }
+.review-vote { display: flex; gap: var(--sp-xs); }
+
+/* ============================================================
+   Diagram View
+   ============================================================ */
+.diagram-canvas {
+  background: #f8fafc;
+  border: 1px solid var(--itip-border);
+  border-radius: var(--radius-lg);
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+.diagram-node {
+  position: absolute;
+  padding: var(--sp-sm) var(--sp-md);
+  border: 2px solid var(--itip-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--itip-surface);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+  white-space: nowrap;
+}
+.diagram-node--structure { border-color: var(--itip-primary); }
+.diagram-node--mechanism { border-color: #7c3aed; }
+.diagram-node--interaction { border-color: #059669; }
+.diagram-node--effector { border-color: #ea580c; }
+.diagram-node--receptor { border-color: #0891b2; }
+
+/* ============================================================
+   Qualifier Autocomplete
+   ============================================================ */
+.qualifier-autocomplete { position: relative; }
+.qualifier-autocomplete__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--itip-surface);
+  border: 1px solid var(--itip-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 20;
+}
+.qualifier-autocomplete__item {
+  padding: var(--sp-sm) var(--sp-md);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+.qualifier-autocomplete__item:hover { background: #f1f5f9; }
+.qualifier-autocomplete__item .text-muted { font-size: var(--fs-xs); }
+
+/* ============================================================
+   Framework Catalog
+   ============================================================ */
+.framework-card {
+  border: 1px solid var(--itip-border);
+  border-radius: var(--radius-lg);
+  background: var(--itip-surface);
+  padding: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.framework-card:hover { border-color: var(--itip-primary); box-shadow: var(--shadow-md); }
+.framework-card__title { font-size: var(--fs-lg); font-weight: 700; }
+.framework-card__meta { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+.framework-card__stats { display: flex; gap: var(--sp-lg); }
+.framework-card__stat { text-align: center; }
+.framework-card__stat-value { font-size: var(--fs-lg); font-weight: 700; }
+.framework-card__stat-label { font-size: var(--fs-xs); color: var(--itip-text-muted); }
