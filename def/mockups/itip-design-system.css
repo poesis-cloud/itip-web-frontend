@@ -74,6 +74,48 @@
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
 }
 
+/* ============================================================
+   Dark Theme Override
+   ============================================================ */
+[data-theme="dark"] {
+  --itip-bg: #0f172a;
+  --itip-surface: #1e293b;
+  --itip-sidebar-bg: #0b1120;
+  --itip-sidebar-text: #94a3b8;
+  --itip-header-bg: #1e293b;
+  --itip-text: #e2e8f0;
+  --itip-text-muted: #94a3b8;
+  --itip-text-light: #64748b;
+  --itip-border: #334155;
+  --itip-border-strong: #475569;
+}
+[data-theme="dark"] .badge--draft      { background: #1e293b; }
+[data-theme="dark"] .badge--proposed   { background: #1e3a5f; }
+[data-theme="dark"] .badge--approved   { background: #14532d; }
+[data-theme="dark"] .badge--pass       { background: #14532d; }
+[data-theme="dark"] .badge--warn       { background: #422006; }
+[data-theme="dark"] .badge--fail       { background: #450a0a; }
+[data-theme="dark"] .grammar-preview   { background: #1e293b; border-color: #475569; }
+[data-theme="dark"] .grammar-builder   { background: #1e293b; }
+[data-theme="dark"] .grammar-slot select,
+[data-theme="dark"] .grammar-slot input { background: #0f172a; color: #e2e8f0; border-color: #475569; }
+[data-theme="dark"] .filter-sidebar    { background: #1e293b; }
+[data-theme="dark"] .diagram-canvas    { background: #1e293b; }
+[data-theme="dark"] .diagram-node      { background: #0f172a; color: #e2e8f0; }
+[data-theme="dark"] .matrix-cell--pass { background: #14532d; color: #86efac; }
+[data-theme="dark"] .matrix-cell--warn { background: #422006; color: #fcd34d; }
+[data-theme="dark"] .matrix-cell--fail { background: #450a0a; color: #fca5a5; }
+[data-theme="dark"] .matrix-cell--na   { background: #1e293b; }
+[data-theme="dark"] tr:hover td       { background: #1e293b; }
+[data-theme="dark"] .btn--secondary    { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+[data-theme="dark"] .btn--secondary:hover { background: #334155; }
+[data-theme="dark"] .btn--ghost:hover  { background: #334155; }
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea     { background: #0f172a; color: #e2e8f0; border-color: #475569; }
+[data-theme="dark"] .qualifier-autocomplete__list { background: #1e293b; border-color: #475569; }
+[data-theme="dark"] .qualifier-autocomplete__item:hover { background: #334155; }
+
 html { font-size: 16px; }
 body {
   font-family: var(--font-sans);
@@ -182,7 +224,10 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
   border-left: 3px solid transparent;
   transition: all 0.15s;
+  text-decoration: none;
 }
+a.nav-item { text-decoration: none; }
+a.nav-item:hover { text-decoration: none; }
 .nav-item:hover {
   background: rgba(255,255,255,0.05);
   color: #fff;
@@ -542,6 +587,27 @@ tr:hover td { background: #f8fafc; }
 .app-sidebar__footer strong { color: #fff; }
 
 /* ============================================================
+   Theme Toggle
+   ============================================================ */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--itip-border);
+  border-radius: var(--radius-md);
+  padding: 4px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--itip-text-muted);
+  transition: all 0.15s;
+}
+.theme-toggle:hover { color: var(--itip-text); background: var(--itip-bg); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-icon--dark  { display: none; }
+[data-theme="dark"] .theme-icon--light { display: none; }
+[data-theme="dark"] .theme-icon--dark  { display: block; }
+
+/* ============================================================
    Copilot Agent Chat Toggle
    ============================================================ */
 .copilot-toggle {
@@ -685,3 +751,90 @@ tr:hover td { background: #f8fafc; }
 .framework-card__stat { text-align: center; }
 .framework-card__stat-value { font-size: var(--fs-lg); font-weight: 700; }
 .framework-card__stat-label { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+/* ============================================================
+   Sub-page tab navigation
+   ============================================================ */
+.sub-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--itip-border);
+  margin-bottom: var(--sp-lg);
+}
+.sub-tab {
+  padding: var(--sp-sm) var(--sp-md);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--itip-text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+}
+.sub-tab:hover { color: var(--itip-text); text-decoration: none; }
+.sub-tab.active {
+  color: var(--itip-primary);
+  border-bottom-color: var(--itip-primary);
+  font-weight: 600;
+}
+.sub-tab .sub-tab__count {
+  font-size: var(--fs-xs);
+  background: var(--itip-bg);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ============================================================
+   Detail page header
+   ============================================================ */
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-lg);
+  margin-bottom: var(--sp-lg);
+}
+.detail-header__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  margin-top: var(--sp-xs);
+}
+
+/* ============================================================
+   Sync / Truth Sourcing
+   ============================================================ */
+.sync-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.sync-dot--synced   { background: var(--compliance-pass); }
+.sync-dot--syncing  { background: var(--compliance-warn); animation: pulse 1s infinite; }
+.sync-dot--error    { background: var(--compliance-fail); }
+.sync-dot--stale    { background: var(--state-draft); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Impact analysis */
+.impact-node {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  padding: var(--sp-md);
+  border: 1px solid var(--itip-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-sm);
+}
+.impact-node--high    { border-left: 3px solid var(--compliance-fail); }
+.impact-node--medium  { border-left: 3px solid var(--compliance-warn); }
+.impact-node--low     { border-left: 3px solid var(--compliance-pass); }

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Review Session</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .session-grid { display:grid; grid-template-columns:2fr 1fr; gap:var(--sp-lg); }
+    .vote-btn { display:inline-flex; align-items:center; gap:var(--sp-xs); padding:var(--sp-xs) var(--sp-md); border-radius:var(--radius-full); border:1px solid var(--itip-border); background:var(--itip-surface); cursor:pointer; font-size:var(--fs-sm); font-weight:500; }
+    .vote-btn:hover { border-color:var(--itip-primary); }
+    .vote-btn--approve { border-color:var(--compliance-pass); color:var(--compliance-pass); }
+    .vote-btn--reject { border-color:var(--compliance-fail); color:var(--compliance-fail); }
+    .vote-btn--abstain { border-color:var(--compliance-warn); color:var(--compliance-warn); }
+    .agenda-card { padding:var(--sp-md); border:1px solid var(--itip-border); border-radius:var(--radius-lg); margin-bottom:var(--sp-md); }
+    .agenda-card--active { border-color:var(--itip-primary); background:rgba(13,110,253,0.03); }
+    .member-list { display:flex; gap:var(--sp-sm); flex-wrap:wrap; }
+    .member-chip { display:inline-flex; align-items:center; gap:var(--sp-xs); padding:2px var(--sp-sm); border-radius:var(--radius-full); background:var(--itip-bg); font-size:var(--fs-xs); }
+    .member-dot { width:8px; height:8px; border-radius:50%; }
+    .member-dot--online { background:var(--compliance-pass); }
+    .member-dot--offline { background:var(--itip-text-light); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a class="nav-item" href="../overview/activity-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Activity</a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="directives-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg> Directives <span class="nav-badge">42</span></a>
+        <a class="nav-item" href="norms-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg> Norms <span class="nav-badge">137</span></a>
+        <a class="nav-item" href="ascriptions-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg> Ascriptions <span class="nav-badge">384</span></a>
+        <a class="nav-item active" href="review-board.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Review Board</a>
+        <div class="nav-section">Compliance</div>
+        <a class="nav-item" href="../compliance/adherence-matrix.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg> Adherence Matrix</a>
+        <a class="nav-item" href="../compliance/conformance.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg> Conformance</a>
+        <div class="nav-section">Exploration</div>
+        <a class="nav-item" href="../exploration/structures-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg> Structures</a>
+        <a class="nav-item" href="../exploration/diagram-view.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg> Diagram View</a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> Catalog <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="../frameworks/stack-composer.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg> Stack Composer</a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Sources</a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> Sync Jobs</a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="review-board.html">Review Board</a><span>/</span>
+        <strong>Session #42</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <div class="detail-header">
+        <div>
+          <h1 class="page-title">Review Session #42</h1>
+          <div class="detail-header__meta">
+            <span class="badge badge--active">In Progress</span>
+            <span class="text-muted text-sm">Weekly Governance Review · March 28, 2026 · 10:00 AM</span>
+          </div>
+        </div>
+        <a href="review-board.html" class="btn btn--secondary">← Board</a>
+      </div>
+
+      <div class="session-grid" style="margin-top:var(--sp-lg)">
+
+        <!-- Agenda items -->
+        <div>
+          <h3 style="margin-bottom:var(--sp-md)">Agenda (5 items)</h3>
+
+          <div class="agenda-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <strong>1. Data Encryption Standard → Active</strong>
+              <span class="badge badge--pass">Approved ✓</span>
+            </div>
+            <div class="text-sm text-muted">NIS2 directive with 3 norms, impacting 12 structures. Unanimous approval.</div>
+          </div>
+
+          <div class="agenda-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <strong>2. Performance SLA Baseline</strong>
+              <span class="badge badge--pass">Approved ✓</span>
+            </div>
+            <div class="text-sm text-muted">ISO 25010 directive. Approved with condition: extend to batch services by Q3.</div>
+          </div>
+
+          <div class="agenda-card agenda-card--active">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <strong>3. Data Quality Mandate — Draft Review</strong>
+              <span class="badge badge--proposed">Voting</span>
+            </div>
+            <div class="text-sm" style="margin-bottom:var(--sp-sm)">ISO 25012 directive covering Accuracy and Completeness. 0 norms defined yet — review scope and qualifier coverage before promoting.</div>
+            <div style="display:flex; gap:var(--sp-sm)">
+              <button class="vote-btn vote-btn--approve">👍 Approve</button>
+              <button class="vote-btn vote-btn--reject">👎 Reject</button>
+              <button class="vote-btn vote-btn--abstain">— Abstain</button>
+            </div>
+            <div style="margin-top:var(--sp-sm); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+              Votes: 2 approve, 0 reject, 1 abstain (3 of 5 voted)
+            </div>
+          </div>
+
+          <div class="agenda-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <strong>4. Deprecate: Data Retention Policy</strong>
+              <span class="badge badge--draft">Pending</span>
+            </div>
+            <div class="text-sm text-muted">GDPR directive superseded by updated StorageLimitation norms.</div>
+          </div>
+
+          <div class="agenda-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <strong>5. Cloud Architecture Standards — Norm Addition</strong>
+              <span class="badge badge--draft">Pending</span>
+            </div>
+            <div class="text-sm text-muted">Add multi-region resilience norm to existing TOGAF directive.</div>
+          </div>
+        </div>
+
+        <!-- Right panel: session info -->
+        <div>
+          <div class="card" style="padding:var(--sp-md); margin-bottom:var(--sp-lg)">
+            <h4 style="margin-bottom:var(--sp-sm)">Board Members</h4>
+            <div class="member-list">
+              <span class="member-chip"><span class="member-dot member-dot--online"></span> E. Archer (Chair)</span>
+              <span class="member-chip"><span class="member-dot member-dot--online"></span> S. Kumar</span>
+              <span class="member-chip"><span class="member-dot member-dot--online"></span> R. Patel</span>
+              <span class="member-chip"><span class="member-dot member-dot--online"></span> M. Chen</span>
+              <span class="member-chip"><span class="member-dot member-dot--offline"></span> J. Williams</span>
+            </div>
+          </div>
+
+          <div class="card" style="padding:var(--sp-md); margin-bottom:var(--sp-lg)">
+            <h4 style="margin-bottom:var(--sp-sm)">Session Stats</h4>
+            <table style="width:100%; font-size:var(--fs-sm)">
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Duration</td><td>42 min</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Items reviewed</td><td>2 of 5</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Approved</td><td style="color:var(--compliance-pass)">2</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Rejected</td><td>0</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Deferred</td><td>0</td></tr>
+            </table>
+          </div>
+
+          <div class="card" style="padding:var(--sp-md)">
+            <h4 style="margin-bottom:var(--sp-sm)">Session Notes</h4>
+            <textarea class="form-textarea" rows="4" style="width:100%">Board agreed to enforce encryption standards org-wide by Q4. Data Quality Mandate needs norm definitions before approval.</textarea>
+            <button class="btn btn--ghost btn--sm" style="margin-top:var(--sp-sm)">Save Notes</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

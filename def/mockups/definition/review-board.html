@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ITIP — Governance Review Board</title>
-  <link rel="stylesheet" href="itip-design-system.css">
+  <link rel="stylesheet" href="../itip-design-system.css">
   <style>
     .review-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-lg); min-height: calc(100vh - 56px - var(--sp-lg) * 2); }
     .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--sp-lg); }
@@ -26,65 +26,74 @@
 
     <!-- Sidebar -->
     <aside class="app-sidebar">
-      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
-        <div class="nav-item">
+        <a class="nav-item" href="../overview/dashboard.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Activity
-        </div>
-        <div class="nav-section">Governance</div>
-        <div class="nav-item">
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="directives-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
           Directives <span class="nav-badge">42</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="norms-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
           Norms <span class="nav-badge">137</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="ascriptions-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
           Ascriptions <span class="nav-badge">384</span>
-        </div>
-        <div class="nav-item active">
+        </a>
+        <a class="nav-item active" href="review-board.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           Review Board
-        </div>
+        </a>
         <div class="nav-section">Compliance</div>
-        <div class="nav-item">
+        <a class="nav-item" href="../compliance/adherence-matrix.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
           Adherence Matrix
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="../compliance/conformance.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
           Conformance
-        </div>
+        </a>
         <div class="nav-section">Exploration</div>
-        <div class="nav-item">
+        <a class="nav-item" href="../exploration/structures-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
           Structures
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="../exploration/diagram-view.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
           Diagram View
-        </div>
+        </a>
         <div class="nav-section">Frameworks</div>
-        <div class="nav-item">
+        <a class="nav-item" href="../frameworks/catalog.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
           Catalog <span class="nav-badge">5</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
           Stack Composer
-        </div>
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>by <strong>Poesis</strong></span>
-        <span>© 2024–2026</span>
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
 
@@ -95,8 +104,12 @@
         <strong>Review Board</strong>
       </div>
       <div class="app-header__actions">
-        <button class="btn btn--primary btn--sm">+ New Session</button>
+        <a href="review-session.html" class="btn btn--primary btn--sm">+ New Session</a>
         <button class="btn btn--secondary btn--sm">Schedule Ceremony</button>
+              <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
         <div class="avatar">EA</div>
       </div>
     </header>
@@ -286,5 +299,9 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
     <span class="copilot-toggle__badge">✦</span>
   </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
 </body>
 </html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Structure Detail</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .struct-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .prop-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+    .prop-table td { padding:var(--sp-xs) var(--sp-sm); border-bottom:1px solid var(--itip-border); }
+    .prop-table td:first-child { color:var(--itip-text-muted); width:40%; }
+    .asc-mini { display:flex; align-items:center; gap:var(--sp-sm); padding:var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); margin-bottom:var(--sp-xs); font-size:var(--fs-sm); }
+    .asc-mini:hover { border-color:var(--itip-primary); }
+    .compliance-ring { width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:var(--fs-lg); }
+    .compliance-ring--pass { border:4px solid var(--compliance-pass); color:var(--compliance-pass); }
+    .compliance-ring--warn { border:4px solid var(--compliance-warn); color:var(--compliance-warn); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</a>
+        <a class="nav-item" href="../overview/activity-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Activity</a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/directives-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg> Directives <span class="nav-badge">42</span></a>
+        <a class="nav-item" href="../definition/norms-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg> Norms <span class="nav-badge">137</span></a>
+        <a class="nav-item" href="../definition/ascriptions-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg> Ascriptions <span class="nav-badge">384</span></a>
+        <a class="nav-item" href="../definition/review-board.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Review Board</a>
+        <div class="nav-section">Compliance</div>
+        <a class="nav-item" href="../compliance/adherence-matrix.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg> Adherence Matrix</a>
+        <a class="nav-item" href="../compliance/conformance.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg> Conformance</a>
+        <div class="nav-section">Exploration</div>
+        <a class="nav-item active" href="structures-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg> Structures</a>
+        <a class="nav-item" href="diagram-view.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg> Diagram View</a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> Catalog <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="../frameworks/stack-composer.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg> Stack Composer</a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Sources</a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> Sync Jobs</a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Exploration</span><span>/</span>
+        <a href="structures-list.html">Structures</a><span>/</span>
+        <strong>UserDatabase</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <div class="detail-header">
+        <div>
+          <h1 class="page-title">UserDatabase</h1>
+          <div class="detail-header__meta">
+            <span class="badge badge--active">Active</span>
+            <span class="layer-badge layer-badge--technology">Technology</span>
+            <span class="text-muted text-sm">Archetype: SoftwareTechnology · Owner: Platform Team</span>
+          </div>
+        </div>
+        <a href="structures-list.html" class="btn btn--secondary">← Structures</a>
+      </div>
+
+      <div class="struct-grid" style="margin-top:var(--sp-lg)">
+
+        <!-- Left column: Properties + Ascriptions -->
+        <div>
+          <div class="card" style="padding:var(--sp-md); margin-bottom:var(--sp-lg)">
+            <h3 style="margin-bottom:var(--sp-sm)">Properties</h3>
+            <table class="prop-table">
+              <tr><td>Type</td><td>PostgreSQL 15</td></tr>
+              <tr><td>Layer</td><td>Technology</td></tr>
+              <tr><td>Archetype</td><td>SoftwareTechnology</td></tr>
+              <tr><td>Owner</td><td>Platform Team</td></tr>
+              <tr><td>Environment</td><td>Production</td></tr>
+              <tr><td>Region</td><td>eu-west-1</td></tr>
+              <tr><td>Created</td><td>2024-06-15</td></tr>
+              <tr><td>Last evaluated</td><td>2026-03-27</td></tr>
+              <tr><td>Tags</td><td><span class="badge badge--active">pii</span> <span class="badge badge--pass">encrypted</span> <span class="badge badge--proposed">gdpr-scope</span></td></tr>
+            </table>
+          </div>
+
+          <div class="card" style="padding:var(--sp-md)">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm)">
+              <h3>Ascriptions (8)</h3>
+              <a href="../definition/ascription-create.html" class="btn btn--primary btn--sm">+ Ascribe</a>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>encryption_at_rest</strong> · NIS2</span>
+              <span class="text-muted text-sm">ASC-0142</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>encryption_in_transit</strong> · NIS2</span>
+              <span class="text-muted text-sm">ASC-0143</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--warn">PENDING</span>
+              <span style="flex:1"><strong>data_accuracy</strong> · ISO 25012</span>
+              <span class="text-muted text-sm">ASC-0298</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>personal_data_processing</strong> · GDPR</span>
+              <span class="text-muted text-sm">ASC-0087</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>performance_sla</strong> · ISO 25010</span>
+              <span class="text-muted text-sm">ASC-0201</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>key_management_rotation</strong> · NIS2</span>
+              <span class="text-muted text-sm">ASC-0144</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--fail">BLOCKED</span>
+              <span style="flex:1"><strong>data_retention_policy</strong> · GDPR</span>
+              <span class="text-muted text-sm">ASC-0312</span>
+            </div>
+            <div class="asc-mini">
+              <span class="badge badge--pass">ACTIVE</span>
+              <span style="flex:1"><strong>availability_tier1</strong> · TOGAF</span>
+              <span class="text-muted text-sm">ASC-0055</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Compliance ring + norms -->
+        <div>
+          <div class="card" style="padding:var(--sp-md); margin-bottom:var(--sp-lg); display:flex; align-items:center; gap:var(--sp-lg)">
+            <div class="compliance-ring compliance-ring--pass">87%</div>
+            <div>
+              <h3>Compliance Score</h3>
+              <div class="text-sm text-muted" style="margin-top:var(--sp-xs)">7 of 8 ascriptions passing · 1 blocked</div>
+              <div class="text-sm" style="margin-top:var(--sp-xs); color:var(--compliance-fail)">⚠ data_retention_policy blocked — superseded by updated norm</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding:var(--sp-md); margin-bottom:var(--sp-lg)">
+            <h3 style="margin-bottom:var(--sp-sm)">Governing Directives (5)</h3>
+            <table class="data-table">
+              <thead><tr><th>Directive</th><th>Framework</th><th>Norms</th></tr></thead>
+              <tbody>
+                <tr><td><a href="../definition/directive-detail.html">Data Encryption Standard</a></td><td>NIS2</td><td>3</td></tr>
+                <tr><td>Personal Data Processing</td><td>GDPR</td><td>1</td></tr>
+                <tr><td>Performance SLA Baseline</td><td>ISO 25010</td><td>1</td></tr>
+                <tr><td>Data Quality Mandate</td><td>ISO 25012</td><td>1</td></tr>
+                <tr><td>Cloud Architecture Standards</td><td>TOGAF</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card" style="padding:var(--sp-md)">
+            <h3 style="margin-bottom:var(--sp-sm)">Interactions (3)</h3>
+            <table class="data-table">
+              <thead><tr><th>Target</th><th>Type</th><th>Via</th></tr></thead>
+              <tbody>
+                <tr><td>PaymentService</td><td>data-flow</td><td>REST API</td></tr>
+                <tr><td>CustomerDB</td><td>replication</td><td>pg_logical</td></tr>
+                <tr><td>AuditService</td><td>event</td><td>Kafka topic</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>
