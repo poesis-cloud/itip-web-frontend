@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Compliance Adherence Matrix</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .matrix-layout {
+      display: flex;
+      gap: 0;
+      min-height: calc(100vh - 56px - var(--sp-lg) * 2);
+    }
+    .matrix-content {
+      flex: 1;
+      padding: var(--sp-lg);
+      overflow: auto;
+    }
+
+    /* Matrix table overrides */
+    .matrix-table {
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .matrix-table th {
+      background: #f8fafc;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border-bottom: 2px solid var(--itip-border);
+    }
+    .matrix-table th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #f1f5f9;
+    }
+    .matrix-table td:first-child {
+      position: sticky;
+      left: 0;
+      background: var(--itip-surface);
+      z-index: 1;
+      border-right: 2px solid var(--itip-border);
+      min-width: 180px;
+    }
+    .matrix-table td {
+      padding: var(--sp-sm);
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    /* Rotated column headers */
+    .matrix-table th.rotated {
+      height: 120px;
+      white-space: nowrap;
+      vertical-align: bottom;
+      padding-bottom: var(--sp-sm);
+    }
+    .matrix-table th.rotated > div {
+      transform: rotate(-55deg);
+      transform-origin: bottom left;
+      width: 30px;
+      font-size: var(--fs-xs);
+    }
+
+    /* Drill-down panel */
+    .drilldown {
+      width: 360px;
+      background: var(--itip-surface);
+      border-left: 1px solid var(--itip-border);
+      display: flex;
+      flex-direction: column;
+    }
+    .drilldown__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid var(--itip-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .drilldown__header h3 { font-size: var(--fs-base); font-weight: 600; }
+    .drilldown__body {
+      padding: var(--sp-lg);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Summary strip */
+    .matrix-summary {
+      display: flex;
+      gap: var(--sp-lg);
+      margin-bottom: var(--sp-lg);
+      padding: var(--sp-md) var(--sp-lg);
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+    }
+    .matrix-summary__item { text-align: center; }
+    .matrix-summary__value { font-size: var(--fs-xl); font-weight: 700; }
+    .matrix-summary__label { font-size: var(--fs-xs); color: var(--itip-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Norm detail in drilldown */
+    .norm-detail {
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid var(--itip-border);
+    }
+    .norm-detail:last-child { border-bottom: none; }
+    .norm-detail__name { font-weight: 600; font-size: var(--fs-sm); }
+    .norm-detail__expr {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      margin-top: 4px;
+    }
+    .norm-detail__result {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      margin-top: 4px;
+      font-size: var(--fs-xs);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Structure Explorer
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          Directives <span class="nav-badge">24</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">87</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Ascriptions
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Compliance</span><span>/</span>
+        <strong>Adherence Matrix</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">Export CSV</button>
+        <button class="btn btn--secondary btn--sm">Full Evaluation</button>
+        <div class="avatar">CA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main" style="padding:0">
+      <div class="matrix-layout">
+
+        <!-- Filter sidebar -->
+        <div class="filter-sidebar" style="border-radius:0">
+          <div class="filter-section">
+            <div class="filter-section__title">View Mode</div>
+            <label class="filter-option"><input type="radio" name="view" checked> By Framework</label>
+            <label class="filter-option"><input type="radio" name="view"> By Directive</label>
+            <label class="filter-option"><input type="radio" name="view"> By Quality Dimension</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">Frameworks</div>
+            <label class="filter-option"><input type="checkbox" checked> TOGAF (32)</label>
+            <label class="filter-option"><input type="checkbox" checked> ISO 25010 (18)</label>
+            <label class="filter-option"><input type="checkbox" checked> NIS2 (21)</label>
+            <label class="filter-option"><input type="checkbox" checked> GDPR (12)</label>
+            <label class="filter-option"><input type="checkbox" checked> SCAP (4)</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">States</div>
+            <label class="filter-option"><input type="checkbox" checked> Active only</label>
+            <label class="filter-option"><input type="checkbox"> Include deprecated</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section__title">Focus</div>
+            <label class="filter-option"><input type="checkbox"> Show failures only</label>
+            <label class="filter-option"><input type="checkbox"> Show warnings only</label>
+          </div>
+        </div>
+
+        <!-- Matrix content -->
+        <div class="matrix-content">
+          <!-- Summary -->
+          <div class="matrix-summary">
+            <div class="matrix-summary__item">
+              <div class="matrix-summary__value" style="color:var(--compliance-pass)">742</div>
+              <div class="matrix-summary__label">Passing</div>
+            </div>
+            <div class="matrix-summary__item">
+              <div class="matrix-summary__value" style="color:var(--compliance-warn)">38</div>
+              <div class="matrix-summary__label">Warnings</div>
+            </div>
+            <div class="matrix-summary__item">
+              <div class="matrix-summary__value" style="color:var(--compliance-fail)">7</div>
+              <div class="matrix-summary__label">Failures</div>
+            </div>
+            <div class="matrix-summary__item">
+              <div class="matrix-summary__value">91%</div>
+              <div class="matrix-summary__label">Overall Score</div>
+            </div>
+            <div class="matrix-summary__item">
+              <div class="matrix-summary__value">87</div>
+              <div class="matrix-summary__label">Active Norms</div>
+            </div>
+          </div>
+
+          <!-- Matrix table -->
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left;min-width:180px">Structure</th>
+                  <th class="rotated"><div>TOGAF — Arch. Principles</div></th>
+                  <th class="rotated"><div>TOGAF — Tech. Standards</div></th>
+                  <th class="rotated"><div>ISO 25010 — Security</div></th>
+                  <th class="rotated"><div>ISO 25010 — Reliability</div></th>
+                  <th class="rotated"><div>ISO 25010 — Performance</div></th>
+                  <th class="rotated"><div>NIS2 — Access Control</div></th>
+                  <th class="rotated"><div>NIS2 — Encryption</div></th>
+                  <th class="rotated"><div>NIS2 — Incident Mgmt</div></th>
+                  <th class="rotated"><div>GDPR — Data Protection</div></th>
+                  <th class="rotated"><div>GDPR — Retention</div></th>
+                  <th class="rotated"><div>SCAP — Vulnerability</div></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align:left"><strong>API Gateway</strong><br><span class="text-xs text-muted">Active · 8 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>UserDatabase</strong><br><span class="text-xs text-muted">Active · 12 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>AuditService</strong><br><span class="text-xs text-muted">Active · 6 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--fail">✗</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--fail">✗</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>NotificationService</strong><br><span class="text-xs text-muted">Active · 4 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>EventBus</strong><br><span class="text-xs text-muted">Active · 5 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>CustomerDataFlow</strong><br><span class="text-xs text-muted">Active · 9 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>LegacyAuthBridge</strong><br><span class="text-xs text-muted" style="color:var(--state-deprecated)">Deprecated · 3 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--fail">✗</span></td>
+                  <td><span class="matrix-cell matrix-cell--warn">!</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--fail">✗</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--fail">✗</span></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left"><strong>MonitoringStack</strong><br><span class="text-xs text-muted">Active · 7 norms</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--na">—</span></td>
+                  <td><span class="matrix-cell matrix-cell--pass">✓</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Drill-down panel (simulates click on AuditService × NIS2 Incident Mgmt) -->
+        <div class="drilldown">
+          <div class="drilldown__header">
+            <h3>Drill-Down</h3>
+            <button class="btn btn--ghost btn--sm">✕</button>
+          </div>
+          <div class="drilldown__body">
+            <div class="mb-md">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.06em">Structure</div>
+              <div class="text-sm"><strong>AuditService</strong> <span class="badge badge--active">Active</span></div>
+            </div>
+            <div class="mb-md">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.06em">Framework Category</div>
+              <div class="text-sm"><strong>NIS2 — Incident Management</strong></div>
+            </div>
+            <div class="mb-lg">
+              <div class="text-xs text-muted" style="text-transform:uppercase;letter-spacing:0.06em">Result</div>
+              <span class="badge badge--fail">FAIL — 1 of 2 norms violated</span>
+            </div>
+
+            <div class="text-xs text-muted mb-md" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Norm Evaluation Details</div>
+
+            <div class="norm-detail">
+              <div class="norm-detail__name">incident_response_time</div>
+              <div class="norm-detail__expr">ASSERT: subject.incident.responseTimeSLA &lt;= 72h</div>
+              <div class="norm-detail__result">
+                <span class="badge badge--pass">PASS</span>
+                <span class="text-muted">Response SLA = 24h</span>
+              </div>
+            </div>
+
+            <div class="norm-detail">
+              <div class="norm-detail__name">logging_retention</div>
+              <div class="norm-detail__expr">ASSERT: subject.logging.retentionDays >= 90</div>
+              <div class="norm-detail__result">
+                <span class="badge badge--fail">FAIL</span>
+                <span style="color:var(--compliance-fail)">Actual: 30 days (min 90 required)</span>
+              </div>
+              <div style="margin-top:8px;padding:8px 12px;background:#fef2f2;border-radius:var(--radius-sm);border:1px solid #fecaca">
+                <div class="text-xs" style="font-weight:600;color:#991b1b">Remediation</div>
+                <div class="text-xs text-muted">Increase log retention to 90 days in AuditService configuration. NIS2 Art.21 §2(g) requires incident evidence preservation.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /matrix-layout -->
+    </main>
+  </div>
+</body>
+</html>

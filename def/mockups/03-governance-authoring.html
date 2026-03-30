@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Governance Authoring Workspace</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    .authoring-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: var(--sp-lg);
+      min-height: calc(100vh - 56px - var(--sp-lg) * 2);
+    }
+
+    /* Directive builder */
+    .grammar-builder {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-sm);
+      align-items: center;
+      padding: var(--sp-md);
+      background: #f8fafc;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+    }
+    .grammar-slot {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .grammar-slot__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--itip-text-muted);
+    }
+    .grammar-slot select, .grammar-slot input {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      padding: 6px 10px;
+      border: 1px solid var(--itip-border-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+    }
+    .grammar-arrow {
+      font-size: var(--fs-lg);
+      color: var(--itip-text-light);
+      line-height: 1;
+      padding-top: 14px;
+    }
+
+    /* Norm list */
+    .norm-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-md);
+      padding: var(--sp-md);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-surface);
+      margin-bottom: var(--sp-sm);
+    }
+    .norm-item:hover { border-color: var(--itip-primary); }
+    .norm-handle {
+      color: var(--itip-text-light);
+      cursor: grab;
+      padding-top: 2px;
+    }
+    .norm-body { flex: 1; }
+    .norm-title { font-weight: 600; font-size: var(--fs-sm); margin-bottom: 4px; }
+    .norm-expr {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin-top: 4px;
+    }
+    .norm-meta { font-size: var(--fs-xs); color: var(--itip-text-muted); margin-top: 4px; }
+    .norm-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Preview panel */
+    .preview-panel {
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-panel__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid var(--itip-border);
+      font-weight: 600;
+      font-size: var(--fs-sm);
+    }
+    .preview-panel__body {
+      padding: var(--sp-lg);
+      flex: 1;
+      overflow-y: auto;
+    }
+    .preview-section {
+      margin-bottom: var(--sp-lg);
+    }
+    .preview-label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+
+    /* Impact list */
+    .impact-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      font-size: var(--fs-sm);
+      padding: 4px 0;
+    }
+    .impact-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--itip-border);
+      margin-bottom: var(--sp-lg);
+    }
+    .tab {
+      padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab:hover { color: var(--itip-text); }
+    .tab.active {
+      color: var(--itip-primary);
+      border-bottom-color: var(--itip-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">IT</span> ITIP</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Structure Explorer
+        </div>
+        <div class="nav-section">Governance</div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          Directives <span class="nav-badge">24</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms <span class="nav-badge">87</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Ascriptions
+        </div>
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Conformance
+        </div>
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Governance</span><span>/</span><span>Directives</span><span>/</span>
+        <strong>Edit: API Security Policy</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="btn btn--secondary btn--sm">Save Draft</button>
+        <button class="btn btn--primary btn--sm">Submit for Review</button>
+        <div class="avatar">SO</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="authoring-layout">
+
+        <!-- Left: Editor -->
+        <div>
+          <div class="tabs">
+            <div class="tab active">Directive</div>
+            <div class="tab">Norms (3)</div>
+            <div class="tab">Impact Analysis</div>
+            <div class="tab">History</div>
+          </div>
+
+          <!-- Directive metadata -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Directive Definition</span>
+              <span class="badge badge--draft">Draft</span>
+            </div>
+            <div class="card__body">
+              <div class="form-group">
+                <label class="form-label">Directive Name</label>
+                <input class="form-input" type="text" value="API Security Policy">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Source Framework</label>
+                <select class="form-select">
+                  <option>NIS2</option>
+                  <option>TOGAF</option>
+                  <option>ISO 25010</option>
+                  <option>GDPR</option>
+                  <option>SCAP</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Governance Grammar (DNA)</label>
+                <div class="form-hint">Build the directive statement using the governance grammar.</div>
+              </div>
+
+              <!-- Grammar builder -->
+              <div class="grammar-builder">
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Governing Structure</span>
+                  <select>
+                    <option>API Gateway</option>
+                    <option>All Microservices</option>
+                    <option>Data Stores</option>
+                    <option>ExternalEndpoints</option>
+                  </select>
+                </div>
+                <span class="grammar-arrow">→</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Modal</span>
+                  <select>
+                    <option value="MUST">MUST</option>
+                    <option value="SHOULD">SHOULD</option>
+                    <option value="MAY">MAY</option>
+                  </select>
+                </div>
+                <span class="grammar-arrow">→</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Verb</span>
+                  <select>
+                    <option value="ENFORCE">ENFORCE</option>
+                    <option value="ENSURE">ENSURE</option>
+                    <option value="PREVENT">PREVENT</option>
+                    <option value="LOG">LOG</option>
+                    <option value="VALIDATE">VALIDATE</option>
+                  </select>
+                </div>
+                <span class="grammar-arrow">→</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Qualifier</span>
+                  <input type="text" value="rate limiting and authentication" style="width:240px">
+                </div>
+                <span class="grammar-arrow">→ ON</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Governed Structure</span>
+                  <select>
+                    <option>ExternalEndpoints</option>
+                    <option>All Microservices</option>
+                    <option>Data Stores</option>
+                    <option>API Gateway</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Live preview -->
+              <div class="mt-md">
+                <label class="form-label">Live Preview</label>
+                <div class="grammar-preview">
+                  <span class="structure">API Gateway</span>
+                  <span class="modal">MUST</span>
+                  <span class="verb">ENFORCE</span>
+                  <span class="qualifier">rate limiting and authentication</span>
+                  ON <span class="structure">ExternalEndpoints</span>
+                </div>
+              </div>
+
+              <div class="form-group mt-md">
+                <label class="form-label">Description / Rationale</label>
+                <textarea class="form-textarea">All externally facing API endpoints must pass through the API Gateway, which enforces rate limiting (max 1000 req/min per API key) and OAuth2/OIDC authentication before forwarding to internal microservices. This fulfills NIS2 Art.21 §2(a) risk management measures for network security.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attached Norms -->
+          <div class="card">
+            <div class="card__header">
+              <span class="card__title">Attached Norms</span>
+              <div class="flex gap-sm">
+                <button class="btn btn--copilot btn--sm">✦ Generate Norms</button>
+                <button class="btn btn--secondary btn--sm">+ Add Norm</button>
+              </div>
+            </div>
+            <div class="card__body">
+
+              <div class="norm-item">
+                <span class="norm-handle">⋮⋮</span>
+                <div class="norm-body">
+                  <div class="norm-title">rate_limit_enforcement</div>
+                  <div class="text-xs text-muted">ON ExternalEndpoints · WHEN request enters gateway</div>
+                  <div class="norm-expr">ASSERT: subject.rateLimit.enabled == true && subject.rateLimit.maxPerMinute &lt;= 1000</div>
+                  <div class="norm-meta">
+                    <span class="badge badge--draft">Draft</span>
+                    Tolerance: <strong>STRICT</strong> · Created 1h ago
+                  </div>
+                </div>
+                <div class="norm-actions">
+                  <button class="btn btn--ghost btn--sm">Edit</button>
+                  <button class="btn btn--ghost btn--sm">✕</button>
+                </div>
+              </div>
+
+              <div class="norm-item">
+                <span class="norm-handle">⋮⋮</span>
+                <div class="norm-body">
+                  <div class="norm-title">oauth2_authentication</div>
+                  <div class="text-xs text-muted">ON ExternalEndpoints · WHEN request.authHeader exists</div>
+                  <div class="norm-expr">ASSERT: subject.auth.protocol in ["oauth2", "oidc"] && subject.auth.tokenValidation == true</div>
+                  <div class="norm-meta">
+                    <span class="badge badge--draft">Draft</span>
+                    Tolerance: <strong>STRICT</strong> · Created 1h ago
+                  </div>
+                </div>
+                <div class="norm-actions">
+                  <button class="btn btn--ghost btn--sm">Edit</button>
+                  <button class="btn btn--ghost btn--sm">✕</button>
+                </div>
+              </div>
+
+              <div class="norm-item">
+                <span class="norm-handle">⋮⋮</span>
+                <div class="norm-body">
+                  <div class="norm-title">tls_minimum_version</div>
+                  <div class="text-xs text-muted">ON ExternalEndpoints · WHEN connection is established</div>
+                  <div class="norm-expr">ASSERT: subject.tls.version >= "1.2" && subject.tls.cipherSuite.strength >= "HIGH"</div>
+                  <div class="norm-meta">
+                    <span class="badge badge--draft">Draft</span>
+                    Tolerance: <strong>TOLERANT</strong> · Created 45m ago
+                  </div>
+                </div>
+                <div class="norm-actions">
+                  <button class="btn btn--ghost btn--sm">Edit</button>
+                  <button class="btn btn--ghost btn--sm">✕</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Preview panel -->
+        <div class="preview-panel">
+          <div class="preview-panel__header">
+            Directive Preview & Impact
+          </div>
+          <div class="preview-panel__body">
+
+            <div class="preview-section">
+              <div class="preview-label">Status</div>
+              <span class="badge badge--draft">Draft</span>
+              <span class="text-xs text-muted" style="margin-left:8px">Not yet submitted for review</span>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Ownership</div>
+              <div class="text-sm"><strong>Author:</strong> M. Chen (Security Officer)</div>
+              <div class="text-sm"><strong>Approver:</strong> E. Archer (Enterprise Architect)</div>
+              <div class="text-sm"><strong>Framework:</strong> NIS2 Art.21 §2(a)</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Impact Analysis</div>
+              <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-md);padding:var(--sp-sm) var(--sp-md);margin-bottom:var(--sp-sm)">
+                <div class="text-sm" style="font-weight:600;color:#92400e">⚠ 3 structures affected</div>
+                <div class="text-xs text-muted">Review impact before submitting</div>
+              </div>
+              <div class="impact-item">
+                <span class="impact-dot" style="background:var(--compliance-warn)"></span>
+                <div>
+                  <strong class="text-sm">API Gateway</strong>
+                  <div class="text-xs text-muted">Needs rate_limit_enforcement norm bound</div>
+                </div>
+              </div>
+              <div class="impact-item">
+                <span class="impact-dot" style="background:var(--compliance-warn)"></span>
+                <div>
+                  <strong class="text-sm">Public REST API</strong>
+                  <div class="text-xs text-muted">oauth2_authentication not yet evaluated</div>
+                </div>
+              </div>
+              <div class="impact-item">
+                <span class="impact-dot" style="background:var(--compliance-pass)"></span>
+                <div>
+                  <strong class="text-sm">Internal gRPC API</strong>
+                  <div class="text-xs text-muted">Already compliant (mTLS configured)</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Norm CEL Editor</div>
+              <div class="text-xs text-muted mb-md">Edit the selected norm's assertion expression</div>
+              <div class="cel-editor">
+<span style="color:#7dd3fc">// Applicability</span>
+subject.type == "ExternalEndpoint"
+  && subject.protocol == "HTTPS"
+
+<span style="color:#7dd3fc">// Assertion</span>
+subject.rateLimit.enabled == <span style="color:#fbbf24">true</span>
+  && subject.rateLimit.maxPerMinute &lt;= <span style="color:#fbbf24">1000</span>
+  && subject.rateLimit.burstSize &lt;= <span style="color:#fbbf24">50</span>
+              </div>
+              <div class="flex justify-between items-center mt-md">
+                <span class="text-xs text-muted">CEL expression · Profile: governance-assertion</span>
+                <button class="btn btn--ghost btn--sm" style="color:var(--compliance-pass)">✓ Valid</button>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Related Directives</div>
+              <div class="text-sm" style="padding:4px 0">Data Encryption Policy <span class="badge badge--active" style="margin-left:4px">Active</span></div>
+              <div class="text-sm" style="padding:4px 0">Audit Logging Standard <span class="badge badge--active" style="margin-left:4px">Active</span></div>
+              <div class="text-sm" style="padding:4px 0">Incident Response Protocol <span class="badge badge--proposed" style="margin-left:4px">Proposed</span></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /authoring-layout -->
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Architecture State Dashboard</title>
+  <link rel="stylesheet" href="itip-design-system.css">
+  <style>
+    /* Dashboard-specific */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-lg);
+    }
+    .dashboard-grid .card--wide { grid-column: 1 / -1; }
+
+    /* Mini bar chart placeholder */
+    .mini-bar { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+    .mini-bar span {
+      flex: 1; border-radius: 2px 2px 0 0; min-width: 6px;
+      transition: height 0.3s;
+    }
+
+    /* Donut placeholder */
+    .donut-placeholder {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      border: 7px solid var(--itip-border);
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .donut-placeholder .donut-value {
+      font-size: var(--fs-xl); font-weight: 700;
+    }
+    .donut-arc-pass {
+      border-color: var(--compliance-pass) var(--compliance-pass) var(--compliance-warn) var(--compliance-pass);
+    }
+
+    /* Activity list */
+    .activity-item {
+      display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-sm) 0;
+      border-bottom: 1px solid var(--itip-border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0;
+    }
+    .activity-text { font-size: var(--fs-sm); }
+    .activity-time { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+    /* Pending approvals */
+    .approval-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid var(--itip-border);
+    }
+    .approval-row:last-child { border-bottom: none; }
+    .approval-subject { font-size: var(--fs-sm); font-weight: 500; }
+    .approval-meta { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo">
+        <span class="logo-icon">IT</span>
+        ITIP
+      </div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <div class="nav-item active">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Structure Explorer
+        </div>
+
+        <div class="nav-section">Governance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          Directives
+          <span class="nav-badge">24</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+          Norms
+          <span class="nav-badge">87</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Ascriptions
+        </div>
+
+        <div class="nav-section">Compliance</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
+          Adherence Matrix
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Conformance
+        </div>
+
+        <div class="nav-section">Frameworks</div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog
+          <span class="nav-badge">5</span>
+        </div>
+        <div class="nav-item">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+          Stack Composer
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <strong>Architecture State Dashboard</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Architecture state overview — ITIP instance <span class="text-mono">acme-corp</span></p>
+
+      <!-- KPI strip -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__label">Structures</div>
+          <div class="stat-card__value">142</div>
+          <div class="stat-card__detail">12 DRAFT · 5 PROPOSED · 118 ACTIVE · 7 DEPRECATED</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Active Directives</div>
+          <div class="stat-card__value">24</div>
+          <div class="stat-card__detail">Governing 87 norms across 5 frameworks</div>
+        </div>
+        <div class="stat-card stat-card--success">
+          <div class="stat-card__label">Overall Compliance</div>
+          <div class="stat-card__value">91%</div>
+          <div class="stat-card__detail">↑ 3% from last evaluation cycle</div>
+        </div>
+        <div class="stat-card stat-card--danger">
+          <div class="stat-card__label">Open Violations</div>
+          <div class="stat-card__value">7</div>
+          <div class="stat-card__detail">3 CRITICAL · 4 MODERATE</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+
+        <!-- Compliance by Framework -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Compliance by Framework</span>
+            <button class="btn btn--ghost btn--sm">View matrix →</button>
+          </div>
+          <div class="card__body">
+            <table>
+              <thead>
+                <tr><th>Framework</th><th>Norms</th><th>Pass</th><th>Warn</th><th>Fail</th><th>Score</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>TOGAF</strong></td>
+                  <td>32</td>
+                  <td><span class="badge badge--pass">28</span></td>
+                  <td><span class="badge badge--warn">3</span></td>
+                  <td><span class="badge badge--fail">1</span></td>
+                  <td><strong>94%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>ISO 25010</strong></td>
+                  <td>18</td>
+                  <td><span class="badge badge--pass">15</span></td>
+                  <td><span class="badge badge--warn">2</span></td>
+                  <td><span class="badge badge--fail">1</span></td>
+                  <td><strong>89%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>NIS2</strong></td>
+                  <td>21</td>
+                  <td><span class="badge badge--pass">18</span></td>
+                  <td><span class="badge badge--warn">1</span></td>
+                  <td><span class="badge badge--fail">2</span></td>
+                  <td><strong>86%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>GDPR</strong></td>
+                  <td>12</td>
+                  <td><span class="badge badge--pass">11</span></td>
+                  <td><span class="badge badge--warn">1</span></td>
+                  <td><span class="badge badge--fail">0</span></td>
+                  <td><strong>96%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>SCAP</strong></td>
+                  <td>4</td>
+                  <td><span class="badge badge--pass">3</span></td>
+                  <td><span class="badge badge--warn">0</span></td>
+                  <td><span class="badge badge--fail">1</span></td>
+                  <td><strong>75%</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pending Approvals -->
+        <div class="card">
+          <div class="card__header">
+            <span class="card__title">Pending Approvals</span>
+            <span class="badge badge--proposed">5 pending</span>
+          </div>
+          <div class="card__body">
+            <div class="approval-row">
+              <div>
+                <div class="approval-subject">Directive: "API Gateway MUST ENFORCE rate limiting"</div>
+                <div class="approval-meta">Proposed by M. Chen · 2 hours ago · NIS2</div>
+              </div>
+              <div class="flex gap-sm">
+                <button class="btn btn--primary btn--sm">Approve</button>
+                <button class="btn btn--secondary btn--sm">Review</button>
+              </div>
+            </div>
+            <div class="approval-row">
+              <div>
+                <div class="approval-subject">Norm: encryption_at_rest on DataStore</div>
+                <div class="approval-meta">Proposed by L. Garcia · 5 hours ago · GDPR</div>
+              </div>
+              <div class="flex gap-sm">
+                <button class="btn btn--primary btn--sm">Approve</button>
+                <button class="btn btn--secondary btn--sm">Review</button>
+              </div>
+            </div>
+            <div class="approval-row">
+              <div>
+                <div class="approval-subject">Structure: "Payment Service" (new)</div>
+                <div class="approval-meta">Proposed by A. Kumar · 1 day ago</div>
+              </div>
+              <div class="flex gap-sm">
+                <button class="btn btn--primary btn--sm">Approve</button>
+                <button class="btn btn--secondary btn--sm">Review</button>
+              </div>
+            </div>
+            <div class="approval-row">
+              <div>
+                <div class="approval-subject">Directive: "Microservices SHOULD LOG audit trails"</div>
+                <div class="approval-meta">Proposed by R. Patel · 1 day ago · ISO 25010</div>
+              </div>
+              <div class="flex gap-sm">
+                <button class="btn btn--primary btn--sm">Approve</button>
+                <button class="btn btn--secondary btn--sm">Review</button>
+              </div>
+            </div>
+            <div class="approval-row">
+              <div>
+                <div class="approval-subject">Norm: max_response_time on APIGateway</div>
+                <div class="approval-meta">Proposed by J. Park · 2 days ago · TOGAF</div>
+              </div>
+              <div class="flex gap-sm">
+                <button class="btn btn--primary btn--sm">Approve</button>
+                <button class="btn btn--secondary btn--sm">Review</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity (full width) -->
+        <div class="card card--wide">
+          <div class="card__header">
+            <span class="card__title">Recent Activity</span>
+            <button class="btn btn--ghost btn--sm">View all →</button>
+          </div>
+          <div class="card__body">
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--compliance-pass)"></span>
+              <div>
+                <div class="activity-text"><strong>Norm approved:</strong> encryption_at_rest on UserDatabase — passed CEL validation</div>
+                <div class="activity-time">12 min ago · by E. Archer (Enterprise Architect)</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--state-proposed)"></span>
+              <div>
+                <div class="activity-text"><strong>Directive proposed:</strong> "API Gateway MUST ENFORCE rate limiting ON ExternalEndpoints"</div>
+                <div class="activity-time">2 hours ago · by M. Chen (Security Officer)</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--compliance-fail)"></span>
+              <div>
+                <div class="activity-text"><strong>Violation detected:</strong> logging_retention on AuditService — retention below 90-day minimum</div>
+                <div class="activity-time">3 hours ago · automated evaluation</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--compliance-pass)"></span>
+              <div>
+                <div class="activity-text"><strong>Structure activated:</strong> NotificationService promoted from PROPOSED → ACTIVE</div>
+                <div class="activity-time">Yesterday · by A. Kumar (Solution Architect)</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--state-deprecated)"></span>
+              <div>
+                <div class="activity-text"><strong>Structure deprecated:</strong> LegacyAuthBridge — scheduled for RETIRED in Q2 2025</div>
+                <div class="activity-time">Yesterday · by E. Archer (Enterprise Architect)</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot" style="background:var(--state-proposed)"></span>
+              <div>
+                <div class="activity-text"><strong>Framework sourced:</strong> SCAP v1.3 — 4 directives, 12 norms generated</div>
+                <div class="activity-time">2 days ago · by R. Patel (Compliance Analyst)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dashboard-grid -->
+    </main>
+  </div>
+</body>
+</html>

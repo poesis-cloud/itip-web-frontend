@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP Workflow — Architect: Governance Authoring & Impact Analysis</title>
+  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <style>
+    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+
+    .workflow-header { margin-bottom: var(--sp-2xl); }
+    .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
+    .workflow-header .role-badge {
+      display: inline-flex; align-items: center; gap: var(--sp-sm);
+      background: #eff6ff; color: #1d4ed8;
+      padding: 4px 12px; border-radius: var(--radius-full);
+      font-size: var(--fs-xs); font-weight: 600; margin-top: var(--sp-sm);
+    }
+
+    .flow { display: flex; flex-direction: column; gap: 0; max-width: 900px; }
+    .flow-step { display: grid; grid-template-columns: 56px 1fr; gap: var(--sp-md); position: relative; }
+    .flow-connector { display: flex; flex-direction: column; align-items: center; }
+    .flow-number {
+      width: 40px; height: 40px; border-radius: 50%; background: var(--itip-primary); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--fs-sm); flex-shrink: 0; z-index: 1;
+    }
+    .flow-line { flex: 1; width: 2px; background: var(--itip-border-strong); }
+    .flow-step:last-child .flow-line { display: none; }
+
+    .step-card {
+      background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg);
+      padding: var(--sp-lg); margin-bottom: var(--sp-lg); box-shadow: var(--shadow-sm);
+    }
+    .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
+    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+
+    .screen-ref {
+      display: inline-flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); color: var(--itip-primary); background: #eff6ff;
+      padding: 3px 10px; border-radius: var(--radius-full); font-weight: 500;
+    }
+
+    .step-sketch {
+      background: #f8fafc; border: 1px dashed var(--itip-border-strong); border-radius: var(--radius-md);
+      padding: var(--sp-md); margin-top: var(--sp-md);
+      font-size: var(--fs-xs); color: var(--itip-text-muted); font-family: var(--font-mono); white-space: pre-line;
+    }
+
+    .decision-box {
+      background: #fef9c3; border: 1px solid #fde68a; border-radius: var(--radius-md);
+      padding: var(--sp-md); margin-top: var(--sp-sm);
+    }
+    .decision-box strong { color: #92400e; }
+    .decision-paths { display: flex; gap: var(--sp-md); margin-top: var(--sp-sm); }
+    .decision-path { flex: 1; padding: var(--sp-sm) var(--sp-md); border-radius: var(--radius-sm); font-size: var(--fs-xs); }
+    .decision-path--yes { background: #dcfce7; color: #166534; }
+    .decision-path--no { background: #fef2f2; color: #991b1b; }
+    .decision-path--alt { background: #eff6ff; color: #1d4ed8; }
+
+    /* Copilot highlight */
+    .copilot-box {
+      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+      border: 1px solid #c4b5fd;
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+      margin-top: var(--sp-sm);
+    }
+    .copilot-box strong { color: #6d28d9; }
+  </style>
+</head>
+<body>
+
+  <div class="workflow-header">
+    <h1>Workflow: Governance Authoring & Architecture Decision</h1>
+    <div class="role-badge">📐 Enterprise / Solution Architect</div>
+    <p class="text-sm text-muted mt-md">Full cycle from identifying a governance need through authoring directives/norms, evaluating impact, and recording an ADR.</p>
+  </div>
+
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">1</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Identify Governance Gap</h3>
+        <p>Architect reviews the Dashboard and spots a low compliance score or a new structure lacking governance coverage.</p>
+        <span class="screen-ref">📄 Screen: Dashboard</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Dashboard Alerts                │
+├──────────────────────────────────┤
+│  ⚠ AuditService: 67% compliance │
+│    2 norms failing (NIS2)        │
+│    [Investigate →]               │
+│                                  │
+│  📋 PaymentService (PROPOSED)    │
+│    No directives attached yet    │
+│    [Author Governance →]         │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">2</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Explore Current State</h3>
+        <p>Navigate to Structure Explorer to understand the structure's current norms, ascriptions, and relationships before authoring new governance.</p>
+        <span class="screen-ref">📄 Screen: Structure Explorer</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  PaymentService — Detail View    │
+├──────────────────────────────────┤
+│  State: PROPOSED │ Type: Service │
+│  Archetype: SoftwareTechnology   │
+│                                  │
+│  Mechanisms:                     │
+│    • PaymentProcessing (Active)  │
+│    • FraudDetection (Draft)      │
+│                                  │
+│  Interactions:                   │
+│    • PaymentService ↔ UserDB     │
+│    • PaymentService ↔ APIGateway │
+│                                  │
+│  Current Norms: 0                │
+│  Applicable Frameworks: NIS2,    │
+│    GDPR, PCI-DSS (not sourced)   │
+│                                  │
+│  [Author Directive →]            │  
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">3</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Author Directive (Grammar Builder)</h3>
+        <p>Open the Governance Authoring workspace. Use the grammar builder to construct a directive statement following DNA grammar.</p>
+        <span class="screen-ref">📄 Screen: Governance Authoring</span>
+
+        <div class="copilot-box">
+          <strong>✦ Copilot Assist</strong>
+          <div class="text-sm mt-md">"Based on NIS2 Art.21 §2(b) and the PaymentService archetype, I suggest:</div>
+          <div class="grammar-preview mt-md" style="background:#fff;border-style:solid">
+            <span class="structure">PaymentService</span>
+            <span class="modal">MUST</span>
+            <span class="verb">ENSURE</span>
+            <span class="qualifier">PCI-compliant transaction encryption and tokenization</span>
+            ON <span class="structure">PaymentProcessing</span>
+          </div>
+          <div class="text-xs text-muted mt-md">Suggested 3 norms: payment_encryption, card_tokenization, transaction_audit_trail"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">4</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Define & Validate Norms</h3>
+        <p>For each norm, define the CEL applicability and assertion expressions. The editor validates syntax in real-time and shows which structures will be affected.</p>
+        <span class="screen-ref">📄 Screen: Governance Authoring (Norms tab)</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Norm: payment_encryption        │
+├──────────────────────────────────┤
+│  Scope: PaymentProcessing        │
+│  Tolerance: STRICT               │
+│                                  │
+│  ┌── Applicability (CEL) ──────┐ │
+│  │ subject.type ==             │ │
+│  │   "PaymentMechanism"       │ │
+│  └─────────────────────────────┘ │
+│                                  │
+│  ┌── Assertion (CEL) ─────────┐  │
+│  │ subject.encryption.algo    │  │
+│  │   in ["AES-256", "RSA-4096"]│ │
+│  │ && subject.encryption      │  │
+│  │   .atRest == true          │  │
+│  │ && subject.encryption      │  │
+│  │   .inTransit == true       │  │
+│  └─────────────────────────────┘ │
+│                                  │
+│  ✓ CEL Valid │ Impact: 2 structs │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">5</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Review Impact Analysis</h3>
+        <p>Before submitting, check the impact panel to see which structures the new directive and norms will affect, and whether any existing norms conflict.</p>
+        <span class="screen-ref">📄 Screen: Governance Authoring (Impact tab)</span>
+
+        <div class="decision-box">
+          <strong>Decision: Impact acceptable?</strong>
+          <div class="decision-paths">
+            <div class="decision-path decision-path--yes">✓ <strong>Proceed</strong> — PaymentService and FraudDetection affected, no conflicts</div>
+            <div class="decision-path decision-path--no">✗ <strong>Revise</strong> — narrow scope to avoid impacting FraudDetection (still in DRAFT)</div>
+            <div class="decision-path decision-path--alt">◆ <strong>Split</strong> — separate directive for FraudDetection with TOLERANT norms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">6</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Submit for Approval & Record ADR</h3>
+        <p>Submit the directive + norms for lifecycle progression (DRAFT → PROPOSED). Optionally generate an Architecture Decision Record capturing the rationale.</p>
+
+        <div class="copilot-box">
+          <strong>✦ Copilot: Generate ADR</strong>
+          <div class="text-sm mt-md">"Generate an ADR summarizing this governance decision?"</div>
+          <div class="step-sketch" style="background:#fff;border-style:solid;margin-top:var(--sp-sm)">ADR-042: Payment Transaction Security Governance
+
+Status: Proposed
+Date: 2025-01-15
+Context: PaymentService entering ACTIVE state
+  without payment-specific security governance.
+  NIS2 Art.21 §2(b) requires encryption for
+  financial transactions.
+  
+Decision: Author directive requiring PCI-compliant
+  encryption and tokenization on PaymentProcessing.
+  Three norms: payment_encryption (STRICT),
+  card_tokenization (STRICT),
+  transaction_audit_trail (TOLERANT).
+
+Consequences:
+  - PaymentService and FraudDetection must comply
+  - Existing APIGateway already compliant (no change)
+  - Next: FraudDetection governance in sprint 23</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">7</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Track Lifecycle Progression</h3>
+        <p>Monitor the directive through the approval workflow. Reviewers approve (PROPOSED → APPROVED → ACTIVE) or request changes. The Dashboard reflects updated compliance scores in real-time.</p>
+        <span class="screen-ref">📄 Screen: Dashboard (Pending Approvals)</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Lifecycle: Payment Security Dir │
+├──────────────────────────────────┤
+│                                  │
+│  ○ DRAFT ──→ ● PROPOSED ──→     │
+│              ↑ You are here      │
+│    ○ APPROVED ──→ ○ ACTIVE       │
+│                                  │
+│  Reviewer: E. Archer (EA)       │
+│  Status: Awaiting review         │
+│  Comments: 0                     │
+│                                  │
+│  [Withdraw] [Edit] [Nudge →]    │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+  </div><!-- /flow -->
+
+</body>
+</html>

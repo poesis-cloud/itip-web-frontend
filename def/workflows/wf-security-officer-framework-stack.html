@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP Workflow — Security Officer: Framework Stack Composition</title>
+  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <style>
+    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+
+    .workflow-header {
+      margin-bottom: var(--sp-2xl);
+    }
+    .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
+    .workflow-header .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      background: #fef3c7;
+      color: #92400e;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      margin-top: var(--sp-sm);
+    }
+
+    /* Flow steps */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 900px;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: var(--sp-md);
+      position: relative;
+    }
+    .flow-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .flow-number {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--itip-primary);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: var(--fs-sm);
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .flow-line {
+      flex: 1;
+      width: 2px;
+      background: var(--itip-border-strong);
+    }
+    .flow-step:last-child .flow-line { display: none; }
+
+    .step-card {
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      padding: var(--sp-lg);
+      margin-bottom: var(--sp-lg);
+      box-shadow: var(--shadow-sm);
+    }
+    .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
+    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+
+    /* Screen reference */
+    .screen-ref {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      font-size: var(--fs-xs);
+      color: var(--itip-primary);
+      background: #eff6ff;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 500;
+    }
+
+    /* Step wireframe sketch */
+    .step-sketch {
+      background: #f8fafc;
+      border: 1px dashed var(--itip-border-strong);
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+      margin-top: var(--sp-md);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      font-family: var(--font-mono);
+      white-space: pre-line;
+    }
+
+    /* Decision diamond */
+    .decision-box {
+      background: #fef9c3;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+      margin-top: var(--sp-sm);
+    }
+    .decision-box strong { color: #92400e; }
+    .decision-paths {
+      display: flex;
+      gap: var(--sp-md);
+      margin-top: var(--sp-sm);
+    }
+    .decision-path {
+      flex: 1;
+      padding: var(--sp-sm) var(--sp-md);
+      border-radius: var(--radius-sm);
+      font-size: var(--fs-xs);
+    }
+    .decision-path--yes { background: #dcfce7; color: #166534; }
+    .decision-path--no { background: #fef2f2; color: #991b1b; }
+  </style>
+</head>
+<body>
+
+  <div class="workflow-header">
+    <h1>Workflow: Framework Stack Composition & Regulatory Coverage Audit</h1>
+    <div class="role-badge">🛡 Security Officer</div>
+    <p class="text-sm text-muted mt-md">End-to-end workflow for composing a governance framework stack and auditing regulatory coverage across the architecture.</p>
+  </div>
+
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">1</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Browse Framework Catalog</h3>
+        <p>Security Officer opens the Framework Catalog to review available sourced frameworks (TOGAF, NIS2, GDPR, ISO 25010, SCAP).</p>
+        <span class="screen-ref">📄 Screen: Framework Catalog</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Framework Catalog               │
+├──────────────────────────────────┤
+│  🔍 Search frameworks...         │
+│                                  │
+│  ┌─────────┐ ┌─────────┐        │
+│  │ TOGAF   │ │ NIS2    │        │
+│  │ v10     │ │ 2022/255│        │
+│  │ 32 norms│ │ 21 norms│        │
+│  │ [Add ▼] │ │ [Added ✓]│       │
+│  └─────────┘ └─────────┘        │
+│  ┌─────────┐ ┌─────────┐        │
+│  │ ISO25010│ │ GDPR    │        │
+│  │ 2023    │ │ 2016/679│        │
+│  │ 18 norms│ │ 12 norms│        │
+│  │ [Add ▼] │ │ [Add ▼] │        │
+│  └─────────┘ └─────────┘        │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">2</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Compose Framework Stack</h3>
+        <p>Select and combine relevant frameworks into a stack. The Stack Composer shows overlap analysis and identifies directive conflicts across frameworks.</p>
+        <span class="screen-ref">📄 Screen: Stack Composer</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Stack Composer                  │
+├──────────────────────────────────┤
+│  Active Stack: "ACME Security"   │
+│                                  │
+│  [NIS2]──┐                       │
+│  [GDPR]──┤── Overlap: 4 norms   │
+│  [SCAP]──┘   Conflicts: 1       │
+│                                  │
+│  ⚠ Conflict: NIS2.encryption    │
+│    vs SCAP.crypto requirements   │
+│    [Resolve →]                   │
+│                                  │
+│  Coverage: 37 directives,        │
+│            89 norms              │
+│  [Save Stack] [Evaluate →]       │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">3</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Resolve Conflicts & Gaps</h3>
+        <p>For each detected conflict, choose the stricter norm or merge requirements. Copilot Assist suggests resolutions based on regulatory precedence.</p>
+
+        <div class="decision-box">
+          <strong>Decision: Conflict resolution strategy?</strong>
+          <div class="decision-paths">
+            <div class="decision-path decision-path--yes">✓ <strong>Stricter wins</strong> — use NIS2's encryption requirement (AES-256) which subsumes SCAP baseline</div>
+            <div class="decision-path decision-path--no">✗ <strong>Split norms</strong> — keep both with different applicability scopes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">4</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Run Regulatory Coverage Audit</h3>
+        <p>Trigger a full evaluation that maps all active structures against the composed framework stack, producing a coverage report.</p>
+        <span class="screen-ref">📄 Screen: Adherence Matrix</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Regulatory Coverage Audit       │
+├──────────────────────────────────┤
+│  Coverage Gaps Found: 3          │
+│                                  │
+│  ❌ PaymentService               │
+│     Missing: GDPR data retention │
+│     Missing: NIS2 access control │
+│                                  │
+│  ❌ LegacyAuthBridge             │
+│     Missing: SCAP vulnerability  │
+│     scan (deprecated; schedule   │
+│     retirement)                  │
+│                                  │
+│  ⚠ CustomerDataFlow             │
+│     Partial: ISO25010 security   │
+│     (encryption in transit only) │
+│                                  │
+│  [Generate Gap Report]           │
+│  [Create Remediation Directives] │
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">5</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Generate Remediation Directives</h3>
+        <p>For each coverage gap, create draft directives and norms. Copilot Assist pre-fills the governance grammar from the sourced framework text.</p>
+        <span class="screen-ref">📄 Screen: Governance Authoring</span>
+
+        <div class="decision-box">
+          <strong>Decision: Submit for review or save as draft?</strong>
+          <div class="decision-paths">
+            <div class="decision-path decision-path--yes">✓ <strong>Submit</strong> — new directives go to Enterprise Architect for approval</div>
+            <div class="decision-path decision-path--no">✗ <strong>Draft</strong> — save for further refinement during next governance cycle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flow-step">
+      <div class="flow-connector"><div class="flow-number">6</div><div class="flow-line"></div></div>
+      <div class="step-card">
+        <h3>Monitor & Report</h3>
+        <p>Return to the Dashboard to monitor stack coverage over time. Export compliance reports for regulatory bodies or management review.</p>
+        <span class="screen-ref">📄 Screen: Dashboard</span>
+        <div class="step-sketch">┌──────────────────────────────────┐
+│  Dashboard — Stack Coverage      │
+├──────────────────────────────────┤
+│  NIS2:  ████████████░░  86%      │
+│  GDPR:  █████████████░  96%      │
+│  SCAP:  ██████░░░░░░░░  75%      │
+│  TOGAF: ████████████░░  94%      │
+│  ISO25: ███████████░░░  89%      │
+│                                  │
+│  Overall: 91%   ↑3% this cycle   │
+│  [Export PDF]  [Schedule Re-eval]│
+└──────────────────────────────────┘</div>
+      </div>
+    </div>
+
+  </div><!-- /flow -->
+
+</body>
+</html>
