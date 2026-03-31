@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Appraisal Findings</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Score strip ── */
+    .score-strip {
+      display:flex; gap:var(--sp-sm); padding:var(--sp-md) var(--sp-lg);
+      border-bottom:1px solid var(--itip-border); background:var(--itip-surface); flex-wrap:wrap; align-items:center;
+    }
+    .score-chip {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:var(--sp-xs) var(--sp-md); border:1px solid var(--itip-border); border-radius:var(--radius-full);
+      font-size:var(--fs-xs); font-weight:600; cursor:pointer; transition:all 0.15s; background:transparent;
+    }
+    .score-chip:hover { border-color:var(--itip-primary); }
+    .score-chip.active { border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); color:var(--itip-primary); }
+    .score-chip__value { font-weight:800; font-size:var(--fs-sm); }
+
+    /* ── Toolbar ── */
+    .findings-toolbar { display:flex; gap:var(--sp-md); align-items:center; padding:var(--sp-md) var(--sp-lg); flex-wrap:wrap; border-bottom:1px solid var(--itip-border); }
+    .findings-toolbar .form-input { flex:1; min-width:200px; }
+
+    /* ── Layout ── */
+    .findings-layout { display:flex; flex:1; min-height:0; }
+    .findings-list { flex:1; overflow-y:auto; padding:var(--sp-md) var(--sp-lg); }
+
+    /* ── Finding rows ── */
+    .finding-row {
+      display:grid; grid-template-columns:28px 1fr 100px 100px 110px 90px;
+      align-items:center; gap:var(--sp-md);
+      padding:var(--sp-md) var(--sp-lg);
+      background:var(--itip-surface); border:1px solid var(--itip-border);
+      border-radius:var(--radius-md); margin-bottom:var(--sp-sm);
+      cursor:pointer; transition:box-shadow 0.15s, border-color 0.15s;
+    }
+    .finding-row:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
+    .finding-row > div:nth-child(n+3) { text-align:center; }
+    .findings-header {
+      display:grid; grid-template-columns:28px 1fr 100px 100px 110px 90px;
+      align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg);
+      font-size:var(--fs-xs); font-weight:600; text-transform:uppercase;
+      letter-spacing:0.06em; color:var(--itip-text-muted);
+    }
+    .findings-header > span:nth-child(n+3) { text-align:center; }
+
+    /* Finding type icons */
+    .finding-icon { width:28px; height:28px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; }
+    .finding-icon--gap { background:color-mix(in srgb, var(--compliance-warn) 12%, transparent); color:var(--compliance-warn); }
+    .finding-icon--conflict { background:color-mix(in srgb, var(--compliance-fail) 12%, transparent); color:var(--compliance-fail); }
+    .finding-icon--drift { background:color-mix(in srgb, var(--itip-primary) 12%, transparent); color:var(--itip-primary); }
+    .finding-icon--violation { background:color-mix(in srgb, var(--compliance-fail) 12%, transparent); color:var(--compliance-fail); }
+
+    .finding-title { font-weight:600; font-size:var(--fs-sm); }
+    .finding-subject { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+
+    /* Severity badges */
+    .sev-critical { background:#fef2f2; color:var(--compliance-fail); border:1px solid #fecaca; }
+    .sev-warning  { background:#fffbeb; color:var(--compliance-warn); border:1px solid #fed7aa; }
+    .sev-advisory { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
+
+    /* Resolution status */
+    .res-open        { color:var(--compliance-fail); }
+    .res-in-progress { color:var(--compliance-warn); }
+    .res-resolved    { color:var(--compliance-pass); }
+
+    /* ── Detail panel ── */
+    .detail-panel { width:420px; background:var(--itip-surface); border-left:1px solid var(--itip-border); display:none; flex-direction:column; }
+    .detail-panel.open { display:flex; }
+    .detail-panel__header { padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); display:flex; justify-content:space-between; align-items:center; }
+    .detail-panel__body { padding:var(--sp-lg); overflow-y:auto; flex:1; }
+    .detail-section { margin-bottom:var(--sp-lg); }
+    .detail-label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-sm); }
+    .panel-toggle { display:inline-flex; align-items:center; gap:6px; padding:var(--sp-xs) var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; font-size:var(--fs-xs); font-weight:500; margin-left:auto; }
+    .panel-toggle:hover { color:var(--itip-primary); border-color:var(--itip-primary); }
+    .panel-toggle.active { color:var(--itip-primary); border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); }
+    .panel-toggle svg { width:16px; height:16px; }
+    .panel-close { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:none; border-radius:var(--radius-sm); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
+    .panel-close:hover { background:color-mix(in srgb, var(--itip-text) 8%, transparent); color:var(--itip-text); }
+    .panel-close svg { width:14px; height:14px; }
+
+    /* ── Resolution action ── */
+    .resolution-box {
+      background:color-mix(in srgb, var(--itip-primary) 4%, transparent);
+      border:1px solid color-mix(in srgb, var(--itip-primary) 20%, transparent);
+      border-radius:var(--radius-md); padding:var(--sp-md);
+    }
+    .resolution-box__action { font-weight:600; font-size:var(--fs-sm); margin-bottom:var(--sp-xs); }
+    .resolution-box__desc { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-bottom:var(--sp-sm); }
+
+    /* ── Conflict side-by-side ── */
+    .conflict-pair {
+      display:grid; grid-template-columns:1fr auto 1fr; gap:var(--sp-sm); align-items:start;
+    }
+    .conflict-side {
+      padding:var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); font-size:var(--fs-xs);
+    }
+    .conflict-vs { font-weight:700; color:var(--compliance-fail); align-self:center; font-size:var(--fs-sm); }
+
+    /* ── Coverage property breakdown ── */
+    .property-list { list-style:none; }
+    .property-list li { display:flex; align-items:center; gap:var(--sp-sm); padding:var(--sp-xs) 0; font-size:var(--fs-xs); border-bottom:1px solid var(--itip-border); }
+    .property-list li:last-child { border-bottom:none; }
+    .prop-status { width:16px; text-align:center; font-weight:700; }
+    .prop-covered { color:var(--compliance-pass); }
+    .prop-uncovered { color:var(--compliance-fail); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar (placeholder — batch script will replace) ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Appraisal</span><span>/</span>
+        <strong>Findings</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Score Strip ======== -->
+    <div class="score-strip" style="grid-area:main">
+      <button class="score-chip active" onclick="this.classList.toggle('active')">
+        All <span class="score-chip__value">84%</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span style="color:var(--compliance-pass)">●</span> Reach <span class="score-chip__value">92%</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span style="color:var(--compliance-warn)">●</span> Binding <span class="score-chip__value">81%</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span style="color:var(--compliance-pass)">●</span> Fidelity <span class="score-chip__value">94%</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span style="color:var(--compliance-fail)">●</span> Validity <span class="score-chip__value">78%</span>
+      </button>
+      <span style="margin-left:auto;font-size:var(--fs-xs);color:var(--itip-text-muted)">149 findings · 22 open resolutions</span>
+    </div>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main" style="padding:0;display:flex;flex-direction:column">
+
+      <!-- Toolbar -->
+      <div class="findings-toolbar">
+        <input class="form-input" type="text" placeholder="Search findings, subjects, directives, norms…">
+        <select class="form-select" style="width:130px">
+          <option>All Axes</option>
+          <option>Reach</option>
+          <option>Binding</option>
+          <option>Fidelity</option>
+          <option>Validity</option>
+        </select>
+        <select class="form-select" style="width:120px">
+          <option>All Types</option>
+          <option>○ Gap</option>
+          <option>⚡ Conflict</option>
+          <option>↔ Drift</option>
+          <option>✕ Violation</option>
+        </select>
+        <select class="form-select" style="width:130px">
+          <option>All Severities</option>
+          <option>Critical</option>
+          <option>Warning</option>
+          <option>Advisory</option>
+        </select>
+        <select class="form-select" style="width:140px">
+          <option>All Resolutions</option>
+          <option>Open</option>
+          <option>In Progress</option>
+          <option>Resolved</option>
+        </select>
+        <button class="panel-toggle active" onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')" title="Toggle detail panel">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg> Detail
+        </button>
+      </div>
+
+      <!-- Findings list + detail -->
+      <div class="findings-layout">
+        <div class="findings-list">
+          <div class="findings-header">
+            <span></span>
+            <span>Finding</span>
+            <span>Axis</span>
+            <span>Severity</span>
+            <span>Resolution</span>
+            <span>Age</span>
+          </div>
+
+          <!-- ── Critical findings ── -->
+
+          <!-- Conflict: D↔D -->
+          <div class="finding-row" style="border-color:var(--itip-primary)" onclick="document.getElementById('detailPanel').classList.add('open');document.querySelector('.panel-toggle').classList.add('active')">
+            <div class="finding-icon finding-icon--conflict">⚡</div>
+            <div>
+              <div class="finding-title">Contradictory Directives on UserDatabase</div>
+              <div class="finding-subject">Data Encryption Standard (MUST ENSURE) ↔ Legacy Compatibility (MUST_NOT ENSURE) · Encryption qualifier</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
+            <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">3d</div>
+          </div>
+
+          <!-- Violation: referee -->
+          <div class="finding-row" onclick="document.getElementById('detailPanel').classList.add('open');document.querySelector('.panel-toggle').classList.add('active')">
+            <div class="finding-icon finding-icon--violation">✕</div>
+            <div>
+              <div class="finding-title">Referee precondition violated — API Gateway Mechanism</div>
+              <div class="finding-subject">Mechanism "request_routing" references RETIRED Structure "LegacyRouter"</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
+            <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+          </div>
+
+          <!-- Violation: identity-bound -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--violation">✕</div>
+            <div>
+              <div class="finding-title">Identity-bound breach — NotificationHub</div>
+              <div class="finding-subject">Ascription v3 changed identity-bound field "purpose" from v2</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
+            <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">1d</div>
+          </div>
+
+          <!-- ── Warning findings ── -->
+
+          <!-- Gap: D→N property coverage -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Partial operationalization — Data Encryption Standard</div>
+              <div class="finding-subject">Encryption qualifier: 3/5 properties covered (missing: algorithm, keyRotationPeriod)</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">14d</div>
+          </div>
+
+          <!-- Gap: N→A binding -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Unbound Norm — encryption_at_rest</div>
+              <div class="finding-subject">Norm active but no matching Ascription in scope (applicability: data.classification == "PII")</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#faf5ff;color:#7c3aed">Binding</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">7d</div>
+          </div>
+
+          <!-- Conflict: N↔N -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--conflict">⚡</div>
+            <div>
+              <div class="finding-title">Contradictory Norms on AuditService</div>
+              <div class="finding-subject">log_retention ASSERT retentionDays >= 365 ↔ storage_optimization ASSERT retentionDays <= 90</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#faf5ff;color:#7c3aed">Binding</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">2d</div>
+          </div>
+
+          <!-- Drift: Source fidelity -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--drift">↔</div>
+            <div>
+              <div class="finding-title">Source drift — UserDatabase (ServiceNow)</div>
+              <div class="finding-subject">Source-authoritative · Last sync 12d ago · 3 property differences detected</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#fefce8;color:#a16207">Fidelity</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">12d</div>
+          </div>
+
+          <!-- ── Advisory findings ── -->
+
+          <!-- Gap: D→N existence -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">No Norms for Directive — Observability Policy</div>
+              <div class="finding-subject">Directive active since 28d but 0 Norms operationalize it (SHOULD ENSURE Logging ON PaymentProcessor)</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
+            <div><span class="badge sev-advisory" style="font-size:10px">Advisory</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">28d</div>
+          </div>
+
+          <!-- Drift: Ascription-authoritative -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--drift">↔</div>
+            <div>
+              <div class="finding-title">Source out-of-date — PaymentProcessor (GitHub)</div>
+              <div class="finding-subject">Ascription-authoritative · GitHub repo config differs from Ascription · Task JIRA-1842 open</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#fefce8;color:#a16207">Fidelity</span></div>
+            <div><span class="badge sev-advisory" style="font-size:10px">Advisory</span></div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+          </div>
+
+          <!-- Violation: cascade inconsistency -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--violation">✕</div>
+            <div>
+              <div class="finding-title">Cascade inconsistency — API Gateway Effector</div>
+              <div class="finding-subject">Effector "api_response" ACTIVE but parent Mechanism "request_routing" is SUSPENDED</div>
+            </div>
+            <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
+            <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+          </div>
+
+          <!-- Pagination -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--itip-text-muted)">
+            <span>Showing 10 of 149 findings</span>
+            <div style="display:flex; gap:var(--sp-xs)">
+              <button class="btn btn--ghost btn--sm" disabled>&larr; Prev</button>
+              <button class="btn btn--ghost btn--sm">Next &rarr;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== Detail Panel ======== -->
+        <div class="detail-panel open" id="detailPanel">
+          <div class="detail-panel__header">
+            <h3 style="font-size:var(--fs-base);font-weight:600">Finding Detail</h3>
+            <button class="panel-close" onclick="document.getElementById('detailPanel').classList.remove('open');document.querySelector('.panel-toggle').classList.remove('active')" title="Close">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="detail-panel__body">
+
+            <div class="detail-section">
+              <div class="detail-label">Finding</div>
+              <div class="text-sm"><strong>Contradictory Directives on UserDatabase</strong></div>
+              <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-xs)">
+                <span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span>
+                <span class="badge sev-critical" style="font-size:10px">Critical</span>
+                <span class="badge" style="font-size:10px;background:color-mix(in srgb, var(--compliance-fail) 10%, transparent);color:var(--compliance-fail)">⚡ Conflict</span>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Conflict Pair</div>
+              <div class="conflict-pair">
+                <div class="conflict-side">
+                  <div style="font-weight:600;margin-bottom:4px">Data Encryption Standard</div>
+                  <div style="color:var(--itip-text-muted)">SecurityTeam <strong>MUST ENSURE</strong> Encryption ON UserDatabase</div>
+                </div>
+                <div class="conflict-vs">VS</div>
+                <div class="conflict-side">
+                  <div style="font-weight:600;margin-bottom:4px">Legacy Compatibility</div>
+                  <div style="color:var(--itip-text-muted)">MigrationTeam <strong>MUST_NOT ENSURE</strong> Encryption ON UserDatabase</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Conflict Analysis</div>
+              <div class="text-xs text-muted">
+                Same governed Structure (<strong>UserDatabase</strong>), same qualifier (<strong>Encryption</strong>).
+                Modals <code style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">MUST</code> and
+                <code style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">MUST_NOT</code>
+                with identical verb produce a <strong>direct contradiction</strong>. No Ascription can satisfy both simultaneously.
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Affected Norms (3)</div>
+              <div style="font-size:var(--fs-xs)">
+                <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                  <a href="../definition/norms-list.html" style="font-weight:600">encryption_at_rest</a> <span class="text-muted">← Data Encryption</span>
+                </div>
+                <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                  <a href="../definition/norms-list.html" style="font-weight:600">encryption_in_transit</a> <span class="text-muted">← Data Encryption</span>
+                </div>
+                <div style="padding:var(--sp-xs) 0">
+                  <a href="../definition/norms-list.html" style="font-weight:600">disable_encryption</a> <span class="text-muted">← Legacy Compatibility</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Resolution</div>
+              <div class="resolution-box">
+                <div class="resolution-box__action">Review Directives</div>
+                <div class="resolution-box__desc">Resolve the contradiction by deprecating or modifying one of the conflicting Directives. Recommended: escalate to Review Board.</div>
+                <div style="display:flex;gap:var(--sp-sm)">
+                  <a href="../review/review-board.html" class="btn btn--primary btn--sm" style="font-size:var(--fs-xs)">Start Review Session</a>
+                  <button class="btn btn--secondary btn--sm" style="font-size:var(--fs-xs)">Mark In Progress</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">History</div>
+              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">
+                <div style="padding:2px 0">Mar 28 — Finding detected (auto-appraisal)</div>
+                <div style="padding:2px 0">Mar 28 — Severity escalated to Critical (MUST ↔ MUST_NOT)</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

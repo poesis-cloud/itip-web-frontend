@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Impact Analysis</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Layout ── */
+    .impact-layout { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); padding:var(--sp-lg); }
+    .impact-full { grid-column:1/-1; }
+    .impact-card { background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); padding:var(--sp-lg); }
+    .section-title { font-size:var(--fs-base); font-weight:700; margin-bottom:var(--sp-md); }
+
+    /* ── Selector ── */
+    .selector-row { display:flex; gap:var(--sp-md); align-items:end; flex-wrap:wrap; }
+    .selector-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .selector-group label { font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
+
+    /* ── Cascade graph (ASCII art placeholder) ── */
+    .cascade-graph {
+      background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md);
+      min-height:240px; display:flex; align-items:center; justify-content:center; position:relative;
+      overflow:hidden; padding:var(--sp-lg);
+    }
+    .cascade-node {
+      display:inline-flex; flex-direction:column; align-items:center; gap:4px;
+      padding:var(--sp-sm) var(--sp-md); border:2px solid var(--itip-border); border-radius:var(--radius-md);
+      background:var(--itip-surface); font-size:var(--fs-xs); position:absolute; text-align:center;
+    }
+    .cascade-node--origin { border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); }
+    .cascade-node--direct { border-color:var(--compliance-warn); }
+    .cascade-node--transitive { border-color:var(--itip-border); border-style:dashed; }
+    .cascade-node__type { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--itip-text-muted); }
+    .cascade-node__name { font-weight:600; }
+    .cascade-edge {
+      position:absolute; height:2px; background:var(--itip-border); transform-origin:left center;
+    }
+    .cascade-edge--direct { background:var(--compliance-warn); }
+
+    /* ── Before/After ── */
+    .before-after { display:grid; grid-template-columns:1fr auto 1fr; gap:var(--sp-md); }
+    .score-column { text-align:center; }
+    .score-column__label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-sm); }
+    .score-column__value { font-size:28px; font-weight:800; }
+    .score-column__delta { font-size:var(--fs-sm); font-weight:600; }
+    .delta-neg { color:var(--compliance-fail); }
+    .delta-pos { color:var(--compliance-pass); }
+    .delta-neutral { color:var(--itip-text-muted); }
+    .arrow-col { display:flex; align-items:center; font-size:24px; color:var(--itip-text-muted); }
+
+    /* ── Projected deltas per axis ── */
+    .delta-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+    .delta-table th { text-align:left; padding:var(--sp-sm); border-bottom:2px solid var(--itip-border); font-weight:600; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
+    .delta-table td { padding:var(--sp-sm); border-bottom:1px solid var(--itip-border); }
+    .delta-table td:nth-child(n+2) { text-align:center; }
+    .delta-table th:nth-child(n+2) { text-align:center; }
+
+    /* ── Affected list ── */
+    .affected-item { display:flex; align-items:center; gap:var(--sp-sm); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .affected-item:last-child { border-bottom:none; }
+    .affected-item__type { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--itip-text-muted); min-width:80px; }
+    .affected-item__name { font-weight:600; flex:1; }
+    .affected-item__effect { font-size:var(--fs-xs); }
+
+    /* ── CTA ── */
+    .cta-row { display:flex; gap:var(--sp-md); justify-content:flex-end; padding:var(--sp-lg); border-top:1px solid var(--itip-border); background:var(--itip-surface); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar (placeholder — batch script will replace) ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item active" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <strong>Impact Analysis</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main" style="padding:0; display:flex; flex-direction:column">
+
+      <div class="impact-layout" style="flex:1; overflow-y:auto">
+
+        <!-- ── Scenario Selector ── -->
+        <div class="impact-card impact-full">
+          <div class="section-title">Scenario</div>
+          <div class="selector-row">
+            <div class="selector-group" style="flex:1;min-width:240px">
+              <label>Subject Ascription</label>
+              <select class="form-select">
+                <option>UserDatabase — v3 (Structure)</option>
+                <option>API Gateway — v2 (Mechanism)</option>
+                <option>PaymentProcessor — v1 (Structure)</option>
+                <option>AuditService — v4 (Structure)</option>
+              </select>
+            </div>
+            <div class="selector-group" style="flex:0">
+              <label>Transition</label>
+              <select class="form-select" style="width:180px">
+                <option>EVOLVE (v3 → v4)</option>
+                <option>SUSPEND</option>
+                <option>RETIRE</option>
+                <option>REVOKE</option>
+              </select>
+            </div>
+            <button class="btn btn--primary btn--sm" style="align-self:end">Simulate</button>
+          </div>
+        </div>
+
+        <!-- ── Cascade Graph ── -->
+        <div class="impact-card impact-full">
+          <div class="section-title">Cascade Graph — UserDatabase EVOLVE v3 → v4</div>
+          <div class="cascade-graph" style="min-height:280px">
+            <!-- Origin -->
+            <div class="cascade-node cascade-node--origin" style="top:120px;left:40px">
+              <span class="cascade-node__type">Structure</span>
+              <span class="cascade-node__name">UserDatabase v3→v4</span>
+            </div>
+            <!-- Direct cascades -->
+            <div class="cascade-node cascade-node--direct" style="top:30px;left:300px">
+              <span class="cascade-node__type">Mechanism</span>
+              <span class="cascade-node__name">user_auth</span>
+              <span style="font-size:9px;color:var(--compliance-warn)">re-evaluate</span>
+            </div>
+            <div class="cascade-node cascade-node--direct" style="top:120px;left:300px">
+              <span class="cascade-node__type">Norm (×3)</span>
+              <span class="cascade-node__name">encryption_*</span>
+              <span style="font-size:9px;color:var(--compliance-warn)">re-evaluate</span>
+            </div>
+            <div class="cascade-node cascade-node--direct" style="top:210px;left:300px">
+              <span class="cascade-node__type">Interaction</span>
+              <span class="cascade-node__name">db_replication</span>
+              <span style="font-size:9px;color:var(--compliance-warn)">re-evaluate</span>
+            </div>
+            <!-- Transitive cascades -->
+            <div class="cascade-node cascade-node--transitive" style="top:30px;left:560px">
+              <span class="cascade-node__type">Effector</span>
+              <span class="cascade-node__name">auth_response</span>
+              <span style="font-size:9px;color:var(--itip-text-muted)">transitive</span>
+            </div>
+            <div class="cascade-node cascade-node--transitive" style="top:120px;left:560px">
+              <span class="cascade-node__type">Ascription (×5)</span>
+              <span class="cascade-node__name">encryption norms</span>
+              <span style="font-size:9px;color:var(--itip-text-muted)">transitive</span>
+            </div>
+            <!-- Edges (simplified lines) -->
+            <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">
+              <line x1="195" y1="138" x2="295" y2="55"  stroke="var(--compliance-warn)" stroke-width="2" />
+              <line x1="195" y1="138" x2="295" y2="138" stroke="var(--compliance-warn)" stroke-width="2" />
+              <line x1="195" y1="138" x2="295" y2="228" stroke="var(--compliance-warn)" stroke-width="2" />
+              <line x1="415" y1="55"  x2="555" y2="55"  stroke="var(--itip-border)" stroke-width="1.5" stroke-dasharray="5,4" />
+              <line x1="415" y1="138" x2="555" y2="138" stroke="var(--itip-border)" stroke-width="1.5" stroke-dasharray="5,4" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- ── Before / After Scores ── -->
+        <div class="impact-card">
+          <div class="section-title">Overall Coherence</div>
+          <div class="before-after">
+            <div class="score-column">
+              <div class="score-column__label">Current</div>
+              <div class="score-column__value" style="color:var(--compliance-warn)">84%</div>
+            </div>
+            <div class="arrow-col">→</div>
+            <div class="score-column">
+              <div class="score-column__label">Projected</div>
+              <div class="score-column__value" style="color:var(--compliance-warn)">79%</div>
+              <div class="score-column__delta delta-neg">▼ −5%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Per-Axis Deltas ── -->
+        <div class="impact-card">
+          <div class="section-title">Axis Breakdown</div>
+          <table class="delta-table">
+            <thead>
+              <tr><th>Axis</th><th>Current</th><th>Projected</th><th>Δ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Governance Reach</td><td>92%</td><td>90%</td>
+                <td class="delta-neg">▼ −2%</td>
+              </tr>
+              <tr>
+                <td>Norm Binding</td><td>81%</td><td>74%</td>
+                <td class="delta-neg">▼ −7%</td>
+              </tr>
+              <tr>
+                <td>Source Fidelity</td><td>94%</td><td>93%</td>
+                <td class="delta-neg">▼ −1%</td>
+              </tr>
+              <tr>
+                <td>Model Validity</td><td>78%</td><td>76%</td>
+                <td class="delta-neg">▼ −2%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ── Affected Ascriptions ── -->
+        <div class="impact-card">
+          <div class="section-title">Directly Affected (4)</div>
+          <div class="affected-item">
+            <span class="affected-item__type">Mechanism</span>
+            <span class="affected-item__name">user_auth</span>
+            <span class="affected-item__effect delta-neg">re-evaluate</span>
+          </div>
+          <div class="affected-item">
+            <span class="affected-item__type">Norm ×3</span>
+            <span class="affected-item__name">encryption_at_rest, _in_transit, _key_mgmt</span>
+            <span class="affected-item__effect delta-neg">re-evaluate</span>
+          </div>
+          <div class="affected-item">
+            <span class="affected-item__type">Interaction</span>
+            <span class="affected-item__name">db_replication</span>
+            <span class="affected-item__effect delta-neg">re-evaluate</span>
+          </div>
+        </div>
+
+        <!-- ── Transitively Affected ── -->
+        <div class="impact-card">
+          <div class="section-title">Transitively Affected (6)</div>
+          <div class="affected-item">
+            <span class="affected-item__type">Effector</span>
+            <span class="affected-item__name">auth_response</span>
+            <span class="affected-item__effect delta-neutral">may change</span>
+          </div>
+          <div class="affected-item">
+            <span class="affected-item__type">Ascription ×5</span>
+            <span class="affected-item__name">encryption norm bindings</span>
+            <span class="affected-item__effect delta-neutral">may change</span>
+          </div>
+        </div>
+
+        <!-- ── New Findings Preview ── -->
+        <div class="impact-card impact-full">
+          <div class="section-title">Projected New Findings</div>
+          <table class="delta-table">
+            <thead>
+              <tr><th>Type</th><th>Description</th><th>Axis</th><th>Severity</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span style="color:var(--compliance-warn)">○</span> Gap</td>
+                <td>v4 removes field <code style="font-size:11px;padding:1px 4px;background:var(--itip-border);border-radius:3px">legacyEncryptionMode</code> — 2 Norms lose coverage</td>
+                <td><span class="badge" style="font-size:10px;background:#faf5ff;color:#7c3aed">Binding</span></td>
+                <td><span class="badge sev-warning" style="font-size:10px">Warning</span></td>
+              </tr>
+              <tr>
+                <td><span style="color:var(--compliance-fail)">✕</span> Violation</td>
+                <td>user_auth Mechanism's referee expression references <code style="font-size:11px;padding:1px 4px;background:var(--itip-border);border-radius:3px">$.encryptionVersion</code> — property removed in v4</td>
+                <td><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></td>
+                <td><span class="badge sev-critical" style="font-size:10px">Critical</span></td>
+              </tr>
+              <tr>
+                <td><span style="color:var(--itip-primary)">↔</span> Drift</td>
+                <td>ServiceNow CMDB still references v3 schema — sync will flag drift after evolution</td>
+                <td><span class="badge" style="font-size:10px;background:#fefce8;color:#a16207">Fidelity</span></td>
+                <td><span class="badge sev-advisory" style="font-size:10px">Advisory</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ── CTA ── -->
+      <div class="cta-row">
+        <button class="btn btn--secondary btn--sm">Export Report</button>
+        <a href="../review/review-board.html" class="btn btn--primary btn--sm">Start Review Session →</a>
+      </div>
+
+    </main>
+
+  </div>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

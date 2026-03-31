@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Directive Norms</title>
+  <title>ITIP — Create Interaction</title>
   <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .create-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .create-form .full-width { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .form-group label { font-size:var(--fs-sm); font-weight:600; }
+    .form-group .form-help { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .identity-bound { border-left:3px solid var(--itip-primary); padding-left:var(--sp-sm); }
+    .identity-bound label::after { content:" ⟡"; color:var(--itip-primary); font-size:var(--fs-xs); }
+    .coupling-preview { display:flex; align-items:center; gap:var(--sp-lg); padding:var(--sp-lg); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); margin-top:var(--sp-sm); }
+    .coupling-node { padding:var(--sp-md); border:2px solid; border-radius:var(--radius-md); text-align:center; min-width:180px; }
+    .coupling-node--effector { border-color:#f59e0b; background:#fffbeb; }
+    .coupling-node--receptor { border-color:#8b5cf6; background:#f5f3ff; }
+    .coupling-arrow { font-size:24px; color:var(--itip-text-muted); }
+    .coupling-node__label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
+    .coupling-node__name { font-weight:600; font-size:var(--fs-sm); margin:4px 0; }
+    .coupling-node__type { font-family:var(--font-mono); font-size:var(--fs-xs); }
+    .compat-check { margin-top:var(--sp-md); padding:var(--sp-md); border-radius:var(--radius-md); font-size:var(--fs-sm); }
+    .compat-check--pass { background:#f0fdf4; border:1px solid #bbf7d0; color:#15803d; }
+    .compat-check--fail { background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; }
+  </style>
 </head>
 <body>
   <div class="app-shell">
 
-    <!-- ======== Sidebar ======== -->
+    <!-- Sidebar (placeholder) -->
     <aside class="app-sidebar">
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
@@ -97,19 +117,15 @@
       </div>
     </aside>
 
-    <!-- ======== Header ======== -->
+    <!-- Header -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="directives-list.html">Directives</a><span>/</span>
-        <a href="directive-detail.html">Data Encryption Standard</a><span>/</span>
-        <strong>Norms</strong>
+        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Interaction</strong>
       </div>
       <div class="app-header__actions">
-        <button class="btn btn--secondary btn--sm">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          Search
-        </button>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -118,92 +134,93 @@
       </div>
     </header>
 
-    <!-- ======== Main ======== -->
+    <!-- Main -->
     <main class="app-main">
-      <div class="detail-header">
-        <div>
-          <h1 class="page-title">Data Encryption Standard</h1>
-          <div class="detail-header__meta">
-            <span class="badge badge--active">Active</span>
-            <span class="text-muted text-sm">NIS2 · AccessControl · EncryptionAtRest</span>
+      <h1 class="page-title">Create Interaction Ascription</h1>
+      <p class="page-subtitle">Define a causal coupling between Mechanisms by binding an Effector to a Receptor. Schema compatibility between the output and input archetypes is validated automatically. Fields marked ⟡ are identity-bound.</p>
+
+      <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
+        <div class="create-form">
+
+          <!-- Source Effector (identity-bound) -->
+          <div class="form-group identity-bound">
+            <label>Source Effector</label>
+            <select class="form-select">
+              <option value="">Select an effector…</option>
+              <option selected>API Gateway / tls_termination → plaintext_request (HTTPRequest)</option>
+              <option>API Gateway / rate_limiter → throttled_request (HTTPRequest)</option>
+              <option>Payment Service / payment_processor → payment_result (PaymentResult)</option>
+              <option>EventBus / message_router → routed_event (DomainEvent)</option>
+            </select>
+            <div class="form-help">The emitting Effector — format: Structure / Mechanism → Effector (DataArchetype)</div>
           </div>
-        </div>
-        <a href="directive-detail.html" class="btn btn--secondary">← Back to Detail</a>
-      </div>
 
-      <!-- Sub-tabs -->
-      <div class="sub-tabs">
-        <a class="sub-tab" href="directive-detail.html">Overview</a>
-        <a class="sub-tab active" href="directive-norms.html">Norms <span class="sub-tab__count">3</span></a>
-        <a class="sub-tab" href="directive-impact.html">Impact Analysis</a>
-        <a class="sub-tab" href="directive-history.html">History</a>
-      </div>
+          <!-- Target Receptor (identity-bound) -->
+          <div class="form-group identity-bound">
+            <label>Target Receptor</label>
+            <select class="form-select">
+              <option value="">Select a receptor…</option>
+              <option selected>API Gateway / auth_validator ← incoming_request (HTTPRequest)</option>
+              <option>Payment Service / payment_processor ← payment_request (PaymentRequest)</option>
+              <option>AuditService / audit_logger ← audit_event (AuditEvent)</option>
+              <option>Monitoring Stack / metrics_collector ← metric_data (MetricPayload)</option>
+            </select>
+            <div class="form-help">The receiving Receptor — format: Structure / Mechanism ← Receptor (DataArchetype)</div>
+          </div>
 
-      <!-- Norms list for this directive -->
-      <div class="card" style="margin-bottom:var(--sp-lg)">
-        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--itip-border)">
-          <strong>3 Norms derived from this directive</strong>
-          <button class="btn btn--primary btn--sm">+ Add Norm</button>
-        </div>
+          <!-- Typing Archetype -->
+          <div class="form-group">
+            <label>Typing Archetype</label>
+            <select class="form-select">
+              <option value="">Select archetype…</option>
+              <option selected>SoftwareTechnology · SynchronousInteraction</option>
+              <option>SoftwareTechnology · AsynchronousInteraction</option>
+              <option>SoftwareTechnology · EventDrivenInteraction</option>
+            </select>
+            <div class="form-help">Structural archetype with allOf chain to GSM Interaction base</div>
+          </div>
 
-        <!-- Norm 1 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_at_rest</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON UserDatabase, CustomerDB · WHEN data.classification == "PII"</div>
+          <!-- Owner -->
+          <div class="form-group">
+            <label>Owner</label>
+            <select class="form-select">
+              <option selected>E. Archer (Enterprise Architect)</option>
+              <option>S. Kumar (Security Architect)</option>
+            </select>
+          </div>
+
+          <!-- Coupling Preview -->
+          <div class="form-group full-width">
+            <label>Coupling Preview</label>
+            <div class="coupling-preview">
+              <div class="coupling-node coupling-node--effector">
+                <div class="coupling-node__label">Effector</div>
+                <div class="coupling-node__name">plaintext_request</div>
+                <div class="coupling-node__type">HTTPRequest</div>
+                <div style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:4px">API Gateway / tls_termination</div>
+              </div>
+              <div class="coupling-arrow">→</div>
+              <div class="coupling-node coupling-node--receptor">
+                <div class="coupling-node__label">Receptor</div>
+                <div class="coupling-node__name">incoming_request</div>
+                <div class="coupling-node__type">HTTPRequest</div>
+                <div style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:4px">API Gateway / auth_validator</div>
+              </div>
             </div>
-            <span class="badge badge--active">Active</span>
-          </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.encryption.algorithm in ["AES-256", "ChaCha20"] &amp;&amp; subject.encryption.keyRotationDays &lt;= 90
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>12</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">92%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
-
-        <!-- Norm 2 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_in_transit</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL ApplicationService · WHEN interaction.type == "external"</div>
+            <div class="compat-check compat-check--pass">
+              ✓ Schema compatible — Effector output archetype <code>HTTPRequest</code> is assignable to Receptor input archetype <code>HTTPRequest</code>
             </div>
-            <span class="badge badge--active">Active</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.tls.version &gt;= "1.2" &amp;&amp; subject.tls.cipherSuite != "NULL"
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>8</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">100%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
 
-        <!-- Norm 3 -->
-        <div style="padding:var(--sp-md)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">key_management_rotation</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL TechnologyComponent · WHEN subject.hasEncryptionKeys == true</div>
-            </div>
-            <span class="badge badge--proposed">Proposed</span>
+          <!-- Actions -->
+          <div class="full-width" style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
+            <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+            <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+            <button class="btn btn--primary">Create Interaction</button>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.keyRotation.enabled == true &amp;&amp; subject.keyRotation.intervalDays &lt;= 90
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>0</strong> (pending)</span>
-            <span>Pass rate: <strong>—</strong></span>
-            <span>Awaiting approval</span>
-          </div>
+
         </div>
       </div>
-
     </main>
   </div>
 

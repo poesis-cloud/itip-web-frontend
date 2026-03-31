@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Users</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .users-table { width:100%; border-collapse:separate; border-spacing:0; }
+    .users-table th { text-align:left; font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); padding:var(--sp-sm) var(--sp-md); border-bottom:2px solid var(--itip-border); }
+    .users-table td { padding:var(--sp-md); border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); vertical-align:middle; }
+    .users-table tr:hover td { background:var(--itip-bg); }
+    .user-name { font-weight:600; }
+    .user-email { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .privilege-chip { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:500; border:1px solid; margin:2px; }
+    .privilege-chip--draft { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+    .privilege-chip--approve { background:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
+    .privilege-chip--deprecate { background:#fefce8; color:#a16207; border-color:#fde68a; }
+    .privilege-chip--retire { background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+    .privilege-chip--review { background:#faf5ff; color:#7c3aed; border-color:#ddd6fe; }
+    .iam-notice { padding:var(--sp-md) var(--sp-lg); background:#dbeafe; border-radius:var(--radius-md); border-left:3px solid var(--itip-primary); font-size:var(--fs-sm); margin-bottom:var(--sp-lg); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar (placeholder — batch script will replace) -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item active" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Admin</span><span>/</span>
+        <strong>Users</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Users &amp; Privileges</h1>
+      <p class="page-subtitle">Manage user access to ascription operations — draft creation and per-status transitions. Privileges are scoped per operation type.</p>
+
+      <div class="iam-notice">
+        <strong>IAM Integration:</strong> User authentication and privilege assignment are ideally managed exclusively through your organization's Identity &amp; Access Management system (e.g., Azure AD, Okta, Keycloak). This view reflects the current privilege mappings synced from IAM. Direct privilege editing in ITIP is a fallback option when IAM integration is not available.
+      </div>
+
+      <div class="flex justify-between items-center mb-md">
+        <input class="form-input" type="text" placeholder="Search users..." style="max-width:320px">
+        <div style="display:flex; gap:var(--sp-sm); align-items:center">
+          <span class="text-xs text-muted">6 users</span>
+          <button class="btn btn--secondary btn--sm">Sync from IAM</button>
+          <button class="btn btn--primary btn--sm">+ Invite User</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Ascription Privileges</th>
+              <th>Status</th>
+              <th>Last Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="user-name">E. Archer</div>
+                <div class="user-email">e.archer@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--active">Enterprise Architect</span></td>
+              <td>
+                <span class="privilege-chip privilege-chip--draft">Draft Creation</span>
+                <span class="privilege-chip privilege-chip--approve">→ ACTIVE</span>
+                <span class="privilege-chip privilege-chip--deprecate">→ DEPRECATED</span>
+                <span class="privilege-chip privilege-chip--retire">→ RETIRED</span>
+                <span class="privilege-chip privilege-chip--review">Review Board</span>
+              </td>
+              <td><span class="badge badge--pass">Active</span></td>
+              <td class="text-xs text-muted">2 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-name">S. Kumar</div>
+                <div class="user-email">s.kumar@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--active">Security Architect</span></td>
+              <td>
+                <span class="privilege-chip privilege-chip--draft">Draft Creation</span>
+                <span class="privilege-chip privilege-chip--approve">→ ACTIVE</span>
+                <span class="privilege-chip privilege-chip--deprecate">→ DEPRECATED</span>
+                <span class="privilege-chip privilege-chip--review">Review Board</span>
+              </td>
+              <td><span class="badge badge--pass">Active</span></td>
+              <td class="text-xs text-muted">5 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-name">R. Patel</div>
+                <div class="user-email">r.patel@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--proposed">Compliance Analyst</span></td>
+              <td>
+                <span class="privilege-chip privilege-chip--draft">Draft Creation</span>
+                <span class="privilege-chip privilege-chip--approve">→ ACTIVE</span>
+                <span class="privilege-chip privilege-chip--review">Review Board</span>
+              </td>
+              <td><span class="badge badge--pass">Active</span></td>
+              <td class="text-xs text-muted">1 day ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-name">M. Chen</div>
+                <div class="user-email">m.chen@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--proposed">Solution Architect</span></td>
+              <td>
+                <span class="privilege-chip privilege-chip--draft">Draft Creation</span>
+              </td>
+              <td><span class="badge badge--pass">Active</span></td>
+              <td class="text-xs text-muted">3 days ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-name">J. Duval</div>
+                <div class="user-email">j.duval@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--draft">Viewer</span></td>
+              <td>
+                <span class="text-xs text-muted">Read-only — no ascription privileges</span>
+              </td>
+              <td><span class="badge badge--pass">Active</span></td>
+              <td class="text-xs text-muted">1 week ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-name">A. Novak</div>
+                <div class="user-email">a.novak@acme-corp.com</div>
+              </td>
+              <td><span class="badge badge--active">Platform Lead</span></td>
+              <td>
+                <span class="privilege-chip privilege-chip--draft">Draft Creation</span>
+                <span class="privilege-chip privilege-chip--approve">→ ACTIVE</span>
+                <span class="privilege-chip privilege-chip--deprecate">→ DEPRECATED</span>
+                <span class="privilege-chip privilege-chip--retire">→ RETIRED</span>
+                <span class="privilege-chip privilege-chip--review">Review Board</span>
+              </td>
+              <td><span class="badge badge--warn">Invited</span></td>
+              <td class="text-xs text-muted">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="iam-notice" style="margin-top:var(--sp-lg); background:#f1f5f9; border-color:#94a3b8">
+        <strong>Privilege Model:</strong> Ascription privileges are scoped per lifecycle transition: <em>Draft Creation</em>, <em>→ PENDING_APPRAISAL</em>, <em>→ ACTIVE</em>, <em>→ DEPRECATED</em>, <em>→ RETIRED</em>, <em>→ ABANDONED</em>, <em>→ REJECTED</em>, and <em>Review Board membership</em>. Privileges can be further scoped by primitive type and governance domain when configured through IAM groups.
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

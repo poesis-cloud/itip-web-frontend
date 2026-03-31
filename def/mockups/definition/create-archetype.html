@@ -3,13 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Directive Norms</title>
+  <title>ITIP — Create Archetype</title>
   <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .create-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .create-form .full-width { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .form-group label { font-size:var(--fs-sm); font-weight:600; }
+    .form-group .form-help { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .code-editor { font-family:var(--font-mono); font-size:var(--fs-xs); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); padding:var(--sp-md); line-height:1.6; }
+    .role-selector { display:flex; gap:var(--sp-md); }
+    .role-card { flex:1; padding:var(--sp-md); border:2px solid var(--itip-border); border-radius:var(--radius-md); cursor:pointer; transition:border-color 0.15s; text-align:center; }
+    .role-card:hover { border-color:var(--itip-primary-light); }
+    .role-card--selected { border-color:var(--itip-primary); background:var(--itip-bg); }
+    .role-card__title { font-weight:600; font-size:var(--fs-sm); }
+    .role-card__desc { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:4px; }
+    .chain-preview { padding:var(--sp-md); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs); }
+    .chain-arrow { color:var(--itip-primary); font-weight:600; }
+  </style>
 </head>
 <body>
   <div class="app-shell">
 
-    <!-- ======== Sidebar ======== -->
+    <!-- Sidebar (placeholder) -->
     <aside class="app-sidebar">
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
@@ -97,19 +113,15 @@
       </div>
     </aside>
 
-    <!-- ======== Header ======== -->
+    <!-- Header -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="directives-list.html">Directives</a><span>/</span>
-        <a href="directive-detail.html">Data Encryption Standard</a><span>/</span>
-        <strong>Norms</strong>
+        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Archetype</strong>
       </div>
       <div class="app-header__actions">
-        <button class="btn btn--secondary btn--sm">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          Search
-        </button>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -118,92 +130,140 @@
       </div>
     </header>
 
-    <!-- ======== Main ======== -->
+    <!-- Main -->
     <main class="app-main">
-      <div class="detail-header">
-        <div>
-          <h1 class="page-title">Data Encryption Standard</h1>
-          <div class="detail-header__meta">
-            <span class="badge badge--active">Active</span>
-            <span class="text-muted text-sm">NIS2 · AccessControl · EncryptionAtRest</span>
-          </div>
-        </div>
-        <a href="directive-detail.html" class="btn btn--secondary">← Back to Detail</a>
-      </div>
+      <h1 class="page-title">Create Archetype Ascription</h1>
+      <p class="page-subtitle">Define a new Archetype — a static type definition (JSON Schema). Structural archetypes have an allOf chain to a GSM base; rootless archetypes serve as qualifiers or data types.</p>
 
-      <!-- Sub-tabs -->
-      <div class="sub-tabs">
-        <a class="sub-tab" href="directive-detail.html">Overview</a>
-        <a class="sub-tab active" href="directive-norms.html">Norms <span class="sub-tab__count">3</span></a>
-        <a class="sub-tab" href="directive-impact.html">Impact Analysis</a>
-        <a class="sub-tab" href="directive-history.html">History</a>
-      </div>
+      <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
+        <div class="create-form">
 
-      <!-- Norms list for this directive -->
-      <div class="card" style="margin-bottom:var(--sp-lg)">
-        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--itip-border)">
-          <strong>3 Norms derived from this directive</strong>
-          <button class="btn btn--primary btn--sm">+ Add Norm</button>
-        </div>
-
-        <!-- Norm 1 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_at_rest</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON UserDatabase, CustomerDB · WHEN data.classification == "PII"</div>
+          <!-- Archetype kind -->
+          <div class="form-group full-width">
+            <label>Archetype Kind</label>
+            <div class="role-selector">
+              <div class="role-card role-card--selected">
+                <div class="role-card__title">Structural</div>
+                <div class="role-card__desc">Has allOf chain to one GSM base (Structure, Mechanism, etc.). Used for <strong>typing</strong> role.</div>
+              </div>
+              <div class="role-card">
+                <div class="role-card__title">Rootless</div>
+                <div class="role-card__desc">No allOf to GSM base. Used for <strong>qualifier</strong> and <strong>data</strong> roles (viability dimensions, data contracts).</div>
+              </div>
             </div>
-            <span class="badge badge--active">Active</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.encryption.algorithm in ["AES-256", "ChaCha20"] &amp;&amp; subject.encryption.keyRotationDays &lt;= 90
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>12</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">92%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
 
-        <!-- Norm 2 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_in_transit</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL ApplicationService · WHEN interaction.type == "external"</div>
-            </div>
-            <span class="badge badge--active">Active</span>
+          <!-- Framework -->
+          <div class="form-group">
+            <label>Source Framework</label>
+            <select class="form-select">
+              <option value="">Select framework…</option>
+              <option selected>TOGAF</option>
+              <option>ISO 25010</option>
+              <option>ISO 25012</option>
+              <option>NIS2</option>
+              <option>GDPR</option>
+              <option>SCAP</option>
+              <option>SoftwareTechnology</option>
+              <option>Custom (tenant-defined)</option>
+            </select>
+            <div class="form-help">The governance framework this archetype belongs to</div>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.tls.version &gt;= "1.2" &amp;&amp; subject.tls.cipherSuite != "NULL"
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>8</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">100%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
 
-        <!-- Norm 3 -->
-        <div style="padding:var(--sp-md)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">key_management_rotation</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL TechnologyComponent · WHEN subject.hasEncryptionKeys == true</div>
+          <!-- GSM Base (for structural) -->
+          <div class="form-group">
+            <label>GSM Base Type</label>
+            <select class="form-select">
+              <option value="">Select GSM base…</option>
+              <option selected>Structure</option>
+              <option>Mechanism</option>
+              <option>Effector</option>
+              <option>Receptor</option>
+              <option>Interaction</option>
+              <option>Directive</option>
+              <option>Norm</option>
+            </select>
+            <div class="form-help">The GSM primitive this archetype extends via allOf chain (structural only)</div>
+          </div>
+
+          <!-- Archetype name -->
+          <div class="form-group">
+            <label>Archetype Name</label>
+            <input class="form-input" type="text" placeholder="e.g., LogicalApplicationComponent" value="InfrastructureService">
+            <div class="form-help">Must be unique within the source framework</div>
+          </div>
+
+          <!-- Owner -->
+          <div class="form-group">
+            <label>Owner</label>
+            <select class="form-select">
+              <option selected>E. Archer (Enterprise Architect)</option>
+              <option>S. Kumar (Security Architect)</option>
+            </select>
+          </div>
+
+          <!-- JSON Schema -->
+          <div class="form-group full-width">
+            <label>JSON Schema Definition</label>
+            <textarea class="code-editor" rows="20">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "togaf:InfrastructureService",
+  "title": "TOGAF Infrastructure Service",
+  "description": "An infrastructure service providing foundational IT capabilities (networking, storage, compute)",
+  "allOf": [
+    { "$ref": "gsm:Structure" }
+  ],
+  "properties": {
+    "purpose": {
+      "type": "string",
+      "$gsm:identityBound": true,
+      "description": "The service's raison d'être"
+    },
+    "serviceType": {
+      "type": "string",
+      "enum": ["compute", "storage", "networking", "security", "monitoring"],
+      "description": "Type of infrastructure service"
+    },
+    "sla": {
+      "type": "object",
+      "properties": {
+        "availability": { "type": "number", "minimum": 0, "maximum": 100 },
+        "rto": { "type": "string", "pattern": "^PT[0-9]+[HM]$" },
+        "rpo": { "type": "string", "pattern": "^PT[0-9]+[HM]$" }
+      }
+    },
+    "provider": {
+      "type": "string",
+      "description": "Infrastructure provider (on-prem, AWS, Azure, GCP)"
+    }
+  },
+  "required": ["purpose", "serviceType"]
+}</textarea>
+            <div class="form-help">JSON Schema with allOf reference to the GSM base. Use <code>$gsm:identityBound</code> to mark identity-bound properties.</div>
+          </div>
+
+          <!-- allOf chain preview -->
+          <div class="form-group full-width">
+            <label>allOf Resolution Chain</label>
+            <div class="chain-preview">
+              <span style="color:var(--itip-text-muted)">gsm:Ascription</span>
+              <span class="chain-arrow"> → </span>
+              <span style="color:var(--itip-text-muted)">gsm:Structure</span>
+              <span class="chain-arrow"> → </span>
+              <span style="font-weight:600">togaf:InfrastructureService</span>
+              <span style="margin-left:var(--sp-lg); color:var(--itip-text-muted)">DefinitionSubjectType = STRUCTURE</span>
             </div>
-            <span class="badge badge--proposed">Proposed</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.keyRotation.enabled == true &amp;&amp; subject.keyRotation.intervalDays &lt;= 90
+
+          <!-- Actions -->
+          <div class="full-width" style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
+            <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+            <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+            <button class="btn btn--primary">Create Archetype</button>
           </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>0</strong> (pending)</span>
-            <span>Pass rate: <strong>—</strong></span>
-            <span>Awaiting approval</span>
-          </div>
+
         </div>
       </div>
-
     </main>
   </div>
 

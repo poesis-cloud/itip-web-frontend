@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Definition Dashboard</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .def-dashboard { padding:var(--sp-lg); overflow-y:auto; }
+
+    /* ── Summary strip ── */
+    .summary-strip { display:flex; gap:var(--sp-md); margin-bottom:var(--sp-xl); flex-wrap:wrap; }
+    .summary-card {
+      flex:1; min-width:180px; padding:var(--sp-lg);
+      background:var(--itip-surface); border:1px solid var(--itip-border);
+      border-radius:var(--radius-md); display:flex; flex-direction:column; gap:var(--sp-xs);
+    }
+    .summary-card__label { font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
+    .summary-card__value { font-size:28px; font-weight:800; }
+    .summary-card__sub { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .summary-card--directive .summary-card__value { color:#6366f1; }
+    .summary-card--norm .summary-card__value { color:#ec4899; }
+    .summary-card--ascription .summary-card__value { color:#2dd4bf; }
+    .summary-card--chain .summary-card__value { color:var(--compliance-pass); }
+
+    /* ── Grid ── */
+    .dash-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .dash-wide { grid-column:1/-1; }
+    .dash-card { background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); padding:var(--sp-lg); }
+    .dash-card__title { font-size:var(--fs-sm); font-weight:700; margin-bottom:var(--sp-md); display:flex; align-items:center; justify-content:space-between; }
+
+    /* ── Chain completion ── */
+    .chain-row { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .chain-row:last-child { border-bottom:none; }
+    .chain-label { min-width:160px; font-weight:600; }
+    .chain-bar { flex:1; height:8px; background:var(--itip-border); border-radius:4px; overflow:hidden; }
+    .chain-bar__fill { height:100%; border-radius:4px; }
+    .chain-pct { min-width:40px; text-align:right; font-weight:700; font-size:var(--fs-xs); }
+
+    /* ── Lifecycle donut ── */
+    .lifecycle-grid { display:grid; grid-template-columns:auto 1fr; gap:var(--sp-lg); align-items:center; }
+    .donut-ring {
+      width:120px; height:120px; border-radius:50%;
+      background:conic-gradient(
+        #22c55e 0% 62%, #f59e0b 62% 78%, #6366f1 78% 90%, #94a3b8 90% 96%, #ef4444 96% 100%
+      );
+      display:flex; align-items:center; justify-content:center;
+    }
+    .donut-ring__center { width:80px; height:80px; border-radius:50%; background:var(--itip-surface); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:800; }
+    .lifecycle-legend { display:flex; flex-direction:column; gap:var(--sp-sm); }
+    .legend-row { display:flex; align-items:center; gap:var(--sp-sm); font-size:var(--fs-sm); }
+    .legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+
+    /* ── Framework coverage badges ── */
+    .fw-row { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .fw-row:last-child { border-bottom:none; }
+    .fw-name { min-width:120px; font-weight:600; }
+    .fw-counts { display:flex; gap:var(--sp-sm); }
+    .fw-counts span { font-size:var(--fs-xs); padding:2px 8px; border-radius:var(--radius-full); border:1px solid var(--itip-border); }
+
+    /* ── Recent activity ── */
+    .recent-item { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .recent-item:last-child { border-bottom:none; }
+    .recent-icon { width:24px; height:24px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+    .recent-icon--d { background:color-mix(in srgb, #6366f1 12%, transparent); color:#6366f1; }
+    .recent-icon--n { background:color-mix(in srgb, #ec4899 12%, transparent); color:#ec4899; }
+    .recent-icon--a { background:color-mix(in srgb, #2dd4bf 12%, transparent); color:#0d9488; }
+    .recent-text { flex:1; }
+    .recent-time { font-size:var(--fs-xs); color:var(--itip-text-muted); white-space:nowrap; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar (placeholder — batch script will replace) ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item active" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <strong>Dashboard</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main def-dashboard">
+
+      <!-- Summary Strip -->
+      <div class="summary-strip">
+        <div class="summary-card summary-card--directive">
+          <div class="summary-card__label">Directives</div>
+          <div class="summary-card__value">42</div>
+          <div class="summary-card__sub">38 active · 3 proposed · 1 draft</div>
+        </div>
+        <div class="summary-card summary-card--norm">
+          <div class="summary-card__label">Norms</div>
+          <div class="summary-card__value">137</div>
+          <div class="summary-card__sub">112 active · 19 proposed · 6 suspended</div>
+        </div>
+        <div class="summary-card summary-card--ascription">
+          <div class="summary-card__label">Ascriptions</div>
+          <div class="summary-card__value">384</div>
+          <div class="summary-card__sub">362 active · 15 evolving · 7 suspended</div>
+        </div>
+        <div class="summary-card summary-card--chain">
+          <div class="summary-card__label">Complete Chains</div>
+          <div class="summary-card__value">87%</div>
+          <div class="summary-card__sub">D→N→A fully linked</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+
+        <!-- ── Chain Completion ── -->
+        <div class="dash-card">
+          <div class="dash-card__title">D → N → A Chain Completion</div>
+          <div class="chain-row">
+            <div class="chain-label">D → N (operationalized)</div>
+            <div class="chain-bar"><div class="chain-bar__fill" style="width:90%;background:#6366f1"></div></div>
+            <div class="chain-pct" style="color:#6366f1">90%</div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-label">N → A (bound)</div>
+            <div class="chain-bar"><div class="chain-bar__fill" style="width:82%;background:#ec4899"></div></div>
+            <div class="chain-pct" style="color:#ec4899">82%</div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-label">D → N → A (full chain)</div>
+            <div class="chain-bar"><div class="chain-bar__fill" style="width:87%;background:var(--compliance-pass)"></div></div>
+            <div class="chain-pct" style="color:var(--compliance-pass)">87%</div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-label">Orphan Norms (no D)</div>
+            <div class="chain-bar"><div class="chain-bar__fill" style="width:6%;background:var(--compliance-warn)"></div></div>
+            <div class="chain-pct" style="color:var(--compliance-warn)">8</div>
+          </div>
+          <div class="chain-row">
+            <div class="chain-label">Orphan Ascriptions (no N)</div>
+            <div class="chain-bar"><div class="chain-bar__fill" style="width:3%;background:var(--compliance-fail)"></div></div>
+            <div class="chain-pct" style="color:var(--compliance-fail)">12</div>
+          </div>
+        </div>
+
+        <!-- ── Lifecycle Distribution ── -->
+        <div class="dash-card">
+          <div class="dash-card__title">Lifecycle Distribution (all primitives)</div>
+          <div class="lifecycle-grid">
+            <div class="donut-ring">
+              <div class="donut-ring__center">563</div>
+            </div>
+            <div class="lifecycle-legend">
+              <div class="legend-row"><span class="legend-dot" style="background:#22c55e"></span> Active <strong>349</strong> <span class="text-xs text-muted">(62%)</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:#f59e0b"></span> Proposed <strong>91</strong> <span class="text-xs text-muted">(16%)</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:#6366f1"></span> Evolving <strong>67</strong> <span class="text-xs text-muted">(12%)</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:#94a3b8"></span> Draft <strong>34</strong> <span class="text-xs text-muted">(6%)</span></div>
+              <div class="legend-row"><span class="legend-dot" style="background:#ef4444"></span> Suspended <strong>22</strong> <span class="text-xs text-muted">(4%)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Framework Contribution ── -->
+        <div class="dash-card">
+          <div class="dash-card__title">
+            Framework Contribution
+            <a href="lenses.html" class="text-xs" style="font-weight:500;color:var(--itip-primary)">View lenses →</a>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">GDPR</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">8 D</span>
+              <span style="color:#ec4899">24 N</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">NIS2</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">12 D</span>
+              <span style="color:#ec4899">38 N</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">TOGAF</div>
+            <div class="fw-counts">
+              <span style="color:#2dd4bf">42 archetypes</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">ISO 25010</div>
+            <div class="fw-counts">
+              <span style="color:#2dd4bf">18 archetypes</span>
+              <span style="color:#6366f1">6 D</span>
+              <span style="color:#ec4899">14 N</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">ISO 25012</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">4 D</span>
+              <span style="color:#ec4899">9 N</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">Enterprise Policy</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">12 D</span>
+              <span style="color:#ec4899">52 N</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Governed Subjects (top) ── -->
+        <div class="dash-card">
+          <div class="dash-card__title">
+            Most Governed Subjects
+            <a href="lenses.html" class="text-xs" style="font-weight:500;color:var(--itip-primary)">Explore →</a>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">UserDatabase</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">4 D</span>
+              <span style="color:#ec4899">12 N</span>
+              <span style="color:#0d9488">8 A</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">PaymentProcessor</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">3 D</span>
+              <span style="color:#ec4899">9 N</span>
+              <span style="color:#0d9488">6 A</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">API Gateway</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">3 D</span>
+              <span style="color:#ec4899">8 N</span>
+              <span style="color:#0d9488">5 A</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">AuditService</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">2 D</span>
+              <span style="color:#ec4899">7 N</span>
+              <span style="color:#0d9488">4 A</span>
+            </div>
+          </div>
+          <div class="fw-row">
+            <div class="fw-name">NotificationHub</div>
+            <div class="fw-counts">
+              <span style="color:#6366f1">2 D</span>
+              <span style="color:#ec4899">5 N</span>
+              <span style="color:#0d9488">3 A</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Recent Activity ── -->
+        <div class="dash-card dash-wide">
+          <div class="dash-card__title">
+            Recent Activity
+            <a href="../overview/activity-list.html" class="text-xs" style="font-weight:500;color:var(--itip-primary)">View all →</a>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon recent-icon--d">D</div>
+            <div class="recent-text"><strong>Incident Response Protocol</strong> — Directive EVOLVED v2 → v3</div>
+            <div class="recent-time">2h ago</div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon recent-icon--n">N</div>
+            <div class="recent-text"><strong>encryption_key_rotation</strong> — Norm PROPOSED by SecurityTeam</div>
+            <div class="recent-time">5h ago</div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon recent-icon--a">A</div>
+            <div class="recent-text"><strong>UserDatabase v3</strong> — Ascription transitioned ACTIVE → EVOLVING</div>
+            <div class="recent-time">8h ago</div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon recent-icon--n">N</div>
+            <div class="recent-text"><strong>log_retention</strong> — Norm ACTIVATED after review approval</div>
+            <div class="recent-time">1d ago</div>
+          </div>
+          <div class="recent-item">
+            <div class="recent-icon recent-icon--d">D</div>
+            <div class="recent-text"><strong>Data Quality Mandate</strong> — Directive created as DRAFT</div>
+            <div class="recent-time">1d ago</div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

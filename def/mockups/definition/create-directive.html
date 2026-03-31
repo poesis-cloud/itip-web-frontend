@@ -3,13 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Directive Norms</title>
+  <title>ITIP — Create Directive</title>
   <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .create-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .create-form .full-width { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .form-group label { font-size:var(--fs-sm); font-weight:600; }
+    .form-group .form-help { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .identity-bound { border-left:3px solid var(--itip-primary); padding-left:var(--sp-sm); }
+    .identity-bound label::after { content:" ⟡"; color:var(--itip-primary); font-size:var(--fs-xs); }
+    .governance-preview { padding:var(--sp-lg); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); }
+    .gov-arrow { display:flex; align-items:center; gap:var(--sp-md); margin:var(--sp-md) 0; }
+    .gov-box { padding:var(--sp-md); border:2px solid; border-radius:var(--radius-md); min-width:200px; text-align:center; }
+    .gov-box--governing { border-color:var(--itip-primary); background:#eff6ff; }
+    .gov-box--governed { border-color:#f59e0b; background:#fffbeb; }
+    .gov-box--qualifier { border-color:#8b5cf6; background:#f5f3ff; }
+    .gov-box__label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
+    .gov-box__name { font-weight:600; margin:4px 0; }
+  </style>
 </head>
 <body>
   <div class="app-shell">
 
-    <!-- ======== Sidebar ======== -->
+    <!-- Sidebar (placeholder) -->
     <aside class="app-sidebar">
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
@@ -97,19 +114,15 @@
       </div>
     </aside>
 
-    <!-- ======== Header ======== -->
+    <!-- Header -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
         <a href="directives-list.html">Directives</a><span>/</span>
-        <a href="directive-detail.html">Data Encryption Standard</a><span>/</span>
-        <strong>Norms</strong>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Directive</strong>
       </div>
       <div class="app-header__actions">
-        <button class="btn btn--secondary btn--sm">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          Search
-        </button>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -118,92 +131,135 @@
       </div>
     </header>
 
-    <!-- ======== Main ======== -->
+    <!-- Main -->
     <main class="app-main">
-      <div class="detail-header">
-        <div>
-          <h1 class="page-title">Data Encryption Standard</h1>
-          <div class="detail-header__meta">
-            <span class="badge badge--active">Active</span>
-            <span class="text-muted text-sm">NIS2 · AccessControl · EncryptionAtRest</span>
+      <h1 class="page-title">Create Directive Ascription</h1>
+      <p class="page-subtitle">Open a governance scope — a constitutive act establishing a governance relationship between a governing Structure and a governed Structure along a viability dimension. Fields marked ⟡ are identity-bound.</p>
+
+      <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
+        <div class="create-form">
+
+          <!-- Governing Structure -->
+          <div class="form-group identity-bound">
+            <label>Governing Structure</label>
+            <select class="form-select">
+              <option value="">Select governing structure…</option>
+              <option selected>IT Operations Division</option>
+              <option>Security Governance Board</option>
+              <option>Data Governance Office</option>
+              <option>Architecture Review Board</option>
+            </select>
+            <div class="form-help">The Structure that issues and enforces this Directive (Directive.structure)</div>
           </div>
-        </div>
-        <a href="directive-detail.html" class="btn btn--secondary">← Back to Detail</a>
-      </div>
 
-      <!-- Sub-tabs -->
-      <div class="sub-tabs">
-        <a class="sub-tab" href="directive-detail.html">Overview</a>
-        <a class="sub-tab active" href="directive-norms.html">Norms <span class="sub-tab__count">3</span></a>
-        <a class="sub-tab" href="directive-impact.html">Impact Analysis</a>
-        <a class="sub-tab" href="directive-history.html">History</a>
-      </div>
+          <!-- Governed Structure (purpose) -->
+          <div class="form-group identity-bound">
+            <label>Governed Structure</label>
+            <select class="form-select">
+              <option value="">Select governed structure…</option>
+              <option selected>API Gateway</option>
+              <option>UserDatabase</option>
+              <option>Payment Service</option>
+              <option>EventBus</option>
+              <option>Monitoring Stack</option>
+              <option>AuditService</option>
+            </select>
+            <div class="form-help">The Structure being governed — Directive.purpose references this Structure</div>
+          </div>
 
-      <!-- Norms list for this directive -->
-      <div class="card" style="margin-bottom:var(--sp-lg)">
-        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--itip-border)">
-          <strong>3 Norms derived from this directive</strong>
-          <button class="btn btn--primary btn--sm">+ Add Norm</button>
-        </div>
+          <!-- Qualifier (viability dimension) -->
+          <div class="form-group identity-bound">
+            <label>Qualifier (Viability Dimension)</label>
+            <select class="form-select">
+              <option value="">Select viability dimension…</option>
+              <option>ISO 25010 · Security</option>
+              <option>ISO 25010 · Reliability</option>
+              <option selected>ISO 25010 · Performance</option>
+              <option>ISO 25012 · Data Accuracy</option>
+              <option>NIS2 · AccessControl</option>
+              <option>NIS2 · Encryption</option>
+              <option>GDPR · DataProtection</option>
+              <option>TOGAF · ArchitecturalPrinciples</option>
+            </select>
+            <div class="form-help">Rootless archetype defining the viability dimension being governed (qualifier_id)</div>
+          </div>
 
-        <!-- Norm 1 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_at_rest</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON UserDatabase, CustomerDB · WHEN data.classification == "PII"</div>
+          <!-- Typing Archetype -->
+          <div class="form-group">
+            <label>Typing Archetype</label>
+            <select class="form-select">
+              <option value="">Select archetype…</option>
+              <option selected>SourcedDirective (framework-sourced)</option>
+              <option>CustomDirective (tenant-defined)</option>
+            </select>
+            <div class="form-help">Structural archetype with allOf chain to GSM Directive base</div>
+          </div>
+
+          <!-- Directive title -->
+          <div class="form-group">
+            <label>Title</label>
+            <input class="form-input" type="text" value="Performance SLA Baseline" placeholder="e.g., Data Encryption Policy, API Security Standard...">
+          </div>
+
+          <!-- Owner -->
+          <div class="form-group">
+            <label>Owner</label>
+            <select class="form-select">
+              <option selected>E. Archer (Enterprise Architect)</option>
+              <option>S. Kumar (Security Architect)</option>
+              <option>R. Patel (Compliance Analyst)</option>
+            </select>
+          </div>
+
+          <!-- Statement payload -->
+          <div class="form-group full-width">
+            <label>Statement (JSON)</label>
+            <textarea class="form-input" rows="8" style="font-family:var(--font-mono); font-size:var(--fs-xs)">{
+  "title": "Performance SLA Baseline",
+  "description": "Establishes performance requirements for API Gateway service endpoints",
+  "framework": "ISO 25010",
+  "category": "Performance Efficiency",
+  "source_reference": "ISO/IEC 25010:2023 §4.2.4",
+  "effective_date": "2024-01-15"
+}</textarea>
+            <div class="form-help">JSONB payload validated against the Directive archetype schema</div>
+          </div>
+
+          <!-- Governance Preview -->
+          <div class="form-group full-width">
+            <label>Governance Scope Preview</label>
+            <div class="governance-preview">
+              <div style="display:flex; align-items:center; gap:var(--sp-lg); flex-wrap:wrap; justify-content:center">
+                <div class="gov-box gov-box--governing">
+                  <div class="gov-box__label">Governing</div>
+                  <div class="gov-box__name">IT Operations Division</div>
+                  <div style="font-size:var(--fs-xs); color:var(--itip-text-muted)">Structure</div>
+                </div>
+                <div style="font-size:24px; color:var(--itip-text-muted)">→ governs →</div>
+                <div class="gov-box gov-box--governed">
+                  <div class="gov-box__label">Governed</div>
+                  <div class="gov-box__name">API Gateway</div>
+                  <div style="font-size:var(--fs-xs); color:var(--itip-text-muted)">Structure</div>
+                </div>
+                <div style="font-size:18px; color:var(--itip-text-muted)">along</div>
+                <div class="gov-box gov-box--qualifier">
+                  <div class="gov-box__label">Viability Dimension</div>
+                  <div class="gov-box__name">Performance</div>
+                  <div style="font-size:var(--fs-xs); color:var(--itip-text-muted)">ISO 25010</div>
+                </div>
+              </div>
             </div>
-            <span class="badge badge--active">Active</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.encryption.algorithm in ["AES-256", "ChaCha20"] &amp;&amp; subject.encryption.keyRotationDays &lt;= 90
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>12</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">92%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
 
-        <!-- Norm 2 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">encryption_in_transit</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL ApplicationService · WHEN interaction.type == "external"</div>
-            </div>
-            <span class="badge badge--active">Active</span>
+          <!-- Actions -->
+          <div class="full-width" style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
+            <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+            <a href="directives-list.html" class="btn btn--secondary">Cancel</a>
+            <button class="btn btn--primary">Create Directive</button>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.tls.version &gt;= "1.2" &amp;&amp; subject.tls.cipherSuite != "NULL"
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>8</strong></span>
-            <span>Pass rate: <strong style="color:var(--compliance-pass)">100%</strong></span>
-            <span>Last evaluated: 2h ago</span>
-          </div>
-        </div>
 
-        <!-- Norm 3 -->
-        <div style="padding:var(--sp-md)">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start">
-            <div>
-              <div style="font-weight:600">key_management_rotation</div>
-              <div class="text-muted text-sm" style="margin-top:2px">ON ALL TechnologyComponent · WHEN subject.hasEncryptionKeys == true</div>
-            </div>
-            <span class="badge badge--proposed">Proposed</span>
-          </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
-            ASSERT subject.keyRotation.enabled == true &amp;&amp; subject.keyRotation.intervalDays &lt;= 90
-          </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
-            <span>Ascriptions: <strong>0</strong> (pending)</span>
-            <span>Pass rate: <strong>—</strong></span>
-            <span>Awaiting approval</span>
-          </div>
         </div>
       </div>
-
     </main>
   </div>
 

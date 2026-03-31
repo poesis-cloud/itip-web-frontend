@@ -6,8 +6,10 @@
   <title>ITIP — Ascriptions</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
-    .ascription-layout { display: flex; gap: 0; min-height: calc(100vh - 56px); }
-    .ascription-content { flex: 1; padding: var(--sp-lg); overflow-y: auto; }
+    .ascriptions-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
+    .ascriptions-toolbar .form-input { flex:1; min-width:200px; }
+    .list-and-detail { display:flex; gap:0; flex:1; }
+    .list-content { flex:1; padding:var(--sp-lg); overflow-y:auto; }
     .ascription-row {
       display: grid; grid-template-columns: 200px 1fr 100px 80px;
       align-items: center; gap: var(--sp-md);
@@ -33,15 +35,25 @@
     .layer-badge--swtech { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
     .ascription-header {
       display: grid; grid-template-columns: 200px 1fr 100px 80px;
-      gap: var(--sp-md); padding: var(--sp-sm) var(--sp-lg);
+      align-items: center; gap: var(--sp-md); padding: var(--sp-sm) var(--sp-lg);
       font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.06em; color: var(--itip-text-muted);
     }
-    .detail-panel { width: 400px; background: var(--itip-surface); border-left: 1px solid var(--itip-border); }
+    .ascription-row > div:nth-child(n+3) { text-align: center; }
+    .ascription-header > span:nth-child(n+3) { text-align: center; }
+    .detail-panel { width: 400px; background: var(--itip-surface); border-left: 1px solid var(--itip-border); display:none; flex-direction:column; }
+    .detail-panel.open { display:flex; }
     .detail-panel__header { padding: var(--sp-md) var(--sp-lg); border-bottom: 1px solid var(--itip-border); display: flex; justify-content: space-between; align-items: center; }
     .detail-panel__body { padding: var(--sp-lg); overflow-y: auto; }
     .detail-section { margin-bottom: var(--sp-lg); }
     .detail-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--itip-text-muted); margin-bottom: var(--sp-sm); }
+    .panel-toggle { display:inline-flex; align-items:center; gap:6px; padding:var(--sp-xs) var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; font-size:var(--fs-xs); font-weight:500; margin-left:auto; }
+    .panel-toggle:hover { color:var(--itip-primary); border-color:var(--itip-primary); }
+    .panel-toggle.active { color:var(--itip-primary); border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); }
+    .panel-toggle svg { width:16px; height:16px; }
+    .panel-close { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:none; border-radius:var(--radius-sm); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
+    .panel-close:hover { background:color-mix(in srgb, var(--itip-text) 8%, transparent); color:var(--itip-text); }
+    .panel-close svg { width:14px; height:14px; }
     .layer-detail {
       padding: var(--sp-md); border: 1px solid var(--itip-border);
       border-radius: var(--radius-md); margin-bottom: var(--sp-sm);
@@ -68,39 +80,54 @@
           Activity
         </a>
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 6h11l3 3-3 3H5V6z"/></svg>
-          Directives <span class="nav-badge">42</span>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
         </a>
-        <a class="nav-item" href="norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
-          Norms <span class="nav-badge">137</span>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
         </a>
-        <a class="nav-item active" href="ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
-          Ascriptions <span class="nav-badge">384</span>
+        <a class="nav-item active" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
         </a>
-        <a class="nav-item" href="review-board.html">
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           Review Board
         </a>
-        <div class="nav-section">Compliance</div>
-        <a class="nav-item" href="../compliance/adherence-matrix.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>
-          Adherence Matrix
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
         </a>
-        <a class="nav-item" href="../compliance/conformance.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-          Conformance
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
         </a>
-        <div class="nav-section">Exploration</div>
-        <a class="nav-item" href="../exploration/structures-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
-          Structures
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
         </a>
-        <a class="nav-item" href="../exploration/diagram-view.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
-          Diagram View
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -111,14 +138,14 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
           Stack Composer
         </a>
-        <div class="nav-section">Truth Sourcing</div>
-        <a class="nav-item" href="../truth-sourcing/sources-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-          Sources
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
         </a>
-        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-          Sync Jobs
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
         </a>
       </nav>
       <div class="app-sidebar__footer">
@@ -130,7 +157,7 @@
     <!-- Header -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
-        <span>Governance</span><span>/</span>
+        <span>Definition</span><span>/</span>
         <strong>Ascriptions</strong>
       </div>
       <div class="app-header__actions">
@@ -145,44 +172,24 @@
 
     <!-- Main -->
     <main class="app-main" style="padding:0">
-      <div class="ascription-layout">
+      <div class="list-and-detail">
+        <div class="list-content">
+          <h1 class="page-title">Ascriptions</h1>
+          <p class="page-subtitle">Governed snapshots binding Definitions to subjects via Archetypes — immutable after creation, only status transitions are allowed.</p>
 
-        <!-- Filter sidebar -->
-        <div class="filter-sidebar" style="border-radius:0">
-          <div class="filter-section">
-            <div class="filter-section__title">Archetype Layer</div>
-            <label class="filter-option"><input type="checkbox" checked> TOGAF (86)</label>
-            <label class="filter-option"><input type="checkbox" checked> SoftwareTechnology (124)</label>
-            <label class="filter-option"><input type="checkbox" checked> ISO 25010 (72)</label>
-            <label class="filter-option"><input type="checkbox" checked> ISO 25012 (38)</label>
-            <label class="filter-option"><input type="checkbox" checked> NIS2 (34)</label>
-            <label class="filter-option"><input type="checkbox" checked> GDPR (22)</label>
-            <label class="filter-option"><input type="checkbox" checked> SCAP (8)</label>
-          </div>
-          <div class="filter-section">
-            <div class="filter-section__title">State</div>
-            <label class="filter-option"><input type="checkbox"> Draft (28)</label>
-            <label class="filter-option"><input type="checkbox"> Proposed (15)</label>
-            <label class="filter-option"><input type="checkbox" checked> Active (341)</label>
-          </div>
-          <div class="filter-section">
-            <div class="filter-section__title">Subject Type</div>
-            <label class="filter-option"><input type="checkbox" checked> Structure (256)</label>
-            <label class="filter-option"><input type="checkbox" checked> Mechanism (72)</label>
-            <label class="filter-option"><input type="checkbox" checked> Interaction (56)</label>
-          </div>
-          <div class="filter-section">
-            <div class="filter-section__title">Layer Count</div>
-            <label class="filter-option"><input type="checkbox"> Single layer (42)</label>
-            <label class="filter-option"><input type="checkbox"> Multi-layer (342)</label>
-          </div>
-        </div>
-
-        <!-- Ascription list -->
-        <div class="ascription-content">
-          <div class="flex justify-between items-center mb-md">
-            <input class="form-input" type="text" placeholder="Search subjects, archetypes..." style="max-width:320px">
-            <span class="text-xs text-muted">Showing 341 active ascriptions of 384 total</span>
+          <div class="ascriptions-toolbar">
+            <input class="form-input" type="text" placeholder="Search subjects, archetypes...">
+            <select class="form-select" style="width:160px">
+              <option>All Layers</option><option>TOGAF</option><option>SoftwareTechnology</option><option>ISO 25010</option><option>ISO 25012</option><option>NIS2</option><option>GDPR</option><option>SCAP</option>
+            </select>
+            <select class="form-select" style="width:130px">
+              <option>All States</option><option>Draft</option><option>Proposed</option><option selected>Active</option>
+            </select>
+            <select class="form-select" style="width:140px">
+              <option>All Types</option><option selected>Structure</option><option>Mechanism</option><option>Interaction</option><option>Directive</option><option>Norm</option><option>Archetype</option>
+            </select>
+            <button class="panel-toggle active" onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')" title="Toggle detail panel"><svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg> Detail</button>
+            <span class="text-xs text-muted" style="margin-left:auto">256 of 384 ascriptions</span>
           </div>
 
           <div class="ascription-header">
@@ -294,10 +301,10 @@
         </div>
 
         <!-- Detail panel -->
-        <div class="detail-panel">
+        <div class="detail-panel open" id="detailPanel">
           <div class="detail-panel__header">
             <h3 style="font-size:var(--fs-base);font-weight:600">Multi-Layer View</h3>
-            <button class="btn btn--ghost btn--sm">✕</button>
+            <button class="panel-close" onclick="document.getElementById('detailPanel').classList.remove('open');var t=document.querySelector('.panel-toggle');if(t)t.classList.remove('active')" title="Close"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
           <div class="detail-panel__body">
 

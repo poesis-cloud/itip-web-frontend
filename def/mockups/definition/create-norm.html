@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Create Norm</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .create-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .create-form .full-width { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .form-group label { font-size:var(--fs-sm); font-weight:600; }
+    .form-group .form-help { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .identity-bound { border-left:3px solid var(--itip-primary); padding-left:var(--sp-sm); }
+    .identity-bound label::after { content:" ⟡"; color:var(--itip-primary); font-size:var(--fs-xs); }
+    .cel-editor { font-family:var(--font-mono); font-size:var(--fs-xs); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); padding:var(--sp-md); line-height:1.6; min-height:60px; }
+    .tolerance-selector { display:flex; gap:var(--sp-md); }
+    .tolerance-card { flex:1; padding:var(--sp-md); border:2px solid var(--itip-border); border-radius:var(--radius-md); cursor:pointer; text-align:center; transition:border-color 0.15s; }
+    .tolerance-card:hover { border-color:var(--itip-primary-light); }
+    .tolerance-card--selected { border-color:var(--compliance-fail); background:#fef2f2; }
+    .tolerance-card--selected-tolerant { border-color:var(--compliance-warn); background:#fffbeb; }
+    .tolerance-card--selected-advisory { border-color:var(--compliance-pass); background:#f0fdf4; }
+    .tolerance-card__title { font-weight:600; font-size:var(--fs-sm); }
+    .tolerance-card__desc { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:4px; }
+    .eval-preview { padding:var(--sp-md); background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); }
+    .eval-preview__line { font-family:var(--font-mono); font-size:var(--fs-xs); padding:4px 0; }
+    .eval-preview__keyword { color:var(--itip-primary); font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar (placeholder) -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/lenses.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Lenses
+        </a>
+        <a class="nav-item active" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Appraisal</div>
+        <a class="nav-item" href="../appraisal/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../appraisal/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="norms-list.html">Norms</a><span>/</span>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Norm</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Create Norm Ascription</h1>
+      <p class="page-subtitle">Define a measurable assertion within a Directive's scope — constrains internal Elements of the governed Structure using CEL expressions for applicability and assertion. Fields marked ⟡ are identity-bound.</p>
+
+      <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
+        <div class="create-form">
+
+          <!-- Parent Directive -->
+          <div class="form-group identity-bound">
+            <label>Parent Directive</label>
+            <select class="form-select">
+              <option value="">Select directive…</option>
+              <option>Data Encryption Standard (NIS2 · IT Ops → UserDatabase)</option>
+              <option selected>Performance SLA Baseline (ISO 25010 · IT Ops → API Gateway)</option>
+              <option>API Security Policy (TOGAF · Security Board → API Gateway)</option>
+              <option>Personal Data Processing (GDPR · Data Office → UserDatabase)</option>
+            </select>
+            <div class="form-help">The Directive that scopes this Norm — chain linkage: Directive.purpose == Norm.structure</div>
+          </div>
+
+          <!-- Governed Structure (auto-filled from directive) -->
+          <div class="form-group identity-bound">
+            <label>Governed Structure</label>
+            <input class="form-input" type="text" value="API Gateway" disabled style="background:var(--itip-bg)">
+            <div class="form-help">Auto-filled from the parent Directive's governed Structure (Norm.structure)</div>
+          </div>
+
+          <!-- Norm name -->
+          <div class="form-group identity-bound">
+            <label>Norm Name</label>
+            <input class="form-input" type="text" placeholder="e.g., response_time_p95, encryption_at_rest..." value="response_time_p95">
+            <div class="form-help">Unique identifier for this norm — used in evaluation reports and CEL references</div>
+          </div>
+
+          <!-- Qualifier -->
+          <div class="form-group identity-bound">
+            <label>Qualifier (Viability Dimension)</label>
+            <select class="form-select">
+              <option value="">Select qualifier…</option>
+              <option selected>ISO 25010 · Performance</option>
+              <option>ISO 25010 · Security</option>
+              <option>ISO 25010 · Reliability</option>
+              <option>NIS2 · AccessControl</option>
+            </select>
+            <div class="form-help">Rootless archetype defining the viability dimension (qualifier_id)</div>
+          </div>
+
+          <!-- Tolerance -->
+          <div class="form-group full-width">
+            <label>Tolerance Level</label>
+            <div class="tolerance-selector">
+              <div class="tolerance-card tolerance-card--selected">
+                <div class="tolerance-card__title">Strict</div>
+                <div class="tolerance-card__desc">Assertion failure = compliance violation. Blocks status transitions.</div>
+              </div>
+              <div class="tolerance-card">
+                <div class="tolerance-card__title">Tolerant</div>
+                <div class="tolerance-card__desc">Assertion failure = warning. Logged but does not block.</div>
+              </div>
+              <div class="tolerance-card">
+                <div class="tolerance-card__title">Advisory</div>
+                <div class="tolerance-card__desc">Informational only. No enforcement, recommendation in reports.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Applicability (CEL) -->
+          <div class="form-group full-width">
+            <label>Applicability Expression (CEL)</label>
+            <textarea class="cel-editor" rows="3">subject.archetype == "LogicalApplicationComponent" && subject.tier == "public-facing"</textarea>
+            <div class="form-help">CEL expression that determines when this norm applies — evaluated against the governed Structure's statement</div>
+          </div>
+
+          <!-- Assertion (CEL) -->
+          <div class="form-group full-width">
+            <label>Assertion Expression (CEL)</label>
+            <textarea class="cel-editor" rows="3">subject.metrics.response_time_p95_ms <= 200 && subject.metrics.error_rate_pct < 1.0</textarea>
+            <div class="form-help">CEL expression that must evaluate to <code>true</code> for compliance — the measurable constraint</div>
+          </div>
+
+          <!-- Typing Archetype -->
+          <div class="form-group">
+            <label>Typing Archetype</label>
+            <select class="form-select">
+              <option value="">Select archetype…</option>
+              <option selected>SourcedNorm (framework-sourced)</option>
+              <option>CustomNorm (tenant-defined)</option>
+            </select>
+            <div class="form-help">Structural archetype with allOf chain to GSM Norm base</div>
+          </div>
+
+          <!-- Owner -->
+          <div class="form-group">
+            <label>Owner</label>
+            <select class="form-select">
+              <option>E. Archer (Enterprise Architect)</option>
+              <option selected>R. Patel (Compliance Analyst)</option>
+              <option>S. Kumar (Security Architect)</option>
+            </select>
+          </div>
+
+          <!-- Evaluation Preview -->
+          <div class="form-group full-width">
+            <label>Evaluation Preview</label>
+            <div class="eval-preview">
+              <div class="eval-preview__line"><span class="eval-preview__keyword">NORM</span> response_time_p95</div>
+              <div class="eval-preview__line"><span class="eval-preview__keyword">ON</span> API Gateway</div>
+              <div class="eval-preview__line"><span class="eval-preview__keyword">WITHIN</span> Performance SLA Baseline (ISO 25010 · Performance)</div>
+              <div class="eval-preview__line"><span class="eval-preview__keyword">WHEN</span> subject.archetype == "LogicalApplicationComponent" &amp;&amp; subject.tier == "public-facing"</div>
+              <div class="eval-preview__line"><span class="eval-preview__keyword">ASSERT</span> subject.metrics.response_time_p95_ms &lt;= 200 &amp;&amp; subject.metrics.error_rate_pct &lt; 1.0</div>
+              <div class="eval-preview__line"><span class="eval-preview__keyword">TOLERANCE</span> <span class="badge badge--fail" style="font-size:10px">Strict</span></div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="full-width" style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
+            <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+            <a href="norms-list.html" class="btn btn--secondary">Cancel</a>
+            <button class="btn btn--primary">Create Norm</button>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>
