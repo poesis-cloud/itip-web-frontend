@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,81 +8,328 @@
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
     /* ── Version picker strip ── */
-    .diff-version-strip { display:flex; gap:var(--sp-lg); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
-    .diff-version-strip label { font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); }
-    .diff-version-strip .form-select { width:220px; }
-    .diff-swap-btn { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-full); border:1px solid var(--itip-border); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
-    .diff-swap-btn:hover { color:var(--itip-primary); border-color:var(--itip-primary); }
-    .diff-swap-btn svg { width:16px; height:16px; }
+    .diff-version-strip {
+      display: flex;
+      gap: var(--sp-lg);
+      align-items: center;
+      margin-bottom: var(--sp-lg);
+      flex-wrap: wrap;
+    }
+
+    .diff-version-strip label {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+    }
+
+    .diff-version-strip .form-select {
+      width: 220px;
+    }
+
+    .diff-swap-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--itip-border);
+      background: transparent;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .diff-swap-btn:hover {
+      color: var(--itip-primary);
+      border-color: var(--itip-primary);
+    }
+
+    .diff-swap-btn svg {
+      width: 16px;
+      height: 16px;
+    }
 
     /* ── Summary counters ── */
-    .diff-summary { display:flex; gap:var(--sp-lg); margin-bottom:var(--sp-lg); }
-    .diff-counter { display:flex; align-items:center; gap:var(--sp-xs); font-size:var(--fs-sm); font-weight:600; }
-    .diff-counter__dot { width:10px; height:10px; border-radius:50%; }
-    .diff-counter__dot--added { background:var(--compliance-pass); }
-    .diff-counter__dot--removed { background:var(--compliance-fail); }
-    .diff-counter__dot--modified { background:var(--compliance-warn); }
-    .diff-counter__dot--unchanged { background:var(--itip-border); }
+    .diff-summary {
+      display: flex;
+      gap: var(--sp-lg);
+      margin-bottom: var(--sp-lg);
+    }
+
+    .diff-counter {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    .diff-counter__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .diff-counter__dot--added {
+      background: var(--compliance-pass);
+    }
+
+    .diff-counter__dot--removed {
+      background: var(--compliance-fail);
+    }
+
+    .diff-counter__dot--modified {
+      background: var(--compliance-warn);
+    }
+
+    .diff-counter__dot--unchanged {
+      background: var(--itip-border);
+    }
 
     /* ── Diff item rows ── */
-    .diff-item { border:1px solid var(--itip-border); border-radius:var(--radius-md); margin-bottom:var(--sp-md); overflow:hidden; }
-    .diff-item--added { border-color:var(--compliance-pass); }
-    .diff-item--removed { border-color:var(--compliance-fail); }
-    .diff-item--modified { border-color:var(--compliance-warn); }
+    .diff-item {
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--sp-md);
+      overflow: hidden;
+    }
 
-    .diff-item__header { display:flex; align-items:center; gap:var(--sp-sm); padding:var(--sp-sm) var(--sp-md); font-size:var(--fs-sm); font-weight:600; }
-    .diff-item--added .diff-item__header { background:color-mix(in srgb, var(--compliance-pass) 10%, transparent); }
-    .diff-item--removed .diff-item__header { background:color-mix(in srgb, var(--compliance-fail) 10%, transparent); }
-    .diff-item--modified .diff-item__header { background:color-mix(in srgb, var(--compliance-warn) 10%, transparent); }
-    .diff-item--unchanged .diff-item__header { background:var(--itip-bg); }
+    .diff-item--added {
+      border-color: var(--compliance-pass);
+    }
 
-    .diff-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:var(--radius-sm); font-size:12px; font-weight:700; color:#fff; flex-shrink:0; }
-    .diff-badge--added { background:var(--compliance-pass); }
-    .diff-badge--removed { background:var(--compliance-fail); }
-    .diff-badge--modified { background:var(--compliance-warn); }
-    .diff-badge--unchanged { background:var(--itip-border); color:var(--itip-text-muted); }
+    .diff-item--removed {
+      border-color: var(--compliance-fail);
+    }
 
-    .diff-item__body { padding:var(--sp-md); }
+    .diff-item--modified {
+      border-color: var(--compliance-warn);
+    }
+
+    .diff-item__header {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      padding: var(--sp-sm) var(--sp-md);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    .diff-item--added .diff-item__header {
+      background: color-mix(in srgb, var(--compliance-pass) 10%, transparent);
+    }
+
+    .diff-item--removed .diff-item__header {
+      background: color-mix(in srgb, var(--compliance-fail) 10%, transparent);
+    }
+
+    .diff-item--modified .diff-item__header {
+      background: color-mix(in srgb, var(--compliance-warn) 10%, transparent);
+    }
+
+    .diff-item--unchanged .diff-item__header {
+      background: var(--itip-bg);
+    }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .diff-badge--added {
+      background: var(--compliance-pass);
+    }
+
+    .diff-badge--removed {
+      background: var(--compliance-fail);
+    }
+
+    .diff-badge--modified {
+      background: var(--compliance-warn);
+    }
+
+    .diff-badge--unchanged {
+      background: var(--itip-border);
+      color: var(--itip-text-muted);
+    }
+
+    .diff-item__body {
+      padding: var(--sp-md);
+    }
 
     /* ── Side-by-side columns inside modified items ── */
-    .diff-columns { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-md); }
-    .diff-col { padding:var(--sp-sm) var(--sp-md); border-radius:var(--radius-sm); font-size:var(--fs-sm); }
-    .diff-col--old { background:color-mix(in srgb, var(--compliance-fail) 6%, transparent); }
-    .diff-col--new { background:color-mix(in srgb, var(--compliance-pass) 6%, transparent); }
-    .diff-col__label { font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-xs); }
-    .diff-field { padding:2px 0; font-size:var(--fs-sm); }
-    .diff-field strong { color:var(--itip-text); }
-    .diff-field--highlight { font-weight:600; }
+    .diff-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-md);
+    }
+
+    .diff-col {
+      padding: var(--sp-sm) var(--sp-md);
+      border-radius: var(--radius-sm);
+      font-size: var(--fs-sm);
+    }
+
+    .diff-col--old {
+      background: color-mix(in srgb, var(--compliance-fail) 6%, transparent);
+    }
+
+    .diff-col--new {
+      background: color-mix(in srgb, var(--compliance-pass) 6%, transparent);
+    }
+
+    .diff-col__label {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-xs);
+    }
+
+    .diff-field {
+      padding: 2px 0;
+      font-size: var(--fs-sm);
+    }
+
+    .diff-field strong {
+      color: var(--itip-text);
+    }
+
+    .diff-field--highlight {
+      font-weight: 600;
+    }
 
     /* ── Added/removed single column ── */
-    .diff-single { padding:var(--sp-sm) var(--sp-md); border-radius:var(--radius-sm); font-size:var(--fs-sm); }
-    .diff-single--added { background:color-mix(in srgb, var(--compliance-pass) 6%, transparent); }
-    .diff-single--removed { background:color-mix(in srgb, var(--compliance-fail) 6%, transparent); text-decoration:line-through; color:var(--itip-text-muted); }
+    .diff-single {
+      padding: var(--sp-sm) var(--sp-md);
+      border-radius: var(--radius-sm);
+      font-size: var(--fs-sm);
+    }
+
+    .diff-single--added {
+      background: color-mix(in srgb, var(--compliance-pass) 6%, transparent);
+    }
+
+    .diff-single--removed {
+      background: color-mix(in srgb, var(--compliance-fail) 6%, transparent);
+      text-decoration: line-through;
+      color: var(--itip-text-muted);
+    }
 
     /* ── Layer badges (reuse from ascriptions-list) ── */
-    .layer-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:500; border:1px solid; }
-    .layer-badge--togaf { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
-    .layer-badge--iso { background:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
-    .layer-badge--nis2 { background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
-    .layer-badge--gdpr { background:#faf5ff; color:#7c3aed; border-color:#ddd6fe; }
-    .layer-badge--scap { background:#fefce8; color:#a16207; border-color:#fde68a; }
-    .layer-badge--swtech { background:#f1f5f9; color:#475569; border-color:#cbd5e1; }
+    .layer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .layer-badge--togaf {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .layer-badge--iso {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+
+    .layer-badge--nis2 {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .layer-badge--gdpr {
+      background: #faf5ff;
+      color: #7c3aed;
+      border-color: #ddd6fe;
+    }
+
+    .layer-badge--scap {
+      background: #fefce8;
+      color: #a16207;
+      border-color: #fde68a;
+    }
+
+    .layer-badge--swtech {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
 
     /* ── Unchanged collapsed ── */
-    .diff-item--unchanged .diff-item__body { display:none; }
-    .diff-item--unchanged.expanded .diff-item__body { display:block; }
-    .diff-item--unchanged .diff-item__header { cursor:pointer; }
-    .diff-item--unchanged .diff-item__header:hover { background:color-mix(in srgb, var(--itip-primary) 5%, transparent); }
-    .expand-hint { font-size:var(--fs-xs); color:var(--itip-text-muted); font-weight:400; margin-left:auto; }
+    .diff-item--unchanged .diff-item__body {
+      display: none;
+    }
+
+    .diff-item--unchanged.expanded .diff-item__body {
+      display: block;
+    }
+
+    .diff-item--unchanged .diff-item__header {
+      cursor: pointer;
+    }
+
+    .diff-item--unchanged .diff-item__header:hover {
+      background: color-mix(in srgb, var(--itip-primary) 5%, transparent);
+    }
+
+    .expand-hint {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      font-weight: 400;
+      margin-left: auto;
+    }
 
     /* ── Norm diff list ── */
-    .norm-diff { list-style:none; padding:0; margin:0; }
-    .norm-diff li { display:flex; align-items:baseline; gap:var(--sp-xs); padding:2px 0; font-size:var(--fs-sm); }
-    .norm-diff .diff-add { color:var(--compliance-pass); }
-    .norm-diff .diff-remove { color:var(--compliance-fail); text-decoration:line-through; }
-    .norm-diff .diff-unchanged { color:var(--itip-text-muted); }
+    .norm-diff {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .norm-diff li {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-xs);
+      padding: 2px 0;
+      font-size: var(--fs-sm);
+    }
+
+    .norm-diff .diff-add {
+      color: var(--compliance-pass);
+    }
+
+    .norm-diff .diff-remove {
+      color: var(--compliance-fail);
+      text-decoration: line-through;
+    }
+
+    .norm-diff .diff-unchanged {
+      color: var(--itip-text-muted);
+    }
   </style>
 </head>
+
 <body>
   <div class="app-shell">
 
@@ -91,78 +339,140 @@
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
         <a class="nav-item" href="../overview/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../overview/activity-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
           Activity
         </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../definition/lenses.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
+          </svg>
           Lenses
         </a>
         <a class="nav-item active" href="../definition/registry.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
           Registry
         </a>
         <div class="nav-section">Appraisal</div>
         <a class="nav-item" href="../appraisal/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../appraisal/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
           Findings
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4" />
+          </svg>
           Impact Analysis
         </a>
         <div class="nav-section">Review</div>
         <a class="nav-item" href="../review/review-board.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
           Review Board
         </a>
         <a class="nav-item" href="../review/review-session.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
           Sessions
         </a>
         <a class="nav-item" href="../review/review-history.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+            <path d="M2.05 12A10 10 0 0112 2" />
+          </svg>
           History
         </a>
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
           Sources
         </a>
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M23 4v6h-6" />
+            <path d="M1 20v-6h6" />
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+          </svg>
           Sync Jobs
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
           Catalog <span class="nav-badge">5</span>
         </a>
         <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
           Stack Composer
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
           Users
         </a>
         <a class="nav-item" href="../admin/integrations.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+          </svg>
           Integrations
         </a>
       </nav>
@@ -182,8 +492,14 @@
       </div>
       <div class="app-header__actions">
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
         </button>
         <div class="avatar">EA</div>
       </div>
@@ -214,7 +530,10 @@
             </select>
           </div>
           <button class="diff-swap-btn" title="Swap versions">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 16l-4-4m0 0l4-4m-4 4h18"/><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </button>
           <div>
             <label>Comparison</label><br>
@@ -301,7 +620,8 @@
         <div class="diff-item__body">
           <div class="diff-single">
             <div class="diff-field"><strong>Domain:</strong> Application Architecture</div>
-            <div class="diff-field"><strong>Norms bound:</strong> 4 (arch_principle, tech_standard, lifecycle_governance, naming_convention)</div>
+            <div class="diff-field"><strong>Norms bound:</strong> 4 (arch_principle, tech_standard,
+              lifecycle_governance, naming_convention)</div>
             <div class="diff-field"><strong>State:</strong> Active since 2024-09-15</div>
           </div>
         </div>
@@ -332,8 +652,10 @@
         </div>
         <div class="diff-item__body">
           <div class="diff-single">
-            <div class="diff-field"><strong>Quality characteristics:</strong> Confidentiality, Integrity, Authenticity</div>
-            <div class="diff-field"><strong>Norms bound:</strong> 3 (confidentiality_check, integrity_hash, auth_token_verification)</div>
+            <div class="diff-field"><strong>Quality characteristics:</strong> Confidentiality, Integrity, Authenticity
+            </div>
+            <div class="diff-field"><strong>Norms bound:</strong> 3 (confidentiality_check, integrity_hash,
+              auth_token_verification)</div>
             <div class="diff-field"><strong>State:</strong> Active since 2024-10-01</div>
           </div>
         </div>
@@ -342,7 +664,8 @@
       <!-- ═══════ Norm-level summary table ═══════ -->
       <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
         <h3 style="margin-bottom:var(--sp-md)">Norm Binding Changes</h3>
-        <p class="text-xs text-muted" style="margin-bottom:var(--sp-md)">Aggregate view of all norm bindings added, removed, or modified across layers.</p>
+        <p class="text-xs text-muted" style="margin-bottom:var(--sp-md)">Aggregate view of all norm bindings added,
+          removed, or modified across layers.</p>
         <table style="width:100%; font-size:var(--fs-sm); border-collapse:collapse">
           <thead>
             <tr style="border-bottom:2px solid var(--itip-border)">
@@ -355,15 +678,19 @@
           <tbody>
             <tr style="border-bottom:1px solid var(--itip-border)">
               <td style="padding:var(--sp-sm)"><strong>vulnerability_scan</strong></td>
-              <td style="padding:var(--sp-sm)"><span class="layer-badge layer-badge--scap" style="font-size:10px">SCAP</span> CPE</td>
+              <td style="padding:var(--sp-sm)"><span class="layer-badge layer-badge--scap"
+                  style="font-size:10px">SCAP</span> CPE</td>
               <td style="padding:var(--sp-sm)">Vulnerability Assessment Policy</td>
-              <td style="text-align:center; padding:var(--sp-sm)"><span style="color:var(--compliance-pass); font-weight:600">+ Added</span></td>
+              <td style="text-align:center; padding:var(--sp-sm)"><span
+                  style="color:var(--compliance-pass); font-weight:600">+ Added</span></td>
             </tr>
             <tr style="border-bottom:1px solid var(--itip-border)">
               <td style="padding:var(--sp-sm)"><strong>rbac_check</strong></td>
-              <td style="padding:var(--sp-sm)"><span class="layer-badge layer-badge--nis2" style="font-size:10px">NIS2</span> AccessControl</td>
+              <td style="padding:var(--sp-sm)"><span class="layer-badge layer-badge--nis2"
+                  style="font-size:10px">NIS2</span> AccessControl</td>
               <td style="padding:var(--sp-sm)">Access Control Standard (NIS2)</td>
-              <td style="text-align:center; padding:var(--sp-sm)"><span style="color:var(--compliance-pass); font-weight:600">+ Added</span></td>
+              <td style="text-align:center; padding:var(--sp-sm)"><span
+                  style="color:var(--compliance-pass); font-weight:600">+ Added</span></td>
             </tr>
           </tbody>
         </table>
@@ -373,12 +700,15 @@
   </div>
 
   <button class="copilot-toggle" title="Copilot Agent">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
   </script>
 </body>
+
 </html>
