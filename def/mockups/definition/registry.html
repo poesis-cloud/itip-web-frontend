@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,63 +8,264 @@
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
     /* ── LIST MODE ─────────────────────────────────────── */
-    .list-and-detail { display:flex; gap:0; flex:1; }
-    .list-content { flex:1; padding:var(--sp-lg); overflow-y:auto; }
-    .detail-panel { width:380px; background:var(--itip-surface); border-left:1px solid var(--itip-border); display:none; flex-direction:column; }
-    .detail-panel.open { display:flex; }
-    .detail-panel__header { padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); display:flex; justify-content:space-between; align-items:center; }
-    .detail-panel__body { padding:var(--sp-lg); overflow-y:auto; flex:1; }
-    .detail-section { margin-bottom:var(--sp-lg); }
-    .detail-label { font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-sm); }
+    .list-and-detail {
+      display: flex;
+      gap: 0;
+      flex: 1;
+    }
 
-    .registry-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
-    .registry-toolbar .form-input { flex:1; min-width:200px; }
+    .list-content {
+      flex: 1;
+      padding: var(--sp-lg);
+      overflow-y: auto;
+    }
+
+    .detail-panel {
+      width: 380px;
+      background: var(--itip-surface);
+      border-left: 1px solid var(--itip-border);
+      display: none;
+      flex-direction: column;
+    }
+
+    .detail-panel.open {
+      display: flex;
+    }
+
+    .detail-panel__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid var(--itip-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .detail-panel__body {
+      padding: var(--sp-lg);
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .detail-section {
+      margin-bottom: var(--sp-lg);
+    }
+
+    .detail-label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+
+    .registry-toolbar {
+      display: flex;
+      gap: var(--sp-md);
+      align-items: center;
+      margin-bottom: var(--sp-lg);
+      flex-wrap: wrap;
+    }
+
+    .registry-toolbar .form-input {
+      flex: 1;
+      min-width: 200px;
+    }
 
     .registry-header {
-      display:grid; grid-template-columns:40px 1.2fr 80px 2fr 90px 110px;
-      align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg);
-      font-size:var(--fs-xs); font-weight:600; text-transform:uppercase;
-      letter-spacing:0.06em; color:var(--itip-text-muted);
+      display: grid;
+      grid-template-columns: 40px 1.2fr 80px 2fr 90px 110px;
+      align-items: center;
+      gap: var(--sp-md);
+      padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
     }
+
     .registry-row {
-      display:grid; grid-template-columns:40px 1.2fr 80px 2fr 90px 110px;
-      align-items:center; gap:var(--sp-md);
-      padding:var(--sp-md) var(--sp-lg);
-      background:var(--itip-surface); border:1px solid var(--itip-border);
-      border-radius:var(--radius-md); margin-bottom:var(--sp-sm);
-      cursor:pointer; transition:box-shadow 0.15s, border-color 0.15s;
+      display: grid;
+      grid-template-columns: 40px 1.2fr 80px 2fr 90px 110px;
+      align-items: center;
+      gap: var(--sp-md);
+      padding: var(--sp-md) var(--sp-lg);
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--sp-sm);
+      cursor: pointer;
+      transition: box-shadow 0.15s, border-color 0.15s;
     }
-    .registry-row:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
-    .registry-row > div:nth-child(3), .registry-row > div:nth-child(5), .registry-row > div:nth-child(6) { text-align:center; }
-    .registry-header > span:nth-child(3), .registry-header > span:nth-child(5), .registry-header > span:nth-child(6) { text-align:center; }
+
+    .registry-row:hover {
+      border-color: var(--itip-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .registry-row>div:nth-child(3),
+    .registry-row>div:nth-child(5),
+    .registry-row>div:nth-child(6) {
+      text-align: center;
+    }
+
+    .registry-header>span:nth-child(3),
+    .registry-header>span:nth-child(5),
+    .registry-header>span:nth-child(6) {
+      text-align: center;
+    }
 
     /* ── Archetyping chips ── */
-    .arc-row { display:flex; align-items:baseline; gap:4px; margin-bottom:2px; }
-    .arc-row:last-child { margin-bottom:0; }
-    .arc-label { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--itip-text-muted); min-width:30px; flex-shrink:0; }
-    .arc-chip { display:inline-block; padding:1px 6px; font-size:10px; border-radius:var(--radius-full); font-family:var(--font-mono); white-space:nowrap; }
-    .arc-chip--gsm { background:color-mix(in srgb, var(--itip-primary) 10%, transparent); color:var(--itip-primary); border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent); }
-    .arc-chip--fw { background:color-mix(in srgb, #d97706 10%, transparent); color:#92400e; border:1px solid color-mix(in srgb, #d97706 25%, transparent); }
+    .arc-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
 
-    .type-pip { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--radius-sm); font-size:11px; font-weight:800; }
-    .type-pip--d { background:color-mix(in srgb, #6366f1 12%, transparent); color:#6366f1; }
-    .type-pip--n { background:color-mix(in srgb, #ec4899 12%, transparent); color:#ec4899; }
-    .type-pip--str { background:color-mix(in srgb, #2dd4bf 12%, transparent); color:#0d9488; }
-    .type-pip--mch { background:color-mix(in srgb, #60a5fa 12%, transparent); color:#2563eb; }
-    .type-pip--int { background:color-mix(in srgb, #f59e0b 12%, transparent); color:#d97706; }
-    .type-pip--eff { background:color-mix(in srgb, #a78bfa 12%, transparent); color:#7c3aed; }
-    .type-pip--rec { background:color-mix(in srgb, #fb923c 12%, transparent); color:#c2410c; }
-    .type-pip--arc { background:color-mix(in srgb, #d97706 12%, transparent); color:#92400e; }
+    .arc-row:last-child {
+      margin-bottom: 0;
+    }
 
-    .panel-toggle { display:inline-flex; align-items:center; gap:6px; padding:var(--sp-xs) var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; font-size:var(--fs-xs); font-weight:500; margin-left:auto; }
-    .panel-toggle:hover { color:var(--itip-primary); border-color:var(--itip-primary); }
-    .panel-toggle.active { color:var(--itip-primary); border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); }
-    .panel-toggle svg { width:16px; height:16px; }
-    .panel-close { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:none; border-radius:var(--radius-sm); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
-    .panel-close:hover { background:color-mix(in srgb, var(--itip-text) 8%, transparent); color:var(--itip-text); }
-    .panel-close svg { width:14px; height:14px; }
+    .arc-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--itip-text-muted);
+      min-width: 30px;
+      flex-shrink: 0;
+    }
+
+    .arc-chip {
+      display: inline-block;
+      padding: 1px 6px;
+      font-size: 10px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    .arc-chip--gsm {
+      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      color: var(--itip-primary);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+
+    .arc-chip--fw {
+      background: color-mix(in srgb, #d97706 10%, transparent);
+      color: #92400e;
+      border: 1px solid color-mix(in srgb, #d97706 25%, transparent);
+    }
+
+    .type-pip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .type-pip--d {
+      background: color-mix(in srgb, #6366f1 12%, transparent);
+      color: #6366f1;
+    }
+
+    .type-pip--n {
+      background: color-mix(in srgb, #ec4899 12%, transparent);
+      color: #ec4899;
+    }
+
+    .type-pip--str {
+      background: color-mix(in srgb, #2dd4bf 12%, transparent);
+      color: #0d9488;
+    }
+
+    .type-pip--mch {
+      background: color-mix(in srgb, #60a5fa 12%, transparent);
+      color: #2563eb;
+    }
+
+    .type-pip--int {
+      background: color-mix(in srgb, #f59e0b 12%, transparent);
+      color: #d97706;
+    }
+
+    .type-pip--eff {
+      background: color-mix(in srgb, #a78bfa 12%, transparent);
+      color: #7c3aed;
+    }
+
+    .type-pip--rec {
+      background: color-mix(in srgb, #fb923c 12%, transparent);
+      color: #c2410c;
+    }
+
+    .type-pip--arc {
+      background: color-mix(in srgb, #d97706 12%, transparent);
+      color: #92400e;
+    }
+
+    .panel-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--sp-xs) var(--sp-sm);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      margin-left: auto;
+    }
+
+    .panel-toggle:hover {
+      color: var(--itip-primary);
+      border-color: var(--itip-primary);
+    }
+
+    .panel-toggle.active {
+      color: var(--itip-primary);
+      border-color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
+    }
+
+    .panel-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .panel-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .panel-close:hover {
+      background: color-mix(in srgb, var(--itip-text) 8%, transparent);
+      color: var(--itip-text);
+    }
+
+    .panel-close svg {
+      width: 14px;
+      height: 14px;
+    }
   </style>
 </head>
+
 <body>
   <div class="app-shell">
 
@@ -73,87 +275,154 @@
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
         <a class="nav-item" href="../overview/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../overview/activity-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
           Activity
         </a>
         <div class="nav-section">Evaluation</div>
         <a class="nav-item" href="../evaluation/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../evaluation/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
           Findings
         </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item active" href="../definition/registry.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
           Registry
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
           Catalog <span class="nav-badge">5</span>
         </a>
         <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
           Stack Composer
         </a>
         <div class="nav-section">Lenses</div>
         <a class="nav-item" href="../lenses/browse.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
+          </svg>
           Browse
         </a>
         <a class="nav-item" href="../lenses/diagram.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21" />
+          </svg>
           Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4" />
+          </svg>
           Impact Analysis
         </a>
         <div class="nav-section">Review</div>
         <a class="nav-item" href="../review/review-board.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
           Review Board
         </a>
         <a class="nav-item" href="../review/review-session.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
           Sessions
         </a>
         <a class="nav-item" href="../review/review-history.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+            <path d="M2.05 12A10 10 0 0112 2" />
+          </svg>
           History
         </a>
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
           Sources
         </a>
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M23 4v6h-6" />
+            <path d="M1 20v-6h6" />
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+          </svg>
           Sync Jobs
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
           Users
         </a>
         <a class="nav-item" href="../admin/integrations.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+          </svg>
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+          &copy; 2024&ndash;2026</span></div>
     </aside>
 
     <!-- ======== Header ======== -->
@@ -164,12 +433,21 @@
       </div>
       <div class="app-header__actions">
         <button class="btn btn--secondary btn--sm">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
           Search
         </button>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
         </button>
         <div class="avatar">EA</div>
       </div>
@@ -197,21 +475,40 @@
           <div class="registry-toolbar">
             <input class="form-input" type="text" placeholder="Search definitions by name or archetype URI…">
             <select class="form-select" style="width:110px">
-              <option>All Types</option><option>Directive</option><option>Norm</option><option>Structure</option><option>Mechanism</option><option>Interaction</option><option>Effector</option><option>Receptor</option><option>Archetype</option>
+              <option>All Types</option>
+              <option>Directive</option>
+              <option>Norm</option>
+              <option>Structure</option>
+              <option>Mechanism</option>
+              <option>Interaction</option>
+              <option>Effector</option>
+              <option>Receptor</option>
+              <option>Archetype</option>
             </select>
             <select class="form-select" style="width:200px">
               <option>All Archetypes</option>
               <optgroup label="GSM Base">
-                <option>gsm/Directive/v1</option><option>gsm/Norm/v1</option><option>gsm/Structure/v1</option><option>gsm/Mechanism/v1</option><option>gsm/Interaction/v1</option><option>gsm/Effector/v1</option><option>gsm/Receptor/v1</option>
+                <option>gsm/Directive/v1</option>
+                <option>gsm/Norm/v1</option>
+                <option>gsm/Structure/v1</option>
+                <option>gsm/Mechanism/v1</option>
+                <option>gsm/Interaction/v1</option>
+                <option>gsm/Effector/v1</option>
+                <option>gsm/Receptor/v1</option>
               </optgroup>
               <optgroup label="NIS2">
-                <option>nis2/SecurityDirective/v1</option><option>nis2/IncidentDirective/v1</option><option>nis2/EncryptionNorm/v1</option><option>nis2/TransportSecurityNorm/v1</option>
+                <option>nis2/SecurityDirective/v1</option>
+                <option>nis2/IncidentDirective/v1</option>
+                <option>nis2/EncryptionNorm/v1</option>
+                <option>nis2/TransportSecurityNorm/v1</option>
               </optgroup>
               <optgroup label="GDPR">
-                <option>gdpr/ProcessingDirective/v1</option><option>gdpr/RetentionNorm/v1</option>
+                <option>gdpr/ProcessingDirective/v1</option>
+                <option>gdpr/RetentionNorm/v1</option>
               </optgroup>
               <optgroup label="TOGAF">
-                <option>togaf/LogicalAppComponent/v1</option><option>togaf/DataEntity/v1</option>
+                <option>togaf/LogicalAppComponent/v1</option>
+                <option>togaf/DataEntity/v1</option>
               </optgroup>
               <optgroup label="ITIP">
                 <option>itip/SoftwareTechnology/v1</option>
@@ -221,10 +518,21 @@
               </optgroup>
             </select>
             <select class="form-select" style="width:130px">
-              <option>All States</option><option>Draft</option><option>Proposed</option><option>Active</option><option>Evolving</option><option>Suspended</option><option>Deprecated</option>
+              <option>All States</option>
+              <option>Draft</option>
+              <option>Proposed</option>
+              <option>Active</option>
+              <option>Evolving</option>
+              <option>Suspended</option>
+              <option>Deprecated</option>
             </select>
-            <button class="panel-toggle active" onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')" title="Toggle detail panel">
-              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+            <button class="panel-toggle active"
+              onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')"
+              title="Toggle detail panel">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="15" y1="3" x2="15" y2="21" />
+              </svg>
               Detail
             </button>
           </div>
@@ -240,13 +548,16 @@
           </div>
 
           <!-- ── Directive rows ── -->
-          <div class="registry-row" onclick="location.href='directive-detail.html'" style="border-color:var(--itip-primary)">
+          <div class="registry-row" onclick="location.href='directive-detail.html'"
+            style="border-color:var(--itip-primary)">
             <div><span class="type-pip type-pip--d">D</span></div>
             <div><strong>Data Encryption Standard</strong></div>
             <div class="text-xs">Directive</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/SecurityDirective/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">nis2/SecurityDirective/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-08-12</div>
@@ -257,8 +568,10 @@
             <div><strong>Personal Data Processing</strong></div>
             <div class="text-xs">Directive</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">gdpr/ProcessingDirective/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">gdpr/ProcessingDirective/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-06-20</div>
@@ -269,8 +582,10 @@
             <div><strong>Incident Response Protocol</strong></div>
             <div class="text-xs">Directive</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/IncidentDirective/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">nis2/IncidentDirective/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-09-28</div>
@@ -282,8 +597,10 @@
             <div><strong>encryption_at_rest</strong></div>
             <div class="text-xs">Norm</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/EncryptionNorm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">nis2/EncryptionNorm/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-08-14</div>
@@ -294,8 +611,10 @@
             <div><strong>tls_version_min</strong></div>
             <div class="text-xs">Norm</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/TransportSecurityNorm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">nis2/TransportSecurityNorm/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-07-20</div>
@@ -306,8 +625,10 @@
             <div><strong>data_retention_max</strong></div>
             <div class="text-xs">Norm</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">gdpr/RetentionNorm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">gdpr/RetentionNorm/v1</span></div>
             </div>
             <div><span class="badge badge--proposed">Proposed</span></div>
             <div class="text-xs text-muted">2025-11-01</div>
@@ -318,8 +639,10 @@
             <div><strong>rate_limit_enforcement</strong></div>
             <div class="text-xs">Norm</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/ApiPerformanceNorm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">itip/ApiPerformanceNorm/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-05-18</div>
@@ -331,8 +654,10 @@
             <div><strong>UserDatabase — encryption_at_rest</strong></div>
             <div class="text-xs">Structure</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/DataEntity/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">togaf/DataEntity/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-08-15</div>
@@ -343,8 +668,10 @@
             <div><strong>API Gateway — rate_limit</strong></div>
             <div class="text-xs">Structure</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-05-19</div>
@@ -355,8 +682,10 @@
             <div><strong>PaymentService — tls_min</strong></div>
             <div class="text-xs">Mechanism</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Mechanism/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SoftwareTechnology/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Mechanism/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">itip/SoftwareTechnology/v1</span></div>
             </div>
             <div><span class="badge badge--evolving">Evolving</span></div>
             <div class="text-xs text-muted">2025-10-02</div>
@@ -367,8 +696,11 @@
             <div><strong>AuditService — log_retention</strong></div>
             <div class="text-xs">Structure</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span> <span class="arc-chip arc-chip--fw">iso25010/Security/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span> <span
+                  class="arc-chip arc-chip--fw">iso25010/Security/v1</span></div>
             </div>
             <div><span class="badge badge--suspended">Suspended</span></div>
             <div class="text-xs text-muted">2025-11-12</div>
@@ -380,8 +712,10 @@
             <div><strong>plaintext_request → incoming_request</strong></div>
             <div class="text-xs">Interaction</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-10-05</div>
@@ -392,8 +726,10 @@
             <div><strong>throttled_request → rate_check</strong></div>
             <div class="text-xs">Interaction</div>
             <div>
-              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
-              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span
+                  class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
             </div>
             <div><span class="badge badge--draft">Draft</span></div>
             <div class="text-xs text-muted">2025-11-20</div>
@@ -405,7 +741,8 @@
             <div><strong>togaf/InfrastructureService/v1</strong></div>
             <div class="text-xs">Archetype</div>
             <div>
-              <div class="arc-row"><span class="arc-label">extends</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">extends</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-08-20</div>
@@ -416,7 +753,8 @@
             <div><strong>nis2/SecurityDirective/v1</strong></div>
             <div class="text-xs">Archetype</div>
             <div>
-              <div class="arc-row"><span class="arc-label">extends</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">extends</span> <span
+                  class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-06-15</div>
@@ -428,8 +766,12 @@
         <div class="detail-panel open" id="detailPanel">
           <div class="detail-panel__header">
             <h3 style="margin:0;font-size:var(--fs-sm)">Data Encryption Standard</h3>
-            <button class="panel-close" onclick="document.getElementById('detailPanel').classList.remove('open');document.querySelector('.panel-toggle').classList.remove('active')" title="Close panel">
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            <button class="panel-close"
+              onclick="document.getElementById('detailPanel').classList.remove('open');document.querySelector('.panel-toggle').classList.remove('active')"
+              title="Close panel">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
           <div class="detail-panel__body">
@@ -464,8 +806,10 @@
               </div>
             </div>
             <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-md)">
-              <a href="directive-detail.html" class="btn btn--primary btn--sm" style="flex:1;text-align:center">Open Detail</a>
-              <a href="directive-impact.html" class="btn btn--secondary btn--sm" style="flex:1;text-align:center">Impact</a>
+              <a href="directive-detail.html" class="btn btn--primary btn--sm" style="flex:1;text-align:center">Open
+                Detail</a>
+              <a href="directive-impact.html" class="btn btn--secondary btn--sm"
+                style="flex:1;text-align:center">Impact</a>
             </div>
           </div>
         </div>
@@ -475,8 +819,9 @@
   </div>
 
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
   </script>
 </body>
+
 </html>

@@ -1,56 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ITIP — Ascription Status Transition</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
-    .transition-panel { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-xl); align-items:start; }
+    .transition-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-xl);
+      align-items: start;
+    }
 
     /* State Machine SVG */
-    .sm-node { fill: #fff; stroke: #8b949e; stroke-width: 1.5; }
-    .sm-node--current { fill: rgba(13,110,253,0.12); stroke: #0d6efd; stroke-width: 2.5; }
-    .sm-node--target { fill: rgba(34,197,94,0.12); stroke: #22c55e; stroke-width: 2.5; }
-    .sm-node--terminal { fill: #f6f8fa; stroke: #8b949e; stroke-width: 1.5; stroke-dasharray: 5 3; }
-    .sm-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10.5px; font-weight: 600; fill: #24292f; }
-    .sm-label--current { fill: #0d6efd; }
-    .sm-label--target { fill: #16a34a; }
-    .sm-label--terminal { fill: #8b949e; }
-    .sm-arrow { fill: none; stroke: #8b949e; stroke-width: 1.5; }
-    .sm-arrow--active { stroke: #22c55e; stroke-width: 2.5; }
-    .sm-legend { display:flex; gap:var(--sp-lg); flex-wrap:wrap; margin-top:var(--sp-sm); font-size:var(--fs-xs); color:var(--itip-text-muted); }
-    .sm-legend-item { display:flex; align-items:center; gap:var(--sp-xs); }
-    .sm-legend-swatch { width:14px; height:14px; border-radius:4px; border:2px solid; }
-    .sm-legend-swatch--current { border-color:#0d6efd; background:rgba(13,110,253,0.12); }
-    .sm-legend-swatch--target { border-color:#22c55e; background:rgba(34,197,94,0.12); }
-    .sm-legend-swatch--terminal { border-color:#8b949e; background:#f6f8fa; border-style:dashed; }
+    .sm-node {
+      fill: #fff;
+      stroke: #8b949e;
+      stroke-width: 1.5;
+    }
+
+    .sm-node--current {
+      fill: rgba(13, 110, 253, 0.12);
+      stroke: #0d6efd;
+      stroke-width: 2.5;
+    }
+
+    .sm-node--target {
+      fill: rgba(34, 197, 94, 0.12);
+      stroke: #22c55e;
+      stroke-width: 2.5;
+    }
+
+    .sm-node--terminal {
+      fill: #f6f8fa;
+      stroke: #8b949e;
+      stroke-width: 1.5;
+      stroke-dasharray: 5 3;
+    }
+
+    .sm-label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 10.5px;
+      font-weight: 600;
+      fill: #24292f;
+    }
+
+    .sm-label--current {
+      fill: #0d6efd;
+    }
+
+    .sm-label--target {
+      fill: #16a34a;
+    }
+
+    .sm-label--terminal {
+      fill: #8b949e;
+    }
+
+    .sm-arrow {
+      fill: none;
+      stroke: #8b949e;
+      stroke-width: 1.5;
+    }
+
+    .sm-arrow--active {
+      stroke: #22c55e;
+      stroke-width: 2.5;
+    }
+
+    .sm-legend {
+      display: flex;
+      gap: var(--sp-lg);
+      flex-wrap: wrap;
+      margin-top: var(--sp-sm);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+
+    .sm-legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+    }
+
+    .sm-legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 2px solid;
+    }
+
+    .sm-legend-swatch--current {
+      border-color: #0d6efd;
+      background: rgba(13, 110, 253, 0.12);
+    }
+
+    .sm-legend-swatch--target {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.12);
+    }
+
+    .sm-legend-swatch--terminal {
+      border-color: #8b949e;
+      background: #f6f8fa;
+      border-style: dashed;
+    }
 
     /* Transition from → to */
-    .transition-from-to { display:flex; align-items:center; gap:var(--sp-md); margin-bottom:var(--sp-lg); }
-    .transition-badge { padding:var(--sp-xs) var(--sp-md); border-radius:var(--radius-full); font-size:var(--fs-sm); font-weight:600; border:2px solid; }
-    .transition-badge--from { border-color:#0d6efd; background:rgba(13,110,253,0.1); color:#0d6efd; }
-    .transition-badge--to { border-color:#22c55e; background:rgba(34,197,94,0.1); color:#16a34a; }
+    .transition-from-to {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-md);
+      margin-bottom: var(--sp-lg);
+    }
+
+    .transition-badge {
+      padding: var(--sp-xs) var(--sp-md);
+      border-radius: var(--radius-full);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      border: 2px solid;
+    }
+
+    .transition-badge--from {
+      border-color: #0d6efd;
+      background: rgba(13, 110, 253, 0.1);
+      color: #0d6efd;
+    }
+
+    .transition-badge--to {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      color: #16a34a;
+    }
 
     /* Rule evaluation */
-    .rule-section { margin-bottom:var(--sp-lg); }
-    .rule-section:last-child { margin-bottom:0; }
-    .rule-section h4 { font-size:var(--fs-sm); font-weight:600; margin-bottom:var(--sp-sm); display:flex; align-items:center; gap:var(--sp-sm); }
-    .rule-count { font-size:var(--fs-xs); padding:1px 8px; border-radius:var(--radius-full); background:var(--itip-bg-muted, #f6f8fa); color:var(--itip-text-muted); font-weight:500; }
-    .evaluation-checks { list-style:none; padding:0; margin:0; }
-    .evaluation-checks li { display:flex; align-items:flex-start; gap:var(--sp-sm); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
-    .evaluation-checks li:last-child { border-bottom:none; }
-    .check-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; margin-top:1px; }
-    .check-icon--pass { background:var(--compliance-pass); color:#fff; }
-    .check-icon--fail { background:var(--compliance-fail); color:#fff; }
-    .check-icon--warn { background:var(--compliance-warn); color:#fff; }
-    .check-icon--na { background:var(--itip-border); color:var(--itip-text-muted); }
-    .cascade-type { font-size:var(--fs-xs); padding:1px 6px; border-radius:var(--radius-sm, 4px); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-    .cascade-type--constitutive { background:rgba(239,68,68,0.1); color:#dc2626; }
-    .cascade-type--governing { background:rgba(59,130,246,0.1); color:#2563eb; }
-    .cascade-type--dependent { background:rgba(245,158,11,0.1); color:#d97706; }
+    .rule-section {
+      margin-bottom: var(--sp-lg);
+    }
+
+    .rule-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .rule-section h4 {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      margin-bottom: var(--sp-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+
+    .rule-count {
+      font-size: var(--fs-xs);
+      padding: 1px 8px;
+      border-radius: var(--radius-full);
+      background: var(--itip-bg-muted, #f6f8fa);
+      color: var(--itip-text-muted);
+      font-weight: 500;
+    }
+
+    .evaluation-checks {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .evaluation-checks li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-sm);
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid var(--itip-border);
+      font-size: var(--fs-sm);
+    }
+
+    .evaluation-checks li:last-child {
+      border-bottom: none;
+    }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .check-icon--pass {
+      background: var(--compliance-pass);
+      color: #fff;
+    }
+
+    .check-icon--fail {
+      background: var(--compliance-fail);
+      color: #fff;
+    }
+
+    .check-icon--warn {
+      background: var(--compliance-warn);
+      color: #fff;
+    }
+
+    .check-icon--na {
+      background: var(--itip-border);
+      color: var(--itip-text-muted);
+    }
+
+    .cascade-type {
+      font-size: var(--fs-xs);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm, 4px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cascade-type--constitutive {
+      background: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+    }
+
+    .cascade-type--governing {
+      background: rgba(59, 130, 246, 0.1);
+      color: #2563eb;
+    }
+
+    .cascade-type--dependent {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+    }
   </style>
 </head>
+
 <body>
   <div class="app-shell">
 
@@ -60,83 +249,149 @@
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
         <a class="nav-item" href="../overview/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../overview/activity-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
           Activity
         </a>
         <div class="nav-section">Evaluation</div>
         <a class="nav-item" href="../evaluation/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item" href="../evaluation/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
           Findings
         </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
           Dashboard
         </a>
         <a class="nav-item active" href="../definition/registry.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
           Registry
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
           Catalog <span class="nav-badge">5</span>
         </a>
         <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
           Stack Composer
         </a>
         <div class="nav-section">Lenses</div>
         <a class="nav-item" href="../lenses/browse.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
+          </svg>
           Browse
         </a>
         <a class="nav-item" href="../lenses/diagram.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21" />
+          </svg>
           Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4" />
+          </svg>
           Impact Analysis
         </a>
         <div class="nav-section">Review</div>
         <a class="nav-item" href="../review/review-board.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
           Review Board
         </a>
         <a class="nav-item" href="../review/review-session.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
           Sessions
         </a>
         <a class="nav-item" href="../review/review-history.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+            <path d="M2.05 12A10 10 0 0112 2" />
+          </svg>
           History
         </a>
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
           Sources
         </a>
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M23 4v6h-6" />
+            <path d="M1 20v-6h6" />
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+          </svg>
           Sync Jobs
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
           Users
         </a>
         <a class="nav-item" href="../admin/integrations.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+          </svg>
           Integrations
         </a>
       </nav>
@@ -156,8 +411,14 @@
       </div>
       <div class="app-header__actions">
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
         </button>
         <div class="avatar">SK</div>
       </div>
@@ -166,7 +427,8 @@
     <!-- ======== Main ======== -->
     <main class="app-main">
       <h1 class="page-title">Ascription Status Transition</h1>
-      <p class="page-subtitle">Transition ascription <span class="text-mono">MEC-0037</span> through the lifecycle state machine</p>
+      <p class="page-subtitle">Transition ascription <span class="text-mono">MEC-0037</span> through the lifecycle state
+        machine</p>
 
       <div class="transition-panel" style="margin-top:var(--sp-lg)">
 
@@ -175,12 +437,30 @@
           <div class="card" style="padding:var(--sp-lg); margin-bottom:var(--sp-lg)">
             <h3 style="margin-bottom:var(--sp-md)">Ascription Details</h3>
             <table style="width:100%; font-size:var(--fs-sm)">
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted); width:120px">ID</td><td><span class="text-mono">MEC-0037</span></td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Type</td><td>Mechanism</td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Definition</td><td><strong>tls_termination</strong></td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Structure</td><td><a href="structure-detail.html">PaymentGateway</a></td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Owner</td><td>S. Kumar</td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Created</td><td>2025-08-22</td></tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted); width:120px">ID</td>
+                <td><span class="text-mono">MEC-0037</span></td>
+              </tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Type</td>
+                <td>Mechanism</td>
+              </tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Definition</td>
+                <td><strong>tls_termination</strong></td>
+              </tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Structure</td>
+                <td><a href="structure-detail.html">PaymentGateway</a></td>
+              </tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Owner</td>
+                <td>S. Kumar</td>
+              </tr>
+              <tr>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Created</td>
+                <td>2025-08-22</td>
+              </tr>
               <tr>
                 <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Status</td>
                 <td><span class="badge" style="background:#2d1b69; color:#c4b5fd">APPROVED</span></td>
@@ -191,67 +471,83 @@
           <!-- Lifecycle State Machine (SVG) -->
           <div class="card" style="padding:var(--sp-lg)">
             <h3 style="margin-bottom:var(--sp-md)">Lifecycle State Machine</h3>
-            <svg viewBox="0 0 740 340" style="width:100%; height:auto; display:block" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 740 340" style="width:100%; height:auto; display:block"
+              xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8b949e"/></marker>
-                <marker id="ah-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#22c55e"/></marker>
+                <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="#8b949e" />
+                </marker>
+                <marker id="ah-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="#22c55e" />
+                </marker>
               </defs>
 
               <!-- Transition arrows (drawn first, behind nodes) -->
               <!-- [*] → DRAFT -->
-              <circle cx="25" cy="150" r="5" fill="#24292f"/>
-              <line x1="32" y1="150" x2="48" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <circle cx="25" cy="150" r="5" fill="#24292f" />
+              <line x1="32" y1="150" x2="48" y2="150" class="sm-arrow" marker-end="url(#ah)" />
               <!-- DRAFT → PROPOSED -->
-              <line x1="170" y1="150" x2="228" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="170" y1="150" x2="228" y2="150" class="sm-arrow" marker-end="url(#ah)" />
               <!-- PROPOSED → APPROVED -->
-              <line x1="350" y1="150" x2="408" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="350" y1="150" x2="408" y2="150" class="sm-arrow" marker-end="url(#ah)" />
               <!-- APPROVED → ACTIVE (active transition) -->
-              <line x1="530" y1="150" x2="588" y2="150" class="sm-arrow sm-arrow--active" marker-end="url(#ah-g)"/>
+              <line x1="530" y1="150" x2="588" y2="150" class="sm-arrow sm-arrow--active" marker-end="url(#ah-g)" />
               <!-- DRAFT → ABANDONED -->
-              <line x1="110" y1="132" x2="110" y2="60" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="110" y1="132" x2="110" y2="60" class="sm-arrow" marker-end="url(#ah)" />
               <!-- PROPOSED → REJECTED -->
-              <line x1="290" y1="132" x2="290" y2="60" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="290" y1="132" x2="290" y2="60" class="sm-arrow" marker-end="url(#ah)" />
               <!-- ACTIVE → SUSPENDED -->
-              <line x1="660" y1="168" x2="660" y2="252" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="660" y1="168" x2="660" y2="252" class="sm-arrow" marker-end="url(#ah)" />
               <!-- SUSPENDED → ACTIVE -->
-              <line x1="640" y1="252" x2="640" y2="168" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="640" y1="252" x2="640" y2="168" class="sm-arrow" marker-end="url(#ah)" />
               <!-- ACTIVE → DEPRECATED (routed) -->
-              <path d="M 615,168 L 615,215 L 470,215 L 470,252" class="sm-arrow" fill="none" marker-end="url(#ah)"/>
+              <path d="M 615,168 L 615,215 L 470,215 L 470,252" class="sm-arrow" fill="none" marker-end="url(#ah)" />
               <!-- DEPRECATED ↔ SUSPENDED -->
-              <line x1="530" y1="266" x2="588" y2="266" class="sm-arrow" marker-end="url(#ah)"/>
-              <line x1="588" y1="274" x2="530" y2="274" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="530" y1="266" x2="588" y2="266" class="sm-arrow" marker-end="url(#ah)" />
+              <line x1="588" y1="274" x2="530" y2="274" class="sm-arrow" marker-end="url(#ah)" />
               <!-- DEPRECATED → RETIRED -->
-              <line x1="408" y1="270" x2="352" y2="270" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="408" y1="270" x2="352" y2="270" class="sm-arrow" marker-end="url(#ah)" />
 
               <!-- State nodes (drawn on top of arrows) -->
               <!-- Terminal row -->
-              <rect x="50" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
-              <text x="110" y="42" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">ABANDONED</text>
-              <rect x="230" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
-              <text x="290" y="42" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">REJECTED</text>
+              <rect x="50" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal" />
+              <text x="110" y="42" text-anchor="middle" dominant-baseline="central"
+                class="sm-label sm-label--terminal">ABANDONED</text>
+              <rect x="230" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal" />
+              <text x="290" y="42" text-anchor="middle" dominant-baseline="central"
+                class="sm-label sm-label--terminal">REJECTED</text>
 
               <!-- Governance path -->
-              <rect x="50" y="134" width="120" height="32" rx="8" class="sm-node"/>
+              <rect x="50" y="134" width="120" height="32" rx="8" class="sm-node" />
               <text x="110" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label">DRAFT</text>
-              <rect x="230" y="134" width="120" height="32" rx="8" class="sm-node"/>
+              <rect x="230" y="134" width="120" height="32" rx="8" class="sm-node" />
               <text x="290" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label">PROPOSED</text>
-              <rect x="410" y="134" width="120" height="32" rx="8" class="sm-node sm-node--current"/>
-              <text x="470" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--current">APPROVED</text>
-              <rect x="590" y="134" width="120" height="32" rx="8" class="sm-node sm-node--target"/>
-              <text x="650" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--target">ACTIVE</text>
+              <rect x="410" y="134" width="120" height="32" rx="8" class="sm-node sm-node--current" />
+              <text x="470" y="150" text-anchor="middle" dominant-baseline="central"
+                class="sm-label sm-label--current">APPROVED</text>
+              <rect x="590" y="134" width="120" height="32" rx="8" class="sm-node sm-node--target" />
+              <text x="650" y="150" text-anchor="middle" dominant-baseline="central"
+                class="sm-label sm-label--target">ACTIVE</text>
 
               <!-- Degradation row -->
-              <rect x="230" y="254" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
-              <text x="290" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">RETIRED</text>
-              <rect x="410" y="254" width="120" height="32" rx="8" class="sm-node"/>
+              <rect x="230" y="254" width="120" height="32" rx="8" class="sm-node sm-node--terminal" />
+              <text x="290" y="270" text-anchor="middle" dominant-baseline="central"
+                class="sm-label sm-label--terminal">RETIRED</text>
+              <rect x="410" y="254" width="120" height="32" rx="8" class="sm-node" />
               <text x="470" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label">DEPRECATED</text>
-              <rect x="590" y="254" width="120" height="32" rx="8" class="sm-node"/>
+              <rect x="590" y="254" width="120" height="32" rx="8" class="sm-node" />
               <text x="650" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label">SUSPENDED</text>
             </svg>
             <div class="sm-legend">
-              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--current"></div> Current</div>
-              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--target"></div> Target</div>
-              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--terminal"></div> Terminal</div>
+              <div class="sm-legend-item">
+                <div class="sm-legend-swatch sm-legend-swatch--current"></div> Current
+              </div>
+              <div class="sm-legend-item">
+                <div class="sm-legend-swatch sm-legend-swatch--target"></div> Target
+              </div>
+              <div class="sm-legend-item">
+                <div class="sm-legend-swatch sm-legend-swatch--terminal"></div> Terminal
+              </div>
             </div>
           </div>
         </div>
@@ -268,7 +564,8 @@
                 <option selected>ACTIVE</option>
               </select>
             </div>
-            <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin:0">Only transitions permitted from the current state are shown.</p>
+            <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin:0">Only transitions permitted from
+              the current state are shown.</p>
           </div>
 
           <!-- Lifecycle Rule Evaluation -->
@@ -284,7 +581,8 @@
               <ul class="evaluation-checks">
                 <li>
                   <span class="check-icon check-icon--pass">✓</span>
-                  <div><strong>Structure</strong> → <a href="structure-detail.html">PaymentGateway</a><br><span class="text-muted text-xs">Status: ACTIVE — meets requirement</span></div>
+                  <div><strong>Structure</strong> → <a href="structure-detail.html">PaymentGateway</a><br><span
+                      class="text-muted text-xs">Status: ACTIVE — meets requirement</span></div>
                 </li>
               </ul>
             </div>
@@ -296,17 +594,23 @@
                 <li>
                   <span class="check-icon check-icon--pass">✓</span>
                   <div>
-                    <strong>Effector</strong> → terminate_ssl &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
-                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
-                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                    <strong>Effector</strong> → terminate_ssl &ensp;<span
+                      class="cascade-type cascade-type--constitutive">constitutive</span>
+                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref:
+                      ACTIVE)</span>
+                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source
+                      transition</span>
                   </div>
                 </li>
                 <li>
                   <span class="check-icon check-icon--pass">✓</span>
                   <div>
-                    <strong>Receptor</strong> → https_endpoint &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
-                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
-                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                    <strong>Receptor</strong> → https_endpoint &ensp;<span
+                      class="cascade-type cascade-type--constitutive">constitutive</span>
+                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref:
+                      ACTIVE)</span>
+                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source
+                      transition</span>
                   </div>
                 </li>
               </ul>
@@ -320,7 +624,8 @@
                   <span class="check-icon check-icon--warn">!</span>
                   <div>
                     <strong>Activation Handoff</strong>
-                    <br><span class="text-muted text-xs"><span class="text-mono">MEC-0037-v1</span> (ACTIVE) → will be auto-DEPRECATED</span>
+                    <br><span class="text-muted text-xs"><span class="text-mono">MEC-0037-v1</span> (ACTIVE) → will be
+                      auto-DEPRECATED</span>
                     <br><span class="text-muted text-xs">Preserves invariant: at most one ACTIVE per Definition</span>
                   </div>
                 </li>
@@ -331,7 +636,8 @@
           <!-- Confirm transition -->
           <div class="card" style="padding:var(--sp-lg)">
             <h4 style="margin-bottom:var(--sp-sm)">Transition Note</h4>
-            <textarea class="form-textarea" rows="3" placeholder="Optional: reason for this transition…" style="width:100%">TLS configuration verified. Activating tls_termination mechanism with constitutive ports.</textarea>
+            <textarea class="form-textarea" rows="3" placeholder="Optional: reason for this transition…"
+              style="width:100%">TLS configuration verified. Activating tls_termination mechanism with constitutive ports.</textarea>
             <div style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
               <a href="mechanism-detail.html" class="btn btn--secondary">Cancel</a>
               <button class="btn btn--primary">Confirm Transition</button>
@@ -345,12 +651,15 @@
   </div>
 
   <button class="copilot-toggle" title="Copilot Agent">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
   </script>
 </body>
+
 </html>
