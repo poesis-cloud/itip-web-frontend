@@ -30,12 +30,12 @@ FULL_SIDEBAR_NAV = '''        <div class="nav-section">Overview</div>
           Activity
         </a>
 {definition_section}
-        <div class="nav-section">Appraisal</div>
-        <a class="nav-item" href="../appraisal/dashboard.html">
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           Dashboard
         </a>
-        <a class="nav-item" href="../appraisal/findings.html">
+        <a class="nav-item" href="../evaluation/findings.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
           Findings
         </a>

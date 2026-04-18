@@ -660,11 +660,11 @@ tr:hover td { background: #f8fafc; }
 .timeline-content { padding-bottom: var(--sp-lg); }
 
 /* ============================================================
-   Appraisal / Review Board
+   Evaluation / Review Board
    ============================================================ */
 .badge--blocked { background: #fef2f2; color: var(--compliance-fail); }
 .badge--clear { background: #f0fdf4; color: var(--compliance-pass); }
-.badge--pending-appraisal { background: #eff6ff; color: var(--state-proposed); }
+.badge--pending-evaluation { background: #eff6ff; color: var(--state-proposed); }
 
 .review-agenda-item {
   display: flex; align-items: flex-start; gap: var(--sp-md);

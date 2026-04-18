@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — DD · Directive Coherence</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .sub-dashboard { padding: var(--sp-lg); overflow-y: auto; }
+
+    .back-link { font-size: var(--fs-sm); color: var(--itip-text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: var(--sp-xs); margin-bottom: var(--sp-sm); }
+    .back-link:hover { color: var(--itip-primary); }
+
+    /* ── Indicator card ── */
+    .indicator { display: flex; align-items: center; gap: var(--sp-xl); padding: var(--sp-lg) var(--sp-xl); background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-xl); margin-bottom: var(--sp-lg); }
+    .indicator__ring { width: 96px; height: 96px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .indicator__ring::after { content: ''; width: 72px; height: 72px; border-radius: 50%; background: var(--itip-surface); position: absolute; }
+    .indicator__value { position: relative; z-index: 1; font-size: 1.5rem; font-weight: 800; }
+    .indicator__meta { flex: 1; }
+    .indicator__title { font-size: var(--fs-lg); font-weight: 700; margin-bottom: var(--sp-xs); }
+    .indicator__subtitle { font-size: var(--fs-sm); color: var(--itip-text-muted); line-height: 1.6; }
+    .indicator__badge { display: inline-flex; align-items: center; gap: var(--sp-xs); padding: 2px 10px; border-radius: var(--radius-full); font-size: var(--fs-xs); font-weight: 600; }
+    .badge-dd { background: #eff6ff; color: #1d4ed8; }
+
+    /* ── Table ── */
+    .breakdown { background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); margin-bottom: var(--sp-lg); }
+    .breakdown__title { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-md); }
+    .breakdown table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+    .breakdown th { text-align: left; padding: var(--sp-xs) var(--sp-sm); font-weight: 600; color: var(--itip-text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--fs-xs); border-bottom: 2px solid var(--itip-border); }
+    .breakdown td { padding: var(--sp-sm); border-bottom: 1px solid var(--itip-border); vertical-align: top; }
+    .breakdown tr:last-child td { border-bottom: none; }
+    .eval-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--itip-border); min-width: 80px; }
+    .eval-bar__fill { height: 100%; }
+    .fill-pass { background: var(--compliance-pass); }
+    .fill-warn { background: var(--compliance-warn); }
+    .fill-fail { background: var(--compliance-fail); }
+    .chip { display: inline-block; padding: 1px 6px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; }
+    .chip--pass { background: color-mix(in srgb, var(--compliance-pass) 12%, transparent); color: var(--compliance-pass); }
+    .chip--warn { background: color-mix(in srgb, var(--compliance-warn) 12%, transparent); color: var(--compliance-warn); }
+    .chip--fail { background: color-mix(in srgb, var(--compliance-fail) 12%, transparent); color: var(--compliance-fail); }
+    .mono { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); }
+    .rule-id { font-weight: 700; white-space: nowrap; }
+
+    /* ── Findings ── */
+    .findings-section { background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); }
+    .findings-section__title { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-md); }
+    .finding-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-sm) 0; border-bottom: 1px solid var(--itip-border); font-size: var(--fs-sm); }
+    .finding-row:last-child { border-bottom: none; }
+    .finding-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+    .finding-message { flex: 1; line-height: 1.5; }
+    .finding-severity { font-size: var(--fs-xs); font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); flex-shrink: 0; }
+    .sev-high { background: color-mix(in srgb, var(--compliance-fail) 15%, transparent); color: var(--compliance-fail); }
+    .sev-medium { background: color-mix(in srgb, var(--compliance-warn) 15%, transparent); color: var(--compliance-warn); }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar placeholder — batch script replaces -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item active" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong></span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Evaluation</span><span>/</span>
+        <a href="dashboard.html" style="color:inherit;text-decoration:none">Dashboard</a><span>/</span>
+        <strong>DD · Directive Coherence</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main sub-dashboard">
+
+      <a href="dashboard.html" class="back-link">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Dashboard
+      </a>
+
+      <h1 class="page-title">
+        <span class="indicator__badge badge-dd">DD</span>
+        Directive Coherence
+      </h1>
+      <p class="page-subtitle">Meta-governance — evaluates internal coherence across Directives: verb &amp; modal compatibility, framework scope exclusivity, purpose targeting, and operational alignment.</p>
+
+      <!-- ── Indicator ── -->
+      <div class="indicator">
+        <div class="indicator__ring" style="background: conic-gradient(var(--compliance-warn) 0% 81%, var(--compliance-fail) 81% 100%);">
+          <span class="indicator__value" style="color:var(--compliance-warn)">81%</span>
+        </div>
+        <div class="indicator__meta">
+          <div class="indicator__title">Directive Coherence Rate</div>
+          <div class="indicator__subtitle">
+            <strong>5</strong> rules evaluated across <strong>14</strong> Directives.<br>
+            <strong style="color:var(--compliance-fail)">2 conflicts</strong> and <strong style="color:var(--compliance-warn)">1 gap</strong> detected — verb/modal conflicts between co-scoped Directives and one untargeted Directive.
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Per-Rule Breakdown ── -->
+      <div class="breakdown">
+        <div class="breakdown__title">Per-Rule Evaluation</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Rule</th>
+              <th>Description</th>
+              <th style="width:120px">Score</th>
+              <th style="width:80px">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rule-id">DD:1</span><br>Verb Compatibility</td>
+              <td>Detects conflicting governance verbs (e.g. MANDATE vs PROHIBIT) across Directives targeting the same Structure scope.</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:var(--sp-xs)">
+                  <div class="eval-bar" style="flex:1"><div class="eval-bar__fill fill-warn" style="width:75%"></div></div>
+                  <span class="chip chip--warn">75%</span>
+                </div>
+              </td>
+              <td><span class="chip chip--fail">2 conflicts</span></td>
+            </tr>
+            <tr>
+              <td><span class="rule-id">DD:2</span><br>Modal Compatibility</td>
+              <td>Validates that co-scoped Directives do not carry contradictory modalities (e.g. MUST vs SHOULD NOT on the same qualifier).</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:var(--sp-xs)">
+                  <div class="eval-bar" style="flex:1"><div class="eval-bar__fill fill-pass" style="width:90%"></div></div>
+                  <span class="chip chip--pass">90%</span>
+                </div>
+              </td>
+              <td><span class="chip chip--pass">OK</span></td>
+            </tr>
+            <tr>
+              <td><span class="rule-id">DD:3</span><br>Framework Scope Exclusivity</td>
+              <td>Ensures each Directive is sourced from at most one authoritative framework per governance domain to avoid duplicated governance.</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:var(--sp-xs)">
+                  <div class="eval-bar" style="flex:1"><div class="eval-bar__fill fill-pass" style="width:85%"></div></div>
+                  <span class="chip chip--pass">85%</span>
+                </div>
+              </td>
+              <td><span class="chip chip--pass">OK</span></td>
+            </tr>
+            <tr>
+              <td><span class="rule-id">DD:4</span><br>Purpose Targeting</td>
+              <td>Counts Directives without a clear purpose/target — these are governance "orphans" unable to drive Norm creation.</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:var(--sp-xs)">
+                  <div class="eval-bar" style="flex:1"><div class="eval-bar__fill fill-warn" style="width:71%"></div></div>
+                  <span class="chip chip--warn">1 untargeted</span>
+                </div>
+              </td>
+              <td><span class="chip chip--warn">GAP</span></td>
+            </tr>
+            <tr>
+              <td><span class="rule-id">DD:5</span><br>Operational Alignment</td>
+              <td>Measures alignment between Directive intent and operational implementation patterns across the governed Structure set.</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:var(--sp-xs)">
+                  <div class="eval-bar" style="flex:1"><div class="eval-bar__fill fill-pass" style="width:92%"></div></div>
+                  <span class="chip chip--pass">92%</span>
+                </div>
+              </td>
+              <td><span class="chip chip--pass">OK</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Findings ── -->
+      <div class="findings-section">
+        <div class="findings-section__title">Active Findings (3)</div>
+        <div class="finding-row">
+          <svg class="finding-icon" fill="none" stroke="var(--compliance-fail)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+          <div class="finding-message">
+            <strong>DD:1 — Verb conflict:</strong> Directives <span class="mono">MANDATE Encryption-at-Rest</span> and <span class="mono">PROHIBIT Legacy-TLS</span> target overlapping Structure scope on <em>API Gateway</em> with incompatible verbs on the same qualifier <span class="mono">transport.protocol</span>.
+          </div>
+          <span class="finding-severity sev-high">HIGH</span>
+        </div>
+        <div class="finding-row">
+          <svg class="finding-icon" fill="none" stroke="var(--compliance-fail)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+          <div class="finding-message">
+            <strong>DD:1 — Verb conflict:</strong> Directives <span class="mono">MANDATE Full-Audit</span> and <span class="mono">ALLOW Selective-Logging</span> conflict on <em>UserDatabase</em> — both govern <span class="mono">audit.coverage</span> with incompatible intent.
+          </div>
+          <span class="finding-severity sev-high">HIGH</span>
+        </div>
+        <div class="finding-row">
+          <svg class="finding-icon" fill="none" stroke="var(--compliance-warn)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <div class="finding-message">
+            <strong>DD:4 — Untargeted Directive:</strong> <span class="mono">Data Classification Policy</span> has no purpose link and no Structure target — it cannot drive Norm creation until a governance scope is assigned.
+          </div>
+          <span class="finding-severity sev-medium">MEDIUM</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+  </script>
+</body>
+
+</html>

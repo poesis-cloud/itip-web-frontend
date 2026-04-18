@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP Workflow — Appraisal Status Transition</title>
+  <title>ITIP Workflow — Evaluation Status Transition</title>
   <link rel="stylesheet" href="../mockups/itip-design-system.css">
   <style>
     body { background: var(--itip-bg); padding: var(--sp-2xl); }
@@ -91,12 +91,12 @@
 <body>
 
   <div class="workflow-header">
-    <h1>Appraisal: Status Transition</h1>
+    <h1>Evaluation: Status Transition</h1>
     <p style="color:var(--itip-text-muted);font-size:var(--fs-sm);max-width:700px;margin-top:var(--sp-sm)">
       When an Ascription requests a lifecycle state transition (e.g., Draft → Active),
-      the Definition Manager API runs an <strong>appraisal</strong> — a rule-checking pass
+      the Definition Manager API runs an <strong>evaluation</strong> — a rule-checking pass
       that evaluates all applicable Starlark rules and CEL norms to determine if the
-      transition is permissible. This workflow shows the full appraisal cycle.
+      transition is permissible. This workflow shows the full evaluation cycle.
     </p>
     <div class="role-badge">⚙ Definition Manager API (automated)</div>
 
@@ -146,13 +146,13 @@
     <div class="flow-step">
       <div class="flow-connector"><div class="flow-number flow-number--api">2</div><div class="flow-line"></div></div>
       <div class="step-card step-card--api">
-        <h3>Appraisal Engine: Collect Applicable Rules</h3>
+        <h3>Evaluation Engine: Collect Applicable Rules</h3>
         <p>The Definition Manager identifies all rules that apply to this transition:
            Starlark lifecycle rules, CEL norm assertions, and archetype-specific constraints
            from each layer.</p>
         <span class="api-ref">⚙ API: POST /api/v1/ascriptions/{id}/appraise</span>
         <div class="step-sketch">┌──────────────────────────────────────────────┐
-│ Appraisal Context                            │
+│ Evaluation Context                            │
 ├──────────────────────────────────────────────┤
 │ Transition: Draft → Active                   │
 │ Subject: API Gateway                         │
@@ -174,7 +174,7 @@
     <div class="flow-step">
       <div class="flow-connector"><div class="flow-number flow-number--api">3</div><div class="flow-line"></div></div>
       <div class="step-card step-card--api">
-        <h3>Appraisal Engine: Evaluate Rules</h3>
+        <h3>Evaluation Engine: Evaluate Rules</h3>
         <p>Each rule is evaluated against the subject's current state and properties.
            Results are categorized as PASS, WARN, or BLOCK.</p>
         <span class="api-ref">⚙ Starlark Rule API + CEL Evaluator</span>
@@ -208,13 +208,13 @@
     <div class="flow-step">
       <div class="flow-connector"><div class="flow-number flow-number--api">4</div><div class="flow-line"></div></div>
       <div class="step-card step-card--api">
-        <h3>Appraisal Verdict</h3>
-        <p>The appraisal aggregates findings into a final verdict.
+        <h3>Evaluation Verdict</h3>
+        <p>The evaluation aggregates findings into a final verdict.
            Any BLOCK finding prevents the transition. WARN findings are reported but non-blocking
            (unless the norm has strict tolerance).</p>
 
         <div class="decision-box">
-          <strong>Appraisal Decision:</strong>
+          <strong>Evaluation Decision:</strong>
           <div class="decision-paths">
             <div class="decision-path decision-path--pass">
               <strong>✅ CLEAR</strong><br>
@@ -230,7 +230,7 @@
         </div>
 
         <div class="step-sketch" style="margin-top:var(--sp-md)">┌──────────────────────────────────────────┐
-│ Appraisal Result: BLOCKED                │
+│ Evaluation Result: BLOCKED                │
 ├──────────────────────────────────────────┤
 │ Rules evaluated:  6                      │
 │ Passed:           4                      │
@@ -252,7 +252,7 @@
       <div class="step-card">
         <h3>Remediate & Re-Request</h3>
         <p>The owner reviews blocking findings, updates the subject's properties or
-           configuration, and re-submits the transition request. The appraisal runs again.</p>
+           configuration, and re-submits the transition request. The evaluation runs again.</p>
         <span class="screen-ref">📋 Screen: 07-ascriptions-view.html (detail panel)</span>
         <div class="step-sketch">┌──────────────────────────────────────────────┐
 │ Remediation on ASC-2024-271                  │
@@ -277,13 +277,13 @@
       <div class="flow-connector"><div class="flow-number">6</div><div class="flow-line"></div></div>
       <div class="step-card">
         <h3>Transition Complete</h3>
-        <p>After remediation, the re-appraisal passes. The Ascription transitions to the
+        <p>After remediation, the re-evaluation passes. The Ascription transitions to the
            requested state. Event is published to the event bus and recorded in the activity log.</p>
         <span class="screen-ref">📋 Screen: 05-activity-log.html</span>
 
         <div style="margin-top:var(--sp-md)">
           <div class="finding finding--pass">
-            <strong>✅ Re-appraisal: ALL CLEAR</strong> — 6/6 rules passed. Transition Draft → Active executed.
+            <strong>✅ Re-evaluation: ALL CLEAR</strong> — 6/6 rules passed. Transition Draft → Active executed.
           </div>
         </div>
 
@@ -291,7 +291,7 @@
 │ ASC-2024-271 — API Gateway               │
 │ State: ● Active                          │
 │ Transitioned: 2026-01-15T14:32:00Z       │
-│ Appraisal: CLEAR (6/6 pass)              │
+│ Evaluation: CLEAR (6/6 pass)              │
 │                                          │
 │ Events emitted:                          │
 │  • ascription.state.changed (Kafka)      │

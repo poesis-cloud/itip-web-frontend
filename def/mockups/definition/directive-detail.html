@@ -43,6 +43,26 @@
       border-radius: var(--radius-sm);
       background: #fff;
     }
+    .grammar-slot__value {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      padding: 6px 10px;
+      background: color-mix(in srgb, var(--itip-primary) 6%, transparent);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 20%, transparent);
+      border-radius: var(--radius-sm);
+      color: var(--itip-primary);
+    }
+    .detail-value {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      padding: 6px 0;
+    }
+    .detail-text {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      line-height: 1.6;
+    }
     .grammar-arrow {
       font-size: var(--fs-lg);
       color: var(--itip-text-light);
@@ -168,27 +188,41 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Activity
         </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
         </a>
-        <a class="nav-item" href="../definition/lenses.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
-          Lenses
-        </a>
-        <a class="nav-item active" href="../definition/registry.html">
+        <a class="nav-item" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
           Registry
         </a>
-        <div class="nav-section">Appraisal</div>
-        <a class="nav-item" href="../appraisal/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          Dashboard
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
         </a>
-        <a class="nav-item" href="../appraisal/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          Findings
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
@@ -208,7 +242,6 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
           History
         </a>
-
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -217,15 +250,6 @@
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Sync Jobs
-        </a>
-        <div class="nav-section">Frameworks</div>
-        <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-          Catalog <span class="nav-badge">5</span>
-        </a>
-        <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
-          Stack Composer
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
@@ -246,13 +270,13 @@
     <!-- Header -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
-        <span>Definition</span><span>/</span><span>Directives</span><span>/</span>
-        <strong>Edit: API Security Policy</strong>
+        <span>Definition</span><span>/</span><span>Registry</span><span>/</span>
+        <strong>API Security Policy</strong>
       </div>
       <div class="app-header__actions">
+        <a href="create-directive.html" class="btn btn--primary btn--sm">✎ Edit</a>
+        <a href="ascription-transition.html" class="btn btn--sm" style="border:1.5px solid var(--itip-primary); color:var(--itip-primary)">⟳ Transition</a>
         <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
-        <button class="btn btn--secondary btn--sm">Save Draft</button>
-        <button class="btn btn--primary btn--sm">Submit for Review</button>
               <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -283,18 +307,21 @@
             <div class="card__body">
               <div class="form-group">
                 <label class="form-label">Directive Name</label>
-                <input class="form-input" type="text" value="API Security Policy">
+                <div class="detail-value" style="font-weight:600">API Security Policy</div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Source Framework</label>
-                <select class="form-select">
-                  <option>NIS2</option>
-                  <option>TOGAF</option>
-                  <option>ISO 25010</option>
-                  <option>GDPR</option>
-                  <option>SCAP</option>
-                </select>
+                <div class="detail-value">NIS2</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Archetyping</label>
+                <div style="display:flex; gap:6px; align-items:center; margin-top:4px">
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted)">ref</span>
+                  <span class="arc-chip arc-chip--gsm" style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, var(--itip-primary) 10%, transparent);color:var(--itip-primary);border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent)">gsm/Directive/v1</span>
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted);margin-left:8px">allOf</span>
+                  <span class="arc-chip arc-chip--fw" style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, #d97706 10%, transparent);color:#92400e;border:1px solid color-mix(in srgb, #d97706 25%, transparent)">nis2/SecurityDirective/v1</span>
+                </div>
               </div>
 
               <div class="form-group">
@@ -302,59 +329,31 @@
                 <div class="form-hint">Build the directive statement using the governance grammar.</div>
               </div>
 
-              <!-- Grammar builder -->
+              <!-- Grammar builder (read-only) -->
               <div class="grammar-builder">
                 <div class="grammar-slot">
                   <span class="grammar-slot__label">Governing Structure</span>
-                  <select>
-                    <option>API Gateway</option>
-                    <option>All Microservices</option>
-                    <option>Data Stores</option>
-                    <option>ExternalEndpoints</option>
-                  </select>
+                  <span class="grammar-slot__value">API Gateway</span>
                 </div>
                 <span class="grammar-arrow">→</span>
                 <div class="grammar-slot">
                   <span class="grammar-slot__label">Modal</span>
-                  <select>
-                    <option value="MUST">MUST</option>
-                    <option value="SHOULD">SHOULD</option>
-                    <option value="MAY">MAY</option>
-                  </select>
+                  <span class="grammar-slot__value">MUST</span>
                 </div>
                 <span class="grammar-arrow">→</span>
                 <div class="grammar-slot">
                   <span class="grammar-slot__label">Verb</span>
-                  <select>
-                    <option value="ENFORCE">ENFORCE</option>
-                    <option value="ENSURE">ENSURE</option>
-                    <option value="PREVENT">PREVENT</option>
-                    <option value="LOG">LOG</option>
-                    <option value="VALIDATE">VALIDATE</option>
-                  </select>
+                  <span class="grammar-slot__value">ENFORCE</span>
                 </div>
                 <span class="grammar-arrow">→</span>
                 <div class="grammar-slot">
                   <span class="grammar-slot__label">Qualifier</span>
-                  <div class="qualifier-autocomplete" style="position:relative">
-                    <input type="text" value="rate limiting and authentication" style="width:240px" placeholder="Search framework archetypes...">
-                    <ul class="qualifier-autocomplete__list" style="display:block;position:absolute;top:100%;left:0;width:100%;max-height:160px;overflow-y:auto;margin:0;padding:0;list-style:none;background:#fff;border:1px solid var(--itip-border-strong);border-radius:0 0 var(--radius-sm) var(--radius-sm);z-index:10;font-size:var(--fs-xs)">
-                      <li class="qualifier-autocomplete__item" style="padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--itip-border)"><span style="font-weight:600">rate limiting and authentication</span> <span style="color:var(--itip-text-muted);margin-left:4px">NIS2 · AccessControl</span></li>
-                      <li class="qualifier-autocomplete__item" style="padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--itip-border)">authentication protocols <span style="color:var(--itip-text-muted);margin-left:4px">TOGAF · SecurityArchitecture</span></li>
-                      <li class="qualifier-autocomplete__item" style="padding:6px 10px;cursor:pointer;border-bottom:1px solid var(--itip-border)">rate limiting policies <span style="color:var(--itip-text-muted);margin-left:4px">ISO 25010 · Performance</span></li>
-                      <li class="qualifier-autocomplete__item" style="padding:6px 10px;cursor:pointer">encryption at rest <span style="color:var(--itip-text-muted);margin-left:4px">GDPR · DataProtection</span></li>
-                    </ul>
-                  </div>
+                  <span class="grammar-slot__value">rate limiting and authentication</span>
                 </div>
                 <span class="grammar-arrow">→ ON</span>
                 <div class="grammar-slot">
                   <span class="grammar-slot__label">Governed Structure</span>
-                  <select>
-                    <option>ExternalEndpoints</option>
-                    <option>All Microservices</option>
-                    <option>Data Stores</option>
-                    <option>API Gateway</option>
-                  </select>
+                  <span class="grammar-slot__value">ExternalEndpoints</span>
                 </div>
               </div>
 
@@ -372,7 +371,7 @@
 
               <div class="form-group mt-md">
                 <label class="form-label">Description / Rationale</label>
-                <textarea class="form-textarea">All externally facing API endpoints must pass through the API Gateway, which enforces rate limiting (max 1000 req/min per API key) and OAuth2/OIDC authentication before forwarding to internal microservices. This fulfills NIS2 Art.21 §2(a) risk management measures for network security.</textarea>
+                <div class="detail-text">All externally facing API endpoints must pass through the API Gateway, which enforces rate limiting (max 1000 req/min per API key) and OAuth2/OIDC authentication before forwarding to internal microservices. This fulfills NIS2 Art.21 §2(a) risk management measures for network security.</div>
               </div>
             </div>
           </div>
@@ -381,15 +380,11 @@
           <div class="card">
             <div class="card__header">
               <span class="card__title">Attached Norms</span>
-              <div class="flex gap-sm">
-                <button class="btn btn--copilot btn--sm">✦ Generate Norms</button>
-                <button class="btn btn--secondary btn--sm">+ Add Norm</button>
-              </div>
+              <span class="text-xs text-muted">3 operationalizing norms</span>
             </div>
             <div class="card__body">
 
-              <div class="norm-item">
-                <span class="norm-handle">⋮⋮</span>
+              <div class="norm-item" style="cursor:pointer" onclick="location.href='norm-detail.html'">
                 <div class="norm-body">
                   <div class="norm-title">rate_limit_enforcement</div>
                   <div class="text-xs text-muted">ON ExternalEndpoints · WHEN request enters gateway</div>
@@ -399,14 +394,9 @@
                     Tolerance: <strong>STRICT</strong> · Created 1h ago
                   </div>
                 </div>
-                <div class="norm-actions">
-                  <button class="btn btn--ghost btn--sm">Edit</button>
-                  <button class="btn btn--ghost btn--sm">✕</button>
-                </div>
               </div>
 
-              <div class="norm-item">
-                <span class="norm-handle">⋮⋮</span>
+              <div class="norm-item" style="cursor:pointer" onclick="location.href='norm-detail.html'">
                 <div class="norm-body">
                   <div class="norm-title">oauth2_authentication</div>
                   <div class="text-xs text-muted">ON ExternalEndpoints · WHEN request.authHeader exists</div>
@@ -416,14 +406,9 @@
                     Tolerance: <strong>STRICT</strong> · Created 1h ago
                   </div>
                 </div>
-                <div class="norm-actions">
-                  <button class="btn btn--ghost btn--sm">Edit</button>
-                  <button class="btn btn--ghost btn--sm">✕</button>
-                </div>
               </div>
 
-              <div class="norm-item">
-                <span class="norm-handle">⋮⋮</span>
+              <div class="norm-item" style="cursor:pointer" onclick="location.href='norm-detail.html'">
                 <div class="norm-body">
                   <div class="norm-title">tls_minimum_version</div>
                   <div class="text-xs text-muted">ON ExternalEndpoints · WHEN connection is established</div>
@@ -432,10 +417,6 @@
                     <span class="badge badge--draft">Draft</span>
                     Tolerance: <strong>TOLERANT</strong> · Created 45m ago
                   </div>
-                </div>
-                <div class="norm-actions">
-                  <button class="btn btn--ghost btn--sm">Edit</button>
-                  <button class="btn btn--ghost btn--sm">✕</button>
                 </div>
               </div>
 

@@ -6,12 +6,6 @@
   <title>ITIP — Definition Registry</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
-    /* ── View-mode toggle ─────────────────────────────── */
-    .view-toggle { display:inline-flex; background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-md); overflow:hidden; }
-    .view-toggle__btn { padding:6px 14px; font-size:var(--fs-xs); font-weight:600; border:none; background:transparent; cursor:pointer; display:inline-flex; align-items:center; gap:6px; color:var(--itip-text-muted); transition:all 0.15s; }
-    .view-toggle__btn.active { background:var(--itip-primary); color:white; }
-    .view-toggle__btn svg { width:14px; height:14px; }
-
     /* ── LIST MODE ─────────────────────────────────────── */
     .list-and-detail { display:flex; gap:0; flex:1; }
     .list-content { flex:1; padding:var(--sp-lg); overflow-y:auto; }
@@ -26,13 +20,13 @@
     .registry-toolbar .form-input { flex:1; min-width:200px; }
 
     .registry-header {
-      display:grid; grid-template-columns:40px 1fr 80px 100px 180px 90px 60px 100px;
+      display:grid; grid-template-columns:40px 1.2fr 80px 2fr 90px 110px;
       align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg);
       font-size:var(--fs-xs); font-weight:600; text-transform:uppercase;
       letter-spacing:0.06em; color:var(--itip-text-muted);
     }
     .registry-row {
-      display:grid; grid-template-columns:40px 1fr 80px 100px 180px 90px 60px 100px;
+      display:grid; grid-template-columns:40px 1.2fr 80px 2fr 90px 110px;
       align-items:center; gap:var(--sp-md);
       padding:var(--sp-md) var(--sp-lg);
       background:var(--itip-surface); border:1px solid var(--itip-border);
@@ -40,8 +34,16 @@
       cursor:pointer; transition:box-shadow 0.15s, border-color 0.15s;
     }
     .registry-row:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
-    .registry-row > div:nth-child(n+3) { text-align:center; }
-    .registry-header > span:nth-child(n+3) { text-align:center; }
+    .registry-row > div:nth-child(3), .registry-row > div:nth-child(5), .registry-row > div:nth-child(6) { text-align:center; }
+    .registry-header > span:nth-child(3), .registry-header > span:nth-child(5), .registry-header > span:nth-child(6) { text-align:center; }
+
+    /* ── Archetyping chips ── */
+    .arc-row { display:flex; align-items:baseline; gap:4px; margin-bottom:2px; }
+    .arc-row:last-child { margin-bottom:0; }
+    .arc-label { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--itip-text-muted); min-width:30px; flex-shrink:0; }
+    .arc-chip { display:inline-block; padding:1px 6px; font-size:10px; border-radius:var(--radius-full); font-family:var(--font-mono); white-space:nowrap; }
+    .arc-chip--gsm { background:color-mix(in srgb, var(--itip-primary) 10%, transparent); color:var(--itip-primary); border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent); }
+    .arc-chip--fw { background:color-mix(in srgb, #d97706 10%, transparent); color:#92400e; border:1px solid color-mix(in srgb, #d97706 25%, transparent); }
 
     .type-pip { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--radius-sm); font-size:11px; font-weight:800; }
     .type-pip--d { background:color-mix(in srgb, #6366f1 12%, transparent); color:#6366f1; }
@@ -60,98 +62,6 @@
     .panel-close { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:none; border-radius:var(--radius-sm); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
     .panel-close:hover { background:color-mix(in srgb, var(--itip-text) 8%, transparent); color:var(--itip-text); }
     .panel-close svg { width:14px; height:14px; }
-
-    /* ── DIAGRAM MODE ──────────────────────────────────── */
-    .view-layout { display:grid; grid-template-columns:300px 1fr; gap:0; min-height:calc(100vh - 56px); }
-    .composer { background:var(--itip-surface); border-right:1px solid var(--itip-border); overflow-y:auto; padding:0; }
-    .composer__section { padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
-    .composer__section:last-child { border-bottom:none; }
-    .composer__heading { font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-sm); display:flex; align-items:center; justify-content:space-between; }
-    .canvas-area { display:flex; flex-direction:column; overflow:hidden; }
-
-    .saved-views { display:flex; gap:var(--sp-xs); align-items:center; }
-    .saved-views select { flex:1; font-size:var(--fs-xs); padding:4px 8px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
-    .icon-btn { width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; font-size:14px; color:var(--itip-text-muted); }
-    .icon-btn:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
-
-    .scope-tabs { display:flex; gap:2px; margin-bottom:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-sm); padding:2px; }
-    .scope-tab { flex:1; padding:4px 6px; font-size:10px; font-weight:600; text-align:center; border-radius:var(--radius-sm); cursor:pointer; border:none; background:transparent; color:var(--itip-text-muted); transition:all 0.15s; white-space:nowrap; }
-    .scope-tab--active { background:var(--itip-primary); color:white; }
-    .scope-config { margin-top:var(--sp-sm); }
-    .scope-field { margin-bottom:var(--sp-sm); }
-    .scope-field label { display:block; font-size:11px; font-weight:600; margin-bottom:2px; }
-    .scope-field select, .scope-field input[type="text"] { width:100%; font-size:var(--fs-xs); padding:4px 8px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
-    .depth-slider { display:flex; align-items:center; gap:var(--sp-sm); }
-    .depth-slider input[type="range"] { flex:1; accent-color:var(--itip-primary); }
-    .depth-slider__val { font-family:var(--font-mono); font-size:var(--fs-xs); font-weight:700; min-width:20px; text-align:center; }
-
-    .filter-row { display:flex; align-items:center; gap:var(--sp-sm); padding:3px 0; font-size:11px; }
-    .filter-row input[type="checkbox"] { accent-color:var(--itip-primary); margin:0; }
-    .filter-dot { width:8px; height:8px; border-radius:2px; display:inline-block; flex-shrink:0; }
-
-    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:11px; }
-    .toggle-switch { position:relative; width:32px; height:18px; }
-    .toggle-switch input { opacity:0; width:0; height:0; }
-    .toggle-switch__track { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#cbd5e1; border-radius:9px; transition:0.2s; }
-    .toggle-switch__track::before { content:""; position:absolute; height:14px; width:14px; left:2px; bottom:2px; background:white; border-radius:50%; transition:0.2s; }
-    .toggle-switch input:checked + .toggle-switch__track { background:var(--itip-primary); }
-    .toggle-switch input:checked + .toggle-switch__track::before { transform:translateX(14px); }
-
-    .export-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-xs); }
-    .export-btn { padding:6px 8px; font-size:10px; font-weight:600; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; text-align:center; transition:border-color 0.15s; }
-    .export-btn:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
-    .export-btn__icon { display:block; font-size:16px; margin-bottom:2px; }
-
-    .canvas-toolbar { display:flex; gap:var(--sp-sm); align-items:center; padding:var(--sp-sm) var(--sp-md); background:var(--itip-bg); border-bottom:1px solid var(--itip-border); flex-wrap:wrap; }
-    .tb-group { display:flex; gap:2px; }
-    .tb-btn { padding:4px 10px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); font-size:11px; cursor:pointer; font-weight:500; }
-    .tb-btn--active { background:var(--itip-primary); color:white; border-color:var(--itip-primary); }
-    .tb-sep { width:1px; height:18px; background:var(--itip-border); margin:0 var(--sp-xs); }
-
-    .diagram-canvas { position:relative; flex:1; overflow:auto; background:var(--itip-bg); background-image:radial-gradient(circle, #d1d5db 1px, transparent 1px); background-size:20px 20px; }
-
-    .node { position:absolute; border-radius:var(--radius-md); font-size:11px; font-weight:600; text-align:center; cursor:pointer; border:2px solid; background:var(--itip-surface); box-shadow:0 1px 4px rgba(0,0,0,.06); }
-    .node--simple { padding:10px 14px; min-width:100px; }
-    .node__type { font-size:9px; font-weight:400; opacity:0.7; display:block; margin-bottom:2px; }
-    .node__name { white-space:nowrap; }
-    .node__compliance { position:absolute; top:-7px; right:-7px; width:16px; height:16px; border-radius:50%; font-size:9px; display:flex; align-items:center; justify-content:center; color:white; border:2px solid var(--itip-surface); }
-    .node__compliance--pass { background:#22c55e; }
-    .node__compliance--warn { background:#f59e0b; }
-    .node__compliance--fail { background:#ef4444; }
-    .node--expanded { padding:0; min-width:260px; }
-    .node--expanded .node__header { padding:8px 14px; border-bottom:1px solid; display:flex; align-items:center; justify-content:space-between; }
-    .node--expanded .node__body { padding:10px; display:flex; flex-direction:column; gap:6px; }
-    .mech-row { display:flex; align-items:center; gap:6px; padding:5px 8px; background:var(--itip-bg); border:1px solid #bfdbfe; border-radius:var(--radius-sm); font-size:10px; }
-    .mech-row__name { font-weight:600; color:#2563eb; flex:1; }
-    .port { display:inline-flex; align-items:center; gap:2px; padding:1px 5px; border-radius:8px; font-size:9px; font-weight:500; }
-    .port--effector { background:#ede9fe; color:#7c3aed; }
-    .port--receptor { background:#ffedd5; color:#c2410c; }
-    .node--structure { border-color:#2dd4bf; }
-    .node--structure .node__header { border-color:#2dd4bf; }
-    .node--interaction { border-color:#f59e0b; border-style:dashed; }
-
-    .directive-scope { position:absolute; border:2px dashed #6366f1; border-radius:12px; background:rgba(99,102,241,0.04); pointer-events:none; }
-    .directive-scope__label { position:absolute; top:-10px; left:16px; background:#6366f1; color:white; font-size:9px; font-weight:600; padding:1px 8px; border-radius:8px; white-space:nowrap; }
-    .norm-badge { position:absolute; font-size:9px; font-weight:600; padding:1px 6px; border-radius:6px; white-space:nowrap; pointer-events:none; }
-    .norm-badge--pass { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
-    .norm-badge--warn { background:#fef9c3; color:#a16207; border:1px solid #fde68a; }
-
-    .edge { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
-    .edge line { stroke:#94a3b8; stroke-width:1.5; }
-    .edge line.e-interaction { stroke:#f59e0b; stroke-dasharray:5 3; }
-    .edge line.e-governance { stroke:#6366f1; stroke-dasharray:2 3; stroke-width:1; }
-
-    .inspector { position:absolute; right:16px; top:16px; width:280px; background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); box-shadow:var(--shadow-lg); overflow:hidden; }
-    .inspector__header { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--itip-border); display:flex; justify-content:space-between; align-items:center; }
-    .inspector__header h4 { margin:0; font-size:var(--fs-sm); }
-    .inspector__body { padding:var(--sp-md); }
-    .inspector__row { display:flex; justify-content:space-between; align-items:center; padding:3px 0; font-size:11px; }
-    .inspector__label { color:var(--itip-text-muted); }
-    .inspector__layers { display:flex; flex-wrap:wrap; gap:4px; margin-top:var(--sp-xs); }
-
-    .canvas-legend { display:flex; gap:var(--sp-md); flex-wrap:wrap; padding:var(--sp-xs) var(--sp-md); background:var(--itip-bg); border-top:1px solid var(--itip-border); font-size:10px; align-items:center; }
-    .legend-item { display:flex; align-items:center; gap:4px; }
-    .legend-dot { width:10px; height:10px; border-radius:3px; border:2px solid; }
   </style>
 </head>
 <body>
@@ -170,27 +80,41 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Activity
         </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
         </a>
-        <a class="nav-item" href="../definition/lenses.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
-          Lenses
-        </a>
         <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
           Registry
         </a>
-        <div class="nav-section">Appraisal</div>
-        <a class="nav-item" href="../appraisal/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          Dashboard
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
         </a>
-        <a class="nav-item" href="../appraisal/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          Findings
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
@@ -210,7 +134,6 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
           History
         </a>
-
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -219,15 +142,6 @@
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Sync Jobs
-        </a>
-        <div class="nav-section">Frameworks</div>
-        <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-          Catalog <span class="nav-badge">5</span>
-        </a>
-        <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
-          Stack Composer
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
@@ -249,16 +163,6 @@
         <strong>Registry</strong>
       </div>
       <div class="app-header__actions">
-        <div class="view-toggle">
-          <button class="view-toggle__btn active" onclick="switchView('list')" id="btn-list">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-            List
-          </button>
-          <button class="view-toggle__btn" onclick="switchView('diagram')" id="btn-diagram">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="5" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8M5 8v8M19 8v8M8 19h8"/></svg>
-            Diagram
-          </button>
-        </div>
         <button class="btn btn--secondary btn--sm">
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           Search
@@ -274,7 +178,7 @@
     <!-- ══════════════════════════════════════════════════
          LIST VIEW
          ══════════════════════════════════════════════════ -->
-    <main class="app-main" style="padding:0" id="view-list">
+    <main class="app-main" style="padding:0">
       <div class="list-and-detail">
         <div class="list-content">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-lg)">
@@ -291,12 +195,30 @@
 
           <!-- Toolbar -->
           <div class="registry-toolbar">
-            <input class="form-input" type="text" placeholder="Search definitions by name, qualifier, framework, or subject…">
+            <input class="form-input" type="text" placeholder="Search definitions by name or archetype URI…">
             <select class="form-select" style="width:110px">
               <option>All Types</option><option>Directive</option><option>Norm</option><option>Structure</option><option>Mechanism</option><option>Interaction</option><option>Effector</option><option>Receptor</option><option>Archetype</option>
             </select>
-            <select class="form-select" style="width:150px">
-              <option>All Frameworks</option><option>TOGAF</option><option>ISO 25010</option><option>ISO 25012</option><option>GDPR</option><option>NIS2</option><option>SCAP</option><option>Enterprise Policy</option>
+            <select class="form-select" style="width:200px">
+              <option>All Archetypes</option>
+              <optgroup label="GSM Base">
+                <option>gsm/Directive/v1</option><option>gsm/Norm/v1</option><option>gsm/Structure/v1</option><option>gsm/Mechanism/v1</option><option>gsm/Interaction/v1</option><option>gsm/Effector/v1</option><option>gsm/Receptor/v1</option>
+              </optgroup>
+              <optgroup label="NIS2">
+                <option>nis2/SecurityDirective/v1</option><option>nis2/IncidentDirective/v1</option><option>nis2/EncryptionNorm/v1</option><option>nis2/TransportSecurityNorm/v1</option>
+              </optgroup>
+              <optgroup label="GDPR">
+                <option>gdpr/ProcessingDirective/v1</option><option>gdpr/RetentionNorm/v1</option>
+              </optgroup>
+              <optgroup label="TOGAF">
+                <option>togaf/LogicalAppComponent/v1</option><option>togaf/DataEntity/v1</option>
+              </optgroup>
+              <optgroup label="ITIP">
+                <option>itip/SoftwareTechnology/v1</option>
+              </optgroup>
+              <optgroup label="ISO 25010">
+                <option>iso25010/Security/v1</option>
+              </optgroup>
             </select>
             <select class="form-select" style="width:130px">
               <option>All States</option><option>Draft</option><option>Proposed</option><option>Active</option><option>Evolving</option><option>Suspended</option><option>Deprecated</option>
@@ -312,11 +234,9 @@
             <span></span>
             <span>Name</span>
             <span>Type</span>
-            <span>Framework</span>
-            <span>Qualifier / Subject</span>
+            <span>Archetyping</span>
             <span>Status</span>
-            <span>Chain</span>
-            <span>Updated</span>
+            <span>Timestamp</span>
           </div>
 
           <!-- ── Directive rows ── -->
@@ -324,10 +244,11 @@
             <div><span class="type-pip type-pip--d">D</span></div>
             <div><strong>Data Encryption Standard</strong></div>
             <div class="text-xs">Directive</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">AccessControl · EncryptionAtRest</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/SecurityDirective/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">3 N</div>
             <div class="text-xs text-muted">2025-08-12</div>
           </div>
 
@@ -335,10 +256,11 @@
             <div><span class="type-pip type-pip--d">D</span></div>
             <div><strong>Personal Data Processing</strong></div>
             <div class="text-xs">Directive</div>
-            <div class="text-xs">GDPR</div>
-            <div class="text-xs">DataProtection · LawfulBasis</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">gdpr/ProcessingDirective/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">8 N</div>
             <div class="text-xs text-muted">2025-06-20</div>
           </div>
 
@@ -346,101 +268,158 @@
             <div><span class="type-pip type-pip--d">D</span></div>
             <div><strong>Incident Response Protocol</strong></div>
             <div class="text-xs">Directive</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">IncidentHandling</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/IncidentDirective/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">4 N</div>
             <div class="text-xs text-muted">2025-09-28</div>
           </div>
 
           <!-- ── Norm rows ── -->
-          <div class="registry-row" onclick="location.href='directive-detail.html'">
+          <div class="registry-row" onclick="location.href='norm-detail.html'">
             <div><span class="type-pip type-pip--n">N</span></div>
             <div><strong>encryption_at_rest</strong></div>
             <div class="text-xs">Norm</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">AES-256 · storage layer</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/EncryptionNorm/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">12 A</div>
             <div class="text-xs text-muted">2025-08-14</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='directive-detail.html'">
+          <div class="registry-row" onclick="location.href='norm-detail.html'">
             <div><span class="type-pip type-pip--n">N</span></div>
             <div><strong>tls_version_min</strong></div>
             <div class="text-xs">Norm</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">TLS ≥ 1.2 · network boundary</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">nis2/TransportSecurityNorm/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">8 A</div>
             <div class="text-xs text-muted">2025-07-20</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='directive-detail.html'">
+          <div class="registry-row" onclick="location.href='norm-detail.html'">
             <div><span class="type-pip type-pip--n">N</span></div>
             <div><strong>data_retention_max</strong></div>
             <div class="text-xs">Norm</div>
-            <div class="text-xs">GDPR</div>
-            <div class="text-xs">Retention ≤ 36 months</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">gdpr/RetentionNorm/v1</span></div>
+            </div>
             <div><span class="badge badge--proposed">Proposed</span></div>
-            <div class="text-xs">0 A</div>
             <div class="text-xs text-muted">2025-11-01</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='directive-detail.html'">
+          <div class="registry-row" onclick="location.href='norm-detail.html'">
             <div><span class="type-pip type-pip--n">N</span></div>
             <div><strong>rate_limit_enforcement</strong></div>
             <div class="text-xs">Norm</div>
-            <div class="text-xs">Enterprise</div>
-            <div class="text-xs">≤ 1000 req/s · API endpoints</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/ApiPerformanceNorm/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">6 A</div>
             <div class="text-xs text-muted">2025-05-18</div>
           </div>
 
           <!-- ── Ascription rows ── -->
-          <div class="registry-row" onclick="location.href='ascription-create.html'">
+          <div class="registry-row" onclick="location.href='structure-detail.html'">
             <div><span class="type-pip type-pip--str">S</span></div>
             <div><strong>UserDatabase — encryption_at_rest</strong></div>
             <div class="text-xs">Structure</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">Subject: UserDatabase</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/DataEntity/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">D→N→A</div>
             <div class="text-xs text-muted">2025-08-15</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='ascription-create.html'">
+          <div class="registry-row" onclick="location.href='structure-detail.html'">
             <div><span class="type-pip type-pip--str">S</span></div>
             <div><strong>API Gateway — rate_limit</strong></div>
             <div class="text-xs">Structure</div>
-            <div class="text-xs">Enterprise</div>
-            <div class="text-xs">Subject: API Gateway</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span></div>
+            </div>
             <div><span class="badge badge--active">Active</span></div>
-            <div class="text-xs">D→N→A</div>
             <div class="text-xs text-muted">2025-05-19</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='ascription-create.html'">
+          <div class="registry-row" onclick="location.href='mechanism-detail.html'">
             <div><span class="type-pip type-pip--mch">M</span></div>
             <div><strong>PaymentService — tls_min</strong></div>
             <div class="text-xs">Mechanism</div>
-            <div class="text-xs">NIS2</div>
-            <div class="text-xs">Subject: PaymentService</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Mechanism/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SoftwareTechnology/v1</span></div>
+            </div>
             <div><span class="badge badge--evolving">Evolving</span></div>
-            <div class="text-xs">D→N→A</div>
             <div class="text-xs text-muted">2025-10-02</div>
           </div>
 
-          <div class="registry-row" onclick="location.href='ascription-create.html'">
+          <div class="registry-row" onclick="location.href='structure-detail.html'">
             <div><span class="type-pip type-pip--str">S</span></div>
             <div><strong>AuditService — log_retention</strong></div>
             <div class="text-xs">Structure</div>
-            <div class="text-xs">GDPR</div>
-            <div class="text-xs">Subject: AuditService</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">togaf/LogicalAppComponent/v1</span> <span class="arc-chip arc-chip--fw">iso25010/Security/v1</span></div>
+            </div>
             <div><span class="badge badge--suspended">Suspended</span></div>
-            <div class="text-xs">D→N→A</div>
             <div class="text-xs text-muted">2025-11-12</div>
+          </div>
+
+          <!-- ── Interaction rows ── -->
+          <div class="registry-row" onclick="location.href='interaction-detail.html'">
+            <div><span class="type-pip type-pip--int">I</span></div>
+            <div><strong>plaintext_request → incoming_request</strong></div>
+            <div class="text-xs">Interaction</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-xs text-muted">2025-10-05</div>
+          </div>
+
+          <div class="registry-row" onclick="location.href='interaction-detail.html'">
+            <div><span class="type-pip type-pip--int">I</span></div>
+            <div><strong>throttled_request → rate_check</strong></div>
+            <div class="text-xs">Interaction</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">ref</span> <span class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
+              <div class="arc-row"><span class="arc-label">allOf</span> <span class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+            </div>
+            <div><span class="badge badge--draft">Draft</span></div>
+            <div class="text-xs text-muted">2025-11-20</div>
+          </div>
+
+          <!-- ── Archetype rows ── -->
+          <div class="registry-row" onclick="location.href='archetype-detail.html'">
+            <div><span class="type-pip type-pip--arc">A</span></div>
+            <div><strong>togaf/InfrastructureService/v1</strong></div>
+            <div class="text-xs">Archetype</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">extends</span> <span class="arc-chip arc-chip--gsm">gsm/Structure/v1</span></div>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-xs text-muted">2025-08-20</div>
+          </div>
+
+          <div class="registry-row" onclick="location.href='archetype-detail.html'">
+            <div><span class="type-pip type-pip--arc">A</span></div>
+            <div><strong>nis2/SecurityDirective/v1</strong></div>
+            <div class="text-xs">Archetype</div>
+            <div>
+              <div class="arc-row"><span class="arc-label">extends</span> <span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-xs text-muted">2025-06-15</div>
           </div>
 
         </div>
@@ -459,17 +438,16 @@
               <span class="type-pip type-pip--d" style="margin-right:6px">D</span> Directive
             </div>
             <div class="detail-section">
-              <div class="detail-label">Framework</div>
-              NIS2 — Network &amp; Information Security
-            </div>
-            <div class="detail-section">
               <div class="detail-label">State</div>
               <span class="badge badge--active">Active</span> since 2025-08-12
             </div>
             <div class="detail-section">
-              <div class="detail-label">Qualifiers</div>
-              <span class="badge">AccessControl</span>
-              <span class="badge">EncryptionAtRest</span>
+              <div class="detail-label">Archetyping — $ref</div>
+              <div style="margin-top:4px"><span class="arc-chip arc-chip--gsm">gsm/Directive/v1</span></div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Archetyping — $allOf</div>
+              <div style="margin-top:4px"><span class="arc-chip arc-chip--fw">nis2/SecurityDirective/v1</span></div>
             </div>
             <div class="detail-section">
               <div class="detail-label">Operationalized by (3 Norms)</div>
@@ -494,310 +472,11 @@
       </div>
     </main>
 
-    <!-- ══════════════════════════════════════════════════
-         DIAGRAM VIEW (hidden by default)
-         ══════════════════════════════════════════════════ -->
-    <main class="app-main" style="padding:0;display:none" id="view-diagram">
-      <div class="view-layout">
-
-        <!-- LEFT: COMPOSER -->
-        <div class="composer">
-          <!-- Saved Views -->
-          <div class="composer__section">
-            <div class="composer__heading">Saved Views</div>
-            <div class="saved-views">
-              <select>
-                <option selected>API Gateway — 2-hop Interaction</option>
-                <option>NIS2 Governance Scope (full)</option>
-                <option>Payment Domain — Compliance Heat</option>
-                <option>TOGAF Application Landscape</option>
-                <option>+ New view…</option>
-              </select>
-              <button class="icon-btn" title="Save current">💾</button>
-              <button class="icon-btn" title="Share link">🔗</button>
-              <button class="icon-btn" title="Delete view">🗑</button>
-            </div>
-          </div>
-
-          <!-- Scope -->
-          <div class="composer__section">
-            <div class="composer__heading">Scope</div>
-            <div class="scope-tabs">
-              <button class="scope-tab">Governance</button>
-              <button class="scope-tab scope-tab--active">Interaction</button>
-              <button class="scope-tab">Archetype</button>
-              <button class="scope-tab">Framework</button>
-              <button class="scope-tab">Appraisal</button>
-            </div>
-            <div class="scope-config">
-              <div class="scope-field">
-                <label>Root Structure</label>
-                <select>
-                  <option selected>API Gateway</option>
-                  <option>UserDatabase</option>
-                  <option>Payment Service</option>
-                  <option>Monitoring Stack</option>
-                  <option>EventBus</option>
-                </select>
-              </div>
-              <div class="scope-field">
-                <label>Interaction Depth (BFS hops)</label>
-                <div class="depth-slider">
-                  <input type="range" min="1" max="5" value="2">
-                  <span class="depth-slider__val">2</span>
-                </div>
-              </div>
-              <div class="scope-field">
-                <label>Direction</label>
-                <select>
-                  <option selected>Both (bidirectional)</option>
-                  <option>Outbound only (effectors)</option>
-                  <option>Inbound only (receptors)</option>
-                </select>
-              </div>
-              <div style="font-size:10px;color:var(--itip-text-muted);margin-top:var(--sp-xs)">
-                Following: Structure → Mechanism → Effector → Interaction → Receptor → Mechanism → Structure
-              </div>
-            </div>
-          </div>
-
-          <!-- Primitive Filters -->
-          <div class="composer__section">
-            <div class="composer__heading">Primitives</div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#2dd4bf"></span> Structure <span class="text-xs text-muted" style="margin-left:auto">4</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#60a5fa"></span> Mechanism <span class="text-xs text-muted" style="margin-left:auto">6</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#f59e0b"></span> Interaction <span class="text-xs text-muted" style="margin-left:auto">3</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#a78bfa"></span> Effector <span class="text-xs text-muted" style="margin-left:auto">8</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#fb923c"></span> Receptor <span class="text-xs text-muted" style="margin-left:auto">5</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#6366f1"></span> Directive <span class="text-xs text-muted" style="margin-left:auto">2</span></div>
-            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#ec4899"></span> Norm <span class="text-xs text-muted" style="margin-left:auto">4</span></div>
-          </div>
-
-          <!-- Framework Layers -->
-          <div class="composer__section">
-            <div class="composer__heading">Framework Layers</div>
-            <div class="filter-row"><input type="checkbox" checked> TOGAF</div>
-            <div class="filter-row"><input type="checkbox" checked> ISO 25010</div>
-            <div class="filter-row"><input type="checkbox" checked> NIS2</div>
-            <div class="filter-row"><input type="checkbox" checked> GDPR</div>
-            <div class="filter-row"><input type="checkbox"> ISO 25012</div>
-            <div class="filter-row"><input type="checkbox"> SCAP</div>
-          </div>
-
-          <!-- Display Options -->
-          <div class="composer__section">
-            <div class="composer__heading">Display Options</div>
-            <div class="toggle-row">
-              <span>Show Constituents</span>
-              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
-            </div>
-            <div style="font-size:10px;color:var(--itip-text-muted);margin:-2px 0 6px">Mechanisms, Effectors &amp; Receptors inside owning Structure</div>
-            <div class="toggle-row">
-              <span>DNA Overlay</span>
-              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
-            </div>
-            <div style="font-size:10px;color:var(--itip-text-muted);margin:-2px 0 6px">Directive scopes as boundaries, Norm badges on governed Structures</div>
-            <div class="toggle-row">
-              <span>Appraisal Heatmap</span>
-              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
-            </div>
-            <div style="font-size:10px;color:var(--itip-text-muted);margin:-2px 0 6px">Node border color reflects appraisal status</div>
-            <div class="toggle-row">
-              <span>Archetype Labels</span>
-              <label class="toggle-switch"><input type="checkbox"><span class="toggle-switch__track"></span></label>
-            </div>
-          </div>
-
-          <!-- Export -->
-          <div class="composer__section">
-            <div class="composer__heading">Export</div>
-            <div class="export-grid">
-              <button class="export-btn"><span class="export-btn__icon">🖼</span> Inline SVG</button>
-              <button class="export-btn"><span class="export-btn__icon">📦</span> Download SVG</button>
-              <button class="export-btn"><span class="export-btn__icon">🌱</span> PlantUML Source</button>
-              <button class="export-btn"><span class="export-btn__icon">🏛</span> ArchiMate OEF</button>
-            </div>
-          </div>
-
-          <!-- Search -->
-          <div class="composer__section">
-            <div class="composer__heading">Search</div>
-            <input type="text" placeholder="Find node by name or archetype…" style="width:100%;padding:5px 8px;border:1px solid var(--itip-border);border-radius:var(--radius-sm);font-size:11px;background:var(--itip-bg)">
-          </div>
-        </div>
-
-        <!-- RIGHT: CANVAS -->
-        <div class="canvas-area">
-          <div class="canvas-toolbar">
-            <span class="text-xs" style="font-weight:600">Layout:</span>
-            <div class="tb-group">
-              <button class="tb-btn tb-btn--active">Force</button>
-              <button class="tb-btn">Hierarchical</button>
-              <button class="tb-btn">Radial</button>
-            </div>
-            <div class="tb-sep"></div>
-            <span class="text-xs" style="font-weight:600">Zoom:</span>
-            <div class="tb-group">
-              <button class="tb-btn">−</button>
-              <span class="text-xs" style="padding:0 6px;font-family:var(--font-mono)">100%</span>
-              <button class="tb-btn">+</button>
-              <button class="tb-btn">Fit</button>
-            </div>
-            <div class="tb-sep"></div>
-            <button class="tb-btn">Auto Layout</button>
-            <span style="flex:1"></span>
-            <span class="text-xs text-muted">4 Structures · 6 Mechanisms · 3 Interactions · 32 nodes total</span>
-          </div>
-
-          <div class="diagram-canvas">
-            <!-- SVG Edges -->
-            <svg class="edge" style="width:100%;height:100%">
-              <defs>
-                <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
-                <marker id="arrow-gov" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6366f1"/></marker>
-              </defs>
-              <line x1="370" y1="220" x2="580" y2="170" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
-              <line x1="370" y1="220" x2="580" y2="370" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
-              <line x1="720" y1="170" x2="800" y2="350" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
-            </svg>
-
-            <!-- Directive scope boundary -->
-            <div class="directive-scope" style="left:220px;top:70px;width:600px;height:250px">
-              <span class="directive-scope__label">📜 API Security Policy (NIS2 · Security Board → API Gateway)</span>
-            </div>
-
-            <!-- API Gateway — expanded -->
-            <div class="node node--structure node--expanded" style="left:240px;top:100px;min-width:280px">
-              <div class="node__header">
-                <div>
-                  <span class="node__type">TOGAF: LogicalAppComponent</span>
-                  <span class="node__name">API Gateway</span>
-                </div>
-                <span class="node__compliance node__compliance--pass">✓</span>
-              </div>
-              <div class="node__body">
-                <div class="mech-row">
-                  <span class="mech-row__name">⚙ tls_termination</span>
-                  <span class="port port--receptor">📥 client_hello</span>
-                  <span class="port port--effector">📤 plaintext_req</span>
-                </div>
-                <div class="mech-row">
-                  <span class="mech-row__name">⚙ rate_limiter</span>
-                  <span class="port port--receptor">📥 incoming</span>
-                  <span class="port port--effector">📤 throttled</span>
-                </div>
-                <div class="mech-row">
-                  <span class="mech-row__name">⚙ auth_validator</span>
-                  <span class="port port--receptor">📥 request</span>
-                  <span class="port port--effector">📤 authed_req</span>
-                </div>
-              </div>
-              <span class="norm-badge norm-badge--pass" style="bottom:-9px;left:12px">✓ rate_limit_enforcement</span>
-              <span class="norm-badge norm-badge--pass" style="bottom:-9px;right:12px">✓ tls_version_min</span>
-            </div>
-
-            <!-- UserDatabase — expanded -->
-            <div class="node node--structure node--expanded" style="left:580px;top:100px;min-width:240px">
-              <div class="node__header">
-                <div>
-                  <span class="node__type">TOGAF: DataEntity</span>
-                  <span class="node__name">UserDatabase</span>
-                </div>
-                <span class="node__compliance node__compliance--warn">!</span>
-              </div>
-              <div class="node__body">
-                <div class="mech-row">
-                  <span class="mech-row__name">⚙ query_handler</span>
-                  <span class="port port--receptor">📥 db_query</span>
-                  <span class="port port--effector">📤 result_set</span>
-                </div>
-                <div class="mech-row">
-                  <span class="mech-row__name">⚙ change_publisher</span>
-                  <span class="port port--receptor">📥 mutation</span>
-                  <span class="port port--effector">📤 change_event</span>
-                </div>
-              </div>
-              <span class="norm-badge norm-badge--pass" style="bottom:-9px;left:12px">✓ encryption_at_rest</span>
-              <span class="norm-badge norm-badge--warn" style="bottom:-9px;right:12px">! retention_policy</span>
-            </div>
-
-            <!-- Payment Service — simple -->
-            <div class="node node--structure node--simple" style="left:600px;top:350px;border-color:#2dd4bf">
-              <span class="node__type">SWTech: Microservice</span>
-              <span class="node__name">Payment Service</span>
-              <span class="node__compliance node__compliance--fail">✗</span>
-            </div>
-
-            <!-- EventBus — simple -->
-            <div class="node node--structure node--simple" style="left:830px;top:320px;border-color:#2dd4bf">
-              <span class="node__type">SWTech: MessageBroker</span>
-              <span class="node__name">EventBus</span>
-              <span class="node__compliance node__compliance--pass">✓</span>
-            </div>
-
-            <!-- Interaction nodes -->
-            <div class="node node--interaction node--simple" style="left:480px;top:180px">
-              <span class="node__type">Interaction</span>
-              <span class="node__name">db_query</span>
-            </div>
-            <div class="node node--interaction node--simple" style="left:480px;top:350px">
-              <span class="node__type">Interaction</span>
-              <span class="node__name">payment_req</span>
-            </div>
-
-            <!-- Inspector panel -->
-            <div class="inspector">
-              <div class="inspector__header">
-                <h4>API Gateway</h4>
-                <button class="icon-btn" style="border:none;font-size:16px" title="Close">✕</button>
-              </div>
-              <div class="inspector__body">
-                <div class="inspector__row"><span class="inspector__label">Type</span><span>Structure</span></div>
-                <div class="inspector__row"><span class="inspector__label">Archetype</span><span>LogicalAppComponent</span></div>
-                <div class="inspector__row"><span class="inspector__label">Framework</span><span>TOGAF ADM</span></div>
-                <div class="inspector__row"><span class="inspector__label">Mechanisms</span><span>3</span></div>
-                <div class="inspector__row"><span class="inspector__label">Effectors</span><span>4</span></div>
-                <div class="inspector__row"><span class="inspector__label">Receptors</span><span>3</span></div>
-                <div class="inspector__row"><span class="inspector__label">Interactions</span><span>2 (in) · 1 (out)</span></div>
-                <div class="inspector__row"><span class="inspector__label">Appraisal</span><span class="badge badge--active" style="font-size:10px">Pass</span></div>
-                <div class="inspector__row"><span class="inspector__label">Norms</span><span>4 bound (2 shown)</span></div>
-                <div class="detail-label" style="margin-top:var(--sp-sm)">Framework Layers</div>
-                <div class="inspector__layers">
-                  <span class="badge">TOGAF</span>
-                  <span class="badge">NIS2</span>
-                  <span class="badge">ISO 25010</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Legend -->
-          <div class="canvas-legend">
-            <span style="font-weight:600">Legend:</span>
-            <div class="legend-item"><span class="legend-dot" style="border-color:#2dd4bf;background:transparent"></span> Structure</div>
-            <div class="legend-item"><span class="legend-dot" style="border-color:#60a5fa;background:transparent"></span> Mechanism</div>
-            <div class="legend-item"><span class="legend-dot" style="border-color:#f59e0b;background:transparent;border-style:dashed"></span> Interaction</div>
-            <div class="legend-item"><span class="legend-dot" style="border-color:#a78bfa;background:transparent"></span> Effector</div>
-            <div class="legend-item"><span class="legend-dot" style="border-color:#fb923c;background:transparent"></span> Receptor</div>
-            <div class="legend-item"><span style="width:20px;height:2px;border-top:2px dashed #6366f1;display:inline-block"></span> Directive scope</div>
-            <div class="legend-item"><span class="badge" style="font-size:9px;padding:1px 4px;background:#dcfce7;color:#15803d">✓</span> Norm pass</div>
-            <div class="legend-item"><span class="badge" style="font-size:9px;padding:1px 4px;background:#fef9c3;color:#a16207">!</span> Norm warn</div>
-          </div>
-        </div>
-      </div>
-    </main>
-
   </div>
 
   <script>
     (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
     function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
-    function switchView(mode) {
-      document.getElementById('view-list').style.display = mode === 'list' ? '' : 'none';
-      document.getElementById('view-diagram').style.display = mode === 'diagram' ? '' : 'none';
-      document.getElementById('btn-list').classList.toggle('active', mode === 'list');
-      document.getElementById('btn-diagram').classList.toggle('active', mode === 'diagram');
-    }
   </script>
 </body>
 </html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Mechanism Detail</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .authoring-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: var(--sp-lg);
+      min-height: calc(100vh - 56px - var(--sp-lg) * 2);
+    }
+
+    /* Read-only display */
+    .detail-value {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      padding: 6px 0;
+    }
+    .detail-text {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      line-height: 1.6;
+    }
+
+    /* Code display */
+    .code-display {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 0;
+      line-height: 1.7;
+      overflow-x: auto;
+      display: flex;
+    }
+    .code-display__gutter {
+      padding: var(--sp-md) var(--sp-sm);
+      text-align: right;
+      color: #64748b;
+      user-select: none;
+      border-right: 1px solid #334155;
+      min-width: 36px;
+      flex-shrink: 0;
+    }
+    .code-display__source {
+      padding: var(--sp-md);
+      flex: 1;
+      white-space: pre;
+    }
+    .code-kw { color: #c084fc; }
+    .code-fn { color: #67e8f9; }
+    .code-str { color: #fde68a; }
+    .code-comment { color: #64748b; font-style: italic; }
+
+    /* Port cards */
+    .port-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-md);
+      margin-top: var(--sp-md);
+    }
+    .port-card {
+      padding: var(--sp-md);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-bg);
+    }
+    .port-card__title {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+    .port-item {
+      font-size: var(--fs-sm);
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .port-item__name { font-weight: 600; font-family: var(--font-mono); font-size: var(--fs-xs); }
+    .port-item__type { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+    /* Related item */
+    .related-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      padding: var(--sp-sm) var(--sp-md);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-surface);
+      margin-bottom: var(--sp-sm);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .related-item:hover { border-color: var(--itip-primary); }
+    .related-item__body { flex: 1; }
+    .related-item__title { font-weight: 600; font-size: var(--fs-sm); }
+    .related-item__meta { font-size: var(--fs-xs); color: var(--itip-text-muted); margin-top: 2px; }
+
+    /* Preview panel */
+    .preview-panel {
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-panel__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid var(--itip-border);
+      font-weight: 600;
+      font-size: var(--fs-sm);
+    }
+    .preview-panel__body {
+      padding: var(--sp-lg);
+      flex: 1;
+      overflow-y: auto;
+    }
+    .preview-section { margin-bottom: var(--sp-lg); }
+    .preview-label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--itip-border);
+      margin-bottom: var(--sp-lg);
+    }
+    .tab {
+      padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab:hover { color: var(--itip-text); }
+    .tab.active {
+      color: var(--itip-primary);
+      border-bottom-color: var(--itip-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span><span>Registry</span><span>/</span>
+        <strong>tls_termination</strong>
+      </div>
+      <div class="app-header__actions">
+        <a href="create-mechanism.html" class="btn btn--primary btn--sm">✎ Edit</a>
+        <a href="ascription-transition.html" class="btn btn--sm" style="border:1.5px solid var(--itip-primary); color:var(--itip-primary)">⟳ Transition</a>
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">SK</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="authoring-layout">
+
+        <!-- Left: Detail -->
+        <div>
+          <div class="tabs">
+            <span class="tab active">Mechanism</span>
+            <span class="tab">Interactions <span class="sub-tab__count" style="font-size:10px;background:color-mix(in srgb, var(--itip-primary) 12%, transparent);color:var(--itip-primary);padding:1px 6px;border-radius:var(--radius-full);margin-left:4px">1</span></span>
+            <span class="tab">History</span>
+          </div>
+
+          <!-- Mechanism metadata -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Mechanism Definition</span>
+              <span class="badge badge--active">Active</span>
+            </div>
+            <div class="card__body">
+              <div class="form-group">
+                <label class="form-label">Function Name</label>
+                <div class="detail-value" style="font-weight:600; font-family:var(--font-mono)">tls_termination</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Parent Structure</label>
+                <div class="detail-value">
+                  <a href="structure-detail.html" style="color:var(--itip-primary);text-decoration:none">API Gateway</a>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Archetyping</label>
+                <div style="display:flex; gap:6px; align-items:center; margin-top:4px">
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted)">ref</span>
+                  <span class="arc-chip arc-chip--gsm" style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, var(--itip-primary) 10%, transparent);color:var(--itip-primary);border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent)">gsm/Mechanism/v1</span>
+                  <span style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted);margin-left:8px">allOf</span>
+                  <span class="arc-chip arc-chip--fw" style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, #d97706 10%, transparent);color:#92400e;border:1px solid color-mix(in srgb, #d97706 25%, transparent)">itip/SecurityMechanism/v1</span>
+                </div>
+              </div>
+
+              <div class="form-group mt-md">
+                <label class="form-label">Description</label>
+                <div class="detail-text">Terminate TLS and validate certificates for incoming connections. Invalid certificates produce a TLS error; valid connections are unwrapped into plaintext HTTP requests forwarded to downstream mechanisms.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rule (Starlark) -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Rule (Starlark)</span>
+              <span class="text-xs text-muted">Compilable logical atom</span>
+            </div>
+            <div class="card__body" style="padding:0">
+              <div class="code-display">
+                <div class="code-display__gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17</div>
+                <div class="code-display__source"><span class="code-kw">def</span> <span class="code-fn">tls_termination</span>(ctx):
+    <span class="code-str">"""Terminate TLS and validate certificates for incoming connections."""</span>
+    cert = ctx.<span class="code-fn">receive</span>(<span class="code-str">"client_hello"</span>, archetype=<span class="code-str">"TLSClientHello"</span>)
+
+    <span class="code-kw">if</span> <span class="code-kw">not</span> cert.is_valid():
+        ctx.<span class="code-fn">emit</span>(<span class="code-str">"tls_error"</span>, archetype=<span class="code-str">"TLSError"</span>, data={
+            <span class="code-str">"reason"</span>: <span class="code-str">"invalid_certificate"</span>,
+            <span class="code-str">"client_ip"</span>: cert.source_ip,
+        })
+        <span class="code-kw">return</span>
+
+    ctx.<span class="code-fn">emit</span>(<span class="code-str">"plaintext_request"</span>, archetype=<span class="code-str">"HTTPRequest"</span>, data={
+        <span class="code-str">"method"</span>: cert.inner_request.method,
+        <span class="code-str">"path"</span>: cert.inner_request.path,
+        <span class="code-str">"headers"</span>: cert.inner_request.headers,
+        <span class="code-str">"tls_version"</span>: cert.tls_version,
+    })</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto-derived ports -->
+          <div class="card">
+            <div class="card__header">
+              <span class="card__title">I/O Ports</span>
+              <span class="badge badge--draft" style="font-size:10px">Parsed from rule AST</span>
+            </div>
+            <div class="card__body">
+              <div class="port-cards">
+                <div class="port-card">
+                  <div class="port-card__title">Receptors (inputs)</div>
+                  <div class="port-item">
+                    <span style="font-size:14px">📥</span>
+                    <span class="port-item__name">client_hello</span>
+                    <span class="port-item__type">: TLSClientHello</span>
+                  </div>
+                </div>
+                <div class="port-card">
+                  <div class="port-card__title">Effectors (outputs)</div>
+                  <div class="port-item">
+                    <span style="font-size:14px">📤</span>
+                    <span class="port-item__name">tls_error</span>
+                    <span class="port-item__type">: TLSError</span>
+                  </div>
+                  <div class="port-item">
+                    <span style="font-size:14px">📤</span>
+                    <span class="port-item__name">plaintext_request</span>
+                    <span class="port-item__type">: HTTPRequest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Preview panel -->
+        <div class="preview-panel">
+          <div class="preview-panel__header">
+            Mechanism Overview
+          </div>
+          <div class="preview-panel__body">
+
+            <div class="preview-section">
+              <div class="preview-label">Status</div>
+              <span class="badge badge--active">Active</span>
+              <span class="text-xs text-muted" style="margin-left:8px">Since 2025-10-02</span>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Ownership</div>
+              <div class="text-sm"><strong>Owner:</strong> S. Kumar (Security Architect)</div>
+              <div class="text-sm"><strong>Author:</strong> S. Kumar (Security Architect)</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Parent Structure</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#0d9488;margin-right:4px">S</span>
+                API Gateway <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Port Summary</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-sm);margin-top:4px">
+                <div style="text-align:center;padding:var(--sp-sm);background:var(--itip-bg);border-radius:var(--radius-md);border:1px solid var(--itip-border)">
+                  <div style="font-size:20px;font-weight:700;color:var(--itip-primary)">1</div>
+                  <div class="text-xs text-muted">Receptor</div>
+                </div>
+                <div style="text-align:center;padding:var(--sp-sm);background:var(--itip-bg);border-radius:var(--radius-md);border:1px solid var(--itip-border)">
+                  <div style="font-size:20px;font-weight:700;color:var(--itip-primary)">2</div>
+                  <div class="text-xs text-muted">Effectors</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Interactions using this Mechanism</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#d97706;margin-right:4px">I</span>
+                plaintext_request → incoming_request
+                <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Sibling Mechanisms</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#2563eb;margin-right:4px">M</span>
+                rate_limiter <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+              <div class="text-sm" style="padding:4px 0">
+                <span style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#2563eb;margin-right:4px">M</span>
+                auth_validator <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

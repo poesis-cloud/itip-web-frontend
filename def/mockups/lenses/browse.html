@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Lenses</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .lenses-page { padding:var(--sp-lg); overflow-y:auto; }
+
+    /* ── Search / actions bar ── */
+    .lenses-bar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-xl); flex-wrap:wrap; }
+    .lenses-bar .form-input { flex:1; min-width:200px; }
+
+    /* ── Category section ── */
+    .lens-category { margin-bottom:var(--sp-xl); }
+    .lens-category__title { font-size:var(--fs-sm); font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-md); display:flex; align-items:center; gap:var(--sp-sm); }
+    .lens-category__icon { width:20px; height:20px; }
+    .lens-category__count { font-size:var(--fs-xs); font-weight:500; background:var(--itip-bg); border:1px solid var(--itip-border); border-radius:var(--radius-full); padding:1px 8px; }
+
+    /* ── Lens card grid ── */
+    .lens-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:var(--sp-md); }
+
+    .lens-card {
+      padding:var(--sp-lg); background:var(--itip-surface); border:1px solid var(--itip-border);
+      border-radius:var(--radius-md); transition:all 0.15s;
+      display:flex; flex-direction:column; gap:var(--sp-sm);
+    }
+    .lens-card:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
+    .lens-card__header { display:flex; align-items:center; gap:var(--sp-sm); }
+    .lens-card__icon { width:32px; height:32px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+    .lens-card__title { font-weight:700; font-size:var(--fs-sm); flex:1; }
+    .lens-card__desc { font-size:var(--fs-xs); color:var(--itip-text-muted); line-height:1.5; }
+    .lens-card__stats { display:flex; gap:var(--sp-sm); flex-wrap:wrap; }
+    .lens-card__stat { font-size:var(--fs-xs); padding:2px 8px; border-radius:var(--radius-full); border:1px solid var(--itip-border); }
+
+    /* Icon backgrounds per category */
+    .lens-icon--subject { background:color-mix(in srgb, #60a5fa 12%, transparent); color:#2563eb; }
+    .lens-icon--organization { background:color-mix(in srgb, #ec4899 12%, transparent); color:#db2777; }
+    .lens-icon--domain { background:color-mix(in srgb, #8b5cf6 12%, transparent); color:#7c3aed; }
+    .lens-icon--lifecycle { background:color-mix(in srgb, #22c55e 12%, transparent); color:#16a34a; }
+    .lens-icon--purpose { background:color-mix(in srgb, #f59e0b 12%, transparent); color:#d97706; }
+    .lens-icon--custom { background:color-mix(in srgb, #94a3b8 12%, transparent); color:#64748b; }
+
+    /* ── Lens actions (3 buttons) ── */
+    .lens-card__actions { display:flex; gap:var(--sp-xs); margin-top:var(--sp-xs); flex-wrap:wrap; }
+    .lens-action { font-size:var(--fs-xs); padding:4px 10px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; color:var(--itip-text-muted); transition:all 0.15s; text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+    .lens-action:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+    .lens-action--primary { background:var(--itip-primary); color:#fff; border-color:var(--itip-primary); }
+    .lens-action--primary:hover { background:color-mix(in srgb, var(--itip-primary) 85%, #000); color:#fff; }
+
+    /* Purpose-based lens meta tags */
+    .lens-card__meta { display:flex; flex-wrap:wrap; gap:4px; }
+    .lens-meta-tag { display:inline-flex; align-items:center; gap:3px; padding:1px 6px; border-radius:10px; font-size:10px; font-weight:500; }
+    .lens-meta-tag--format { background:#f1f5f9; color:#475569; border:1px solid #e2e8f0; }
+    .lens-meta-tag--framework { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+
+    /* ── New lens card (dashed) ── */
+    .lens-card--new {
+      border-style:dashed; border-color:var(--itip-border);
+      align-items:center; justify-content:center; text-align:center;
+      min-height:120px; color:var(--itip-text-muted); cursor:pointer;
+    }
+    .lens-card--new:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+    .lens-card--new__icon { font-size:24px; margin-bottom:var(--sp-xs); }
+    .lens-card--new__label { font-size:var(--fs-xs); font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item active" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Lenses</span><span>/</span>
+        <strong>Browse</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--primary btn--sm">+ New Lens</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main lenses-page">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-lg)">
+        <div>
+          <h1 class="page-title">Lenses</h1>
+          <p class="page-subtitle">Filterable, aggregatable views on your governance definitions &mdash; by subject, owner, domain, lifecycle, purpose, or custom criteria</p>
+        </div>
+      </div>
+
+      <!-- KPI bar -->
+      <div class="stat-grid mb-lg">
+        <div class="stat-card">
+          <div class="stat-card__label">Total Lenses</div>
+          <div class="stat-card__value">23</div>
+          <div class="stat-card__detail">12 auto-generated &middot; 3 lifecycle &middot; 7 purpose &middot; 1 custom</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Structures Covered</div>
+          <div class="stat-card__value">32 / 38</div>
+          <div class="stat-card__detail">84% of registered structures visible through at least one lens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Ascriptions Reachable</div>
+          <div class="stat-card__value">384</div>
+          <div class="stat-card__detail">All governance ascriptions queryable via lenses</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__label">Deliverables Generated</div>
+          <div class="stat-card__value">23</div>
+          <div class="stat-card__detail">Across 7 purpose-based lenses &middot; 3 scheduled</div>
+        </div>
+      </div>
+
+      <!-- Search / filter bar -->
+      <div class="lenses-bar">
+        <input class="form-input" type="text" placeholder="Search lenses by name, subject, domain, owner, or template&hellip;">
+        <select class="form-select" style="width:180px">
+          <option>All Categories</option>
+          <option>By Subject</option>
+          <option>By Owner</option>
+          <option>By Domain</option>
+          <option>By Lifecycle</option>
+          <option>By Purpose</option>
+          <option>Custom</option>
+        </select>
+        <select class="form-select" style="width:140px">
+          <option>All Modes</option>
+          <option>Grid View</option>
+          <option>Table View</option>
+          <option>Pivot View</option>
+        </select>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ By Subject ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#2563eb" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h20M2 17h20"/></svg>
+          By Subject
+          <span class="lens-category__count">5 lenses (auto-generated)</span>
+        </div>
+        <div class="lens-grid">
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--subject">&#128452;</div>
+              <div class="lens-card__title">UserDatabase</div>
+            </div>
+            <div class="lens-card__desc">All governance for UserDatabase &mdash; reverse traversal from Subject &rarr; Ascriptions &rarr; Norms &rarr; Directives.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">4 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">12 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">8 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=subject-userdatabase">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=subject-userdatabase">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=subject-userdatabase">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--subject">&#128179;</div>
+              <div class="lens-card__title">PaymentProcessor</div>
+            </div>
+            <div class="lens-card__desc">All governance for PaymentProcessor &mdash; reverse traversal Subject &rarr; A &rarr; N &rarr; D with cross-framework coverage.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">3 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">9 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">6 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=subject-paymentprocessor">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=subject-paymentprocessor">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=subject-paymentprocessor">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--subject">&#127760;</div>
+              <div class="lens-card__title">API Gateway</div>
+            </div>
+            <div class="lens-card__desc">All governance for API Gateway &mdash; NIS2 security directives, rate limiting norms, TLS enforcement.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">3 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">8 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">5 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=subject-apigateway">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=subject-apigateway">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=subject-apigateway">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--subject">&#128221;</div>
+              <div class="lens-card__title">AuditService</div>
+            </div>
+            <div class="lens-card__desc">All governance for AuditService &mdash; log retention, data protection, and compliance audit trail norms.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">2 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">7 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">4 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=subject-auditservice">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=subject-auditservice">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=subject-auditservice">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--subject">&#128226;</div>
+              <div class="lens-card__title">NotificationHub</div>
+            </div>
+            <div class="lens-card__desc">All governance for NotificationHub &mdash; messaging, availability norms, and personal data handling.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">2 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">5 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">3 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=subject-notificationhub">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=subject-notificationhub">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=subject-notificationhub">Export Deliverable</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ By Owner ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#db2777" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          By Owner
+          <span class="lens-category__count">3 lenses (auto-generated)</span>
+        </div>
+        <div class="lens-grid">
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--organization">&#128737;</div>
+              <div class="lens-card__title">Security Board</div>
+            </div>
+            <div class="lens-card__desc">All definitions owned or governed by the Security Board &mdash; NIS2, enterprise security policy scope.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">14 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">48 N</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=org-security-board">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=org-security-board">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=org-security-board">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--organization">&#128203;</div>
+              <div class="lens-card__title">Data Governance Office</div>
+            </div>
+            <div class="lens-card__desc">All definitions owned by Data Governance &mdash; GDPR, ISO 25012, data architecture standards scope.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">12 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">33 N</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=org-data-governance">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=org-data-governance">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=org-data-governance">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--organization">&#9881;</div>
+              <div class="lens-card__title">Platform Engineering</div>
+            </div>
+            <div class="lens-card__desc">All definitions owned by Platform Engineering &mdash; cloud standards, CI/CD norms, observability directives.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">8 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">34 N</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=org-platform-eng">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=org-platform-eng">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=org-platform-eng">Export Deliverable</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ By Domain ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#8b5cf6" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          By Domain
+          <span class="lens-category__count">4 lenses (auto-generated)</span>
+        </div>
+        <div class="lens-grid">
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--domain">&#128179;</div>
+              <div class="lens-card__title">Payment</div>
+            </div>
+            <div class="lens-card__desc">All governance definitions within the Payment domain &mdash; transaction processing, PCI compliance, settlement services.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">5 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">14 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">22 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=domain-payment">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=domain-payment">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=domain-payment">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--domain">&#128273;</div>
+              <div class="lens-card__title">Identity &amp; Access</div>
+            </div>
+            <div class="lens-card__desc">All governance within the Identity &amp; Access domain &mdash; authentication, authorization, SSO, and credential management.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">4 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">11 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">18 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=domain-identity">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=domain-identity">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=domain-identity">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--domain">&#128451;</div>
+              <div class="lens-card__title">Data Management</div>
+            </div>
+            <div class="lens-card__desc">All governance within the Data Management domain &mdash; storage, retention, quality, lineage, and classification.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">6 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">18 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">34 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=domain-data-mgmt">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=domain-data-mgmt">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=domain-data-mgmt">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--domain">&#127959;</div>
+              <div class="lens-card__title">Infrastructure</div>
+            </div>
+            <div class="lens-card__desc">All governance within the Infrastructure domain &mdash; cloud resources, networking, container orchestration, observability.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">4 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">16 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">28 A</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=domain-infrastructure">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=domain-infrastructure">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=domain-infrastructure">Export Deliverable</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ By Lifecycle ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#16a34a" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          By Lifecycle State
+          <span class="lens-category__count">3 lenses</span>
+        </div>
+        <div class="lens-grid">
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--lifecycle">&#9203;</div>
+              <div class="lens-card__title">Pending Transitions</div>
+            </div>
+            <div class="lens-card__desc">Definitions awaiting lifecycle transition &mdash; proposals needing review, evolving items awaiting validation.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat">22 Proposed</span>
+              <span class="lens-card__stat">15 Evolving</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=lifecycle-pending">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=lifecycle-pending">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=lifecycle-pending">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--lifecycle">&#128260;</div>
+              <div class="lens-card__title">Recently Changed</div>
+            </div>
+            <div class="lens-card__desc">Definitions modified in the last 30 days &mdash; new creations, state transitions, version evolutions.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat">18 updated</span>
+              <span class="lens-card__stat">6 created</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=lifecycle-recent">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=lifecycle-recent">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=lifecycle-recent">Export Deliverable</a>
+            </div>
+          </div>
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--lifecycle">&#9888;</div>
+              <div class="lens-card__title">Suspended &amp; Deprecated</div>
+            </div>
+            <div class="lens-card__desc">Definitions currently suspended or deprecated &mdash; may need cleanup, reactivation, or formal retirement.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat">7 Suspended</span>
+              <span class="lens-card__stat">3 Deprecated</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=lifecycle-suspended">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=lifecycle-suspended">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=lifecycle-suspended">Export Deliverable</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ By Purpose ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#d97706" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          By Purpose
+          <span class="lens-category__count">7 lenses</span>
+        </div>
+        <div class="lens-grid">
+
+          <!-- 1: Compliance Report -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128203;</div>
+              <div class="lens-card__title">Compliance Report</div>
+            </div>
+            <div class="lens-card__desc">Multi-framework compliance posture with norm evaluation results, gap analysis, and remediation priorities.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">PDF</span>
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">NIS2</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">GDPR</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">ISO 25010</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=compliance-report">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=compliance-report">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=compliance-report">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 2: Architecture Overview -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#127963;</div>
+              <div class="lens-card__title">Architecture Overview</div>
+            </div>
+            <div class="lens-card__desc">Visual architecture landscape with structures, interactions, and framework layers for executive or team presentations.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">SVG</span>
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">TOGAF</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=architecture-overview">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=architecture-overview">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=architecture-overview">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 3: Gap Analysis Matrix -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128202;</div>
+              <div class="lens-card__title">Gap Analysis Matrix</div>
+            </div>
+            <div class="lens-card__desc">Cross-reference matrix showing norm coverage gaps per structure, with severity weights and remediation effort estimates.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+              <span class="lens-meta-tag lens-meta-tag--format">CSV</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=gap-analysis">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=gap-analysis">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=gap-analysis">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 4: Regulatory Mapping -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128220;</div>
+              <div class="lens-card__title">Regulatory Mapping</div>
+            </div>
+            <div class="lens-card__desc">Directive-to-norm-to-structure traceability report per regulation, with article references and evidence links.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">PDF</span>
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">NIS2</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">GDPR</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=regulatory-mapping">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=regulatory-mapping">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=regulatory-mapping">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 5: Diagram Export Package -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128230;</div>
+              <div class="lens-card__title">Diagram Export Package</div>
+            </div>
+            <div class="lens-card__desc">Batch export of lens-based diagrams in multiple formats. Includes layout, style, and filter configuration as metadata.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">SVG</span>
+              <span class="lens-meta-tag lens-meta-tag--format">PlantUML</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=diagram-export">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=diagram-export">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=diagram-export">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 6: Evaluation Summary -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128270;</div>
+              <div class="lens-card__title">Evaluation Summary</div>
+            </div>
+            <div class="lens-card__desc">Consolidated evaluation findings with rule evaluation results, severity distribution, and trend comparison over time.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">PDF</span>
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=evaluation-summary">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=evaluation-summary">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=evaluation-summary">Export Deliverable</a>
+            </div>
+          </div>
+
+          <!-- 7: Framework Stack Report -->
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--purpose">&#128209;</div>
+              <div class="lens-card__title">Framework Stack Report</div>
+            </div>
+            <div class="lens-card__desc">Composed framework analysis showing coverage, overlaps, conflicts, and governance density across the active stack.</div>
+            <div class="lens-card__meta">
+              <span class="lens-meta-tag lens-meta-tag--format">PDF</span>
+              <span class="lens-meta-tag lens-meta-tag--format">HTML</span>
+              <span class="lens-meta-tag lens-meta-tag--framework">Multi-framework</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?template=framework-stack">View Definitions</a>
+              <a class="lens-action" href="diagram.html?template=framework-stack">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?template=framework-stack">Export Deliverable</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!-- ═══ Custom Lenses ═══ -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <div class="lens-category">
+        <div class="lens-category__title">
+          <svg class="lens-category__icon" fill="none" stroke="#64748b" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Custom Lenses
+          <span class="lens-category__count">1 saved</span>
+        </div>
+        <div class="lens-grid">
+
+          <div class="lens-card">
+            <div class="lens-card__header">
+              <div class="lens-card__icon lens-icon--custom">&#128278;</div>
+              <div class="lens-card__title">Payment Domain &mdash; Full Stack</div>
+            </div>
+            <div class="lens-card__desc">Custom cross-cutting lens: all governance touching the payment domain &mdash; PaymentProcessor + related subjects, NIS2 + PCI norms, architecture standards.</div>
+            <div class="lens-card__stats">
+              <span class="lens-card__stat" style="color:#6366f1">5 D</span>
+              <span class="lens-card__stat" style="color:#ec4899">14 N</span>
+              <span class="lens-card__stat" style="color:#0d9488">22 A</span>
+              <span class="lens-card__stat" style="color:#64748b">Saved by EA</span>
+            </div>
+            <div class="lens-card__actions">
+              <a class="lens-action" href="../definition/registry.html?lens=custom-payment-domain">View Definitions</a>
+              <a class="lens-action" href="diagram.html?lens=custom-payment-domain">View Diagram</a>
+              <a class="lens-action lens-action--primary" href="../deliverables/generated.html?lens=custom-payment-domain">Export Deliverable</a>
+              <a class="lens-action" href="edit-lens.html?lens=custom-payment-domain" title="Edit lens">&#9998;</a>
+              <a class="lens-action" style="color:var(--compliance-fail);cursor:pointer" title="Delete lens">&times;</a>
+            </div>
+          </div>
+
+          <!-- + New Lens card -->
+          <div class="lens-card lens-card--new" onclick="location.href='edit-lens.html'" title="Create a new custom lens">
+            <div class="lens-card--new__icon">+</div>
+            <div class="lens-card--new__label">Create New Lens</div>
+            <div class="lens-card__desc">Define filters (by subject, domain, owner, framework, lifecycle) and save as a reusable named lens.</div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

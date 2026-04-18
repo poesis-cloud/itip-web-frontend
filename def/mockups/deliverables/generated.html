@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Generated Deliverables</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Stats ────────────────────────────────────────── */
+    .stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-md); margin-bottom:var(--sp-xl); }
+    .stat-card { background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); padding:var(--sp-lg); text-align:center; }
+    .stat-card__value { font-size:28px; font-weight:800; color:var(--itip-primary); }
+    .stat-card__label { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:2px; }
+
+    /* ── Filter Bar ──────────────────────────────────── */
+    .filter-bar { display:flex; gap:var(--sp-sm); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
+    .filter-bar input[type="text"] { flex:1; min-width:180px; padding:8px 12px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); font-size:var(--fs-sm); }
+    .filter-bar select { padding:8px 12px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); font-size:var(--fs-sm); }
+
+    /* ── View toggle ─────────────────────────────────── */
+    .view-toggle { display:flex; gap:2px; margin-left:auto; }
+    .view-toggle__btn { padding:6px 10px; border:1px solid var(--itip-border); background:var(--itip-surface); cursor:pointer; font-size:13px; }
+    .view-toggle__btn:first-child { border-radius:var(--radius-sm) 0 0 var(--radius-sm); }
+    .view-toggle__btn:last-child { border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+    .view-toggle__btn--active { background:var(--itip-primary); color:white; border-color:var(--itip-primary); }
+
+    /* ── Table view ──────────────────────────────────── */
+    .gen-table { width:100%; border-collapse:collapse; background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); overflow:hidden; }
+    .gen-table th { background:var(--itip-bg); font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--itip-text-muted); padding:10px 14px; text-align:left; border-bottom:1px solid var(--itip-border); }
+    .gen-table td { padding:12px 14px; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); vertical-align:middle; }
+    .gen-table tr:last-child td { border-bottom:none; }
+    .gen-table tr:hover td { background:color-mix(in srgb, var(--itip-primary) 3%, var(--itip-surface)); }
+    .gen-name { font-weight:600; display:block; }
+    .gen-template { font-size:11px; color:var(--itip-text-muted); }
+
+    /* ── Status badges ───────────────────────────────── */
+    .status { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
+    .status--ready { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
+    .status--generating { background:#dbeafe; color:#1d4ed8; border:1px solid #bfdbfe; }
+    .status--scheduled { background:#fef3c7; color:#a16207; border:1px solid #fde68a; }
+    .status--expired { background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; }
+    .status--failed { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; }
+    .status__dot { width:6px; height:6px; border-radius:50%; }
+    .status--ready .status__dot { background:#22c55e; }
+    .status--generating .status__dot { background:#3b82f6; animation:pulse 1.2s infinite; }
+    .status--scheduled .status__dot { background:#f59e0b; }
+    .status--expired .status__dot { background:#94a3b8; }
+    .status--failed .status__dot { background:#ef4444; }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* ── Format badges ───────────────────────────────── */
+    .fmt { display:inline-flex; padding:1px 6px; border-radius:4px; font-size:10px; font-weight:600; font-family:var(--font-mono); }
+    .fmt--pdf { background:#fef2f2; color:#b91c1c; }
+    .fmt--html { background:#eff6ff; color:#1d4ed8; }
+    .fmt--svg { background:#f0fdf4; color:#166534; }
+    .fmt--csv { background:#fefce8; color:#a16207; }
+    .fmt--puml { background:#f5f3ff; color:#6d28d9; }
+
+    /* ── Action links ────────────────────────────────── */
+    .action-links { display:flex; gap:var(--sp-xs); }
+    .action-link { font-size:11px; padding:3px 8px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; font-weight:500; text-decoration:none; color:var(--itip-text); transition:border-color 0.15s; }
+    .action-link:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+    .action-link--primary { background:var(--itip-primary); color:white; border-color:var(--itip-primary); }
+    .action-link--primary:hover { opacity:0.9; color:white; }
+
+    /* ── Lens pill ────────────────────────────────────── */
+    .lens-pill { display:inline-flex; align-items:center; gap:3px; padding:1px 6px; border-radius:8px; font-size:10px; font-weight:500; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; text-decoration:none; }
+    .lens-pill:hover { background:#dbeafe; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Deliverables</span><span>/</span>
+        <strong>Generated</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">&#10022; Copilot Assist</button>
+        <a href="templates.html" class="btn btn--primary btn--sm">+ Generate New</a>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="page-header">
+        <h1>Generated Deliverables</h1>
+        <p class="text-muted">Produced artifacts from deliverable templates. Download, re-generate, or schedule recurring generation.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__value">23</div>
+          <div class="stat-card__label">Total Generated</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">18</div>
+          <div class="stat-card__label">Ready</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">2</div>
+          <div class="stat-card__label">Generating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">3</div>
+          <div class="stat-card__label">Scheduled</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">5</div>
+          <div class="stat-card__label">Templates Used</div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <input type="text" placeholder="Search generated deliverables&hellip;">
+        <select>
+          <option value="">All Templates</option>
+          <option>Compliance Report</option>
+          <option>Architecture Overview</option>
+          <option>Gap Analysis Matrix</option>
+          <option>Regulatory Mapping</option>
+          <option>Diagram Export Package</option>
+          <option>Evaluation Summary</option>
+          <option>Framework Stack Report</option>
+        </select>
+        <select>
+          <option value="">All Statuses</option>
+          <option>Ready</option>
+          <option>Generating</option>
+          <option>Scheduled</option>
+          <option>Expired</option>
+          <option>Failed</option>
+        </select>
+        <select>
+          <option value="">All Formats</option>
+          <option>PDF</option>
+          <option>HTML</option>
+          <option>SVG</option>
+          <option>CSV</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-toggle__btn view-toggle__btn--active" title="Table view">&#9776;</button>
+          <button class="view-toggle__btn" title="Grid view">&#9638;</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table class="gen-table">
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Lens / Scope</th>
+            <th>Format</th>
+            <th>Status</th>
+            <th>Generated</th>
+            <th>Size</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="gen-name">NIS2 Compliance Report — Q3 2025</span>
+              <span class="gen-template">Compliance Report</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=nis2-regulatory" class="lens-pill">&#128270; NIS2 Regulatory</a></td>
+            <td><span class="fmt fmt--pdf">PDF</span></td>
+            <td><span class="status status--ready"><span class="status__dot"></span> Ready</span></td>
+            <td>2025-07-12 14:32</td>
+            <td>2.4 MB</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <a class="action-link action-link--primary" href="#">&#11015; Download</a>
+                <button class="action-link">Re-generate</button>
+                <button class="action-link">&#128247; Preview</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">API Gateway Interaction Diagram — 2 hop</span>
+              <span class="gen-template">Diagram Export Package</span>
+            </td>
+            <td><a href="../lenses/diagram.html?lens=api-gateway-interaction" class="lens-pill">&#128270; API Gateway Interaction</a></td>
+            <td><span class="fmt fmt--svg">SVG</span></td>
+            <td><span class="status status--ready"><span class="status__dot"></span> Ready</span></td>
+            <td>2025-07-11 09:15</td>
+            <td>380 KB</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <a class="action-link action-link--primary" href="#">&#11015; Download</a>
+                <button class="action-link">Re-generate</button>
+                <button class="action-link">&#128247; Preview</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">GDPR Regulatory Mapping — Full Scope</span>
+              <span class="gen-template">Regulatory Mapping</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=gdpr-regulatory" class="lens-pill">&#128270; GDPR Regulatory</a></td>
+            <td><span class="fmt fmt--html">HTML</span></td>
+            <td><span class="status status--generating"><span class="status__dot"></span> Generating</span></td>
+            <td>In progress&hellip;</td>
+            <td>&mdash;</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <button class="action-link" disabled>&#11015; Download</button>
+                <button class="action-link">Cancel</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">Payment Domain — Gap Analysis</span>
+              <span class="gen-template">Gap Analysis Matrix</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=payment-domain" class="lens-pill">&#128270; Payment Domain</a></td>
+            <td><span class="fmt fmt--csv">CSV</span></td>
+            <td><span class="status status--ready"><span class="status__dot"></span> Ready</span></td>
+            <td>2025-07-10 16:40</td>
+            <td>84 KB</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <a class="action-link action-link--primary" href="#">&#11015; Download</a>
+                <button class="action-link">Re-generate</button>
+                <button class="action-link">&#128247; Preview</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">TOGAF Landscape — Architecture Overview</span>
+              <span class="gen-template">Architecture Overview</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=togaf-architecture" class="lens-pill">&#128270; TOGAF Architecture</a></td>
+            <td><span class="fmt fmt--svg">SVG</span></td>
+            <td><span class="status status--scheduled"><span class="status__dot"></span> Scheduled</span></td>
+            <td>Next: 2025-07-14 08:00</td>
+            <td>&mdash;</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <button class="action-link" disabled>&#11015; Download</button>
+                <button class="action-link">Edit Schedule</button>
+                <button class="action-link">Run Now</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">Framework Stack — Multi-framework Overlap</span>
+              <span class="gen-template">Framework Stack Report</span>
+            </td>
+            <td><a href="../frameworks/stack-composer.html" class="lens-pill">&#128270; Full Stack</a></td>
+            <td><span class="fmt fmt--pdf">PDF</span></td>
+            <td><span class="status status--ready"><span class="status__dot"></span> Ready</span></td>
+            <td>2025-07-09 11:20</td>
+            <td>1.8 MB</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <a class="action-link action-link--primary" href="#">&#11015; Download</a>
+                <button class="action-link">Re-generate</button>
+                <button class="action-link">&#128247; Preview</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">ISO 25010 Compliance Report — Q2 2025</span>
+              <span class="gen-template">Compliance Report</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=iso25010-compliance" class="lens-pill">&#128270; ISO 25010 Compliance</a></td>
+            <td><span class="fmt fmt--pdf">PDF</span></td>
+            <td><span class="status status--expired"><span class="status__dot"></span> Expired</span></td>
+            <td>2025-04-15 10:00</td>
+            <td>2.1 MB</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <a class="action-link" href="#">&#11015; Download</a>
+                <button class="action-link">Re-generate</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">NIS2 Incident Response Evaluation</span>
+              <span class="gen-template">Evaluation Summary</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=nis2-incident" class="lens-pill">&#128270; NIS2 Incident Response</a></td>
+            <td><span class="fmt fmt--html">HTML</span></td>
+            <td><span class="status status--generating"><span class="status__dot"></span> Generating</span></td>
+            <td>In progress&hellip;</td>
+            <td>&mdash;</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <button class="action-link" disabled>&#11015; Download</button>
+                <button class="action-link">Cancel</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">Data Management PlantUML — Full Domain</span>
+              <span class="gen-template">Diagram Export Package</span>
+            </td>
+            <td><a href="../lenses/diagram.html?lens=data-management" class="lens-pill">&#128270; Data Management</a></td>
+            <td><span class="fmt fmt--puml">PUML</span></td>
+            <td><span class="status status--scheduled"><span class="status__dot"></span> Scheduled</span></td>
+            <td>Next: 2025-07-15 06:00</td>
+            <td>&mdash;</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <button class="action-link" disabled>&#11015; Download</button>
+                <button class="action-link">Edit Schedule</button>
+                <button class="action-link">Run Now</button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="gen-name">GDPR + NIS2 Cross-Framework Gaps</span>
+              <span class="gen-template">Gap Analysis Matrix</span>
+            </td>
+            <td><a href="../lenses/browse.html?lens=regulatory-cross" class="lens-pill">&#128270; Cross-Regulatory</a></td>
+            <td><span class="fmt fmt--html">HTML</span></td>
+            <td><span class="status status--failed"><span class="status__dot"></span> Failed</span></td>
+            <td>2025-07-08 13:45</td>
+            <td>&mdash;</td>
+            <td>
+              <div class="action-links" style="justify-content:flex-end">
+                <button class="action-link">View Error</button>
+                <button class="action-link">Retry</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-lg); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+        <span>Showing 1&ndash;10 of 23 deliverables</span>
+        <div style="display:flex; gap:4px">
+          <button class="action-link" disabled>&laquo; Previous</button>
+          <button class="action-link" style="background:var(--itip-primary);color:white;border-color:var(--itip-primary)">1</button>
+          <button class="action-link">2</button>
+          <button class="action-link">3</button>
+          <button class="action-link">Next &raquo;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

@@ -101,14 +101,14 @@
       <div class="step-card">
         <h3>Prepare Agenda</h3>
         <p>Governance Analyst collects pending items: proposed directives, norm changes requiring approval,
-           ascriptions blocked by appraisal, and follow-ups from previous sessions.</p>
+           ascriptions blocked by evaluation, and follow-ups from previous sessions.</p>
         <span class="screen-ref">📋 Screen: 08-governance-review-board.html</span>
         <div class="step-sketch">┌─────────────────────────────────────┐
 │ Auto-populated Agenda               │
 ├─────────────────────────────────────┤
 │ ▸ 2 new directive proposals         │
 │ ▸ 1 norm tolerance change           │
-│ ▸ 3 ascriptions blocked by appraisal│
+│ ▸ 3 ascriptions blocked by evaluation│
 │ ▸ 1 follow-up from session #41      │
 ├─────────────────────────────────────┤
 │ [Add Item]    [Reorder]    [Notify] │
@@ -139,7 +139,7 @@
       <div class="step-card">
         <h3>Review Each Agenda Item</h3>
         <p>For each item, the relevant owner presents context. Board members discuss impact,
-           review appraisal findings, and check norm compliance implications.</p>
+           review evaluation findings, and check norm compliance implications.</p>
         <span class="screen-ref">📋 Screen: 03-governance-authoring.html (directive detail)</span>
         <span class="screen-ref" style="margin-left:var(--sp-xs)">📋 Screen: 06-norms-view.html (norm detail)</span>
         <div class="step-sketch">┌───────────────────────────────────────────┐
@@ -148,7 +148,7 @@
 │ Type: Directive Proposal                  │
 │ Impact: 45 structures, 12 norms affected  │
 ├───────────────────────────────────────────┤
-│ Appraisal: ⚠ 2 warnings (see findings)    │
+│ Evaluation: ⚠ 2 warnings (see findings)    │
 │ Dependencies: GDPR Art.32, ISO 25010 Sec  │
 │                                           │
 │ Discussion notes: ___________________     │
@@ -194,15 +194,15 @@
       <div class="step-card">
         <h3>Execute Transitions</h3>
         <p>Approved items trigger Ascription lifecycle transitions via the Definition Manager API.
-           Appraisal is invoked to validate the transition is still permissible.</p>
-        <span class="screen-ref">📋 Workflow: wf-appraisal-status-transition.html</span>
+           Evaluation is invoked to validate the transition is still permissible.</p>
+        <span class="screen-ref">📋 Workflow: wf-evaluation-status-transition.html</span>
         <div class="step-sketch">┌─────────────────────────────────────────┐
 │ Transition Queue                        │
 ├─────────────────────────────────────────┤
 │ ✅ DIR-2024-039  Draft → Active         │
 │ ✅ NRM-2024-112  Draft → Active         │
 │ ⚠  ASC-2024-271  Draft → Active         │
-│    └─ Appraisal: 1 blocking finding     │
+│    └─ Evaluation: 1 blocking finding     │
 │       "Missing CEL assertion on NIS2    │
 │        encryption norm"                 │
 │    └─ Action: Remediate before activate │

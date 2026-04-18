@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — NN Findings · Norm ↔ Norm</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .findings-toolbar { display:flex; gap:var(--sp-md); align-items:center; padding:var(--sp-md) var(--sp-lg); flex-wrap:wrap; border-bottom:1px solid var(--itip-border); }
+    .findings-toolbar .form-input { flex:1; min-width:180px; }
+    .findings-layout { display:flex; flex:1; min-height:0; }
+    .findings-list { flex:1; overflow-y:auto; padding:var(--sp-md) var(--sp-lg); }
+    .findings-header { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg); font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--itip-text-muted); }
+    .findings-header>span:nth-child(n+3) { text-align:center; }
+    .finding-row { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); margin-bottom:var(--sp-sm); cursor:pointer; transition:box-shadow .15s,border-color .15s; }
+    .finding-row:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
+    .finding-row>div:nth-child(n+3) { text-align:center; }
+    .finding-icon { width:28px; height:28px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; }
+    .finding-icon--conflict { background:color-mix(in srgb,var(--compliance-fail) 12%,transparent); color:var(--compliance-fail); }
+    .finding-icon--gap { background:color-mix(in srgb,var(--compliance-warn) 12%,transparent); color:var(--compliance-warn); }
+    .finding-icon--metric { background:color-mix(in srgb,var(--itip-text) 8%,transparent); color:var(--itip-text-muted); }
+    .finding-title { font-weight:600; font-size:var(--fs-sm); }
+    .finding-subject { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .cat-nn { background:#f0fdf4; color:#15803d; }
+    .sev-critical { background:#fef2f2; color:var(--compliance-fail); border:1px solid #fecaca; }
+    .sev-warning { background:#fffbeb; color:var(--compliance-warn); border:1px solid #fed7aa; }
+    .res-open { color:var(--compliance-fail); }
+    .back-link { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-sm); color:var(--itip-text-muted); text-decoration:none; padding:var(--sp-sm) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
+    .back-link:hover { color:var(--itip-primary); }
+    .class-banner { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
+    .class-banner__code { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); font-size:13px; font-weight:800; background:#f0fdf4; color:#15803d; }
+    .class-banner__title { font-size:var(--fs-lg); font-weight:700; }
+    .class-banner__subtitle { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="app-sidebar">        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">6</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a></aside>
+
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Evaluation</span><span>/</span><span>Findings</span><span>/</span><strong>NN</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Search</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <main class="app-main" style="padding:0;display:flex;flex-direction:column">
+      <a href="findings.html" class="back-link">← All Findings</a>
+
+      <div class="class-banner">
+        <span class="class-banner__code">NN</span>
+        <div>
+          <div class="class-banner__title">Norm ↔ Norm — Norm Coherence</div>
+          <div class="class-banner__subtitle">5 rules · 78% · 3 findings · Filtered view — <a href="findings.html" style="color:var(--itip-primary)">show all classes</a></div>
+        </div>
+      </div>
+
+      <div class="findings-toolbar">
+        <input class="form-input" type="text" placeholder="Search NN findings…">
+        <select class="form-select" style="width:120px"><option>All Types</option><option>⚡ Contradiction</option><option>○ Coverage Gap</option><option>📊 Threshold</option></select>
+        <select class="form-select" style="width:130px"><option>All Severities</option><option>Critical</option><option>Warning</option></select>
+      </div>
+
+      <div class="findings-layout">
+        <div class="findings-list">
+          <div class="findings-header">
+            <span></span><span>Finding</span><span>Category</span><span>Severity</span><span>Resolution</span><span>Rule</span><span>Age</span>
+          </div>
+
+          <!-- NN:11 NORM_ASSERTION_COMPATIBILITY -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--conflict">⚡</div>
+            <div>
+              <div class="finding-title">Norm assertion compatibility — AuditService</div>
+              <div class="finding-subject">log_retention ASSERT retentionDays &gt;= 365 ↔ storage_optimization ASSERT retentionDays &lt;= 90</div>
+            </div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
+            <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NN:11</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">2d</div>
+          </div>
+
+          <!-- NN:14 NORM_ASCRIPTION_BINDING -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Norm Ascription binding — encryption_at_rest</div>
+              <div class="finding-subject">Norm active but no matching Ascription in scope (applicability: data.classification == &quot;PII&quot;)</div>
+            </div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NN:14</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">7d</div>
+          </div>
+
+          <!-- NN:13 GOVERNANCE_PROPORTIONALITY -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--metric">📊</div>
+            <div>
+              <div class="finding-title">Governance proportionality — API Gateway</div>
+              <div class="finding-subject">18 bound Norms vs tenant baseline of 6 (3×) — may indicate over-specification or conflated concerns</div>
+            </div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NN:13</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">8d</div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--itip-text-muted)">
+            <span>Showing 3 of 3 NN findings</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+
+</html>

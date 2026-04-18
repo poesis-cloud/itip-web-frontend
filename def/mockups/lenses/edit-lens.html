@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Edit Lens</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Editor layout ───────────────────────────────── */
+    .editor-layout { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); align-items:start; }
+    @media (max-width:1100px) { .editor-layout { grid-template-columns:1fr; } }
+
+    .editor-panel, .preview-panel {
+      background:var(--itip-surface); border:1px solid var(--itip-border);
+      border-radius:var(--radius-md); overflow:hidden;
+    }
+    .panel-header {
+      padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border);
+      display:flex; align-items:center; justify-content:space-between;
+      background:var(--itip-bg); font-weight:700; font-size:var(--fs-sm);
+    }
+    .panel-header__actions { display:flex; gap:var(--sp-sm); }
+    .panel-body { padding:var(--sp-lg); }
+
+    /* ── Form fields ─────────────────────────────────── */
+    .form-group { margin-bottom:var(--sp-lg); }
+    .form-group label { display:block; font-size:var(--fs-xs); font-weight:600; color:var(--itip-text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:var(--sp-xs); }
+    .form-input { width:100%; padding:8px 12px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); font-size:var(--fs-sm); color:var(--itip-text); box-sizing:border-box; }
+    .form-input:focus { outline:none; border-color:var(--itip-primary); box-shadow:0 0 0 3px rgba(13,110,253,.12); }
+    textarea.form-input { resize:vertical; min-height:60px; font-family:inherit; }
+    select.form-input { cursor:pointer; }
+
+    /* ── Checkbox row ────────────────────────────────── */
+    .check-row { display:flex; flex-wrap:wrap; gap:var(--sp-md); }
+    .check-item { display:flex; align-items:center; gap:6px; font-size:var(--fs-sm); cursor:pointer; }
+    .check-item input[type="checkbox"] { accent-color:var(--itip-primary); width:16px; height:16px; }
+
+    /* ── Filter rule list ────────────────────────────── */
+    .filter-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:4px; }
+    .filter-item {
+      display:flex; align-items:center; gap:var(--sp-sm);
+      padding:10px 12px; border:1px solid var(--itip-border); border-radius:var(--radius-sm);
+      background:var(--itip-bg); font-size:var(--fs-sm);
+      transition:border-color 0.15s, background 0.15s;
+    }
+    .filter-item:hover { border-color:var(--itip-primary); }
+    .filter-item--active { border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 4%, var(--itip-surface)); }
+    .filter-item__handle { color:var(--itip-text-muted); font-size:16px; flex-shrink:0; user-select:none; cursor:grab; }
+    .filter-item__name { flex:1; font-weight:500; }
+    .filter-item__type { font-size:10px; padding:1px 6px; border-radius:8px; background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; }
+    .filter-item__op { font-size:10px; padding:1px 6px; border-radius:8px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+    .filter-item__toggle { font-size:11px; color:var(--itip-text-muted); cursor:pointer; }
+    .filter-item__toggle:hover { color:var(--itip-danger, #dc2626); }
+
+    .filter-add {
+      display:flex; align-items:center; gap:var(--sp-sm); padding:8px 12px;
+      border:1px dashed var(--itip-border); border-radius:var(--radius-sm);
+      color:var(--itip-text-muted); font-size:var(--fs-sm); cursor:pointer;
+      transition:border-color 0.15s, color 0.15s;
+    }
+    .filter-add:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+
+    /* ── Filter detail ───────────────────────────────── */
+    .filter-detail { margin-top:var(--sp-md); padding:var(--sp-md); border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
+    .filter-detail__title { font-size:var(--fs-sm); font-weight:700; margin-bottom:var(--sp-sm); display:flex; align-items:center; gap:var(--sp-sm); }
+    .filter-detail__title span { color:var(--itip-primary); }
+
+    /* ── Scope tags ───────────────────────────────────── */
+    .scope-tags { display:flex; flex-wrap:wrap; gap:var(--sp-sm); }
+    .scope-tag { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:500; border:1px solid; }
+    .scope-tag--subject { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+    .scope-tag--owner { background:#fdf2f8; color:#db2777; border-color:#fbcfe8; }
+    .scope-tag--domain { background:#f5f3ff; color:#7c3aed; border-color:#ddd6fe; }
+    .scope-tag--framework { background:#f0fdf4; color:#166534; border-color:#bbf7d0; }
+    .scope-tag--lifecycle { background:#f0fdf4; color:#16a34a; border-color:#bbf7d0; }
+    .scope-tag__remove { cursor:pointer; font-size:14px; line-height:1; }
+    .scope-tag__remove:hover { color:#dc2626; }
+
+    /* ── Preview pane ────────────────────────────────── */
+    .preview-panel { position:sticky; top:var(--sp-lg); }
+    .preview-tabs { display:flex; gap:0; border-bottom:1px solid var(--itip-border); }
+    .preview-tab { padding:8px 16px; font-size:var(--fs-xs); font-weight:600; color:var(--itip-text-muted); cursor:pointer; border-bottom:2px solid transparent; transition:color 0.15s, border-color 0.15s; }
+    .preview-tab--active { color:var(--itip-primary); border-bottom-color:var(--itip-primary); }
+    .preview-tab:hover { color:var(--itip-text); }
+
+    /* ── Preview definition list ─────────────────────── */
+    .preview-list { list-style:none; padding:0; margin:0; }
+    .preview-list__item {
+      display:flex; align-items:center; gap:var(--sp-sm); padding:8px 0;
+      border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm);
+    }
+    .preview-list__item:last-child { border-bottom:none; }
+    .preview-list__icon { width:24px; height:24px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+    .preview-list__name { flex:1; font-weight:500; }
+    .preview-list__type { font-size:10px; padding:1px 6px; border-radius:8px; border:1px solid var(--itip-border); color:var(--itip-text-muted); }
+    .preview-list__state { font-size:10px; padding:1px 6px; border-radius:8px; font-weight:500; }
+    .state--active { background:#dcfce7; color:#166534; }
+    .state--proposed { background:#fef3c7; color:#92400e; }
+    .state--evolving { background:#dbeafe; color:#1d4ed8; }
+
+    /* ── Stats summary in preview ────────────────────── */
+    .preview-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-sm); margin-bottom:var(--sp-lg); }
+    .preview-stat { text-align:center; padding:var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
+    .preview-stat__value { font-size:var(--fs-lg); font-weight:800; color:var(--itip-primary); }
+    .preview-stat__label { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+
+    /* ── Action bar ──────────────────────────────────── */
+    .action-bar { display:flex; align-items:center; gap:var(--sp-sm); margin-top:var(--sp-lg); padding-top:var(--sp-lg); border-top:1px solid var(--itip-border); }
+    .action-bar .spacer { flex:1; }
+    .action-bar .text-muted { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+
+    /* ── Deliverable binding ─────────────────────────── */
+    .deliverable-binding { display:flex; align-items:center; gap:var(--sp-sm); padding:10px 14px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
+    .deliverable-binding__icon { font-size:18px; }
+    .deliverable-binding__info { flex:1; }
+    .deliverable-binding__name { font-size:var(--fs-sm); font-weight:600; }
+    .deliverable-binding__scope { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <a href="browse.html" style="text-decoration:none;color:var(--itip-text-muted)">Lenses</a><span>/</span>
+        <a href="browse.html" style="text-decoration:none;color:var(--itip-text-muted)">Browse</a><span>/</span>
+        <strong>Edit Lens</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">&#10022; Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-md);">
+        <div>
+          <h1 style="margin:0;">Payment Domain &mdash; Full Stack</h1>
+          <p class="text-muted" style="margin:var(--sp-xs) 0 0;">Configure lens scope, filter rules, and deliverable binding. Preview matching definitions in real time.</p>
+        </div>
+        <div style="display:flex;gap:var(--sp-sm);align-items:center;flex-shrink:0;">
+          <span style="font-size:var(--fs-xs);color:var(--itip-text-muted);">Last saved 5 min ago</span>
+          <button class="btn btn--secondary btn--sm">Discard</button>
+          <button class="btn btn--primary btn--sm">Save Lens</button>
+        </div>
+      </div>
+
+      <div class="editor-layout">
+
+        <!-- ═══ LEFT: Lens Configuration Panel ═══ -->
+        <div class="editor-panel">
+          <div class="panel-header">
+            Lens Configuration
+            <div class="panel-header__actions">
+              <button class="btn btn--ghost btn--sm" title="Duplicate lens">&#128203; Duplicate</button>
+            </div>
+          </div>
+          <div class="panel-body">
+
+            <!-- Metadata -->
+            <div class="form-group">
+              <label>Lens Name</label>
+              <input type="text" class="form-input" value="Payment Domain — Full Stack">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-input">Custom cross-cutting lens: all governance touching the payment domain — PaymentProcessor + related subjects, NIS2 + PCI norms, architecture standards.</textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-md);">
+              <div class="form-group">
+                <label>Category</label>
+                <select class="form-input">
+                  <option>By Subject</option>
+                  <option>By Owner</option>
+                  <option>By Domain</option>
+                  <option>By Lifecycle</option>
+                  <option selected>Custom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Icon Style</label>
+                <select class="form-input">
+                  <option>Subject (blue)</option>
+                  <option>Organization (pink)</option>
+                  <option>Domain (purple)</option>
+                  <option>Lifecycle (green)</option>
+                  <option selected>Custom (gray)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Scope: Subjects -->
+            <div class="form-group">
+              <label>Subject Scope</label>
+              <div class="scope-tags">
+                <span class="scope-tag scope-tag--subject">PaymentProcessor <span class="scope-tag__remove">&times;</span></span>
+                <span class="scope-tag scope-tag--subject">PaymentGateway <span class="scope-tag__remove">&times;</span></span>
+                <span class="scope-tag scope-tag--subject">SettlementEngine <span class="scope-tag__remove">&times;</span></span>
+              </div>
+              <select class="form-input" style="margin-top:var(--sp-sm);">
+                <option value="">+ Add subject&hellip;</option>
+                <option>UserDatabase</option>
+                <option>API Gateway</option>
+                <option>AuditService</option>
+                <option>NotificationHub</option>
+              </select>
+            </div>
+
+            <!-- Scope: Frameworks -->
+            <div class="form-group">
+              <label>Framework Scope</label>
+              <div class="scope-tags">
+                <span class="scope-tag scope-tag--framework">NIS2 <span class="scope-tag__remove">&times;</span></span>
+                <span class="scope-tag scope-tag--framework">GDPR <span class="scope-tag__remove">&times;</span></span>
+              </div>
+              <select class="form-input" style="margin-top:var(--sp-sm);">
+                <option value="">+ Add framework&hellip;</option>
+                <option>TOGAF</option>
+                <option>ISO 25010</option>
+                <option>ISO 25012</option>
+                <option>ACME Corp Architecture</option>
+                <option>DORA</option>
+              </select>
+            </div>
+
+            <!-- Scope: Owners -->
+            <div class="form-group">
+              <label>Owner Scope</label>
+              <div class="scope-tags">
+                <span class="scope-tag scope-tag--owner">Security Board <span class="scope-tag__remove">&times;</span></span>
+              </div>
+              <select class="form-input" style="margin-top:var(--sp-sm);">
+                <option value="">+ Add owner&hellip;</option>
+                <option>Data Governance Office</option>
+                <option>Platform Engineering</option>
+              </select>
+            </div>
+
+            <!-- Scope: Lifecycle States -->
+            <div class="form-group">
+              <label>Lifecycle Filter</label>
+              <div class="check-row">
+                <label class="check-item"><input type="checkbox" checked> Active</label>
+                <label class="check-item"><input type="checkbox" checked> Proposed</label>
+                <label class="check-item"><input type="checkbox" checked> Evolving</label>
+                <label class="check-item"><input type="checkbox"> Suspended</label>
+                <label class="check-item"><input type="checkbox"> Deprecated</label>
+                <label class="check-item"><input type="checkbox"> Retired</label>
+              </div>
+            </div>
+
+            <!-- Definition Types -->
+            <div class="form-group">
+              <label>Definition Types</label>
+              <div class="check-row">
+                <label class="check-item"><input type="checkbox" checked> Structures</label>
+                <label class="check-item"><input type="checkbox" checked> Mechanisms</label>
+                <label class="check-item"><input type="checkbox" checked> Interactions</label>
+                <label class="check-item"><input type="checkbox" checked> Directives</label>
+                <label class="check-item"><input type="checkbox" checked> Norms</label>
+                <label class="check-item"><input type="checkbox" checked> Effectors</label>
+                <label class="check-item"><input type="checkbox" checked> Receptors</label>
+              </div>
+            </div>
+
+            <!-- Filter Rules -->
+            <div class="form-group">
+              <label>Filter Rules <span style="font-weight:400;text-transform:none;letter-spacing:0;">(drag to reorder priority)</span></label>
+              <ul class="filter-list">
+                <li class="filter-item filter-item--active">
+                  <span class="filter-item__handle">&#9776;</span>
+                  <span class="filter-item__name">1. Subject matches scope</span>
+                  <span class="filter-item__type">Include</span>
+                  <span class="filter-item__op">AND</span>
+                  <span class="filter-item__toggle" title="Remove rule">&times;</span>
+                </li>
+                <li class="filter-item">
+                  <span class="filter-item__handle">&#9776;</span>
+                  <span class="filter-item__name">2. Framework in scope</span>
+                  <span class="filter-item__type">Include</span>
+                  <span class="filter-item__op">AND</span>
+                  <span class="filter-item__toggle" title="Remove rule">&times;</span>
+                </li>
+                <li class="filter-item">
+                  <span class="filter-item__handle">&#9776;</span>
+                  <span class="filter-item__name">3. Owner matches scope</span>
+                  <span class="filter-item__type">Include</span>
+                  <span class="filter-item__op">OR</span>
+                  <span class="filter-item__toggle" title="Remove rule">&times;</span>
+                </li>
+                <li class="filter-item">
+                  <span class="filter-item__handle">&#9776;</span>
+                  <span class="filter-item__name">4. Lifecycle state allowed</span>
+                  <span class="filter-item__type">Filter</span>
+                  <span class="filter-item__op">AND</span>
+                  <span class="filter-item__toggle" title="Remove rule">&times;</span>
+                </li>
+              </ul>
+              <div class="filter-add">+ Add Filter Rule</div>
+            </div>
+
+            <!-- Filter Rule Detail (for selected rule) -->
+            <div class="filter-detail">
+              <div class="filter-detail__title"><span>&#9654;</span> Subject matches scope</div>
+              <div class="form-group" style="margin-bottom:var(--sp-sm);">
+                <label>Match Mode</label>
+                <select class="form-input">
+                  <option selected>Exact match on selected subjects</option>
+                  <option>Regex pattern</option>
+                  <option>Domain membership</option>
+                  <option>CEL expression</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:var(--sp-sm);">
+                <label>Traversal Depth</label>
+                <select class="form-input">
+                  <option>Direct only (depth 1)</option>
+                  <option selected>Include interactions (depth 2)</option>
+                  <option>Full graph (depth N)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Notes</label>
+                <textarea class="form-input" rows="2" placeholder="Optional notes for this rule&hellip;">Include PaymentProcessor and all connected subjects via interactions, plus their governance chain.</textarea>
+              </div>
+            </div>
+
+            <!-- Deliverable Binding -->
+            <div class="form-group" style="margin-top:var(--sp-lg);">
+              <label>Deliverable Template Binding</label>
+              <div class="deliverable-binding">
+                <div class="deliverable-binding__icon">&#128203;</div>
+                <div class="deliverable-binding__info">
+                  <div class="deliverable-binding__name">Compliance Report</div>
+                  <div class="deliverable-binding__scope">Default template for &ldquo;Export Deliverable&rdquo; action on this lens</div>
+                </div>
+                <button class="btn btn--ghost btn--sm">Change</button>
+              </div>
+              <select class="form-input" style="margin-top:var(--sp-sm);">
+                <option selected>Compliance Report</option>
+                <option>Architecture Overview</option>
+                <option>Gap Analysis Matrix</option>
+                <option>Regulatory Mapping</option>
+                <option>Diagram Export Package</option>
+                <option>Evaluation Summary</option>
+                <option>Framework Stack Report</option>
+                <option>No default (pick at export time)</option>
+              </select>
+            </div>
+
+            <!-- Action bar -->
+            <div class="action-bar">
+              <a href="browse.html" class="btn btn--ghost btn--sm">&larr; Back to Lenses</a>
+              <span class="spacer"></span>
+              <span class="text-muted">4 rules &middot; 3 subjects &middot; 2 frameworks &middot; 1 owner</span>
+              <button class="btn btn--primary btn--sm">Save Lens</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ RIGHT: Live Preview Panel ═══ -->
+        <div class="preview-panel">
+          <div class="panel-header">
+            Live Preview
+            <div class="panel-header__actions">
+              <div class="preview-tabs">
+                <span class="preview-tab preview-tab--active">Definitions</span>
+                <span class="preview-tab">Diagram</span>
+                <span class="preview-tab">JSON</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:var(--sp-lg);">
+
+            <!-- Preview stats -->
+            <div class="preview-stats">
+              <div class="preview-stat">
+                <div class="preview-stat__value">5</div>
+                <div class="preview-stat__label">Directives</div>
+              </div>
+              <div class="preview-stat">
+                <div class="preview-stat__value">14</div>
+                <div class="preview-stat__label">Norms</div>
+              </div>
+              <div class="preview-stat">
+                <div class="preview-stat__value">22</div>
+                <div class="preview-stat__label">Ascriptions</div>
+              </div>
+            </div>
+
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted);margin-bottom:var(--sp-md);padding-bottom:var(--sp-sm);border-bottom:1px solid var(--itip-border);">
+              <strong>41 definitions</strong> match current filter rules &middot; 3 subjects &middot; 2 frameworks
+            </div>
+
+            <!-- Structures -->
+            <div style="font-size:var(--fs-xs);font-weight:700;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:var(--sp-xs);">Structures (3)</div>
+            <ul class="preview-list" style="margin-bottom:var(--sp-lg);">
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #0d9488 12%, transparent);color:#0d9488;">S</div>
+                <span class="preview-list__name">PaymentProcessor</span>
+                <span class="preview-list__type">Structure</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #0d9488 12%, transparent);color:#0d9488;">S</div>
+                <span class="preview-list__name">PaymentGateway</span>
+                <span class="preview-list__type">Structure</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #0d9488 12%, transparent);color:#0d9488;">S</div>
+                <span class="preview-list__name">SettlementEngine</span>
+                <span class="preview-list__type">Structure</span>
+                <span class="preview-list__state state--evolving">Evolving</span>
+              </li>
+            </ul>
+
+            <!-- Directives -->
+            <div style="font-size:var(--fs-xs);font-weight:700;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:var(--sp-xs);">Directives (5)</div>
+            <ul class="preview-list" style="margin-bottom:var(--sp-lg);">
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #6366f1 12%, transparent);color:#6366f1;">D</div>
+                <span class="preview-list__name">Payment Data Encryption</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #6366f1 12%, transparent);color:#6366f1;">D</div>
+                <span class="preview-list__name">Transaction Audit Trail</span>
+                <span class="preview-list__type">GDPR</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #6366f1 12%, transparent);color:#6366f1;">D</div>
+                <span class="preview-list__name">PCI DSS Compliance</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #6366f1 12%, transparent);color:#6366f1;">D</div>
+                <span class="preview-list__name">Payment Availability SLA</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--proposed">Proposed</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #6366f1 12%, transparent);color:#6366f1;">D</div>
+                <span class="preview-list__name">Settlement Data Retention</span>
+                <span class="preview-list__type">GDPR</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+            </ul>
+
+            <!-- Norms -->
+            <div style="font-size:var(--fs-xs);font-weight:700;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:var(--sp-xs);">Norms (14)</div>
+            <ul class="preview-list" style="margin-bottom:var(--sp-lg);">
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #ec4899 12%, transparent);color:#ec4899;">N</div>
+                <span class="preview-list__name">AES-256 encryption at rest</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #ec4899 12%, transparent);color:#ec4899;">N</div>
+                <span class="preview-list__name">TLS 1.3 in transit</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #ec4899 12%, transparent);color:#ec4899;">N</div>
+                <span class="preview-list__name">Transaction log retention 7y</span>
+                <span class="preview-list__type">GDPR</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #ec4899 12%, transparent);color:#ec4899;">N</div>
+                <span class="preview-list__name">PAN masking in logs</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #ec4899 12%, transparent);color:#ec4899;">N</div>
+                <span class="preview-list__name">Settlement reconciliation &lt; 24h</span>
+                <span class="preview-list__type">NIS2</span>
+                <span class="preview-list__state state--evolving">Evolving</span>
+              </li>
+              <li class="preview-list__item" style="color:var(--itip-text-muted);font-style:italic;">
+                <div class="preview-list__icon" style="background:var(--itip-bg);color:var(--itip-text-muted);">&hellip;</div>
+                <span class="preview-list__name">+ 9 more norms</span>
+                <span></span>
+              </li>
+            </ul>
+
+            <!-- Interactions -->
+            <div style="font-size:var(--fs-xs);font-weight:700;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:var(--sp-xs);">Interactions (4)</div>
+            <ul class="preview-list">
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #f59e0b 12%, transparent);color:#f59e0b;">I</div>
+                <span class="preview-list__name">PaymentProcessor &harr; PaymentGateway</span>
+                <span class="preview-list__type">HTTP</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #f59e0b 12%, transparent);color:#f59e0b;">I</div>
+                <span class="preview-list__name">PaymentProcessor &harr; SettlementEngine</span>
+                <span class="preview-list__type">Async</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #f59e0b 12%, transparent);color:#f59e0b;">I</div>
+                <span class="preview-list__name">PaymentGateway &harr; API Gateway</span>
+                <span class="preview-list__type">HTTP</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+              <li class="preview-list__item">
+                <div class="preview-list__icon" style="background:color-mix(in srgb, #f59e0b 12%, transparent);color:#f59e0b;">I</div>
+                <span class="preview-list__name">SettlementEngine &harr; AuditService</span>
+                <span class="preview-list__type">Event</span>
+                <span class="preview-list__state state--active">Active</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

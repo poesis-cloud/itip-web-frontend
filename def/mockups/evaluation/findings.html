@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Appraisal Findings</title>
+  <title>ITIP — Evaluation Findings</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
     /* ── Score strip ── */
@@ -54,67 +54,67 @@
       flex-shrink: 0;
     }
 
-    /* Category chip dot colors */
-    .dot-gc {
+    /* Bilateral class chip dot colors */
+    .dot-dd {
       background: #1d4ed8;
     }
 
-    .dot-gi {
+    .dot-dn {
       background: #dc2626;
     }
 
-    .dot-ft {
+    .dot-nn {
       background: #15803d;
     }
 
-    .dot-ncd {
+    .dot-na {
       background: #7c3aed;
     }
 
-    .dot-ncr {
+    .dot-nx {
       background: #a21caf;
     }
 
-    .dot-sf {
+    .dot-aa {
       background: #a16207;
     }
 
-    .dot-lh {
+    .dot-ac {
       background: #0369a1;
     }
 
-    /* Category badge colors */
-    .cat-gc {
+    /* Bilateral class badge colors */
+    .cat-dd {
       background: #eff6ff;
       color: #1d4ed8;
     }
 
-    .cat-gi {
+    .cat-dn {
       background: #fef2f2;
       color: #dc2626;
     }
 
-    .cat-ft {
+    .cat-nn {
       background: #f0fdf4;
       color: #15803d;
     }
 
-    .cat-ncd {
+    .cat-na {
       background: #faf5ff;
       color: #7c3aed;
     }
 
-    .cat-ncr {
+    .cat-nx {
       background: #fdf4ff;
       color: #a21caf;
     }
 
-    .cat-sf {
+    .cat-aa {
       background: #fefce8;
       color: #a16207;
     }
 
-    .cat-lh {
+    .cat-ac {
       background: #f0f9ff;
       color: #0369a1;
     }
@@ -150,7 +150,7 @@
     /* ── Finding rows ── */
     .finding-row {
       display: grid;
-      grid-template-columns: 28px 1fr 80px 80px 100px 100px 80px;
+      grid-template-columns: 28px 1fr 80px 80px 100px 120px 80px;
       align-items: center;
       gap: var(--sp-md);
       padding: var(--sp-md) var(--sp-lg);
@@ -173,7 +173,7 @@
 
     .findings-header {
       display: grid;
-      grid-template-columns: 28px 1fr 80px 80px 100px 100px 80px;
+      grid-template-columns: 28px 1fr 80px 80px 100px 120px 80px;
       align-items: center;
       gap: var(--sp-md);
       padding: var(--sp-sm) var(--sp-lg);
@@ -510,141 +510,83 @@
       <nav class="app-sidebar__nav">
         <div class="nav-section">Overview</div>
         <a class="nav-item" href="../overview/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="7" height="7" rx="1" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
         </a>
         <a class="nav-item" href="../overview/activity-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
         </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="7" height="7" rx="1" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
-        </a>
-        <a class="nav-item" href="../definition/lenses.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3" />
-            <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
-          </svg>
-          Lenses
         </a>
         <a class="nav-item" href="../definition/registry.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M3 6h18M3 12h18M3 18h18" />
-            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
-            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
-            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
           Registry
         </a>
-        <div class="nav-section">Appraisal</div>
-        <a class="nav-item" href="../appraisal/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-          </svg>
-          Dashboard
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
         </a>
-        <a class="nav-item active" href="../appraisal/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 8v4M12 16h.01" />
-          </svg>
-          Findings
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5" />
-            <circle cx="12" cy="12" r="2" />
-            <path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
           Impact Analysis
         </a>
         <div class="nav-section">Review</div>
         <a class="nav-item" href="../review/review-board.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M22 21v-2a4 4 0 00-3-3.87" />
-            <path d="M16 3.13a4 4 0 010 7.75" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           Review Board
         </a>
         <a class="nav-item" href="../review/review-session.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-            <path d="M16 2v4M8 2v4M3 10h18" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
           Sessions
         </a>
         <a class="nav-item" href="../review/review-history.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12 6 12 12 16 14" />
-            <path d="M2.05 12A10 10 0 0112 2" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
           History
         </a>
-
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           Sources
         </a>
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M23 4v6h-6" />
-            <path d="M1 20v-6h6" />
-            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Sync Jobs
-        </a>
-        <div class="nav-section">Frameworks</div>
-        <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-          </svg>
-          Catalog <span class="nav-badge">5</span>
-        </a>
-        <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <path d="M12 8v8M8 12h8" />
-          </svg>
-          Stack Composer
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Users
         </a>
         <a class="nav-item" href="../admin/integrations.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-          </svg>
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
           Integrations
         </a>
       </nav>
@@ -655,7 +597,7 @@
     <!-- ======== Header ======== -->
     <header class="app-header">
       <div class="app-header__breadcrumb">
-        <span>Appraisal</span><span>/</span>
+        <span>Evaluation</span><span>/</span>
         <strong>Findings</strong>
       </div>
       <div class="app-header__actions">
@@ -692,18 +634,27 @@
         All <span class="score-chip__value">84%</span>
       </button>
       <button class="score-chip" onclick="this.classList.toggle('active')">
-        <span style="color:var(--compliance-pass)">●</span> Reach <span class="score-chip__value">92%</span>
+        <span class="score-chip__dot dot-dd"></span> DD <span class="score-chip__value">81%</span>
       </button>
       <button class="score-chip" onclick="this.classList.toggle('active')">
-        <span style="color:var(--compliance-warn)">●</span> Binding <span class="score-chip__value">81%</span>
+        <span class="score-chip__dot dot-dn"></span> DN <span class="score-chip__value">91%</span>
       </button>
       <button class="score-chip" onclick="this.classList.toggle('active')">
-        <span style="color:var(--compliance-pass)">●</span> Fidelity <span class="score-chip__value">94%</span>
+        <span class="score-chip__dot dot-nn"></span> NN <span class="score-chip__value">78%</span>
       </button>
       <button class="score-chip" onclick="this.classList.toggle('active')">
-        <span style="color:var(--compliance-fail)">●</span> Validity <span class="score-chip__value">78%</span>
+        <span class="score-chip__dot dot-na"></span> NA <span class="score-chip__value">82%</span>
       </button>
-      <span style="margin-left:auto;font-size:var(--fs-xs);color:var(--itip-text-muted)">149 findings · 22 open
+      <button class="score-chip" onclick="this.classList.toggle('active')" style="opacity:0.5" title="Observation pipeline not connected">
+        <span class="score-chip__dot dot-nx"></span> NX <span class="score-chip__value">&mdash;</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span class="score-chip__dot dot-aa"></span> AA <span class="score-chip__value">88%</span>
+      </button>
+      <button class="score-chip" onclick="this.classList.toggle('active')">
+        <span class="score-chip__dot dot-ac"></span> AC <span class="score-chip__value">76%</span>
+      </button>
+      <span style="margin-left:auto;font-size:var(--fs-xs);color:var(--itip-text-muted)">29 rules &middot; 149 findings &middot; 22 open
         resolutions</span>
     </div>
 
@@ -714,18 +665,26 @@
       <div class="findings-toolbar">
         <input class="form-input" type="text" placeholder="Search findings, subjects, directives, norms…">
         <select class="form-select" style="width:130px">
-          <option>All Axes</option>
-          <option>Reach</option>
-          <option>Binding</option>
-          <option>Fidelity</option>
-          <option>Validity</option>
+          <option>All Classes</option>
+          <optgroup label="Meta-Governance">
+          <option>DD — Directive Coherence</option>
+          <option>DN — Operationalization Integrity</option>
+          <option>NN — Norm Coherence</option>
+          <option>AA — Source Fidelity</option>
+          <option>AC — Comitology Compliance</option>
+          </optgroup>
+          <optgroup label="Governance">
+          <option>NA — Definition Compliance</option>
+          <option>NX — Execution Compliance</option>
+          </optgroup>
         </select>
         <select class="form-select" style="width:120px">
           <option>All Types</option>
-          <option>○ Gap</option>
-          <option>⚡ Conflict</option>
+          <option>○ Coverage Gap</option>
+          <option>⚡ Contradiction</option>
           <option>↔ Drift</option>
-          <option>✕ Violation</option>
+          <option>✕ Non-compliance</option>
+          <option>📊 Threshold</option>
         </select>
         <select class="form-select" style="width:130px">
           <option>All Severities</option>
@@ -755,162 +714,198 @@
           <div class="findings-header">
             <span></span>
             <span>Finding</span>
-            <span>Axis</span>
+            <span>Category</span>
             <span>Severity</span>
             <span>Resolution</span>
+            <span>Rule</span>
             <span>Age</span>
           </div>
 
           <!-- ── Critical findings ── -->
 
-          <!-- Conflict: D↔D -->
+          <!-- DD: DIRECTIVE_MODAL_COMPATIBILITY -->
           <div class="finding-row" style="border-color:var(--itip-primary)"
             onclick="document.getElementById('detailPanel').classList.add('open');document.querySelector('.panel-toggle').classList.add('active')">
             <div class="finding-icon finding-icon--conflict">⚡</div>
             <div>
-              <div class="finding-title">Contradictory Directives on UserDatabase</div>
+              <div class="finding-title">Directive modal compatibility — UserDatabase</div>
               <div class="finding-subject">Data Encryption Standard (MUST ENSURE) ↔ Legacy Compatibility (MUST_NOT
                 ENSURE) · Encryption qualifier</div>
             </div>
-            <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
+            <div><span class="badge cat-dd" style="font-size:10px">DD</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_MODAL_COMPATIBILITY</div>
             <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">3d</div>
           </div>
 
-          <!-- Violation: referee -->
+          <!-- NN: NORM_ASSERTION_COMPATIBILITY -->
           <div class="finding-row"
             onclick="document.getElementById('detailPanel').classList.add('open');document.querySelector('.panel-toggle').classList.add('active')">
-            <div class="finding-icon finding-icon--violation">✕</div>
+            <div class="finding-icon finding-icon--conflict">⚡</div>
             <div>
-              <div class="finding-title">Referee precondition violated — API Gateway Mechanism</div>
-              <div class="finding-subject">Mechanism "request_routing" references RETIRED Structure "LegacyRouter"</div>
+              <div class="finding-title">Norm assertion compatibility — AuditService</div>
+              <div class="finding-subject">log_retention ASSERT retentionDays &gt;= 365 ↔ storage_optimization ASSERT
+                retentionDays &lt;= 90</div>
             </div>
-            <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
-            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NORM_ASSERTION_COMPATIBILITY</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">2d</div>
           </div>
 
-          <!-- Violation: identity-bound -->
+          <!-- NA: ASCRIPTION_STATEMENT_NORM_COMPLIANCE -->
           <div class="finding-row">
             <div class="finding-icon finding-icon--violation">✕</div>
             <div>
-              <div class="finding-title">Identity-bound breach — NotificationHub</div>
-              <div class="finding-subject">Ascription v3 changed identity-bound field "purpose" from v2</div>
+              <div class="finding-title">Statement Norm compliance failure — UserDatabase v3</div>
+              <div class="finding-subject">Ascription statement violates CEL assertion <code style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">stmt.encryption.atRest == true</code> from Norm encryption_at_rest</div>
             </div>
-            <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
+            <div><span class="badge cat-na" style="font-size:10px">NA</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
-            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">1d</div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_STATEMENT_NORM_COMPLIANCE</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
           </div>
 
           <!-- ── Warning findings ── -->
 
-          <!-- Gap: D→N property coverage -->
+          <!-- DN: DIRECTIVE_QUALIFIER_COVERAGE -->
           <div class="finding-row">
             <div class="finding-icon finding-icon--gap">○</div>
             <div>
-              <div class="finding-title">Partial operationalization — Data Encryption Standard</div>
-              <div class="finding-subject">Encryption qualifier: 3/5 properties covered (missing: algorithm,
+              <div class="finding-title">Directive qualifier coverage — Data Encryption Standard</div>
+              <div class="finding-subject">Encryption qualifier: 3/5 properties covered by Norms (missing: algorithm,
                 keyRotationPeriod)</div>
             </div>
-            <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
+            <div><span class="badge cat-dn" style="font-size:10px">DN</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_QUALIFIER_COVERAGE</div>
             <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">14d</div>
           </div>
 
-          <!-- Gap: N→A binding -->
+          <!-- NN: NORM_ASCRIPTION_BINDING -->
           <div class="finding-row">
             <div class="finding-icon finding-icon--gap">○</div>
             <div>
-              <div class="finding-title">Unbound Norm — encryption_at_rest</div>
+              <div class="finding-title">Norm Ascription binding — encryption_at_rest</div>
               <div class="finding-subject">Norm active but no matching Ascription in scope (applicability:
-                data.classification == "PII")</div>
+                data.classification == &quot;PII&quot;)</div>
             </div>
-            <div><span class="badge" style="font-size:10px;background:#faf5ff;color:#7c3aed">Binding</span></div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NORM_ASCRIPTION_BINDING</div>
             <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">7d</div>
           </div>
 
-          <!-- Conflict: N↔N -->
+          <!-- NN: STRUCTURE_GOVERNANCE_PROPORTIONALITY -->
           <div class="finding-row">
-            <div class="finding-icon finding-icon--conflict">⚡</div>
+            <div class="finding-icon finding-icon--metric">📊</div>
             <div>
-              <div class="finding-title">Contradictory Norms on AuditService</div>
-              <div class="finding-subject">log_retention ASSERT retentionDays >= 365 ↔ storage_optimization ASSERT
-                retentionDays <= 90</div>
-              </div>
-              <div><span class="badge" style="font-size:10px;background:#faf5ff;color:#7c3aed">Binding</span></div>
-              <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
-              <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">2d</div>
+              <div class="finding-title">Governance proportionality — API Gateway</div>
+              <div class="finding-subject">18 bound Norms vs tenant baseline of 6 (3×) — may indicate over-specification or conflated concerns</div>
             </div>
+            <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">STRUCTURE_GOVERNANCE_PROPORTIONALITY</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">8d</div>
+          </div>
 
-            <!-- Drift: Source fidelity -->
-            <div class="finding-row">
-              <div class="finding-icon finding-icon--drift">↔</div>
-              <div>
-                <div class="finding-title">Source drift — UserDatabase (ServiceNow)</div>
-                <div class="finding-subject">Source-authoritative · Last sync 12d ago · 3 property differences detected
-                </div>
-              </div>
-              <div><span class="badge" style="font-size:10px;background:#fefce8;color:#a16207">Fidelity</span></div>
-              <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
-              <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">12d</div>
+          <!-- AA: SOURCED_SYNC_FRESHNESS -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--drift">↔</div>
+            <div>
+              <div class="finding-title">Sourced sync freshness — UserDatabase (ServiceNow)</div>
+              <div class="finding-subject">Last sync 12d ago · staleness threshold 7d · 3 property differences detected</div>
             </div>
+            <div><span class="badge cat-aa" style="font-size:10px">AA</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">SOURCED_SYNC_FRESHNESS</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">12d</div>
+          </div>
 
-            <!-- ── Advisory findings ── -->
-
-            <!-- Gap: D→N existence -->
-            <div class="finding-row">
-              <div class="finding-icon finding-icon--gap">○</div>
-              <div>
-                <div class="finding-title">No Norms for Directive — Observability Policy</div>
-                <div class="finding-subject">Directive active since 28d but 0 Norms operationalize it (SHOULD ENSURE
-                  Logging ON PaymentProcessor)</div>
-              </div>
-              <div><span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span></div>
-              <div><span class="badge sev-advisory" style="font-size:10px">Advisory</span></div>
-              <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">28d</div>
+          <!-- AC: ASCRIPTION_DRAFT_PROGRESSION -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--drift">↔</div>
+            <div>
+              <div class="finding-title">Ascription draft progression — AuditService ConfigPolicy v4</div>
+              <div class="finding-subject">Ascription in DRAFT for 45d · threshold 30d · may indicate abandoned work or blocked workflow</div>
             </div>
+            <div><span class="badge cat-ac" style="font-size:10px">AC</span></div>
+            <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_DRAFT_PROGRESSION</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">45d</div>
+          </div>
 
-            <!-- Drift: Ascription-authoritative -->
-            <div class="finding-row">
-              <div class="finding-icon finding-icon--drift">↔</div>
-              <div>
-                <div class="finding-title">Source out-of-date — PaymentProcessor (GitHub)</div>
-                <div class="finding-subject">Ascription-authoritative · GitHub repo config differs from Ascription ·
-                  Task JIRA-1842 open</div>
-              </div>
-              <div><span class="badge" style="font-size:10px;background:#fefce8;color:#a16207">Fidelity</span></div>
-              <div><span class="badge sev-advisory" style="font-size:10px">Advisory</span></div>
-              <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
-            </div>
+          <!-- ── Advisory findings ── -->
 
-            <!-- Violation: cascade inconsistency -->
-            <div class="finding-row">
-              <div class="finding-icon finding-icon--violation">✕</div>
-              <div>
-                <div class="finding-title">Cascade inconsistency — API Gateway Effector</div>
-                <div class="finding-subject">Effector "api_response" ACTIVE but parent Mechanism "request_routing" is
-                  SUSPENDED</div>
-              </div>
-              <div><span class="badge" style="font-size:10px;background:#f0fdf4;color:#15803d">Validity</span></div>
-              <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
-              <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-              <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+          <!-- DN: DIRECTIVE_NORM_OPERATIONALIZATION -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Directive Norm operationalization — Observability Policy</div>
+              <div class="finding-subject">Directive active since 28d but 0 Norms operationalize it (SHOULD ENSURE
+                Logging ON PaymentProcessor)</div>
             </div>
+            <div><span class="badge cat-dn" style="font-size:10px">DN</span></div>
+            <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_NORM_OPERATIONALIZATION</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">28d</div>
+          </div>
+
+          <!-- AA: SOURCED_SYNC_DIVERGENCE -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--drift">↔</div>
+            <div>
+              <div class="finding-title">Sourced sync divergence — PaymentProcessor (GitHub)</div>
+              <div class="finding-subject">Bilateral divergence: both local Ascription and GitHub repo changed since last sync · reconciliation needed</div>
+            </div>
+            <div><span class="badge cat-aa" style="font-size:10px">AA</span></div>
+            <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
+            <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">SOURCED_SYNC_DIVERGENCE</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+          </div>
+
+          <!-- DD: DIRECTIVE_PURPOSE_TARGETING -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Directive purpose targeting — AuditIngestion</div>
+              <div class="finding-subject">Directive's purpose Structure has no governed Ascriptions — governance intent has no operational target</div>
+            </div>
+            <div><span class="badge cat-dd" style="font-size:10px">DD</span></div>
+            <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_PURPOSE_TARGETING</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">15d</div>
+          </div>
+
+          <!-- AC: ASCRIPTION_DEPRECATION_SUCCESSION -->
+          <div class="finding-row">
+            <div class="finding-icon finding-icon--gap">○</div>
+            <div>
+              <div class="finding-title">Ascription deprecation succession — IdentityProvider AuthPolicy v2</div>
+              <div class="finding-subject">Deprecated Ascription with no successor in non-terminal state — governance intent not preserved</div>
+            </div>
+            <div><span class="badge cat-ac" style="font-size:10px">AC</span></div>
+            <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
+            <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
+            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_DEPRECATION_SUCCESSION</div>
+            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">10d</div>
+          </div>
 
             <!-- Pagination -->
             <div
               style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--itip-text-muted)">
-              <span>Showing 10 of 149 findings</span>
+              <span>Showing 12 of 149 findings</span>
               <div style="display:flex; gap:var(--sp-xs)">
                 <button class="btn btn--ghost btn--sm" disabled>&larr; Prev</button>
                 <button class="btn btn--ghost btn--sm">Next &rarr;</button>
@@ -935,13 +930,22 @@
 
               <div class="detail-section">
                 <div class="detail-label">Finding</div>
-                <div class="text-sm"><strong>Contradictory Directives on UserDatabase</strong></div>
+                <div class="text-sm"><strong>Directive modal compatibility — UserDatabase</strong></div>
                 <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-xs)">
-                  <span class="badge" style="font-size:10px;background:#eff6ff;color:#1d4ed8">Reach</span>
+                  <span class="badge cat-dd" style="font-size:10px">DD</span>
                   <span class="badge sev-critical" style="font-size:10px">Critical</span>
                   <span class="badge"
                     style="font-size:10px;background:color-mix(in srgb, var(--compliance-fail) 10%, transparent);color:var(--compliance-fail)">⚡
-                    Conflict</span>
+                    Contradiction</span>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-label">Rule Type</div>
+                <div style="font-size:var(--fs-xs)">
+                  <code style="font-size:11px;padding:2px 6px;background:var(--itip-border);border-radius:3px;font-family:'JetBrains Mono',monospace">DIRECTIVE_MODAL_COMPATIBILITY</code>
+                  <div style="margin-top:4px;color:var(--itip-text-muted)">gsm:rul../evaluation/directive/modal/compatibility</div>
+                  <div style="margin-top:4px;color:var(--itip-text-muted)">Two Directives with incompatible modals (e.g., MUST vs MUST_NOT) governing the same Subject with the same verb and overlapping qualifiers.</div>
                 </div>
               </div>
 
@@ -971,8 +975,12 @@
                   and
                   <code
                     style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">MUST_NOT</code>
-                  with identical verb produce a <strong>direct contradiction</strong>. No Ascription can satisfy both
+                  with identical verb produce a <strong>direct modal contradiction</strong>. No Ascription can satisfy both
                   simultaneously.
+                </div>
+                <div style="margin-top:var(--sp-sm);display:flex;gap:var(--sp-sm);align-items:center">
+                  <span class="badge cat-dd" style="font-size:10px">Directive Coherence</span>
+                  <span style="font-size:10px;color:var(--itip-text-muted)">Class: DD · 5 rules in class</span>
                 </div>
               </div>
 
@@ -1011,7 +1019,7 @@
               <div class="detail-section">
                 <div class="detail-label">History</div>
                 <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">
-                  <div style="padding:2px 0">Mar 28 — Finding detected (auto-appraisal)</div>
+                  <div style="padding:2px 0">Mar 28 — Finding detected (auto-evaluation)</div>
                   <div style="padding:2px 0">Mar 28 — Severity escalated to Critical (MUST ↔ MUST_NOT)</div>
                 </div>
               </div>

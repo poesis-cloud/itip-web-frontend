@@ -6,20 +6,49 @@
   <title>ITIP — Ascription Status Transition</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
-    .transition-panel { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-xl); }
-    .state-machine { padding:var(--sp-lg); background:var(--itip-bg); border-radius:var(--radius-lg); border:1px solid var(--itip-border); }
-    .state-node { display:inline-flex; align-items:center; gap:var(--sp-xs); padding:var(--sp-xs) var(--sp-md); border-radius:var(--radius-full); font-size:var(--fs-sm); font-weight:600; border:2px solid; }
-    .state-node--current { border-color:var(--itip-primary); background:rgba(13,110,253,0.1); }
-    .state-node--target  { border-color:var(--compliance-pass); background:rgba(34,197,94,0.1); }
-    .state-node--other   { border-color:var(--itip-border); color:var(--itip-text-muted); }
-    .state-arrow { display:inline-block; margin:0 var(--sp-sm); color:var(--itip-text-muted); font-size:var(--fs-lg); }
-    .appraisal-checks { list-style:none; }
-    .appraisal-checks li { display:flex; align-items:center; gap:var(--sp-sm); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
-    .appraisal-checks li:last-child { border-bottom:none; }
-    .check-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
+    .transition-panel { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-xl); align-items:start; }
+
+    /* State Machine SVG */
+    .sm-node { fill: #fff; stroke: #8b949e; stroke-width: 1.5; }
+    .sm-node--current { fill: rgba(13,110,253,0.12); stroke: #0d6efd; stroke-width: 2.5; }
+    .sm-node--target { fill: rgba(34,197,94,0.12); stroke: #22c55e; stroke-width: 2.5; }
+    .sm-node--terminal { fill: #f6f8fa; stroke: #8b949e; stroke-width: 1.5; stroke-dasharray: 5 3; }
+    .sm-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10.5px; font-weight: 600; fill: #24292f; }
+    .sm-label--current { fill: #0d6efd; }
+    .sm-label--target { fill: #16a34a; }
+    .sm-label--terminal { fill: #8b949e; }
+    .sm-arrow { fill: none; stroke: #8b949e; stroke-width: 1.5; }
+    .sm-arrow--active { stroke: #22c55e; stroke-width: 2.5; }
+    .sm-legend { display:flex; gap:var(--sp-lg); flex-wrap:wrap; margin-top:var(--sp-sm); font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .sm-legend-item { display:flex; align-items:center; gap:var(--sp-xs); }
+    .sm-legend-swatch { width:14px; height:14px; border-radius:4px; border:2px solid; }
+    .sm-legend-swatch--current { border-color:#0d6efd; background:rgba(13,110,253,0.12); }
+    .sm-legend-swatch--target { border-color:#22c55e; background:rgba(34,197,94,0.12); }
+    .sm-legend-swatch--terminal { border-color:#8b949e; background:#f6f8fa; border-style:dashed; }
+
+    /* Transition from → to */
+    .transition-from-to { display:flex; align-items:center; gap:var(--sp-md); margin-bottom:var(--sp-lg); }
+    .transition-badge { padding:var(--sp-xs) var(--sp-md); border-radius:var(--radius-full); font-size:var(--fs-sm); font-weight:600; border:2px solid; }
+    .transition-badge--from { border-color:#0d6efd; background:rgba(13,110,253,0.1); color:#0d6efd; }
+    .transition-badge--to { border-color:#22c55e; background:rgba(34,197,94,0.1); color:#16a34a; }
+
+    /* Rule evaluation */
+    .rule-section { margin-bottom:var(--sp-lg); }
+    .rule-section:last-child { margin-bottom:0; }
+    .rule-section h4 { font-size:var(--fs-sm); font-weight:600; margin-bottom:var(--sp-sm); display:flex; align-items:center; gap:var(--sp-sm); }
+    .rule-count { font-size:var(--fs-xs); padding:1px 8px; border-radius:var(--radius-full); background:var(--itip-bg-muted, #f6f8fa); color:var(--itip-text-muted); font-weight:500; }
+    .evaluation-checks { list-style:none; padding:0; margin:0; }
+    .evaluation-checks li { display:flex; align-items:flex-start; gap:var(--sp-sm); padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .evaluation-checks li:last-child { border-bottom:none; }
+    .check-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; margin-top:1px; }
     .check-icon--pass { background:var(--compliance-pass); color:#fff; }
     .check-icon--fail { background:var(--compliance-fail); color:#fff; }
-    .check-icon--pending { background:var(--compliance-warn); color:#fff; }
+    .check-icon--warn { background:var(--compliance-warn); color:#fff; }
+    .check-icon--na { background:var(--itip-border); color:var(--itip-text-muted); }
+    .cascade-type { font-size:var(--fs-xs); padding:1px 6px; border-radius:var(--radius-sm, 4px); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+    .cascade-type--constitutive { background:rgba(239,68,68,0.1); color:#dc2626; }
+    .cascade-type--governing { background:rgba(59,130,246,0.1); color:#2563eb; }
+    .cascade-type--dependent { background:rgba(245,158,11,0.1); color:#d97706; }
   </style>
 </head>
 <body>
@@ -38,27 +67,41 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           Activity
         </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
         <div class="nav-section">Definition</div>
         <a class="nav-item" href="../definition/def-dashboard.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
         </a>
-        <a class="nav-item" href="../definition/lenses.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
-          Lenses
-        </a>
         <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
           Registry
         </a>
-        <div class="nav-section">Appraisal</div>
-        <a class="nav-item" href="../appraisal/dashboard.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          Dashboard
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
         </a>
-        <a class="nav-item" href="../appraisal/findings.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          Findings
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
         </a>
         <div class="nav-section">Simulation</div>
         <a class="nav-item" href="../impact/cascade.html">
@@ -78,7 +121,6 @@
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
           History
         </a>
-
         <div class="nav-section">Truth Sourcing</div>
         <a class="nav-item" href="../truth-sourcing/sources-list.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -87,15 +129,6 @@
         <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Sync Jobs
-        </a>
-        <div class="nav-section">Frameworks</div>
-        <a class="nav-item" href="../frameworks/catalog.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-          Catalog <span class="nav-badge">5</span>
-        </a>
-        <a class="nav-item" href="../frameworks/stack-composer.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
-          Stack Composer
         </a>
         <div class="nav-section">Admin</div>
         <a class="nav-item" href="../admin/users.html">
@@ -117,7 +150,8 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <span>Registry</span><span>/</span>
+        <a href="mechanism-detail.html">tls_termination</a><span>/</span>
         <strong>Status Transition</strong>
       </div>
       <div class="app-header__actions">
@@ -125,100 +159,181 @@
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
         </button>
-        <div class="avatar">EA</div>
+        <div class="avatar">SK</div>
       </div>
     </header>
 
     <!-- ======== Main ======== -->
     <main class="app-main">
       <h1 class="page-title">Ascription Status Transition</h1>
-      <p class="page-subtitle">Transition ascription <span class="text-mono">ASC-0142</span> through the lifecycle state machine</p>
+      <p class="page-subtitle">Transition ascription <span class="text-mono">MEC-0037</span> through the lifecycle state machine</p>
 
       <div class="transition-panel" style="margin-top:var(--sp-lg)">
 
-        <!-- Left: Current ascription info -->
+        <!-- Left: Ascription info + State machine -->
         <div>
           <div class="card" style="padding:var(--sp-lg); margin-bottom:var(--sp-lg)">
             <h3 style="margin-bottom:var(--sp-md)">Ascription Details</h3>
             <table style="width:100%; font-size:var(--fs-sm)">
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted); width:120px">Subject</td><td><strong>UserDatabase</strong> (DataEntity)</td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Norm</td><td>encryption_at_rest</td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Directive</td><td>Data Encryption Standard (NIS2)</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted); width:120px">ID</td><td><span class="text-mono">MEC-0037</span></td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Type</td><td>Mechanism</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Definition</td><td><strong>tls_termination</strong></td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Structure</td><td><a href="structure-detail.html">PaymentGateway</a></td></tr>
               <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Owner</td><td>S. Kumar</td></tr>
-              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Created</td><td>2025-08-14</td></tr>
+              <tr><td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Created</td><td>2025-08-22</td></tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Current State</td>
-                <td><span class="badge" style="background:#1e3a5f; color:#93c5fd">PENDING_APPRAISAL</span></td>
+                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Status</td>
+                <td><span class="badge" style="background:#2d1b69; color:#c4b5fd">APPROVED</span></td>
               </tr>
             </table>
           </div>
 
-          <!-- State machine diagram -->
+          <!-- Lifecycle State Machine (SVG) -->
           <div class="card" style="padding:var(--sp-lg)">
             <h3 style="margin-bottom:var(--sp-md)">Lifecycle State Machine</h3>
-            <div class="state-machine" style="text-align:center">
-              <div style="margin-bottom:var(--sp-md)">
-                <span class="state-node state-node--other">CREATED</span>
-                <span class="state-arrow">→</span>
-                <span class="state-node state-node--current">PENDING_APPRAISAL</span>
-                <span class="state-arrow">→</span>
-                <span class="state-node state-node--target">ACTIVE</span>
-              </div>
-              <div style="margin-bottom:var(--sp-md)">
-                <span class="state-node state-node--other" style="margin-left:120px">ACTIVE</span>
-                <span class="state-arrow">→</span>
-                <span class="state-node state-node--other">DEPRECATED</span>
-                <span class="state-arrow">→</span>
-                <span class="state-node state-node--other">RETIRED</span>
-              </div>
-              <div>
-                <span class="state-node state-node--other" style="margin-left:120px">PENDING_APPRAISAL</span>
-                <span class="state-arrow">→</span>
-                <span class="state-node state-node--other">BLOCKED</span>
-              </div>
+            <svg viewBox="0 0 740 340" style="width:100%; height:auto; display:block" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#8b949e"/></marker>
+                <marker id="ah-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#22c55e"/></marker>
+              </defs>
+
+              <!-- Transition arrows (drawn first, behind nodes) -->
+              <!-- [*] → DRAFT -->
+              <circle cx="25" cy="150" r="5" fill="#24292f"/>
+              <line x1="32" y1="150" x2="48" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- DRAFT → PROPOSED -->
+              <line x1="170" y1="150" x2="228" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- PROPOSED → APPROVED -->
+              <line x1="350" y1="150" x2="408" y2="150" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- APPROVED → ACTIVE (active transition) -->
+              <line x1="530" y1="150" x2="588" y2="150" class="sm-arrow sm-arrow--active" marker-end="url(#ah-g)"/>
+              <!-- DRAFT → ABANDONED -->
+              <line x1="110" y1="132" x2="110" y2="60" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- PROPOSED → REJECTED -->
+              <line x1="290" y1="132" x2="290" y2="60" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- ACTIVE → SUSPENDED -->
+              <line x1="660" y1="168" x2="660" y2="252" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- SUSPENDED → ACTIVE -->
+              <line x1="640" y1="252" x2="640" y2="168" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- ACTIVE → DEPRECATED (routed) -->
+              <path d="M 615,168 L 615,215 L 470,215 L 470,252" class="sm-arrow" fill="none" marker-end="url(#ah)"/>
+              <!-- DEPRECATED ↔ SUSPENDED -->
+              <line x1="530" y1="266" x2="588" y2="266" class="sm-arrow" marker-end="url(#ah)"/>
+              <line x1="588" y1="274" x2="530" y2="274" class="sm-arrow" marker-end="url(#ah)"/>
+              <!-- DEPRECATED → RETIRED -->
+              <line x1="408" y1="270" x2="352" y2="270" class="sm-arrow" marker-end="url(#ah)"/>
+
+              <!-- State nodes (drawn on top of arrows) -->
+              <!-- Terminal row -->
+              <rect x="50" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
+              <text x="110" y="42" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">ABANDONED</text>
+              <rect x="230" y="26" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
+              <text x="290" y="42" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">REJECTED</text>
+
+              <!-- Governance path -->
+              <rect x="50" y="134" width="120" height="32" rx="8" class="sm-node"/>
+              <text x="110" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label">DRAFT</text>
+              <rect x="230" y="134" width="120" height="32" rx="8" class="sm-node"/>
+              <text x="290" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label">PROPOSED</text>
+              <rect x="410" y="134" width="120" height="32" rx="8" class="sm-node sm-node--current"/>
+              <text x="470" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--current">APPROVED</text>
+              <rect x="590" y="134" width="120" height="32" rx="8" class="sm-node sm-node--target"/>
+              <text x="650" y="150" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--target">ACTIVE</text>
+
+              <!-- Degradation row -->
+              <rect x="230" y="254" width="120" height="32" rx="8" class="sm-node sm-node--terminal"/>
+              <text x="290" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label sm-label--terminal">RETIRED</text>
+              <rect x="410" y="254" width="120" height="32" rx="8" class="sm-node"/>
+              <text x="470" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label">DEPRECATED</text>
+              <rect x="590" y="254" width="120" height="32" rx="8" class="sm-node"/>
+              <text x="650" y="270" text-anchor="middle" dominant-baseline="central" class="sm-label">SUSPENDED</text>
+            </svg>
+            <div class="sm-legend">
+              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--current"></div> Current</div>
+              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--target"></div> Target</div>
+              <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--terminal"></div> Terminal</div>
             </div>
           </div>
         </div>
 
-        <!-- Right: Transition form -->
+        <!-- Right: Transition evaluation -->
         <div>
+          <!-- Transition selection -->
           <div class="card" style="padding:var(--sp-lg); margin-bottom:var(--sp-lg)">
-            <h3 style="margin-bottom:var(--sp-md)">Transition to</h3>
-            <select class="form-select" style="width:100%; margin-bottom:var(--sp-lg)">
-              <option selected>ACTIVE — Appraisal passed, enforce norm</option>
-              <option>BLOCKED — Appraisal failed, requires remediation</option>
-            </select>
-
-            <h4 style="margin-bottom:var(--sp-sm)">Appraisal Checks</h4>
-            <ul class="appraisal-checks">
-              <li>
-                <span class="check-icon check-icon--pass">✓</span>
-                <div><strong>Norm CEL syntax valid</strong><br><span class="text-muted text-xs">Assertion parsed successfully</span></div>
-              </li>
-              <li>
-                <span class="check-icon check-icon--pass">✓</span>
-                <div><strong>Subject exists and is ACTIVE</strong><br><span class="text-muted text-xs">UserDatabase — state: ACTIVE</span></div>
-              </li>
-              <li>
-                <span class="check-icon check-icon--pass">✓</span>
-                <div><strong>No conflicting ascriptions</strong><br><span class="text-muted text-xs">No other ascription binds same norm to same subject</span></div>
-              </li>
-              <li>
-                <span class="check-icon check-icon--pass">✓</span>
-                <div><strong>Owner has authority</strong><br><span class="text-muted text-xs">S. Kumar is authorized for NIS2 · AccessControl scope</span></div>
-              </li>
-              <li>
-                <span class="check-icon check-icon--pending">?</span>
-                <div><strong>Initial evaluation dry-run</strong><br><span class="text-muted text-xs">Running… evaluating CEL assertion against current subject state</span></div>
-              </li>
-            </ul>
+            <h3 style="margin-bottom:var(--sp-md)">Transition</h3>
+            <div class="transition-from-to">
+              <span class="transition-badge transition-badge--from">APPROVED</span>
+              <span style="color:var(--itip-text-muted); font-size:var(--fs-lg)">→</span>
+              <select class="form-select" style="flex:1">
+                <option selected>ACTIVE</option>
+              </select>
+            </div>
+            <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin:0">Only transitions permitted from the current state are shown.</p>
           </div>
 
+          <!-- Lifecycle Rule Evaluation -->
+          <div class="card" style="padding:var(--sp-lg); margin-bottom:var(--sp-lg)">
+            <h3 style="margin-bottom:var(--sp-lg)">Lifecycle Rule Evaluation</h3>
+
+            <!-- Reference Preconditions -->
+            <div class="rule-section">
+              <h4>Reference Preconditions <span class="rule-count">1 check</span></h4>
+              <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-bottom:var(--sp-sm)">
+                APPROVED → ACTIVE requires each reference in <strong>ACTIVE</strong>
+              </p>
+              <ul class="evaluation-checks">
+                <li>
+                  <span class="check-icon check-icon--pass">✓</span>
+                  <div><strong>Structure</strong> → <a href="structure-detail.html">PaymentGateway</a><br><span class="text-muted text-xs">Status: ACTIVE — meets requirement</span></div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Inter-Transition Cascades -->
+            <div class="rule-section">
+              <h4>Inter-Transition Cascades <span class="rule-count">2 cascades</span></h4>
+              <ul class="evaluation-checks">
+                <li>
+                  <span class="check-icon check-icon--pass">✓</span>
+                  <div>
+                    <strong>Effector</strong> → terminate_ssl &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
+                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
+                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="check-icon check-icon--pass">✓</span>
+                  <div>
+                    <strong>Receptor</strong> → https_endpoint &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
+                    <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
+                    <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Intra-Definition Rules -->
+            <div class="rule-section">
+              <h4>Intra-Definition Rules <span class="rule-count">1 effect</span></h4>
+              <ul class="evaluation-checks">
+                <li>
+                  <span class="check-icon check-icon--warn">!</span>
+                  <div>
+                    <strong>Activation Handoff</strong>
+                    <br><span class="text-muted text-xs"><span class="text-mono">MEC-0037-v1</span> (ACTIVE) → will be auto-DEPRECATED</span>
+                    <br><span class="text-muted text-xs">Preserves invariant: at most one ACTIVE per Definition</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Confirm transition -->
           <div class="card" style="padding:var(--sp-lg)">
             <h4 style="margin-bottom:var(--sp-sm)">Transition Note</h4>
-            <textarea class="form-textarea" rows="3" placeholder="Optional: reason for this transition…" style="width:100%">Appraisal complete. Encryption config verified on UserDatabase. Activating enforcement.</textarea>
+            <textarea class="form-textarea" rows="3" placeholder="Optional: reason for this transition…" style="width:100%">TLS configuration verified. Activating tls_termination mechanism with constitutive ports.</textarea>
             <div style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md)">
-              <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+              <a href="mechanism-detail.html" class="btn btn--secondary">Cancel</a>
               <button class="btn btn--primary">Confirm Transition</button>
             </div>
           </div>

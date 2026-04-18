@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Diagram</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Layout ────────────────────────────────────────── */
+    .view-layout { display:grid; grid-template-columns:300px 1fr; gap:0; min-height:calc(100vh - 56px); }
+    .composer { background:var(--itip-surface); border-right:1px solid var(--itip-border); overflow-y:auto; padding:0; }
+    .composer__section { padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
+    .composer__section:last-child { border-bottom:none; }
+    .composer__heading { font-size:var(--fs-xs); font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--itip-text-muted); margin-bottom:var(--sp-sm); display:flex; align-items:center; justify-content:space-between; }
+    .composer__heading .badge { font-size:9px; }
+    .canvas-area { display:flex; flex-direction:column; overflow:hidden; }
+
+    /* ── Saved Views ──────────────────────────────────── */
+    .saved-views { display:flex; gap:var(--sp-xs); align-items:center; }
+    .saved-views select { flex:1; font-size:var(--fs-xs); padding:4px 8px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
+    .saved-views button { flex-shrink:0; }
+    .icon-btn { width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; font-size:14px; color:var(--itip-text-muted); }
+    .icon-btn:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+
+    /* ── Scope ────────────────────────────────────────── */
+    .scope-tabs { display:flex; gap:2px; margin-bottom:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-sm); padding:2px; }
+    .scope-tab { flex:1; padding:4px 6px; font-size:10px; font-weight:600; text-align:center; border-radius:var(--radius-sm); cursor:pointer; border:none; background:transparent; color:var(--itip-text-muted); transition:all 0.15s; white-space:nowrap; }
+    .scope-tab--active { background:var(--itip-primary); color:white; }
+    .scope-config { margin-top:var(--sp-sm); }
+    .scope-field { margin-bottom:var(--sp-sm); }
+    .scope-field label { display:block; font-size:11px; font-weight:600; margin-bottom:2px; }
+    .scope-field select, .scope-field input[type="text"] { width:100%; font-size:var(--fs-xs); padding:4px 8px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-bg); }
+    .depth-slider { display:flex; align-items:center; gap:var(--sp-sm); }
+    .depth-slider input[type="range"] { flex:1; accent-color:var(--itip-primary); }
+    .depth-slider__val { font-family:var(--font-mono); font-size:var(--fs-xs); font-weight:700; min-width:20px; text-align:center; }
+
+    /* ── Filter toggles ──────────────────────────────── */
+    .filter-row { display:flex; align-items:center; gap:var(--sp-sm); padding:3px 0; font-size:11px; }
+    .filter-row input[type="checkbox"] { accent-color:var(--itip-primary); margin:0; }
+    .filter-dot { width:8px; height:8px; border-radius:2px; display:inline-block; flex-shrink:0; }
+
+    /* ── Display options ─────────────────────────────── */
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; font-size:11px; }
+    .toggle-switch { position:relative; width:32px; height:18px; }
+    .toggle-switch input { opacity:0; width:0; height:0; }
+    .toggle-switch__track { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#cbd5e1; border-radius:9px; transition:0.2s; }
+    .toggle-switch__track::before { content:""; position:absolute; height:14px; width:14px; left:2px; bottom:2px; background:white; border-radius:50%; transition:0.2s; }
+    .toggle-switch input:checked + .toggle-switch__track { background:var(--itip-primary); }
+    .toggle-switch input:checked + .toggle-switch__track::before { transform:translateX(14px); }
+
+    /* ── Export ───────────────────────────────────────── */
+    .export-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-xs); }
+    .export-btn { padding:6px 8px; font-size:10px; font-weight:600; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); cursor:pointer; text-align:center; transition:border-color 0.15s; }
+    .export-btn:hover { border-color:var(--itip-primary); color:var(--itip-primary); }
+    .export-btn__icon { display:block; font-size:16px; margin-bottom:2px; }
+    .export-btn--deliverable { grid-column:1 / -1; border-color:var(--itip-accent); background:color-mix(in srgb, var(--itip-accent) 6%, var(--itip-surface)); }
+    .export-btn--deliverable:hover { border-color:var(--itip-primary); }
+
+    /* ── Toolbar ──────────────────────────────────────── */
+    .canvas-toolbar { display:flex; gap:var(--sp-sm); align-items:center; padding:var(--sp-sm) var(--sp-md); background:var(--itip-bg); border-bottom:1px solid var(--itip-border); flex-wrap:wrap; }
+    .tb-group { display:flex; gap:2px; }
+    .tb-btn { padding:4px 10px; border:1px solid var(--itip-border); border-radius:var(--radius-sm); background:var(--itip-surface); font-size:11px; cursor:pointer; font-weight:500; }
+    .tb-btn--active { background:var(--itip-primary); color:white; border-color:var(--itip-primary); }
+    .tb-sep { width:1px; height:18px; background:var(--itip-border); margin:0 var(--sp-xs); }
+
+    /* ── Canvas ───────────────────────────────────────── */
+    .diagram-canvas { position:relative; flex:1; overflow:auto; background:var(--itip-bg); background-image:radial-gradient(circle, #d1d5db 1px, transparent 1px); background-size:20px 20px; }
+
+    /* ── Nodes ────────────────────────────────────────── */
+    .node { position:absolute; border-radius:var(--radius-md); font-size:11px; font-weight:600; text-align:center; cursor:pointer; border:2px solid; background:var(--itip-surface); box-shadow:0 1px 4px rgba(0,0,0,.06); }
+    .node--simple { padding:10px 14px; min-width:100px; }
+    .node__type { font-size:9px; font-weight:400; opacity:0.7; display:block; margin-bottom:2px; }
+    .node__name { white-space:nowrap; }
+    .node__compliance { position:absolute; top:-7px; right:-7px; width:16px; height:16px; border-radius:50%; font-size:9px; display:flex; align-items:center; justify-content:center; color:white; border:2px solid var(--itip-surface); }
+    .node__compliance--pass { background:#22c55e; }
+    .node__compliance--warn { background:#f59e0b; }
+    .node__compliance--fail { background:#ef4444; }
+    .node--expanded { padding:0; min-width:260px; }
+    .node--expanded .node__header { padding:8px 14px; border-bottom:1px solid; display:flex; align-items:center; justify-content:space-between; }
+    .node--expanded .node__body { padding:10px; display:flex; flex-direction:column; gap:6px; }
+    .mech-row { display:flex; align-items:center; gap:6px; padding:5px 8px; background:var(--itip-bg); border:1px solid #bfdbfe; border-radius:var(--radius-sm); font-size:10px; }
+    .mech-row__name { font-weight:600; color:#2563eb; flex:1; }
+    .port { display:inline-flex; align-items:center; gap:2px; padding:1px 5px; border-radius:8px; font-size:9px; font-weight:500; }
+    .port--effector { background:#ede9fe; color:#7c3aed; }
+    .port--receptor { background:#ffedd5; color:#c2410c; }
+    .node--structure { border-color:#2dd4bf; }
+    .node--structure .node__header { border-color:#2dd4bf; }
+    .node--interaction { border-color:#f59e0b; border-style:dashed; }
+
+    /* ── Governance overlay ───────────────────────────── */
+    .directive-scope { position:absolute; border:2px dashed #6366f1; border-radius:12px; background:rgba(99,102,241,0.04); pointer-events:none; }
+    .directive-scope__label { position:absolute; top:-10px; left:16px; background:#6366f1; color:white; font-size:9px; font-weight:600; padding:1px 8px; border-radius:8px; white-space:nowrap; }
+    .norm-badge { position:absolute; font-size:9px; font-weight:600; padding:1px 6px; border-radius:6px; white-space:nowrap; pointer-events:none; }
+    .norm-badge--pass { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
+    .norm-badge--warn { background:#fef9c3; color:#a16207; border:1px solid #fde68a; }
+    .norm-badge--fail { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; }
+
+    /* ── Edges (SVG) ─────────────────────────────────── */
+    .edge { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+    .edge line { stroke:#94a3b8; stroke-width:1.5; }
+    .edge line.e-interaction { stroke:#f59e0b; stroke-dasharray:5 3; }
+    .edge line.e-governance { stroke:#6366f1; stroke-dasharray:2 3; stroke-width:1; }
+    .edge marker { fill:#94a3b8; }
+
+    /* ── Inspector ───────────────────────────────────── */
+    .inspector { position:absolute; right:16px; top:16px; width:280px; background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); box-shadow:var(--shadow-lg); overflow:hidden; }
+    .inspector__header { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--itip-border); display:flex; justify-content:space-between; align-items:center; }
+    .inspector__header h4 { margin:0; font-size:var(--fs-sm); }
+    .inspector__body { padding:var(--sp-md); }
+    .inspector__row { display:flex; justify-content:space-between; align-items:center; padding:3px 0; font-size:11px; }
+    .inspector__label { color:var(--itip-text-muted); }
+    .inspector__layers { display:flex; flex-wrap:wrap; gap:4px; margin-top:var(--sp-xs); }
+
+    /* ── Legend ───────────────────────────────────────── */
+    .canvas-legend { display:flex; gap:var(--sp-md); flex-wrap:wrap; padding:var(--sp-xs) var(--sp-md); background:var(--itip-bg); border-top:1px solid var(--itip-border); font-size:10px; align-items:center; }
+    .legend-item { display:flex; align-items:center; gap:4px; }
+    .legend-dot { width:10px; height:10px; border-radius:3px; border:2px solid; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="../overview/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../overview/activity-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Activity
+        </a>
+        <div class="nav-section">Evaluation</div>
+        <a class="nav-item" href="../evaluation/dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../evaluation/findings.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Findings
+        </a>
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="18" r="1.5" fill="currentColor"/></svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Lenses</div>
+        <a class="nav-item" href="../lenses/browse.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Browse
+        </a>
+        <a class="nav-item active" href="../lenses/diagram.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Diagram
+        </a>
+        <div class="nav-section">Simulation</div>
+        <a class="nav-item" href="../impact/cascade.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v3m0 4.5V12m0 4.5V18m0 3v-1.5"/><circle cx="12" cy="12" r="2"/><path d="M12 14l5 4M12 14l-5 4M12 10l5-4M12 10l-5-4"/></svg>
+          Impact Analysis
+        </a>
+        <div class="nav-section">Review</div>
+        <a class="nav-item" href="../review/review-board.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          Review Board
+        </a>
+        <a class="nav-item" href="../review/review-session.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Sessions
+        </a>
+        <a class="nav-item" href="../review/review-history.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M2.05 12A10 10 0 0112 2"/></svg>
+          History
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Lenses</span><span>/</span>
+        <a href="browse.html">Browse</a><span>/</span>
+        <strong>Diagram</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">&#10022; Copilot Assist</button>
+        <button class="btn btn--secondary btn--sm" onclick="location.href='browse.html'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          Back to Lenses
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main (full-bleed) -->
+    <main class="app-main" style="padding:0">
+      <div class="view-layout">
+
+        <!-- LEFT: VIEW COMPOSER -->
+        <div class="composer">
+
+          <!-- Saved Views -->
+          <div class="composer__section">
+            <div class="composer__heading">Saved Views</div>
+            <div class="saved-views">
+              <select>
+                <option selected>API Gateway &mdash; 2-hop Interaction</option>
+                <option>NIS2 Governance Scope (full)</option>
+                <option>Payment Domain &mdash; Compliance Heat</option>
+                <option>TOGAF Application Landscape</option>
+                <option>+ New view&hellip;</option>
+              </select>
+              <button class="icon-btn" title="Save current">&#128190;</button>
+              <button class="icon-btn" title="Share link">&#128279;</button>
+              <button class="icon-btn" title="Delete view">&#128465;</button>
+            </div>
+          </div>
+
+          <!-- Scope -->
+          <div class="composer__section">
+            <div class="composer__heading">Scope</div>
+            <div class="scope-tabs">
+              <button class="scope-tab">Governance</button>
+              <button class="scope-tab scope-tab--active">Interaction</button>
+              <button class="scope-tab">Archetype</button>
+              <button class="scope-tab">Framework</button>
+              <button class="scope-tab">Compliance</button>
+            </div>
+            <div class="scope-config">
+              <div class="scope-field">
+                <label>Root Structure</label>
+                <select>
+                  <option selected>API Gateway</option>
+                  <option>UserDatabase</option>
+                  <option>Payment Service</option>
+                  <option>Monitoring Stack</option>
+                  <option>EventBus</option>
+                </select>
+              </div>
+              <div class="scope-field">
+                <label>Interaction Depth (BFS hops)</label>
+                <div class="depth-slider">
+                  <input type="range" min="1" max="5" value="2">
+                  <span class="depth-slider__val">2</span>
+                </div>
+              </div>
+              <div class="scope-field">
+                <label>Direction</label>
+                <select>
+                  <option selected>Both (bidirectional)</option>
+                  <option>Outbound only (effectors)</option>
+                  <option>Inbound only (receptors)</option>
+                </select>
+              </div>
+              <div style="font-size:10px; color:var(--itip-text-muted); margin-top:var(--sp-xs)">
+                Following: Structure &rarr; Mechanism &rarr; Effector &rarr; Interaction &rarr; Receptor &rarr; Mechanism &rarr; Structure
+              </div>
+            </div>
+          </div>
+
+          <!-- Primitive Filters -->
+          <div class="composer__section">
+            <div class="composer__heading">Primitives</div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#2dd4bf"></span> Structure <span class="text-xs text-muted" style="margin-left:auto">4</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#60a5fa"></span> Mechanism <span class="text-xs text-muted" style="margin-left:auto">6</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#f59e0b"></span> Interaction <span class="text-xs text-muted" style="margin-left:auto">3</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#a78bfa"></span> Effector <span class="text-xs text-muted" style="margin-left:auto">8</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#fb923c"></span> Receptor <span class="text-xs text-muted" style="margin-left:auto">5</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#6366f1"></span> Directive <span class="text-xs text-muted" style="margin-left:auto">2</span></div>
+            <div class="filter-row"><input type="checkbox" checked> <span class="filter-dot" style="background:#ec4899"></span> Norm <span class="text-xs text-muted" style="margin-left:auto">4</span></div>
+          </div>
+
+          <!-- Framework Layers -->
+          <div class="composer__section">
+            <div class="composer__heading">Framework Layers</div>
+            <div class="filter-row"><input type="checkbox" checked> TOGAF</div>
+            <div class="filter-row"><input type="checkbox" checked> ISO 25010</div>
+            <div class="filter-row"><input type="checkbox" checked> NIS2</div>
+            <div class="filter-row"><input type="checkbox" checked> GDPR</div>
+            <div class="filter-row"><input type="checkbox"> ISO 25012</div>
+            <div class="filter-row"><input type="checkbox"> SCAP</div>
+          </div>
+
+          <!-- Display Options -->
+          <div class="composer__section">
+            <div class="composer__heading">Display Options</div>
+            <div class="toggle-row">
+              <span>Show Constituents</span>
+              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
+            </div>
+            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Mechanisms, Effectors &amp; Receptors render inside their owning Structure</div>
+            <div class="toggle-row">
+              <span>DNA Overlay</span>
+              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
+            </div>
+            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Directive scopes as boundaries, Norm badges on governed Structures</div>
+            <div class="toggle-row">
+              <span>Compliance Heatmap</span>
+              <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-switch__track"></span></label>
+            </div>
+            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Node border color reflects compliance status</div>
+            <div class="toggle-row">
+              <span>Archetype Labels</span>
+              <label class="toggle-switch"><input type="checkbox"><span class="toggle-switch__track"></span></label>
+            </div>
+          </div>
+
+          <!-- Export -->
+          <div class="composer__section">
+            <div class="composer__heading">Export</div>
+            <div class="export-grid">
+              <button class="export-btn"><span class="export-btn__icon">&#128444;</span> Inline SVG</button>
+              <button class="export-btn"><span class="export-btn__icon">&#128230;</span> Download SVG</button>
+              <button class="export-btn"><span class="export-btn__icon">&#127793;</span> PlantUML Source</button>
+              <button class="export-btn"><span class="export-btn__icon">&#127963;</span> ArchiMate OEF</button>
+              <button class="export-btn export-btn--deliverable" onclick="location.href='../deliverables/templates.html?from=diagram'">
+                <span class="export-btn__icon">&#128220;</span> Save as Deliverable Template
+              </button>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="composer__section">
+            <div class="composer__heading">Search</div>
+            <input type="text" placeholder="Find node by name or archetype&hellip;" style="width:100%;padding:5px 8px;border:1px solid var(--itip-border);border-radius:var(--radius-sm);font-size:11px;background:var(--itip-bg)">
+          </div>
+        </div>
+
+        <!-- RIGHT: CANVAS AREA -->
+        <div class="canvas-area">
+          <!-- Toolbar -->
+          <div class="canvas-toolbar">
+            <span class="text-xs" style="font-weight:600">Layout:</span>
+            <div class="tb-group">
+              <button class="tb-btn tb-btn--active">Force</button>
+              <button class="tb-btn">Hierarchical</button>
+              <button class="tb-btn">Radial</button>
+            </div>
+            <div class="tb-sep"></div>
+            <span class="text-xs" style="font-weight:600">Zoom:</span>
+            <div class="tb-group">
+              <button class="tb-btn">&minus;</button>
+              <span class="text-xs" style="padding:0 6px;font-family:var(--font-mono)">100%</span>
+              <button class="tb-btn">+</button>
+              <button class="tb-btn">Fit</button>
+            </div>
+            <div class="tb-sep"></div>
+            <button class="tb-btn">Auto Layout</button>
+            <span style="flex:1"></span>
+            <span class="text-xs text-muted">4 Structures &middot; 6 Mechanisms &middot; 3 Interactions &middot; 32 nodes total</span>
+          </div>
+
+          <!-- Diagram canvas -->
+          <div class="diagram-canvas">
+            <!-- SVG Edges -->
+            <svg class="edge" style="width:100%;height:100%">
+              <defs>
+                <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
+                <marker id="arrow-gov" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6366f1"/></marker>
+              </defs>
+              <line x1="370" y1="220" x2="580" y2="170" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
+              <line x1="370" y1="220" x2="580" y2="370" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
+              <line x1="720" y1="170" x2="800" y2="350" marker-end="url(#arrow)" style="stroke:#f59e0b;stroke-dasharray:5 3"/>
+              <line x1="160" y1="460" x2="250" y2="270" class="e-governance" marker-end="url(#arrow-gov)"/>
+              <line x1="160" y1="520" x2="250" y2="270" class="e-governance" marker-end="url(#arrow-gov)"/>
+            </svg>
+
+            <!-- Directive Scope boundary -->
+            <div class="directive-scope" style="left:220px;top:70px;width:600px;height:250px">
+              <span class="directive-scope__label">&#128220; API Security Policy (NIS2 &middot; Security Board &rarr; API Gateway)</span>
+            </div>
+
+            <!-- API Gateway EXPANDED -->
+            <div class="node node--structure node--expanded" style="left:240px;top:100px;min-width:280px" title="API Gateway">
+              <div class="node__header">
+                <div>
+                  <span class="node__type">TOGAF: LogicalAppComponent</span>
+                  <span class="node__name">API Gateway</span>
+                </div>
+                <span class="node__compliance node__compliance--pass">&#10003;</span>
+              </div>
+              <div class="node__body">
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; tls_termination</span>
+                  <span class="port port--receptor">&#128229; client_hello</span>
+                  <span class="port port--effector">&#128228; plaintext_req</span>
+                </div>
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; rate_limiter</span>
+                  <span class="port port--receptor">&#128229; incoming</span>
+                  <span class="port port--effector">&#128228; throttled</span>
+                </div>
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; auth_validator</span>
+                  <span class="port port--receptor">&#128229; request</span>
+                  <span class="port port--effector">&#128228; authed_req</span>
+                  <span class="port port--effector">&#128228; auth_err</span>
+                </div>
+              </div>
+              <span class="norm-badge norm-badge--pass" style="bottom:-9px;left:12px">&#10003; rate_limit_enforcement</span>
+              <span class="norm-badge norm-badge--pass" style="bottom:-9px;right:12px">&#10003; tls_version_min</span>
+            </div>
+
+            <!-- UserDatabase EXPANDED -->
+            <div class="node node--structure node--expanded" style="left:580px;top:100px;min-width:240px" title="UserDatabase">
+              <div class="node__header">
+                <div>
+                  <span class="node__type">TOGAF: DataEntity</span>
+                  <span class="node__name">UserDatabase</span>
+                </div>
+                <span class="node__compliance node__compliance--warn">!</span>
+              </div>
+              <div class="node__body">
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; query_handler</span>
+                  <span class="port port--receptor">&#128229; db_query</span>
+                  <span class="port port--effector">&#128228; result_set</span>
+                </div>
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; change_publisher</span>
+                  <span class="port port--receptor">&#128229; mutation</span>
+                  <span class="port port--effector">&#128228; change_event</span>
+                </div>
+              </div>
+              <span class="norm-badge norm-badge--pass" style="bottom:-9px;left:12px">&#10003; encryption_at_rest</span>
+              <span class="norm-badge norm-badge--warn" style="bottom:-9px;right:12px">! retention_policy</span>
+            </div>
+
+            <!-- Payment Service EXPANDED -->
+            <div class="node node--structure node--expanded" style="left:580px;top:310px;min-width:240px" title="Payment Service">
+              <div class="node__header">
+                <div>
+                  <span class="node__type">SWTech: Microservice</span>
+                  <span class="node__name">Payment Service</span>
+                </div>
+                <span class="node__compliance node__compliance--fail">&#10007;</span>
+              </div>
+              <div class="node__body">
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; payment_processor</span>
+                  <span class="port port--receptor">&#128229; pay_req</span>
+                  <span class="port port--effector">&#128228; pay_result</span>
+                </div>
+                <div class="mech-row">
+                  <span class="mech-row__name">&#9881; refund_handler</span>
+                  <span class="port port--receptor">&#128229; refund_req</span>
+                  <span class="port port--effector">&#128228; refund_ack</span>
+                </div>
+              </div>
+              <span class="norm-badge norm-badge--fail" style="bottom:-9px;left:12px">&#10007; pci_dss_compliance</span>
+            </div>
+
+            <!-- EventBus simple -->
+            <div class="node node--structure node--simple" style="left:860px;top:330px">
+              <span class="node__type">SWTech: MessageBroker</span>
+              <span class="node__name">EventBus</span>
+              <span class="node__compliance node__compliance--pass">&#10003;</span>
+            </div>
+
+            <!-- Interaction nodes -->
+            <div class="node node--interaction node--simple" style="left:470px;top:175px;min-width:auto;padding:6px 10px">
+              <span class="node__type" style="font-size:8px">Interaction</span>
+              <span style="font-size:10px">plaintext &rarr; db_query</span>
+            </div>
+            <div class="node node--interaction node--simple" style="left:470px;top:355px;min-width:auto;padding:6px 10px">
+              <span class="node__type" style="font-size:8px">Interaction</span>
+              <span style="font-size:10px">pay_req &rarr; processor</span>
+            </div>
+            <div class="node node--interaction node--simple" style="left:770px;top:260px;min-width:auto;padding:6px 10px">
+              <span class="node__type" style="font-size:8px">Interaction</span>
+              <span style="font-size:10px">change &rarr; subscriber</span>
+            </div>
+
+            <!-- Governing Structures -->
+            <div class="node node--simple" style="left:30px;top:440px;border-color:#6366f1;background:#f5f3ff">
+              <span class="node__type" style="color:#6366f1">Directive: governing</span>
+              <span class="node__name" style="color:#4f46e5">IT Ops Division</span>
+            </div>
+            <div class="node node--simple" style="left:30px;top:510px;border-color:#6366f1;background:#f5f3ff">
+              <span class="node__type" style="color:#6366f1">Directive: governing</span>
+              <span class="node__name" style="color:#4f46e5">Security Board</span>
+            </div>
+
+            <!-- Inspector panel -->
+            <div class="inspector">
+              <div class="inspector__header">
+                <h4>API Gateway</h4>
+                <button class="icon-btn" title="Close" style="width:20px;height:20px;font-size:12px">&#10005;</button>
+              </div>
+              <div class="inspector__body">
+                <div class="inspector__row"><span class="inspector__label">Type</span> <strong>Structure</strong></div>
+                <div class="inspector__row"><span class="inspector__label">Status</span> <span class="badge badge--active" style="font-size:10px">Active</span></div>
+                <div class="inspector__row"><span class="inspector__label">Compliance</span> <span class="badge badge--pass" style="font-size:10px">All Passing</span></div>
+                <div class="inspector__row"><span class="inspector__label">Mechanisms</span> <strong>3</strong></div>
+                <div class="inspector__row"><span class="inspector__label">Connections</span> <strong>5</strong></div>
+                <div class="inspector__row"><span class="inspector__label">Active Norms</span> <strong>4</strong></div>
+                <div style="margin-top:var(--sp-sm)">
+                  <div style="font-size:10px;font-weight:600;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Archetype Layers</div>
+                  <div class="inspector__layers">
+                    <span style="padding:1px 6px;border-radius:8px;font-size:9px;font-weight:500;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">TOGAF:LogicalAppComponent</span>
+                    <span style="padding:1px 6px;border-radius:8px;font-size:9px;font-weight:500;background:#f1f5f9;color:#475569;border:1px solid #cbd5e1">SWTech:APPLICATION_SERVER</span>
+                    <span style="padding:1px 6px;border-radius:8px;font-size:9px;font-weight:500;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca">NIS2:AccessControl</span>
+                  </div>
+                </div>
+                <div style="margin-top:var(--sp-sm)">
+                  <div style="font-size:10px;font-weight:600;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Governed By</div>
+                  <div style="font-size:11px">&#128220; API Security Policy <span class="text-xs text-muted">(Security Board)</span></div>
+                  <div style="font-size:11px">&#128220; Performance SLA Baseline <span class="text-xs text-muted">(IT Ops)</span></div>
+                </div>
+                <div style="margin-top:var(--sp-md);display:flex;gap:var(--sp-xs)">
+                  <a href="../definition/ascription-transition.html" class="btn btn--primary btn--sm" style="font-size:10px;flex:1;text-align:center">Open Ascription</a>
+                  <button class="btn btn--secondary btn--sm" style="font-size:10px;flex:1">Set as Root</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legend Strip -->
+          <div class="canvas-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#e0faf5;border-color:#2dd4bf"></div> Structure</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#dbeafe;border-color:#60a5fa"></div> Mechanism</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#fef3c7;border-color:#f59e0b"></div> Interaction</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ede9fe;border-color:#a78bfa"></div> Effector</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffedd5;border-color:#fb923c"></div> Receptor</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e0e7ff;border-color:#6366f1"></div> Directive</div>
+            <span style="margin:0 4px;color:var(--itip-border)">|</span>
+            <div class="legend-item">&mdash;&mdash; solid = structural</div>
+            <div class="legend-item">- - dashed = interaction</div>
+            <div class="legend-item">&middot;&middot; dotted = governance</div>
+            <span style="margin:0 4px;color:var(--itip-border)">|</span>
+            <div class="legend-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;margin-right:3px"></span> Pass</div>
+            <div class="legend-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;margin-right:3px"></span> Warn</div>
+            <div class="legend-item"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;margin-right:3px"></span> Fail</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>
