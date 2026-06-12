@@ -375,6 +375,63 @@
       font-weight: 600;
     }
 
+    /* ── Global archetype descriptor (chosen on previous step) ─── */
+    .arch-desc { display: flex; flex-direction: column; gap: 6px; }
+    .arch-desc__primitive {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 999px; font-size: var(--fs-sm); font-weight: 700;
+      color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+    .arch-desc__name { font-size: var(--fs-md); font-weight: 700; }
+    .arch-desc__uri { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--itip-text-muted); word-break: break-all; }
+    .arch-desc__text { font-size: var(--fs-sm); color: var(--itip-text); line-height: 1.55; margin: 4px 0 0; }
+    .arch-desc__layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: var(--sp-sm); font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+    .arc-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; border: 1px solid; }
+    .arc-badge--togaf { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .arc-badge--iso { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+    .arc-badge--nis2 { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+    .arc-badge--gdpr { background: #faf5ff; color: #7c3aed; border-color: #ddd6fe; }
+    .arc-badge--scap { background: #fefce8; color: #a16207; border-color: #fde68a; }
+    .arc-badge--swtech { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+    /* ── Statement fields rendered detail-page style (field + json-schema meta) ─── */
+    .arch-group {
+      display: flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); font-weight: 700; color: var(--itip-text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin: var(--sp-md) 0 var(--sp-sm);
+    }
+    .arch-group:first-child { margin-top: 0; }
+    .arch-group .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+    .field-card {
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+    }
+    .field-card:last-child { border-bottom: none; }
+    .field-card__main { display: grid; grid-template-columns: 160px 1fr; gap: var(--sp-sm); align-items: center; }
+    .field-card__label {
+      font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; color: var(--itip-text);
+    }
+    .field-card__label .ib { color: var(--itip-primary); }
+    .field-card__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 6px 0 0 160px; }
+    .meta-pill {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.03em; padding: 1px 6px; border-radius: 3px;
+      background: color-mix(in srgb, var(--itip-primary) 8%, var(--itip-bg));
+      border: 1px solid var(--itip-border); color: var(--itip-text-muted);
+    }
+    .meta-pill--req { color: var(--itip-primary); border-color: color-mix(in srgb, var(--itip-primary) 35%, transparent); }
+    .meta-pill--enum { color: #7c3aed; }
+    .field-card__desc { font-size: var(--fs-xs); color: var(--itip-text-muted); line-height: 1.45; }
+    @media (max-width: 720px) {
+      .field-card__main { grid-template-columns: 1fr; }
+      .field-card__meta { margin-left: 0; }
+    }
+
     /* ── Preview ─── */
     .preview-line {
       font-family: var(--font-mono);
@@ -446,16 +503,16 @@
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="../definition/def-dashboard.html">
+        <a class="nav-item" href="../definition/def-inventory.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
             <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          Dashboard
+          Inventory
         </a>
-        <a class="nav-item" href="../definition/registry.html">
+        <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d="M3 6h18M3 12h18M3 18h18" />
             <circle cx="7" cy="6" r="1.5" fill="currentColor" />
@@ -463,29 +520,6 @@
             <circle cx="7" cy="18" r="1.5" fill="currentColor" />
           </svg>
           Registry
-        </a>
-        <a class="nav-item active" href="../definition/directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="9" y1="13" x2="15" y2="13" />
-            <line x1="9" y1="17" x2="15" y2="17" />
-          </svg>
-          Directives
-        </a>
-        <a class="nav-item" href="../definition/norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 11l3 3L22 4" />
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-          </svg>
-          Norms
-        </a>
-        <a class="nav-item" href="../definition/ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12l3 3 5-6" />
-          </svg>
-          Ascriptions
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -513,7 +547,7 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="directives-list.html">Directives</a><span>/</span>
+        <a href="registry.html">Directives</a><span>/</span>
         <a href="ascription-create.html">Create</a><span>/</span>
         <strong>Directive</strong>
       </div>
@@ -538,271 +572,27 @@
       <p class="page-subtitle">Open a governance scope — a constitutive act establishing a governance relationship
         between Structures along a viability dimension.</p>
 
-      <!-- ═══ Section 1: Actors ═══ -->
+      <!-- ═══ Section 1: Archetype (base GSM governance primitive) ═══ -->
       <div class="form-section" style="margin-top:var(--sp-lg)">
         <div class="form-section__header">
-          <span class="form-section__title">Actors</span>
+          <span class="form-section__title">Archetype</span>
+          <a href="ascription-create.html" class="schema-preview__toggle" style="text-decoration:none">↩ Change archetype</a>
         </div>
         <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>Title</label>
-              <input class="form-input" type="text" value="Performance SLA Baseline"
-                placeholder="e.g., Data Encryption Policy, API Security Standard...">
-            </div>
-            <div class="form-group">
-              <label>Owner</label>
-              <select class="form-select">
-                <option selected>E. Archer (Enterprise Architect)</option>
-                <option>S. Kumar (Security Architect)</option>
-                <option>R. Patel (Compliance Analyst)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Author</label>
-              <input class="form-input" type="text" value="E. Archer (Enterprise Architect)" disabled>
-              <div class="form-help">Automatically detected from login session</div>
-            </div>
+          <div class="arch-desc">
+            <span class="arch-desc__primitive">◆ Directive</span>
+            <div class="arch-desc__name">GSM Directive — governance grammar (DNA)</div>
+            <div class="arch-desc__uri">gsmarc://gsm/Directive/v1</div>
+            <p class="arch-desc__text">Selected on the previous step. A Directive is a <strong>governance primitive</strong>,
+              not a subject type — it opens a governance scope: a constitutive act binding a <strong>governing</strong>
+              Structure to a <strong>governed</strong> purpose along a viability dimension (the qualifier). The statement
+              below is the <code>Directive · Norm · Ascription</code> grammar; each field carries its schema properties
+              and metadata.</p>
           </div>
         </div>
       </div>
 
-      <!-- ═══ Section 2: Archetypes ═══ -->
-      <div class="form-section">
-        <div class="form-section__header">
-          <span class="form-section__title">Archetypes</span>
-        </div>
-        <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>is</label>
-              <select class="form-select">
-                <option value="">Select archetype…</option>
-                <optgroup label="GSM Base">
-                  <option value="gsm/Directive/v1" selected>Directive (gsm/Directive/v1)</option>
-                </optgroup>
-                <optgroup label="NIS2">
-                  <option value="nis2/SecurityDirective/v1">SecurityDirective (nis2/SecurityDirective/v1)</option>
-                  <option value="nis2/IncidentDirective/v1">IncidentDirective (nis2/IncidentDirective/v1)</option>
-                </optgroup>
-                <optgroup label="GDPR">
-                  <option value="gdpr/ProcessingDirective/v1">ProcessingDirective (gdpr/ProcessingDirective/v1)</option>
-                </optgroup>
-                <optgroup label="TOGAF">
-                  <option value="togaf/GovernanceDirective/v1">GovernanceDirective (togaf/GovernanceDirective/v1)
-                  </option>
-                </optgroup>
-              </select>
-              <div class="form-help">Typing archetype — determines statement schema via $ref chain</div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview schema
-                  properties</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__head"><strong>gsm/Directive/v1</strong> — Base GSM directive definition
-                  </div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>structure</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Governing structure issuing this directive</td>
-                      </tr>
-                      <tr>
-                        <td><code>modal</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Deontic modality (MUST, MUST_NOT, SHOULD, SHOULD_NOT, MAY)</td>
-                      </tr>
-                      <tr>
-                        <td><code>verb</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Governance action verb (ENSURE, ENFORCE, PREVENT, MAINTAIN…)</td>
-                      </tr>
-                      <tr>
-                        <td><code>qualifier</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Viability dimension this directive addresses</td>
-                      </tr>
-                      <tr>
-                        <td><code>purpose</code></td>
-                        <td>string</td>
-                        <td class="ib">⟡</td>
-                        <td>Target governed structure or purpose identifier</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__head" style="border-top:1px solid var(--itip-border)">
-                    <strong>nis2/SecurityDirective/v1</strong> — NIS2 security governance directive</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>structure</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Inherited — governing structure</td>
-                      </tr>
-                      <tr>
-                        <td><code>modal</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Inherited — deontic modality</td>
-                      </tr>
-                      <tr>
-                        <td><code>verb</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Inherited — governance action verb</td>
-                      </tr>
-                      <tr>
-                        <td><code>qualifier</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Inherited — viability dimension</td>
-                      </tr>
-                      <tr>
-                        <td><code>purpose</code></td>
-                        <td>string</td>
-                        <td class="ib">⟡</td>
-                        <td>Inherited — governed purpose</td>
-                      </tr>
-                      <tr>
-                        <td><code>nis2Category</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>NIS2 security category (access-control, encryption, incident-response, supply-chain)</td>
-                      </tr>
-                      <tr>
-                        <td><code>riskLevel</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Assessed risk level (low, medium, high, critical)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>composed of</label>
-              <div class="form-help" style="margin-bottom:var(--sp-sm)">Additional archetype layers via allOf. Selected
-                facets contribute fields to the statement below.</div>
-              <div class="facet-pills">
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">NIS2 · RiskManagement <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">GDPR · DataProtection <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">TOGAF · ArchPrinciples <span
-                    class="pill-x">×</span></button>
-              </div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview facet properties (0
-                  active facets)</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#ef4444"></span> NIS2 ·
-                    RiskManagement</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>riskAssessmentFreq</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Risk assessment frequency — ISO 8601 duration (e.g., P90D)</td>
-                      </tr>
-                      <tr>
-                        <td><code>mitigationStrategy</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Risk mitigation strategy (accept, mitigate, transfer, avoid)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#8b5cf6"></span> GDPR ·
-                    DataProtection</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>dataCategory</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Personal data category (general, sensitive, special-category)</td>
-                      </tr>
-                      <tr>
-                        <td><code>dpiaRequired</code></td>
-                        <td>boolean</td>
-                        <td></td>
-                        <td>Whether a Data Protection Impact Assessment is required</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#f59e0b"></span> TOGAF ·
-                    ArchPrinciples</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>principleRef</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>TOGAF architecture principle reference (e.g., AP-001)</td>
-                      </tr>
-                      <tr>
-                        <td><code>complianceLevel</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Required compliance level (advisory, recommended, mandatory)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ Section 3: Statement ═══ -->
+      <!-- ═══ Section 2: Statement ═══ -->
       <div class="form-section">
         <div class="form-section__header">
           <span class="form-section__title">Statement</span>
@@ -816,33 +606,48 @@
 
           <!-- Guided mode -->
           <div class="stmt-panel active" id="stmtGuided">
-            <!-- Grammar builder (editable slot layout) -->
-            <div class="grammar-builder">
-              <div class="grammar-slot">
-                <span class="grammar-slot__label">Governing Structure</span>
-                <select>
-                  <option value="">Select…</option>
+
+            <div class="arch-group"><span class="dot" style="background:var(--itip-primary)"></span> gsm/Directive/v1 — governance grammar</div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">structure <span class="ib">⟡</span></span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option value="">Select governing structure…</option>
                   <option selected>IT Operations Division</option>
                   <option>Security Governance Board</option>
                   <option>Data Governance Office</option>
                   <option>Architecture Review Board</option>
                 </select>
               </div>
-              <span class="grammar-arrow">→</span>
-              <div class="grammar-slot">
-                <span class="grammar-slot__label">Modal</span>
-                <select>
+              <div class="field-card__meta">
+                <span class="meta-pill">uuid</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="field-card__desc">Governing structure issuing this directive — the accountable party that holds the governance scope.</span>
+              </div>
+            </div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">modal</span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
                   <option value="MUST" selected>MUST</option>
-                  <option value="MUST_NOT">MUST NOT</option>
+                  <option value="MUST_NOT">MUST_NOT</option>
                   <option value="SHOULD">SHOULD</option>
-                  <option value="SHOULD_NOT">SHOULD NOT</option>
+                  <option value="SHOULD_NOT">SHOULD_NOT</option>
                   <option value="MAY">MAY</option>
                 </select>
               </div>
-              <span class="grammar-arrow">→</span>
-              <div class="grammar-slot">
-                <span class="grammar-slot__label">Verb</span>
-                <select>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--enum">enum</span>
+                <span class="meta-pill">$gsm:queryable</span>
+                <span class="field-card__desc">Deontic modality — one of: MUST · MUST_NOT · SHOULD · SHOULD_NOT · MAY. Sets the bindingness of the directive.</span>
+              </div>
+            </div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">verb</span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
                   <option value="ENSURE" selected>ENSURE</option>
                   <option value="ENFORCE">ENFORCE</option>
                   <option value="PREVENT">PREVENT</option>
@@ -854,11 +659,18 @@
                   <option value="ENABLE">ENABLE</option>
                 </select>
               </div>
-              <span class="grammar-arrow">→</span>
-              <div class="grammar-slot">
-                <span class="grammar-slot__label">Qualifier (viability dimension)</span>
-                <select>
-                  <option value="">Select…</option>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--enum">enum</span>
+                <span class="meta-pill">$gsm:queryable</span>
+                <span class="field-card__desc">Governance action verb — ENSURE · ENFORCE · PREVENT · MAINTAIN · OPTIMIZE · MINIMIZE · MAXIMIZE · MONITOR · ENABLE.</span>
+              </div>
+            </div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">qualifier <span class="ib">⟡</span></span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option value="">Select viability dimension…</option>
                   <option>ISO 25010 · Security</option>
                   <option>ISO 25010 · Reliability</option>
                   <option selected>ISO 25010 · Performance</option>
@@ -869,18 +681,31 @@
                   <option>TOGAF · ArchitecturalPrinciples</option>
                 </select>
               </div>
-              <span class="grammar-arrow">→ ON</span>
-              <div class="grammar-slot">
-                <span class="grammar-slot__label">Governed Structure</span>
-                <select>
-                  <option value="">Select…</option>
-                  <option selected>API Gateway</option>
-                  <option>UserDatabase</option>
-                  <option>Payment Service</option>
-                  <option>EventBus</option>
-                  <option>Monitoring Stack</option>
-                  <option>AuditService</option>
+              <div class="field-card__meta">
+                <span class="meta-pill">uuid</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="field-card__desc">Viability dimension this directive addresses — the qualifier archetype that scopes what is being governed.</span>
+              </div>
+            </div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">purpose <span class="ib">⟡</span></span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option value="">Select governed structure…</option>
+                  <option selected>api-gateway</option>
+                  <option>user-database</option>
+                  <option>payment-service</option>
+                  <option>event-bus</option>
+                  <option>monitoring-stack</option>
+                  <option>audit-service</option>
                 </select>
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="field-card__desc">Target governed structure or purpose identifier — the subject brought under this directive's scope.</span>
               </div>
             </div>
 
@@ -939,7 +764,7 @@
       <!-- Actions -->
       <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
         <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
-        <a href="directives-list.html" class="btn btn--secondary">Cancel</a>
+        <a href="registry.html" class="btn btn--secondary">Cancel</a>
         <button class="btn btn--primary">Create Directive</button>
       </div>
     </main>

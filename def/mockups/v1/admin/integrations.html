@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Integrations</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .integrations-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
+    .integrations-toolbar .form-input { flex:1; min-width:200px; }
+    .integration-header {
+      display: grid; grid-template-columns: 1fr 140px 120px 120px 100px;
+      align-items: center; gap: var(--sp-md); padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--itip-text-muted);
+    }
+    .integration-row {
+      display: grid; grid-template-columns: 1fr 140px 120px 120px 100px;
+      align-items: center; gap: var(--sp-md);
+      padding: var(--sp-md) var(--sp-lg);
+      background: var(--itip-surface); border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md); margin-bottom: var(--sp-sm);
+      cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .integration-row:hover { border-color: var(--itip-primary); box-shadow: var(--shadow-md); }
+    .integration-name { font-weight: 600; font-size: var(--fs-sm); }
+    .integration-desc { font-size: var(--fs-xs); color: var(--itip-text-muted); }
+    .integration-row > div:nth-child(n+2) { text-align: center; }
+    .integration-header > span:nth-child(n+2) { text-align: center; }
+    .detail-panel { width: 400px; background: var(--itip-surface); border-left: 1px solid var(--itip-border); display:none; flex-direction:column; }
+    .detail-panel.open { display:flex; }
+    .detail-panel__header { padding: var(--sp-md) var(--sp-lg); border-bottom: 1px solid var(--itip-border); display: flex; justify-content: space-between; align-items: center; }
+    .detail-panel__body { padding: var(--sp-lg); overflow-y: auto; flex:1; }
+    .detail-section { margin-bottom: var(--sp-lg); }
+    .detail-label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--itip-text-muted); margin-bottom: var(--sp-sm); }
+    .panel-toggle { display:inline-flex; align-items:center; gap:6px; padding:var(--sp-xs) var(--sp-sm); border:1px solid var(--itip-border); border-radius:var(--radius-md); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; font-size:var(--fs-xs); font-weight:500; margin-left:auto; }
+    .panel-toggle:hover { color:var(--itip-primary); border-color:var(--itip-primary); }
+    .panel-toggle.active { color:var(--itip-primary); border-color:var(--itip-primary); background:color-mix(in srgb, var(--itip-primary) 8%, transparent); }
+    .panel-toggle svg { width:16px; height:16px; }
+    .panel-close { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:none; border-radius:var(--radius-sm); background:transparent; color:var(--itip-text-muted); cursor:pointer; transition:all 0.15s; }
+    .panel-close:hover { background:color-mix(in srgb, var(--itip-text) 8%, transparent); color:var(--itip-text); }
+    .panel-close svg { width:14px; height:14px; }
+    .config-field { display:flex; justify-content:space-between; align-items:center; padding:var(--sp-sm) 0; border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
+    .config-field:last-child { border-bottom:none; }
+    .config-field__key { color:var(--itip-text-muted); font-size:var(--fs-xs); }
+    .config-field__value { font-family:var(--font-mono); font-size:var(--fs-xs); }
+    .list-and-detail { display:flex; gap:0; flex:1; }
+    .list-content { flex:1; padding:var(--sp-lg); overflow-y:auto; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-inventory.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Inventory
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Artifactory</div>
+        <a class="nav-item" href="../artifactory/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 17l9 4 9-4"/><path d="M3 12l9 4 9-4"/></svg>
+          Artifact Catalog
+        </a>
+        <a class="nav-item" href="../artifactory/jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h4"/></svg>
+          Generation Jobs
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item" href="../truth-sourcing/sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="../truth-sourcing/sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item active" href="integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Admin</span><span>/</span>
+        <strong>Integrations</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--copilot btn--sm">&#10022; Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main" style="padding:0">
+      <div class="list-and-detail">
+        <div class="list-content">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-lg)">
+            <div>
+              <h1 class="page-title">Integrations</h1>
+              <p class="page-subtitle">External system connectors &mdash; IAM providers, ITSM platforms, source control, and webhook endpoints for event-driven governance.</p>
+            </div>
+            <button class="btn btn--primary btn--sm">+ Add Integration</button>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="integrations-toolbar">
+            <input class="form-input" type="text" placeholder="Search integrations...">
+            <select class="form-select" style="width:160px">
+              <option>All Types</option>
+              <option>IAM Provider</option>
+              <option>ITSM</option>
+              <option>Source Control</option>
+              <option>Webhook</option>
+              <option>API Gateway</option>
+            </select>
+            <select class="form-select" style="width:140px">
+              <option>All Statuses</option>
+              <option>Connected</option>
+              <option>Disconnected</option>
+              <option>Pending</option>
+            </select>
+            <button class="panel-toggle active" onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')" title="Toggle detail panel">
+              <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+              Detail
+            </button>
+          </div>
+
+          <div class="integration-header">
+            <span>Integration</span>
+            <span>Type</span>
+            <span>Protocol</span>
+            <span>Last Sync</span>
+            <span>Status</span>
+          </div>
+
+          <div class="integration-row" onclick="document.getElementById('detailPanel').classList.add('open')">
+            <div>
+              <div class="integration-name">Azure Active Directory</div>
+              <div class="integration-desc">Primary IAM provider &mdash; user sync, group mapping, RBAC privileges</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">IAM Provider</span></div>
+            <div class="text-xs">OIDC / SCIM</div>
+            <div class="text-xs text-muted">2 min ago</div>
+            <div><span class="badge badge--pass">Connected</span></div>
+          </div>
+
+          <div class="integration-row">
+            <div>
+              <div class="integration-name">ServiceNow</div>
+              <div class="integration-desc">ITSM bi-directional sync &mdash; governance findings &rarr; incidents</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">ITSM</span></div>
+            <div class="text-xs">REST API</div>
+            <div class="text-xs text-muted">15 min ago</div>
+            <div><span class="badge badge--pass">Connected</span></div>
+          </div>
+
+          <div class="integration-row">
+            <div>
+              <div class="integration-name">GitHub Enterprise</div>
+              <div class="integration-desc">Source control &mdash; repository scanning, IaC definition sourcing</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">Source Control</span></div>
+            <div class="text-xs">GraphQL API</div>
+            <div class="text-xs text-muted">1 hour ago</div>
+            <div><span class="badge badge--pass">Connected</span></div>
+          </div>
+
+          <div class="integration-row">
+            <div>
+              <div class="integration-name">Compliance Webhook</div>
+              <div class="integration-desc">Outbound events &mdash; norm evaluation failures &rarr; Slack #compliance-alerts</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">Webhook</span></div>
+            <div class="text-xs">HTTPS POST</div>
+            <div class="text-xs text-muted">3 min ago</div>
+            <div><span class="badge badge--pass">Connected</span></div>
+          </div>
+
+          <div class="integration-row">
+            <div>
+              <div class="integration-name">Keycloak (Backup)</div>
+              <div class="integration-desc">Secondary IAM &mdash; fallback provider for on-premise environments</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">IAM Provider</span></div>
+            <div class="text-xs">OIDC / SCIM</div>
+            <div class="text-xs text-muted">&mdash;</div>
+            <div><span class="badge badge--warn">Disconnected</span></div>
+          </div>
+
+          <div class="integration-row">
+            <div>
+              <div class="integration-name">Jira Cloud</div>
+              <div class="integration-desc">ITSM &mdash; governance review tasks &rarr; Jira epics, remediation tracking</div>
+            </div>
+            <div><span class="badge badge--proposed" style="font-size:10px">ITSM</span></div>
+            <div class="text-xs">REST API</div>
+            <div class="text-xs text-muted">&mdash;</div>
+            <div><span class="badge badge--draft">Pending</span></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--itip-text-muted)">
+            <span>Showing 6 integrations</span>
+          </div>
+        </div>
+
+        <!-- Detail panel (toggleable) -->
+        <div class="detail-panel open" id="detailPanel">
+          <div class="detail-panel__header">
+            <h3 style="font-size:var(--fs-base);font-weight:600">Integration Detail</h3>
+            <button class="panel-close" onclick="document.getElementById('detailPanel').classList.remove('open');var t=document.querySelector('.panel-toggle');if(t)t.classList.remove('active')" title="Close">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="detail-panel__body">
+
+            <div class="detail-section">
+              <div class="detail-label">Name</div>
+              <div class="text-sm"><strong>Azure Active Directory</strong></div>
+              <div class="text-xs text-muted">IAM Provider &middot; OIDC / SCIM</div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Connection</div>
+              <div class="config-field">
+                <span class="config-field__key">Tenant ID</span>
+                <span class="config-field__value">acme-corp.onmicrosoft.com</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">Client ID</span>
+                <span class="config-field__value">a1b2c3d4-****-****-****</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">SCIM Endpoint</span>
+                <span class="config-field__value">/scim/v2/Users</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">Token Expiry</span>
+                <span class="config-field__value">2026-03-15T00:00Z</span>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Sync Configuration</div>
+              <div class="config-field">
+                <span class="config-field__key">Schedule</span>
+                <span class="config-field__value">Every 5 min</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">User Mapping</span>
+                <span class="config-field__value">AD Group &rarr; ITIP Role</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">Last Sync</span>
+                <span class="config-field__value">2 min ago &middot; 6 users</span>
+              </div>
+              <div class="config-field">
+                <span class="config-field__key">Sync Errors</span>
+                <span class="config-field__value" style="color:var(--compliance-pass)">0</span>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-label">Event Subscriptions</div>
+              <div class="text-xs" style="padding:4px 0">&#10003; User created / updated / deleted</div>
+              <div class="text-xs" style="padding:4px 0">&#10003; Group membership changes</div>
+              <div class="text-xs" style="padding:4px 0">&#10007; MFA status changes (not enabled)</div>
+            </div>
+
+            <div style="display:flex; gap:var(--sp-sm); margin-top:var(--sp-md)">
+              <button class="btn btn--secondary btn--sm">Test Connection</button>
+              <button class="btn btn--secondary btn--sm">Force Sync</button>
+              <button class="btn btn--ghost btn--sm" style="color:var(--compliance-fail)">Disconnect</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

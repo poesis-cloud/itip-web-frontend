@@ -1,0 +1,3288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Definition Detail</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: var(--sp-xl);
+      align-items: start;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: var(--sp-sm) var(--sp-md);
+      font-size: var(--fs-sm);
+    }
+
+    .kv .k {
+      color: var(--itip-text-muted);
+    }
+
+    /* SVG edge layer for UML connectors */
+    #arc-edges {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    #arc-list {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Archetype contribution row — one per archetype that STRUCTURES the statement */
+    .arc-card {
+      display: block;
+      padding: 0;
+      border: 1px solid var(--itip-border);
+      border-left-width: 4px;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--sp-sm);
+      background: var(--itip-surface);
+      overflow: hidden;
+    }
+
+    .arc-card__header {
+      display: flex;
+      align-items: stretch;
+      gap: var(--sp-sm);
+    }
+
+    .arc-card__header .arc-badge {
+      flex: 1;
+      justify-content: flex-start;
+      padding: 6px 12px 6px 24px;
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      font-size: var(--fs-sm);
+    }
+
+    .arc-card__header .arc-badge::after {
+      content: '▸';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      opacity: 0.7;
+      transition: transform 0.1s ease;
+    }
+
+    .arc-card__header .arc-badge--open::after {
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    .arc-card__header .arc-card__audit {
+      align-self: center;
+      margin-right: var(--sp-sm);
+    }
+
+    .arc-card > .slot-meta {
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      margin-top: 0;
+    }
+
+    .arc-card__body {
+      padding: var(--sp-md);
+    }
+
+    .arc-card__body {
+      min-width: 0;
+    }
+
+    .arc-card__title {
+      font-weight: 600;
+      font-size: var(--fs-sm);
+      margin-bottom: var(--sp-xs);
+    }
+
+    .arc-card__field {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      margin-top: 2px;
+    }
+
+    .arc-card--highlight {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--itip-primary) 35%, transparent);
+      transition: box-shadow 0.12s ease;
+    }
+
+    /* Statement composition tree connectors.
+       UML semantics:
+       - .arc-extends uses generalization-style connectors ($ref / Is a)
+       - .arc-facets uses composition-style connectors (allOf / Has a) */
+    /* Tree connector containers: no visual decoration — SVG edges rendered via JS. */
+    .arc-extends {
+      margin: 6px 0 var(--sp-sm) 22px;
+      padding: 6px 0 6px 30px;
+      position: relative;
+    }
+    .arc-extends .arc-card {
+      position: relative;
+    }
+
+    /* UML composition connector from parent archetype to allOf facet rail. */
+    .arc-facets {
+      margin: 6px 0 var(--sp-sm) 22px;
+      padding: 6px 0 6px 30px;
+      position: relative;
+    }
+    .arc-facets .arc-card {
+      position: relative;
+    }
+    .arc-facets .arc-card {
+      position: relative;
+    }
+
+    /* Archetype graph (sidebar) */
+    .arc-graph {
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      padding: var(--sp-sm);
+    }
+    .arc-graph svg .arc-graph__node rect {
+      transition: filter 0.15s ease, transform 0.05s ease;
+    }
+    .arc-graph svg .arc-graph__node:hover rect {
+      filter: brightness(0.94);
+    }
+    .arc-graph svg .arc-graph__node:active rect {
+      transform: translateY(1px);
+    }
+
+    /* Ascription switcher — vertical list in right sidebar */
+    .asc-switcher {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .asc-pill {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: 'id state' 'created created';
+      column-gap: var(--sp-sm);
+      row-gap: 2px;
+      padding: 8px 10px;
+      border: 1px solid var(--itip-border);
+      border-left: 3px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-surface);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+    .asc-pill:hover { border-color: var(--itip-primary); background: color-mix(in srgb, var(--itip-primary) 3%, var(--itip-surface)); }
+    .asc-pill--current {
+      border-color: var(--itip-primary);
+      border-left-color: var(--itip-primary);
+      border-left-width: 3px;
+      background: color-mix(in srgb, var(--itip-primary) 5%, var(--itip-surface));
+      box-shadow: 0 1px 3px color-mix(in srgb, var(--itip-primary) 15%, transparent);
+    }
+    .asc-pill--current::before {
+      content: '';
+      position: absolute;
+      left: -8px; top: 50%; transform: translateY(-50%);
+      width: 0; height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 6px solid var(--itip-primary);
+    }
+    .asc-pill__id {
+      grid-area: id;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--itip-text);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .asc-pill__state { grid-area: state; }
+    .asc-pill__state .stmt-state { font-size: 10px; padding: 1px 6px; }
+    .asc-pill__created {
+      grid-area: created;
+      font-size: 11px;
+      color: var(--itip-text-muted);
+      line-height: 1.3;
+    }
+    .asc-sidebar-card .card-title {
+      display: flex; align-items: baseline; gap: var(--sp-xs);
+    }
+    .asc-sidebar-card .asc-count-badge {
+      font-size: 11px;
+      color: var(--itip-text-muted);
+      font-weight: 400;
+    }
+
+    /* Ascription compare mode (diff selection) */
+    .asc-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-sm);
+      margin-bottom: var(--sp-xs);
+    }
+    .asc-card-header .card-title { margin: 0; }
+    .asc-compare-toggle {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-surface);
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s ease;
+    }
+    .asc-compare-toggle:hover { color: var(--itip-text); border-color: var(--itip-primary); }
+    .asc-compare-toggle--on {
+      background: var(--itip-primary);
+      border-color: var(--itip-primary);
+      color: #fff;
+    }
+    .asc-compare-toggle--on:hover { color: #fff; }
+    /* Selector sits on the right of the pill (absolute) so it doesn't disturb the
+       2-row grid used in navigate mode. */
+    .asc-pill__check {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      border: 1.5px solid var(--itip-border);
+      border-radius: 4px;
+      background: var(--itip-surface);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      line-height: 1;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+    /* In compare mode, reserve room on the right so the state pill / id text don't
+       collide with the checkbox. */
+    .asc-switcher--compare .asc-pill {
+      cursor: pointer;
+      padding-right: 36px;
+      text-align: left;
+      font: inherit;
+    }
+    .asc-switcher--compare .asc-pill:focus-visible {
+      outline: 2px solid var(--itip-primary);
+      outline-offset: 1px;
+    }
+    .asc-pill--selected {
+      border-color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 7%, var(--itip-surface));
+    }
+    .asc-pill--selected .asc-pill__check {
+      background: var(--itip-primary);
+      border-color: var(--itip-primary);
+    }
+    .asc-diff-toolbar[hidden] { display: none !important; }
+    .asc-diff-toolbar {
+      margin-top: var(--sp-sm);
+      padding: var(--sp-sm);
+      border: 1px dashed var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .asc-diff-toolbar__hint {
+      font-size: 11px;
+      color: var(--itip-text-muted);
+      line-height: 1.4;
+    }
+    .asc-diff-toolbar__pair {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--itip-text);
+      word-break: break-all;
+    }
+    .asc-diff-toolbar__pair .asc-diff-arrow { color: var(--itip-text-muted); margin: 0 4px; }
+    .asc-diff-toolbar__actions {
+      display: flex; gap: 6px;
+    }
+    .asc-diff-toolbar__btn {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--itip-border);
+      background: var(--itip-surface);
+      color: var(--itip-text);
+      cursor: pointer;
+    }
+    .asc-diff-toolbar__btn:hover { border-color: var(--itip-primary); }
+    .asc-diff-toolbar__btn--primary {
+      background: var(--itip-primary);
+      border-color: var(--itip-primary);
+      color: #fff;
+    }
+    .asc-diff-toolbar__btn--primary:disabled {
+      opacity: 0.4; cursor: not-allowed;
+    }
+
+    /* Status state machine — compact SVG for the right sidebar.
+       Layout: main vertical spine (Draft → Proposed → Approved → Active → Deprecated → Retired)
+       with side branches for Abandoned, Rejected (top terminals) and a Suspended ↔ Active loop. */
+    #sm-machine {
+      display: flex;
+      justify-content: center;
+    }
+    .sm-machine-stage {
+      position: relative;
+      display: inline-block;
+      padding: 4px;
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      box-sizing: border-box;
+    }
+    .sm-svg {
+      width: auto;
+      height: auto;
+      display: block;
+      shape-rendering: geometricPrecision;
+    }
+    .sm-node rect {
+      fill: var(--itip-surface);
+      stroke: #8b949e;
+      stroke-width: 1.25;
+      transition: stroke 0.15s, fill 0.15s;
+    }
+    .sm-node text {
+      display: none;
+    }
+    .sm-node-label {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: 0;
+      color: var(--itip-text);
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .sm-node-label--current { color: #0d6efd; font-weight: 700; }
+    .sm-node-label--reachable { color: #15803d; font-weight: 600; }
+    .sm-node-label--terminal { color: #6e7681; }
+    .sm-node--terminal rect {
+      fill: #f6f8fa;
+      stroke: #8b949e;
+      stroke-dasharray: 5 3;
+    }
+    .sm-node--terminal text { fill: #6e7681; }
+    .sm-node--reachable { cursor: pointer; }
+    .sm-node--reachable rect {
+      stroke: #22c55e;
+      stroke-width: 1.75;
+      stroke-dasharray: 5 3;
+      fill: rgba(34,197,94,0.06);
+    }
+    .sm-node--reachable:hover rect {
+      stroke: #16a34a;
+      fill: rgba(34,197,94,0.16);
+    }
+    .sm-node--reachable text { fill: #15803d; font-weight: 600; }
+    .sm-node--current rect {
+      stroke: #0d6efd;
+      stroke-width: 2.25;
+      fill: rgba(13,110,253,0.12);
+    }
+    .sm-node--current text { fill: #0d6efd; font-weight: 600; }
+    .sm-edge {
+      fill: none;
+      stroke: #8b949e;
+      stroke-width: 1.25;
+    }
+    .sm-edge--reachable {
+      stroke: #22c55e;
+      stroke-width: 1.75;
+    }
+
+    /* Older linear lc-machine kept for backwards compat but no longer rendered. */
+    .lc-node {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      align-items: center;
+      gap: var(--sp-sm);
+      padding: 6px 10px;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-surface);
+      text-decoration: none;
+      color: inherit;
+      font-size: var(--fs-xs);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .lc-node--current {
+      border-color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 5%, var(--itip-surface));
+      font-weight: 600;
+    }
+    .lc-node--reachable {
+      border-color: color-mix(in srgb, var(--itip-primary) 50%, var(--itip-border));
+      border-style: dashed;
+      cursor: pointer;
+    }
+    .lc-node--reachable:hover {
+      background: color-mix(in srgb, var(--itip-primary) 8%, var(--itip-surface));
+      border-color: var(--itip-primary);
+    }
+    .lc-node--blocked {
+      opacity: 0.5;
+      color: var(--itip-text-muted);
+    }
+    .lc-node__dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--itip-border);
+      justify-self: center;
+    }
+    .lc-node--current .lc-node__dot { background: var(--itip-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--itip-primary) 25%, transparent); }
+    .lc-node--reachable .lc-node__dot { background: color-mix(in srgb, var(--itip-primary) 50%, var(--itip-border)); }
+    .lc-node__name { font-family: var(--font-mono); }
+    .lc-node__tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .lc-tag--current { background: var(--itip-primary); color: white; border-color: var(--itip-primary); }
+    .lc-tag--reachable { background: color-mix(in srgb, var(--itip-primary) 10%, transparent); color: var(--itip-primary); border-color: color-mix(in srgb, var(--itip-primary) 40%, transparent); }
+    .lc-tag--terminal { background: #f3f4f6; color: #6b7280; border-color: #d1d5db; }
+    .lc-tag--blocked { background: transparent; color: var(--itip-text-muted); border-color: var(--itip-border); }
+    .lc-arrow {
+      align-self: center;
+      justify-self: center;
+      color: var(--itip-text-muted);
+      font-size: 10px;
+      margin: -2px 0;
+    }
+    .lc-arrow--reachable { color: var(--itip-primary); }
+
+    /* Archetype card schema audit badge (sample-data vs JSON Schema compliance). */
+    .arc-card__audit {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .arc-card__audit--ok {
+      color: #15803d;
+      background: color-mix(in srgb, #15803d 8%, transparent);
+      border-color: color-mix(in srgb, #15803d 35%, transparent);
+    }
+    .arc-card__audit--drift {
+      color: #b45309;
+      background: color-mix(in srgb, #f59e0b 10%, transparent);
+      border-color: color-mix(in srgb, #f59e0b 45%, transparent);
+    }
+    .arc-card__audit--missing {
+      color: #b91c1c;
+      background: color-mix(in srgb, #b91c1c 8%, transparent);
+      border-color: color-mix(in srgb, #b91c1c 40%, transparent);
+    }
+
+    /* Collapsible schema-meta title inside arc-card body. */
+    .arc-card__schema-title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--itip-text-muted);
+      padding: 2px 0 4px 0;
+      border-bottom: 1px dashed color-mix(in srgb, var(--itip-border) 40%, transparent);
+      margin-bottom: 6px;
+    }
+    .arc-card__schema-title .slot-key__toggle { margin-right: 0; }
+
+    /* Slot annotations panel */
+    .slot-row { cursor: default; }
+    .slot-key__toggle {
+      display: inline-block;
+      width: 12px;
+      color: var(--itip-text-muted);
+      font-family: var(--font-mono);
+      cursor: pointer;
+      user-select: none;
+      margin-right: 2px;
+    }
+    .slot-key__toggle:hover { color: var(--itip-primary); }
+    .slot-meta {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+      padding: var(--sp-sm) var(--sp-md);
+      background: color-mix(in srgb, var(--itip-primary) 3%, var(--itip-bg));
+      border: 1px dashed var(--itip-border);
+      border-radius: var(--radius-md);
+      display: none;
+    }
+    .slot-meta--open { display: grid; gap: 4px; grid-template-columns: 160px 1fr; }
+    .slot-meta__k {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--itip-text-muted);
+      white-space: nowrap;
+    }
+    .slot-meta__v {
+      font-size: var(--fs-xs);
+      color: var(--itip-text);
+      word-break: break-word;
+    }
+    .slot-meta__v code {
+      font-family: var(--font-mono);
+      background: var(--itip-surface);
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid var(--itip-border);
+      font-size: 10px;
+    }
+    .slot-meta__bool--yes { color: #15803d; font-weight: 600; }
+    .slot-meta__bool--no { color: var(--itip-text-muted); }
+
+    /* Slot table — strict archetype-defined fields */
+    .slot-table {
+      /* No top border: arc-card body has no preceding title, so a top rule would
+         look like an empty dashed header. Rows use their own separators below. */
+    }
+    .slot-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--sp-sm);
+      align-items: baseline;
+      padding: 4px 0;
+      font-size: var(--fs-xs);
+    }
+    .slot-row + .slot-row { border-top: 1px dashed color-mix(in srgb, var(--itip-border) 40%, transparent); }
+    .slot-key {
+      font-family: var(--font-mono);
+      color: var(--itip-text);
+      font-weight: 600;
+    }
+    .slot-value { color: var(--itip-text); word-break: break-all; }
+    .slot-val {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 1px 5px;
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: 3px;
+      margin-right: 3px;
+      display: inline-block;
+    }
+    .slot-val--name {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--itip-text);
+    }
+
+    .arc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: var(--fs-xs);
+      line-height: 1.4;
+      font-weight: 700;
+      border: 1px solid;
+    }
+
+    .arc-badge--gsm {
+      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      color: var(--itip-primary);
+      border-color: color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+
+    /* Navigator chip: clickable archetype pill that scrolls to its card */
+    .arc-nav-chip {
+      cursor: pointer;
+      font-family: inherit;
+      transition: filter 0.15s ease, transform 0.05s ease;
+    }
+    .arc-nav-chip:hover {
+      filter: brightness(0.96);
+      text-decoration: none;
+    }
+    .arc-nav-chip:active {
+      transform: translateY(1px);
+    }
+    .arc-nav-target {
+      scroll-margin-top: 80px;
+    }
+
+    .arc-badge--togaf {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .arc-badge--swtech {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
+
+    .arc-badge--iso {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+
+    .arc-badge--nis2 {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .arc-badge--gdpr {
+      background: #faf5ff;
+      color: #7c3aed;
+      border-color: #ddd6fe;
+    }
+
+    .arc-badge--scap {
+      background: #fefce8;
+      color: #a16207;
+      border-color: #fde68a;
+    }
+
+    /* DNA governance — directive groups with their operationalizing norms */
+    .dna-directive {
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--sp-md);
+      overflow: hidden;
+    }
+
+    .dna-directive__head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-md);
+      align-items: start;
+      padding: var(--sp-md);
+      background: color-mix(in srgb, var(--itip-primary) 4%, transparent);
+      border-bottom: 1px solid var(--itip-border);
+    }
+
+    .dna-norms {
+      padding: var(--sp-sm) var(--sp-md) var(--sp-md);
+    }
+
+    .dna-norm {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-md);
+      align-items: start;
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px dashed var(--itip-border);
+    }
+
+    .dna-norm:last-child {
+      border-bottom: none;
+    }
+
+    .dna-norm__name {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .dna-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .dna-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .grammar-preview--inline {
+      padding: var(--sp-sm) var(--sp-md);
+      font-size: var(--fs-xs);
+      line-height: 1.6;
+    }
+
+    .grammar-preview .kw {
+      color: #b45309;
+      font-weight: 700;
+    }
+
+    .grammar-preview .tol {
+      color: var(--itip-text-muted);
+      font-style: italic;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: var(--sp-lg);
+      border-left: 2px solid var(--itip-border);
+      margin-top: var(--sp-sm);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: var(--sp-md);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--sp-lg) - 6px);
+      top: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--itip-primary);
+      border: 2px solid var(--itip-surface);
+    }
+
+    .timeline-item--current::before {
+      background: #22c55e;
+    }
+
+    .timeline-time {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+
+    .timeline-title {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    /* Per-statement lifecycle controls */
+    .stmt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-md);
+      flex-wrap: wrap;
+    }
+    .stmt-header__title {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+    .stmt-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1px solid;
+    }
+
+    .stmt-state--draft {
+      background: #f3f4f6;
+      color: #4b5563;
+      border-color: #d1d5db;
+    }
+
+    .stmt-state--proposed {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .stmt-state--approved {
+      background: #f5f3ff;
+      color: #6d28d9;
+      border-color: #ddd6fe;
+    }
+
+    .stmt-state--active {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+
+    .stmt-state--suspended {
+      background: #fefce8;
+      color: #a16207;
+      border-color: #fde68a;
+    }
+
+    .stmt-state--deprecated {
+      background: #fff7ed;
+      color: #c2410c;
+      border-color: #fed7aa;
+    }
+
+    .stmt-state--retired {
+      background: #f3f4f6;
+      color: #6b7280;
+      border-color: #d1d5db;
+      text-decoration: line-through;
+    }
+
+    .stmt-state--rejected {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .stmt-state--abandoned {
+      background: #f3f4f6;
+      color: #6b7280;
+      border-color: #d1d5db;
+      font-style: italic;
+    }
+
+    .stmt-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: var(--sp-sm);
+      padding-top: var(--sp-sm);
+      border-top: 1px dashed var(--itip-border);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stmt-actions .text-xs {
+      margin-right: auto;
+    }
+
+    /* Definition view tabs (main column) */
+    .deftabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      border-bottom: 1px solid var(--itip-border);
+      margin-bottom: var(--sp-md);
+    }
+    .deftab {
+      appearance: none;
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      padding: 8px 14px;
+      font: inherit;
+      font-size: var(--fs-sm);
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      border-top-left-radius: var(--radius-md);
+      border-top-right-radius: var(--radius-md);
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      margin-bottom: -1px;
+    }
+    .deftab:hover { color: var(--itip-text); background: var(--itip-bg); }
+    .deftab--active {
+      color: var(--itip-text);
+      background: var(--itip-surface);
+      border-color: var(--itip-border);
+      border-bottom-color: var(--itip-surface);
+      font-weight: 600;
+    }
+    .deftabpanel { display: none; }
+    .deftabpanel--active { display: block; }
+
+    /* Schema graph (depth-1 placeholder) */
+    .schema-graph {
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+    }
+    .schema-graph__svg { width: 100%; height: auto; display: block; }
+    .schema-graph__legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-md);
+      margin-top: var(--sp-sm);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+    .schema-graph__legend__swatch {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* ---- Status transition tab (from ascription-transition.html) ---- */
+    .transition-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-xl);
+      align-items: start;
+    }
+    .transition-panel .card { padding: var(--sp-lg); }
+    .transition-panel .card + .card { margin-top: var(--sp-lg); }
+    .sm-legend { display: flex; gap: var(--sp-lg); flex-wrap: wrap; margin-top: var(--sp-sm); font-size: var(--fs-xs); color: var(--itip-text-muted); }
+    .sm-legend-item { display: flex; align-items: center; gap: var(--sp-xs); }
+    .sm-legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 2px solid; }
+    .sm-legend-swatch--current  { border-color: #0d6efd; background: rgba(13,110,253,0.12); }
+    .sm-legend-swatch--target   { border-color: #22c55e; background: rgba(34,197,94,0.12); }
+    .sm-legend-swatch--terminal { border-color: #8b949e; background: #f6f8fa; border-style: dashed; }
+    .transition-from-to { display: flex; align-items: center; gap: var(--sp-md); margin-bottom: var(--sp-lg); }
+    .transition-badge { padding: var(--sp-xs) var(--sp-md); border-radius: var(--radius-full, 999px); font-size: var(--fs-sm); font-weight: 600; border: 2px solid; }
+    .transition-badge--from { border-color: #0d6efd; background: rgba(13,110,253,0.1); color: #0d6efd; }
+    .transition-badge--to   { border-color: #22c55e; background: rgba(34,197,94,0.1); color: #16a34a; }
+    .rule-section { margin-bottom: var(--sp-lg); }
+    .rule-section:last-child { margin-bottom: 0; }
+    .rule-section h4 { font-size: var(--fs-sm); font-weight: 600; margin-bottom: var(--sp-sm); display: flex; align-items: center; gap: var(--sp-sm); }
+    .rule-count { font-size: var(--fs-xs); padding: 1px 8px; border-radius: var(--radius-full, 999px); background: var(--itip-bg-muted, #f6f8fa); color: var(--itip-text-muted); font-weight: 500; }
+    .evaluation-checks { list-style: none; padding: 0; margin: 0; }
+    .evaluation-checks li { display: flex; align-items: flex-start; gap: var(--sp-sm); padding: var(--sp-sm) 0; border-bottom: 1px solid var(--itip-border); font-size: var(--fs-sm); }
+    .evaluation-checks li:last-child { border-bottom: none; }
+    .check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; color: #fff; }
+    .check-icon--pass { background: var(--compliance-pass, #22c55e); }
+    .check-icon--fail { background: var(--compliance-fail, #ef4444); }
+    .check-icon--warn { background: var(--compliance-warn, #f59e0b); }
+    .check-icon--na   { background: var(--itip-border); color: var(--itip-text-muted); }
+    .cascade-type { font-size: var(--fs-xs); padding: 1px 6px; border-radius: var(--radius-sm, 4px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cascade-type--constitutive { background: rgba(239,68,68,0.1); color: #dc2626; }
+    .cascade-type--governing    { background: rgba(59,130,246,0.1); color: #2563eb; }
+    .cascade-type--dependent    { background: rgba(245,158,11,0.1); color: #d97706; }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar (regenerated by /tmp/regen_sidebar.py — active=registry) -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-inventory.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Inventory
+        </a>
+        <a class="nav-item active" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="registry.html">Registry</a><span>/</span>
+        <strong id="bc-subject">API Gateway</strong>
+      </div>
+      <div class="app-header__actions">
+        <a href="ascription-create.html" class="btn btn--primary btn--sm">+ New Ascription</a>
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <main class="app-main">
+
+      <h1 class="page-title" style="display:flex;align-items:center;gap:var(--sp-md);flex-wrap:wrap">
+        <span id="title-subject">API Gateway</span>
+      </h1>
+
+      <div class="detail-grid">
+
+        <!-- Left column: tabbed views -->
+        <div>
+          <div class="deftabs" role="tablist" id="def-tabs">
+            <button type="button" class="deftab deftab--active" role="tab" data-deftab="statement">Statement</button>
+            <button type="button" class="deftab" role="tab" data-deftab="schema">Diagram</button>
+            <button type="button" class="deftab" role="tab" data-deftab="governance">Governance</button>
+            <button type="button" class="deftab" role="tab" data-deftab="status">Status transition</button>
+            <button type="button" class="deftab" role="tab" data-deftab="activity">Activity</button>
+          </div>
+
+          <section class="deftabpanel deftabpanel--active" id="deftabpanel-statement" role="tabpanel">
+            <div class="card">
+              <div class="card__body">
+                <div class="stmt-header">
+                  <div class="stmt-header__title">
+                    <h2 class="card-title" style="margin:0">Statement</h2>
+                  </div>
+                </div>
+                <p class="text-xs text-muted mb-md">One ascription carries one statement. The statement begins with the base archetype (the GSM primitive itself) and is then extended by domain archetypes — each contributing structural fields and norms.</p>
+                <div style="position:relative;">
+                  <svg id="arc-edges"></svg>
+                  <div id="arc-list"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="deftabpanel" id="deftabpanel-schema" role="tabpanel">
+            <div class="card">
+              <div class="card__body">
+                <h2 class="card-title">Diagram</h2>
+                <p class="text-xs text-muted mb-md">Architecture neighborhood of the scoped definition (highlighted): its mechanisms, the interaction definitions that link them to neighboring mechanisms, and its directly related definitions. Every node is a definition — click to open it.</p>
+                <div class="schema-graph">
+                  <svg id="schema-graph-svg" class="schema-graph__svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+                <div class="schema-graph__legend">
+                  <span><span class="schema-graph__legend__swatch" style="background:var(--itip-primary)"></span>Scoped definition (in scope)</span>
+                  <span><span class="schema-graph__legend__swatch" style="background:#64748b"></span>Related definition</span>
+                  <span><span class="schema-graph__legend__swatch" style="background:transparent;border:1px solid #8b5cf6">⇄</span>Interaction definition</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="deftabpanel" id="deftabpanel-governance" role="tabpanel">
+            <div class="card">
+              <div class="card__body">
+                <h2 class="card-title">Governance — Directives &amp; Norms (DNA)</h2>
+                <p class="text-xs text-muted mb-md">DNA governance grammar: each <strong>Directive</strong> opens a governance scope on this subject along a viability dimension; its <strong>Norms</strong> operationalize that scope as measurable assertions (chain linkage <span class="text-mono">Directive.purpose == Norm.structure</span>). <em>Status</em> is the Ascription lifecycle state; <em>Conformance</em> is the latest evaluation — a directive is non-conformant if any of its norms is.</p>
+                <div id="dna-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="deftabpanel" id="deftabpanel-status" role="tabpanel">
+            <p class="text-xs text-muted" style="margin:0 0 var(--sp-md) 0">Click a reachable state on the lifecycle state machine in the sidebar to stage a transition, then review and confirm here.</p>
+            <div>
+                <div class="card">
+                  <div class="card__body">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:var(--sp-md); margin-bottom:var(--sp-md); flex-wrap:wrap">
+                    <h3 style="margin:0">Transition evaluation</h3>
+                    <div class="transition-from-to" style="margin:0">
+                      <span class="transition-badge transition-badge--from" id="tx-from">APPROVED</span>
+                      <span style="color:var(--itip-text-muted); font-size:var(--fs-lg)">→</span>
+                      <span class="transition-badge transition-badge--to" id="tx-to">ACTIVE</span>
+                    </div>
+                  </div>
+                  <div class="rule-section">
+                    <h4>Reference Preconditions <span class="rule-count">1 check</span></h4>
+                    <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-bottom:var(--sp-sm)" id="tx-precond-desc">APPROVED → ACTIVE requires each reference in <strong>ACTIVE</strong></p>
+                    <ul class="evaluation-checks">
+                      <li>
+                        <span class="check-icon check-icon--pass">✓</span>
+                        <div><strong>Structure</strong> → PaymentGateway<br><span class="text-muted text-xs">Status: ACTIVE — meets requirement</span></div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="rule-section">
+                    <h4>Inter-Transition Cascades <span class="rule-count">2 cascades</span></h4>
+                    <ul class="evaluation-checks">
+                      <li>
+                        <span class="check-icon check-icon--pass">✓</span>
+                        <div>
+                          <strong>Effector</strong> → terminate_ssl &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
+                          <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
+                          <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                        </div>
+                      </li>
+                      <li>
+                        <span class="check-icon check-icon--pass">✓</span>
+                        <div>
+                          <strong>Receptor</strong> → https_endpoint &ensp;<span class="cascade-type cascade-type--constitutive">constitutive</span>
+                          <br><span class="text-muted text-xs">APPROVED → ACTIVE — preconditions met (Archetype ref: ACTIVE)</span>
+                          <br><span class="text-muted text-xs" style="color:#dc2626">Blocking — failure rejects source transition</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="rule-section">
+                    <h4>Intra-Definition Rules <span class="rule-count">1 effect</span></h4>
+                    <ul class="evaluation-checks">
+                      <li>
+                        <span class="check-icon check-icon--warn">!</span>
+                        <div>
+                          <strong>Activation Handoff</strong>
+                          <br><span class="text-muted text-xs"><span class="text-mono">MEC-0037-v1</span> (ACTIVE) → will be auto-DEPRECATED</span>
+                          <br><span class="text-muted text-xs">Preserves invariant: at most one ACTIVE per Definition</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div style="display:flex; gap:var(--sp-md); justify-content:flex-end; margin-top:var(--sp-md); padding-top:var(--sp-md); border-top:1px solid var(--itip-border)">
+                    <button type="button" class="btn btn--secondary" id="tx-cancel-btn">Reset</button>
+                    <button type="button" class="btn btn--primary" id="tx-confirm-btn">Confirm transition</button>
+                  </div>
+                  <div id="tx-confirm-banner" hidden style="margin-top:var(--sp-md); padding:var(--sp-sm) var(--sp-md); border-radius:var(--radius-md); background:rgba(34,197,94,0.1); color:#16a34a; font-size:var(--fs-sm); border:1px solid #22c55e">
+                    Transition confirmed (mock). Backend call would be issued here.
+                  </div>
+                  </div>
+                </div>
+            </div>
+          </section>
+
+          <section class="deftabpanel" id="deftabpanel-activity" role="tabpanel">
+            <div class="card">
+              <div class="card__body">
+                <h2 class="card-title">Activity</h2>
+                <p class="text-xs text-muted mb-md">Timeline of definition / ascription events for this subject.</p>
+                <div class="timeline" id="activity-list"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right column: ascriptions switcher, status, provenance, authorship -->
+        <aside>
+          <section class="card mb-lg asc-sidebar-card">
+            <div class="card__body">
+              <div class="asc-card-header">
+                <h3 class="card-title">
+                  Ascriptions
+                  <span id="asc-count" class="asc-count-badge"></span>
+                </h3>
+                <button type="button" id="asc-compare-toggle" class="asc-compare-toggle" aria-pressed="false" title="Select two ascriptions to compare">
+                  <span aria-hidden="true">⇄</span> Compare
+                </button>
+              </div>
+              <p class="text-xs text-muted" id="asc-hint" style="margin:-4px 0 var(--sp-sm) 0">Switch between historical and current ascriptions of this subject.</p>
+              <div class="asc-switcher" id="asc-switcher"></div>
+              <div class="asc-diff-toolbar" id="asc-diff-toolbar" hidden>
+                <div class="asc-diff-toolbar__hint" id="asc-diff-hint">Select two ascriptions to compare.</div>
+                <div class="asc-diff-toolbar__pair" id="asc-diff-pair" hidden></div>
+                <div class="asc-diff-toolbar__actions">
+                  <button type="button" class="asc-diff-toolbar__btn asc-diff-toolbar__btn--primary" id="asc-diff-open" disabled>Open diff</button>
+                  <button type="button" class="asc-diff-toolbar__btn" id="asc-diff-clear">Clear</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card mb-lg">
+            <div class="card__body">
+              <h3 class="card-title" style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-sm)">
+                <span>Status</span>
+                <span id="lc-current-pill" class="stmt-state stmt-state--active">Active</span>
+              </h3>
+              <div id="sm-machine"></div>
+              <div class="sm-legend" style="margin-top:var(--sp-sm)">
+                <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--current"></div> Current</div>
+                <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--target"></div> Reachable</div>
+                <div class="sm-legend-item"><div class="sm-legend-swatch sm-legend-swatch--terminal"></div> Terminal</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card mb-lg">
+            <div class="card__body">
+              <h3 class="card-title">Provenance</h3>
+              <div class="kv">
+                <div class="k">Sourced via</div>
+                <div id="prov-source" class="text-xs">CMDB sync</div>
+                <div class="k">Ascribed by</div>
+                <div id="prov-ascribed" class="text-xs">E. Adams (Architect)</div>
+                <div class="k">Confidence</div>
+                <div id="prov-confidence" class="text-xs">0.97</div>
+                <div class="k">Last attestation</div>
+                <div id="prov-attested" class="text-xs text-muted">2026-04-12</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card__body">
+              <h3 class="card-title">Authorship</h3>
+              <div class="kv">
+                <div class="k">Owner</div>
+                <div id="auth-owner" class="text-xs">Platform Engineering</div>
+                <div class="k">Created</div>
+                <div id="auth-created" class="text-xs text-muted">2024-09-15 by E. Adams</div>
+                <div class="k">Last updated</div>
+                <div id="auth-updated" class="text-xs text-muted">2026-04-12 by R. Singh</div>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+      </div>
+
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+
+  <script>
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+
+    // ---- Mock subject data (one entry per registry row) ----
+    // Each archetype contribution lists ONLY the slots that archetype defines.
+    // A statement = the union of slot values across the archetypes that structure it.
+    const SUBJECTS = {
+      'api-gateway': {
+        name: 'API Gateway', uri: 'acme:subject/api-gateway',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-api-gateway-3', created: '2026-04-12 10:32 by R. Singh', state: 'active' },
+          { id: 'asc-api-gateway-2', created: '2025-09-01 14:11 by E. Adams', state: 'deprecated' },
+          { id: 'asc-api-gateway-1', created: '2024-09-15 09:00 by E. Adams', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Application Component' },
+        owner: 'Platform Engineering', created: '2024-09-15 by E. Adams', updated: '2026-04-12 by R. Singh',
+        subtitle: 'Edge HTTP/gRPC entrypoint. Applied archetypes from TOGAF, SoftwareTechnology, ISO 25010, NIS2, SCAP.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: LogicalApplicationComponent',
+            uri: 'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1', since: '2024-09-15',
+            slots: [
+              { k: 'architectureTier', t: 'enum', v: 'APPLICATION' },
+              { k: 'functionalDomain', t: 'string', v: 'Edge Ingress' },
+            ],
+          },
+          {
+            kind: 'swtech', name: 'SoftwareTechnology: API_GATEWAY',
+            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-09-15',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            slots: [
+              { k: 'type', t: 'enum', v: 'API_GATEWAY' },
+              { k: 'settings', t: 'object[]', v: ['{name:worker_processes,value:auto}', '{name:keepalive_timeout,value:75s}'] },
+            ],
+          },
+          {
+            kind: 'scap', name: 'ScapPlatformIdentifier',
+            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-12-01',
+            slots: [
+              { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:nginx:nginx:1.25:*:*:*:*:*:*:*' },
+              { k: 'part', t: 'enum', v: 'APPLICATION' },
+              { k: 'vendor', t: 'string', v: 'nginx' },
+              { k: 'product', t: 'string', v: 'nginx' },
+              { k: 'version', t: 'string', v: '1.25' },
+            ],
+          },
+          {
+            kind: 'iso', name: 'ISO 25010: ProductSecurity',
+            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1', since: '2024-10-01',
+            slots: [
+              { k: 'dataClassification', t: 'enum', v: 'CONFIDENTIAL' },
+              { k: 'tlsEnabled', t: 'bool', v: true },
+              { k: 'minimumTlsVersion', t: 'enum', v: 'TLS_1_3' },
+              { k: 'authenticationRequired', t: 'bool', v: true },
+              { k: 'authenticationMethod', t: 'enum', v: 'OAUTH2' },
+            ],
+          },
+          {
+            kind: 'nis2', name: 'NIS2: RiskManagementMeasure (Access Control)',
+            uri: 'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1', since: '2024-11-01',
+            slots: [
+              { k: 'measureCategory', t: 'enum', v: 'HR_SECURITY_AND_ACCESS_CONTROL' },
+              { k: 'implementationLevel', t: 'enum', v: 'IMPLEMENTED' },
+              { k: 'proportionalityJustification', t: 'string', v: 'Edge entrypoint exposes auth surface; full RBAC + MFA mandatory.' },
+              { k: 'lastAssessmentDate', t: 'string', v: '2026-02-15' },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'NIS2', gov: 'IT Operations Division', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'access control', status: 'active',
+            norms: [
+              { name: 'mfa_enforcement', when: 'subject.exposureLevel == "EXTERNAL"', assert: 'subject.authenticationMethod == "OAUTH2" && subject.mfaRequired == true', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+              { name: 'rbac_check', when: 'subject.authenticationRequired == true', assert: 'subject.rbac.enabled == true', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'ISO 25010', gov: 'Architecture Board', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'transport security', status: 'active',
+            norms: [
+              { name: 'tls_min_v12', when: 'subject.tlsEnabled == true', assert: 'subject.minimumTlsVersion >= "TLS_1_2"', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'SWTech', gov: 'Platform Engineering', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'availability', status: 'active',
+            norms: [
+              { name: 'availability_sla', when: 'subject.type == "API_GATEWAY"', assert: 'metrics.availability_pct >= 99.95', tolerance: 'AGGREGATED', status: 'active', conformance: 'warn' },
+            ],
+          },
+          {
+            from: 'SCAP', gov: 'Security Operations', modal: 'MUST', verb: 'PREVENT',
+            qualifier: 'exploitable vulnerabilities', status: 'active',
+            norms: [
+              { name: 'vulnerability_scan', when: 'subject.part == "APPLICATION"', assert: 'scan.criticalCount == 0 && scan.highCount == 0', tolerance: 'SUSTAINED', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'TOGAF', gov: 'Architecture Board', modal: 'SHOULD', verb: 'ENSURE',
+            qualifier: 'architecture conformance', status: 'draft',
+            norms: [
+              { name: 'tech_standard', when: 'subject.architectureTier == "APPLICATION"', assert: 'subject.approvedStandard == true', tolerance: 'INSTANTANEOUS', status: 'draft', conformance: 'pass' },
+            ],
+          },
+        ],
+        mechanisms: ['mech-tls-termination', 'mech-request-routing'],
+        related: [
+          { name: 'UserDatabase', via: 'reads from', subject: 'user-database' },
+          { name: 'Payment Service', via: 'routes to', subject: 'payment-service' },
+        ],
+        activity: [
+          { time: '2026-04-12', title: 'NIS2:AccessControl re-attested', meta: 'by R. Singh', current: true },
+          { time: '2026-02-03', title: 'New norm bound: tls_min_v12', meta: 'via ISO25010 archetype' },
+          { time: '2024-12-01', title: 'SCAP:CPE archetype attached', meta: 'CPE updated to nginx 1.25' },
+        ],
+      },
+      'user-database': {
+        name: 'UserDatabase', uri: 'acme:subject/user-database',
+        state: 'suspended',
+        ascriptions: [
+          { id: 'asc-user-database-2', created: '2026-03-22 16:04 by L. Tran', state: 'suspended' },
+          { id: 'asc-user-database-1', created: '2024-08-02 11:45 by L. Tran', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Data Store' },
+        owner: 'Data Platform', created: '2024-08-02 by L. Tran', updated: '2026-03-22 by L. Tran',
+        subtitle: 'Authoritative store for user identity records. Personal data under GDPR.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: DataEntity',
+            uri: 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-08-02',
+            slots: [
+              { k: 'dataCategory', t: 'enum', v: 'MASTER' },
+              { k: 'dataFormat', t: 'enum', v: 'STRUCTURED' },
+              { k: 'lifecycleStage', t: 'enum', v: 'ACTIVE' },
+              { k: 'sourceSystem', t: 'string', v: 'Customer onboarding portal' },
+            ],
+          },
+          {
+            kind: 'swtech', name: 'SoftwareTechnology: RELATIONAL_DATABASE',
+            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-08-02',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            slots: [
+              { k: 'type', t: 'enum', v: 'RELATIONAL_DATABASE' },
+              { k: 'settings', t: 'object[]', v: ['{name:max_connections,value:500}', '{name:shared_buffers,value:8GB}'] },
+            ],
+          },
+          {
+            kind: 'scap', name: 'ScapPlatformIdentifier',
+            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-10-12',
+            slots: [
+              { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:postgresql:postgresql:16:*:*:*:*:*:*:*' },
+              { k: 'part', t: 'enum', v: 'APPLICATION' },
+              { k: 'vendor', t: 'string', v: 'postgresql' },
+              { k: 'product', t: 'string', v: 'postgresql' },
+              { k: 'version', t: 'string', v: '16' },
+            ],
+          },
+          {
+            kind: 'iso', name: 'ISO 25012: DataAccuracy',
+            uri: 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1', since: '2024-10-12',
+            slots: [
+              { k: 'accuracyLevel', t: 'enum', v: 'PRECISE' },
+              { k: 'tolerancePercent', t: 'number', v: 0.5 },
+              { k: 'validationMethod', t: 'enum', v: 'AUTHORITATIVE_SOURCE' },
+            ],
+          },
+          {
+            kind: 'gdpr', name: 'GDPR: LawfulBasis',
+            uri: 'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1', since: '2024-09-01',
+            slots: [
+              { k: 'lawfulBasis', t: 'enum', v: 'CONTRACT' },
+              { k: 'lawfulBasisDocumented', t: 'bool', v: true },
+              { k: 'legitimateInterestAssessment', t: 'bool', v: false },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'GDPR', gov: 'Data Protection Office', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'data protection', status: 'active',
+            norms: [
+              { name: 'encryption_at_rest', when: 'subject.lawfulBasis == "CONTRACT"', assert: 'subject.encryptionAtRest == "AES_256"', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+              { name: 'retention_max', when: 'subject.dataCategory == "MASTER"', assert: 'metrics.retention_days <= 730', tolerance: 'AGGREGATED', status: 'active', conformance: 'warn' },
+            ],
+          },
+          {
+            from: 'SWTech', gov: 'Platform Engineering', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'durability', status: 'active',
+            norms: [
+              { name: 'backup_rpo', when: 'subject.lifecycleStage == "ACTIVE"', assert: 'metrics.rpo_minutes <= 15', tolerance: 'AGGREGATED', status: 'active', conformance: 'pass' },
+              { name: 'replica_lag', when: 'subject.type == "RELATIONAL_DATABASE"', assert: 'metrics.replica_lag_seconds <= 5', tolerance: 'SUSTAINED', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'ISO 25012', gov: 'Data Governance Council', modal: 'SHOULD', verb: 'ENSURE',
+            qualifier: 'data accuracy', status: 'active',
+            norms: [
+              { name: 'pii_field_index', when: 'subject.accuracyLevel == "PRECISE"', assert: 'subject.validationMethod == "AUTHORITATIVE_SOURCE"', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+        ],
+        mechanisms: ['mech-user-query'],
+        related: [
+          { name: 'API Gateway', via: 'read by', subject: 'api-gateway' },
+          { name: 'CustomerDataFlow', via: 'feeds', subject: 'customer-data-flow' },
+        ],
+        activity: [
+          { time: '2026-03-22', title: 'retention_max threshold raised to warning', meta: 'auto-eval', current: true },
+          { time: '2024-10-12', title: 'ISO 25012 archetype attached', meta: 'by L. Tran' },
+        ],
+      },
+      'it-operations-division': {
+        name: 'IT Operations Division', uri: 'acme:subject/org/it-ops',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-it-ops-2', created: '2026-01-09 08:20 by Compliance', state: 'active' },
+          { id: 'asc-it-ops-1', created: '2024-06-01 09:00 by Compliance', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Organization Unit' },
+        owner: 'Chief Operating Officer', created: '2024-06-01', updated: '2026-01-09',
+        subtitle: 'Organization unit responsible for run-time operations. Designated as essential entity under NIS2.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: OrganizationUnit',
+            uri: 'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1', since: '2024-06-01',
+            slots: [
+              { k: 'unitType', t: 'enum', v: 'DIVISION' },
+              { k: 'level', t: 'enum', v: 'OPERATIONAL' },
+            ],
+          },
+          {
+            kind: 'nis2', name: 'NIS2: EntityClassification (Essential)',
+            uri: 'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1', since: '2024-09-15',
+            slots: [
+              { k: 'entityTier', t: 'enum', v: 'ESSENTIAL' },
+              { k: 'sizeCategory', t: 'enum', v: 'LARGE' },
+              { k: 'memberStateDesignation', t: 'bool', v: true },
+              { k: 'memberState', t: 'string', v: 'FR' },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'NIS2', gov: 'Chief Security Officer', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'incident management', status: 'active',
+            norms: [
+              { name: 'incident_24h', when: 'subject.entityTier == "ESSENTIAL"', assert: 'metrics.early_warning_hours <= 24', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+              { name: 'governance_body', when: 'subject.entityTier == "ESSENTIAL"', assert: 'subject.managementApproval == true', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'NIS2', gov: 'Chief Security Officer', modal: 'MUST', verb: 'MINIMIZE',
+            qualifier: 'supply chain risk', status: 'active',
+            norms: [
+              { name: 'supply_chain_risk', when: 'subject.memberStateDesignation == true', assert: 'metrics.unassessed_suppliers == 0', tolerance: 'AGGREGATED', status: 'active', conformance: 'warn' },
+            ],
+          },
+          {
+            from: 'TOGAF', gov: 'Architecture Board', modal: 'SHOULD', verb: 'ENSURE',
+            qualifier: 'accountability', status: 'active',
+            norms: [
+              { name: 'raci_documented', when: 'subject.unitType == "DIVISION"', assert: 'subject.raciDocumented == true', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+        ],
+        related: [
+          { name: 'Chief Security Officer', via: 'includes', subject: 'chief-security-officer' },
+        ],
+        activity: [
+          { time: '2026-01-09', title: 'supply_chain_risk flagged warn', meta: 'auto-eval', current: true },
+          { time: '2024-09-15', title: 'NIS2:EssentialEntity designation', meta: 'by Compliance' },
+        ],
+      },
+      'payment-service': {
+        name: 'Payment Service', uri: 'acme:subject/payment-service',
+        state: 'deprecated',
+        ascriptions: [
+          { id: 'asc-payment-3', created: '2026-05-04 18:50 by Payments', state: 'deprecated' },
+          { id: 'asc-payment-2', created: '2025-02-10 12:00 by Payments', state: 'retired' },
+          { id: 'asc-payment-1', created: '2024-07-19 10:00 by Payments', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Mechanism/v1', label: 'Mechanism · Application Service' },
+        owner: 'Payments Team', created: '2024-07-19', updated: '2026-05-04',
+        subtitle: 'Microservice handling payment authorisation and capture. Processes personal data.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: ApplicationService',
+            uri: 'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1', since: '2024-07-19',
+            slots: [
+              { k: 'serviceType', t: 'enum', v: 'TRANSACTIONAL' },
+              { k: 'exposureLevel', t: 'enum', v: 'PARTNER' },
+              { k: 'version', t: 'string', v: '3.4.1' },
+              { k: 'lifecycle', t: 'enum', v: 'DEPRECATED' },
+            ],
+          },
+          {
+            kind: 'swtech', name: 'SoftwareTechnology: APPLICATION_FRAMEWORK',
+            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-07-19',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            slots: [
+              { k: 'type', t: 'enum', v: 'APPLICATION_FRAMEWORK' },
+              { k: 'settings', t: 'object[]', v: ['{name:replicas,value:6}', '{name:jvm,value:21}'] },
+            ],
+          },
+          {
+            kind: 'scap', name: 'ScapPlatformIdentifier',
+            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-07-19',
+            slots: [
+              { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:pivotal_software:spring_boot:3.5:*:*:*:*:*:*:*' },
+              { k: 'part', t: 'enum', v: 'APPLICATION' },
+              { k: 'vendor', t: 'string', v: 'pivotal_software' },
+              { k: 'product', t: 'string', v: 'spring_boot' },
+              { k: 'version', t: 'string', v: '3.5' },
+            ],
+          },
+          {
+            kind: 'iso', name: 'ISO 25010: ProductFunctionalSuitability',
+            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1', since: '2024-10-01',
+            slots: [
+              { k: 'completeness', t: 'number', v: 96.4 },
+              { k: 'correctness', t: 'number', v: 99.1 },
+              { k: 'appropriateness', t: 'number', v: 92.0 },
+            ],
+          },
+          {
+            kind: 'gdpr', name: 'GDPR: ControllerProcessorRole',
+            uri: 'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1', since: '2024-08-15',
+            slots: [
+              { k: 'role', t: 'enum', v: 'PROCESSOR' },
+              { k: 'establishedInEU', t: 'bool', v: true },
+              { k: 'processingAgreementInPlace', t: 'bool', v: true },
+              { k: 'jointControllerArrangement', t: 'bool', v: false },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'SWTech', gov: 'Platform Engineering', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'performance', status: 'deprecated',
+            norms: [
+              { name: 'sla_p99', when: 'subject.serviceType == "TRANSACTIONAL"', assert: 'metrics.latency_p99_ms <= 250', tolerance: 'AGGREGATED', status: 'deprecated', conformance: 'pass' },
+              { name: 'error_budget', when: 'subject.exposureLevel == "PARTNER"', assert: 'metrics.error_budget_remaining_pct >= 20', tolerance: 'AGGREGATED', status: 'deprecated', conformance: 'warn' },
+            ],
+          },
+          {
+            from: 'SWTech', gov: 'Security Operations', modal: 'MUST', verb: 'PREVENT',
+            qualifier: 'supply chain integrity', status: 'deprecated',
+            norms: [
+              { name: 'image_signed', when: 'subject.type == "APPLICATION_FRAMEWORK"', assert: 'subject.imageSignature.verified == true', tolerance: 'INSTANTANEOUS', status: 'deprecated', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'GDPR', gov: 'Data Protection Office', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'lawful processing', status: 'deprecated',
+            norms: [
+              { name: 'purpose_binding', when: 'subject.role == "PROCESSOR"', assert: 'subject.processingAgreementInPlace == true', tolerance: 'INSTANTANEOUS', status: 'deprecated', conformance: 'pass' },
+              { name: 'breach_72h', when: 'subject.role == "PROCESSOR"', assert: 'metrics.breach_notification_hours <= 72', tolerance: 'INSTANTANEOUS', status: 'deprecated', conformance: 'pass' },
+            ],
+          },
+        ],
+        mechanisms: ['mech-payment-capture'],
+        related: [
+          { name: 'API Gateway', via: 'invoked by', subject: 'api-gateway' },
+          { name: 'EventBus', via: 'publishes to', subject: 'event-bus' },
+        ],
+        activity: [
+          { time: '2026-05-04', title: 'error_budget burn rate spiked', meta: 'auto-eval', current: true },
+          { time: '2024-10-01', title: 'ISO 25010 archetype attached', meta: 'by Quality' },
+        ],
+      },
+      'event-bus': {
+        name: 'EventBus', uri: 'acme:subject/event-bus',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-event-bus-2', created: '2026-02-18 09:12 by Platform Eng', state: 'active' },
+          { id: 'asc-event-bus-1', created: '2024-05-04 09:00 by Platform Eng', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Messaging Backbone' },
+        owner: 'Platform Engineering', created: '2024-05-04', updated: '2026-02-18',
+        subtitle: 'Domain event backbone (Kafka). Backbone for asynchronous integration across services.',
+        archetypes: [
+          {
+            kind: 'swtech', name: 'SoftwareTechnology: MESSAGE_BROKER',
+            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-05-04',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            slots: [
+              { k: 'type', t: 'enum', v: 'MESSAGE_BROKER' },
+              { k: 'settings', t: 'object[]', v: ['{name:replication_factor,value:3}', '{name:min_insync_replicas,value:2}', '{name:num_partitions,value:64}'] },
+            ],
+          },
+          {
+            kind: 'scap', name: 'ScapPlatformIdentifier',
+            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-05-04',
+            slots: [
+              { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:apache:kafka:3.7:*:*:*:*:*:*:*' },
+              { k: 'part', t: 'enum', v: 'APPLICATION' },
+              { k: 'vendor', t: 'string', v: 'apache' },
+              { k: 'product', t: 'string', v: 'kafka' },
+              { k: 'version', t: 'string', v: '3.7' },
+            ],
+          },
+          {
+            kind: 'iso', name: 'ISO 25010: ProductReliability',
+            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1', since: '2024-10-01',
+            slots: [
+              { k: 'faultToleranceLevel', t: 'enum', v: 'HIGH' },
+              { k: 'circuitBreakerEnabled', t: 'bool', v: true },
+              { k: 'retryPolicy', t: 'enum', v: 'EXPONENTIAL_BACKOFF' },
+              { k: 'maxRetries', t: 'number', v: 5 },
+              { k: 'bulkheadEnabled', t: 'bool', v: true },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'SWTech', gov: 'Platform Engineering', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'durability', status: 'active',
+            norms: [
+              { name: 'partition_replication', when: 'subject.type == "MESSAGE_BROKER"', assert: 'subject.replicationFactor >= 3 && subject.minInsyncReplicas >= 2', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+              { name: 'retention_topic_default', when: 'subject.type == "MESSAGE_BROKER"', assert: 'subject.defaultRetentionHours >= 168', tolerance: 'INSTANTANEOUS', status: 'active', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'ISO 25010', gov: 'Architecture Board', modal: 'MUST', verb: 'MAINTAIN',
+            qualifier: 'reliability', status: 'active',
+            norms: [
+              { name: 'availability_target', when: 'subject.faultToleranceLevel == "HIGH"', assert: 'metrics.availability_pct >= 99.9', tolerance: 'AGGREGATED', status: 'active', conformance: 'pass' },
+            ],
+          },
+        ],
+        related: [
+          { name: 'Payment Service', via: 'producer', subject: 'payment-service' },
+          { name: 'CustomerDataFlow', via: 'transports', subject: 'customer-data-flow' },
+        ],
+        activity: [
+          { time: '2026-02-18', title: 'Bumped to Kafka 3.7', meta: 'no archetype change', current: true },
+        ],
+      },
+      'customer-data-flow': {
+        name: 'CustomerDataFlow', uri: 'acme:subject/data-flow/customer',
+        state: 'proposed',
+        ascriptions: [
+          { id: 'asc-cust-flow-2', created: '2026-04-21 14:30 by DPO', state: 'proposed' },
+          { id: 'asc-cust-flow-1', created: '2024-09-30 11:00 by DPO', state: 'active' },
+        ],
+        primitive: { gsm: 'gsm/Interaction/v1', label: 'Interaction · Cross-system data flow' },
+        owner: 'Data Protection Office', created: '2024-09-30', updated: '2026-04-21',
+        subtitle: 'Cross-border flow of customer data between EU and US processors. Sensitive under GDPR.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: DataEntity',
+            uri: 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-09-30',
+            slots: [
+              { k: 'dataCategory', t: 'enum', v: 'TRANSACTIONAL' },
+              { k: 'dataFormat', t: 'enum', v: 'STRUCTURED' },
+              { k: 'lifecycleStage', t: 'enum', v: 'ACTIVE' },
+              { k: 'sourceSystem', t: 'string', v: 'UserDatabase (eu-west-1)' },
+            ],
+          },
+          {
+            kind: 'gdpr', name: 'GDPR: TransferMechanism',
+            uri: 'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1', since: '2024-10-05',
+            slots: [
+              { k: 'internationalTransfer', t: 'bool', v: true },
+              { k: 'transferMechanism', t: 'enum', v: 'STANDARD_CONTRACTUAL_CLAUSES' },
+              { k: 'transferSafeguardInPlace', t: 'bool', v: true },
+              { k: 'supplementaryMeasuresApplied', t: 'bool', v: true },
+              { k: 'transferImpactAssessmentPerformed', t: 'bool', v: false },
+            ],
+          },
+          {
+            kind: 'iso', name: 'ISO 25012: DataCompleteness',
+            uri: 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1', since: '2024-11-12',
+            slots: [
+              { k: 'completenessLevel', t: 'enum', v: 'SUBSTANTIAL' },
+              { k: 'mandatoryFieldCoverage', t: 'number', v: 98.0 },
+              { k: 'nullHandlingPolicy', t: 'enum', v: 'FLAG_INCOMPLETE' },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'GDPR', gov: 'Data Protection Office', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'cross-border transfer', status: 'proposed',
+            norms: [
+              { name: 'scc_signed', when: 'subject.internationalTransfer == true', assert: 'subject.transferMechanism == "STANDARD_CONTRACTUAL_CLAUSES" && subject.transferSafeguardInPlace == true', tolerance: 'INSTANTANEOUS', status: 'proposed', conformance: 'pass' },
+              { name: 'tia_documented', when: 'subject.internationalTransfer == true', assert: 'subject.transferImpactAssessmentPerformed == true', tolerance: 'INSTANTANEOUS', status: 'proposed', conformance: 'warn' },
+              { name: 'breach_72h', when: 'subject.dataCategory == "TRANSACTIONAL"', assert: 'metrics.breach_notification_hours <= 72', tolerance: 'INSTANTANEOUS', status: 'proposed', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'ISO 25012', gov: 'Data Governance Council', modal: 'SHOULD', verb: 'ENSURE',
+            qualifier: 'data completeness', status: 'proposed',
+            norms: [
+              { name: 'field_completeness', when: 'subject.completenessLevel == "SUBSTANTIAL"', assert: 'subject.mandatoryFieldCoverage >= 98.0', tolerance: 'AGGREGATED', status: 'proposed', conformance: 'pass' },
+            ],
+          },
+        ],
+        related: [
+          { name: 'UserDatabase', via: 'source', subject: 'user-database' },
+          { name: 'EventBus', via: 'transport', subject: 'event-bus' },
+        ],
+        activity: [
+          { time: '2026-04-21', title: 'tia_documented flagged stale', meta: 'auto-eval', current: true },
+          { time: '2024-10-05', title: 'GDPR:CrossBorderTransfer attached', meta: 'by DPO' },
+        ],
+      },
+      'chief-security-officer': {
+        name: 'Chief Security Officer', uri: 'acme:subject/role/cso',
+        state: 'approved',
+        ascriptions: [
+          { id: 'asc-cso-2', created: '2026-03-30 09:00 by ExCo', state: 'approved' },
+          { id: 'asc-cso-1', created: '2024-04-15 09:00 by ExCo', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Actor (role)' },
+        owner: 'Executive Committee', created: '2024-04-15', updated: '2026-03-30',
+        subtitle: 'Executive role accountable for organisation-wide security governance.',
+        archetypes: [
+          {
+            kind: 'togaf', name: 'TOGAF: Actor',
+            uri: 'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1', since: '2024-04-15',
+            slots: [
+              { k: 'actorType', t: 'enum', v: 'PERSON' },
+              { k: 'scope', t: 'enum', v: 'INTERNAL' },
+            ],
+          },
+          {
+            kind: 'nis2', name: 'NIS2: GovernanceAccountability',
+            uri: 'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1', since: '2024-09-15',
+            slots: [
+              { k: 'managementApproval', t: 'bool', v: true },
+              { k: 'trainingCompleted', t: 'bool', v: true },
+              { k: 'employeeTrainingOffered', t: 'bool', v: true },
+              { k: 'liabilityAcknowledged', t: 'bool', v: true },
+            ],
+          },
+        ],
+        directives: [
+          {
+            from: 'NIS2', gov: 'Executive Committee', modal: 'MUST', verb: 'ENSURE',
+            qualifier: 'governance accountability', status: 'approved',
+            norms: [
+              { name: 'training_yearly', when: 'subject.actorType == "PERSON"', assert: 'subject.trainingCompleted == true', tolerance: 'INSTANTANEOUS', status: 'approved', conformance: 'pass' },
+              { name: 'board_reporting', when: 'subject.scope == "INTERNAL"', assert: 'subject.managementApproval == true', tolerance: 'INSTANTANEOUS', status: 'approved', conformance: 'pass' },
+            ],
+          },
+          {
+            from: 'TOGAF', gov: 'Architecture Board', modal: 'SHOULD', verb: 'ENSURE',
+            qualifier: 'accountability', status: 'approved',
+            norms: [
+              { name: 'raci_owner', when: 'subject.actorType == "PERSON"', assert: 'subject.raciOwner == true', tolerance: 'INSTANTANEOUS', status: 'approved', conformance: 'pass' },
+            ],
+          },
+        ],
+        related: [
+          { name: 'IT Operations Division', via: 'oversees', subject: 'it-operations-division' },
+        ],
+        activity: [
+          { time: '2026-03-30', title: 'Annual training attestation', meta: 'norm pass', current: true },
+        ],
+      },
+
+      // ---- Mechanism definitions (constitutive operations of a Structure) ----
+      'mech-tls-termination': {
+        name: 'TLS Termination', uri: 'acme:subject/mechanism/tls-termination',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-mech-tls-2', created: '2026-04-12 10:32 by R. Singh', state: 'active' },
+          { id: 'asc-mech-tls-1', created: '2024-09-15 09:00 by E. Adams', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Mechanism/v1', label: 'Mechanism · part of API Gateway' },
+        owner: 'Platform Engineering', created: '2024-09-15 by E. Adams', updated: '2026-04-12 by R. Singh',
+        subtitle: 'Constitutive mechanism of the API Gateway structure. Terminates inbound TLS at the edge.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'API Gateway', via: 'part of', subject: 'api-gateway' },
+          { name: 'TLS Termination ⇄ User Query', via: 'interacts via', subject: 'ix-tls-userquery' },
+        ],
+        activity: [
+          { time: '2026-04-12', title: 'Re-attested with parent structure', meta: 'by R. Singh', current: true },
+        ],
+      },
+      'mech-request-routing': {
+        name: 'Request Routing', uri: 'acme:subject/mechanism/request-routing',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-mech-route-2', created: '2026-04-12 10:32 by R. Singh', state: 'active' },
+          { id: 'asc-mech-route-1', created: '2024-09-15 09:00 by E. Adams', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Mechanism/v1', label: 'Mechanism · part of API Gateway' },
+        owner: 'Platform Engineering', created: '2024-09-15 by E. Adams', updated: '2026-04-12 by R. Singh',
+        subtitle: 'Constitutive mechanism of the API Gateway structure. Routes inbound requests to upstreams.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'API Gateway', via: 'part of', subject: 'api-gateway' },
+          { name: 'Request Routing ⇄ Payment Capture', via: 'interacts via', subject: 'ix-routing-payment' },
+        ],
+        activity: [
+          { time: '2026-04-12', title: 'Re-attested with parent structure', meta: 'by R. Singh', current: true },
+        ],
+      },
+      'mech-payment-capture': {
+        name: 'Payment Capture', uri: 'acme:subject/mechanism/payment-capture',
+        state: 'deprecated',
+        ascriptions: [
+          { id: 'asc-mech-pay-2', created: '2026-05-04 18:50 by Payments', state: 'deprecated' },
+          { id: 'asc-mech-pay-1', created: '2024-07-19 10:00 by Payments', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Mechanism/v1', label: 'Mechanism · part of Payment Service' },
+        owner: 'Payments', created: '2024-07-19 by Payments', updated: '2026-05-04 by Payments',
+        subtitle: 'Constitutive mechanism of the Payment Service structure. Captures authorised payments.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'Payment Service', via: 'part of', subject: 'payment-service' },
+          { name: 'Request Routing ⇄ Payment Capture', via: 'interacts via', subject: 'ix-routing-payment' },
+        ],
+        activity: [
+          { time: '2026-05-04', title: 'Scheduled for retirement', meta: 'deprecated', current: true },
+        ],
+      },
+      'mech-user-query': {
+        name: 'User Query', uri: 'acme:subject/mechanism/user-query',
+        state: 'suspended',
+        ascriptions: [
+          { id: 'asc-mech-uq-2', created: '2026-03-22 16:04 by L. Tran', state: 'suspended' },
+          { id: 'asc-mech-uq-1', created: '2024-08-02 11:45 by L. Tran', state: 'retired' },
+        ],
+        primitive: { gsm: 'gsm/Mechanism/v1', label: 'Mechanism · part of UserDatabase' },
+        owner: 'Data Platform', created: '2024-08-02 by L. Tran', updated: '2026-03-22 by L. Tran',
+        subtitle: 'Constitutive mechanism of the UserDatabase structure. Serves identity lookups.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'UserDatabase', via: 'part of', subject: 'user-database' },
+          { name: 'TLS Termination ⇄ User Query', via: 'interacts via', subject: 'ix-tls-userquery' },
+        ],
+        activity: [
+          { time: '2026-03-22', title: 'Suspended with parent structure', meta: 'suspended', current: true },
+        ],
+      },
+
+      // ---- Interaction definitions (link two mechanisms via their ports) ----
+      'ix-routing-payment': {
+        name: 'Request Routing ⇄ Payment Capture', uri: 'acme:subject/interaction/routing-payment',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-ix-rp-1', created: '2025-01-20 09:00 by Platform Eng', state: 'active' },
+        ],
+        primitive: { gsm: 'gsm/Interaction/v1', label: 'Interaction · links two mechanisms' },
+        owner: 'Platform Engineering', created: '2025-01-20 by Platform Eng', updated: '2026-01-20 by Platform Eng',
+        subtitle: 'Interaction linking the Request Routing mechanism to the Payment Capture mechanism through their bound ports.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'Request Routing', via: 'connects', subject: 'mech-request-routing' },
+          { name: 'Payment Capture', via: 'connects', subject: 'mech-payment-capture' },
+        ],
+        activity: [
+          { time: '2026-01-20', title: 'Interaction re-bound', meta: 'ports verified', current: true },
+        ],
+      },
+      'ix-tls-userquery': {
+        name: 'TLS Termination ⇄ User Query', uri: 'acme:subject/interaction/tls-userquery',
+        state: 'active',
+        ascriptions: [
+          { id: 'asc-ix-tu-1', created: '2025-01-20 09:00 by Platform Eng', state: 'active' },
+        ],
+        primitive: { gsm: 'gsm/Interaction/v1', label: 'Interaction · links two mechanisms' },
+        owner: 'Platform Engineering', created: '2025-01-20 by Platform Eng', updated: '2026-01-20 by Platform Eng',
+        subtitle: 'Interaction linking the TLS Termination mechanism to the User Query mechanism through their bound ports.',
+        archetypes: [],
+        directives: [],
+        related: [
+          { name: 'TLS Termination', via: 'connects', subject: 'mech-tls-termination' },
+          { name: 'User Query', via: 'connects', subject: 'mech-user-query' },
+        ],
+        activity: [
+          { time: '2026-01-20', title: 'Interaction re-bound', meta: 'ports verified', current: true },
+        ],
+      },
+    };
+
+    function getSubjectKey() {
+      var p = new URLSearchParams(location.search);
+      var k = p.get('subject') || 'api-gateway';
+      return SUBJECTS[k] ? k : 'api-gateway';
+    }
+
+    function badgeFor(kind) {
+      return '<span class="arc-badge arc-badge--' + kind + '">' + kind.toUpperCase() + '</span>';
+    }
+    function colorFor(kind) {
+      return ({ togaf: '#1d4ed8', swtech: '#475569', iso: '#15803d', nis2: '#b91c1c', gdpr: '#7c3aed', scap: '#a16207', gsm: 'var(--itip-primary)' })[kind] || 'var(--itip-border)';
+    }
+    function checkFor(state) {
+      var bg = state === 'pass' ? '#22c55e' : state === 'warn' ? '#f59e0b' : '#ef4444';
+      var sym = state === 'pass' ? '✓' : state === 'warn' ? '!' : '✗';
+      return '<span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:' + bg + ';color:#fff;font-size:11px;font-weight:700">' + sym + '</span>';
+    }
+
+    // ---- DNA governance helpers (Directive / Norm human grammar + status & conformance) ----
+    function esc(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function fromKind(from) {
+      var f = String(from || '').toLowerCase();
+      if (f.indexOf('nis2') >= 0) return 'nis2';
+      if (f.indexOf('iso') >= 0) return 'iso';
+      if (f.indexOf('gdpr') >= 0) return 'gdpr';
+      if (f.indexOf('scap') >= 0) return 'scap';
+      if (f.indexOf('togaf') >= 0) return 'togaf';
+      if (f.indexOf('swtech') >= 0 || f.indexOf('software') >= 0) return 'swtech';
+      return 'gsm';
+    }
+    function fromBadge(from) {
+      return '<span class="arc-badge arc-badge--' + fromKind(from) + '">' + esc(from) + '</span>';
+    }
+    function statusBadge(status) {
+      var st = String(status || 'active').toLowerCase();
+      return '<span class="badge badge--' + st + '" title="Lifecycle status">' + st + '</span>';
+    }
+    function conformanceBadge(state) {
+      var map = { pass: ['pass', 'conformant'], warn: ['warn', 'at risk'], fail: ['fail', 'breach'] };
+      var m = map[state] || map.pass;
+      return '<span class="badge badge--' + m[0] + '" title="Conformance status">' + m[1] + '</span>';
+    }
+    function rollupConformance(norms) {
+      var rank = { pass: 0, warn: 1, fail: 2 };
+      var worst = 'pass';
+      (norms || []).forEach(function (n) {
+        if (rank[n.conformance] > rank[worst]) worst = n.conformance;
+      });
+      return worst;
+    }
+    // Directive natural grammar: {governing structure} {modal} {verb} {qualifier} ON {governed}
+    function directiveGrammar(governed, d) {
+      return '<div class="grammar-preview grammar-preview--inline">' +
+        '<span class="structure">' + esc(d.gov) + '</span> ' +
+        '<span class="modal">' + esc(d.modal) + '</span> ' +
+        '<span class="verb">' + esc(d.verb) + '</span> ' +
+        '<span class="qualifier">' + esc(d.qualifier) + '</span> ' +
+        'ON <span class="structure">' + esc(governed) + '</span></div>';
+    }
+    // Norm natural grammar: {governed} ON {qualifier}: WHEN {applicability} ASSERT {assertion} ({toleranceMode})
+    function normGrammar(governed, qualifier, n) {
+      return '<div class="grammar-preview grammar-preview--inline">' +
+        '<span class="structure">' + esc(governed) + '</span> ON <span class="qualifier">' + esc(qualifier) + '</span>: ' +
+        '<span class="kw">WHEN</span> ' + esc(n.when) + ' ' +
+        '<span class="kw">ASSERT</span> ' + esc(n.assert) +
+        ' <span class="tol">(' + esc(n.tolerance) + ')</span></div>';
+    }
+
+    function primitiveTypeFromGsm(s) {
+      var gsm = (s.primitive && s.primitive.gsm) || '';
+      var m = gsm.match(/gsm\/([^/]+)\/v\d+/i);
+      if (m) return m[1];
+      var lbl = (s.primitive && s.primitive.label) || '';
+      var fallback = lbl.split('·')[0].trim();
+      return fallback || 'Definition';
+    }
+    function toKebab(raw) {
+      return String(raw || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'definition';
+    }
+    function toPascal(raw) {
+      return String(raw || 'Mechanism')
+        .replace(/[^a-zA-Z0-9]+/g, ' ')
+        .split(' ')
+        .filter(Boolean)
+        .map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); })
+        .join('') || 'Mechanism';
+    }
+    function primitiveSchemaSlots(s) {
+      var pt = primitiveTypeFromGsm(s);
+      var provided = s.primitiveFields || {};
+      function inferType(v) {
+        if (Array.isArray(v)) return 'array';
+        if (typeof v === 'boolean') return 'bool';
+        if (typeof v === 'number') return 'number';
+        return 'string';
+      }
+      function slotsFromObject(obj) {
+        return Object.keys(obj).map(function (k) {
+          return { k: k, t: inferType(obj[k]), v: obj[k] };
+        });
+      }
+      if (pt === 'Structure') {
+        var purposeSeed = provided.purpose || String((s.uri || s.name || 'structure')).split(':').pop().replace(/\//g, '-');
+        return [
+          { k: 'purpose', t: 'string', v: toKebab(purposeSeed) },
+        ];
+      }
+      if (pt === 'Mechanism') {
+        var fn = provided['function'] || toPascal(s.name);
+        var st = provided.structure || '019cc49a-dc5a-7003-98e1-c214032f0420';
+        var rule = provided.rule || (
+          'evt = on("' + fn + 'Requested")\n' +
+          'if evt["id"] != "":\n' +
+          '    sys.effect("' + fn + 'Processed", {"id": evt["id"]})'
+        );
+        return [
+          { k: 'structure', t: 'uuid', v: st },
+          { k: 'function', t: 'string', v: fn },
+          { k: 'rule', t: 'string', v: rule },
+        ];
+      }
+      if (pt === 'Interaction') {
+        return [
+          { k: 'effector', t: 'uuid', v: provided.effector || '019cc49a-dc5a-7a3b-909f-969bfe0d738e' },
+          { k: 'receptor', t: 'uuid', v: provided.receptor || '019cc49a-dc5a-75ab-a4cb-e02d100e6c01' },
+        ];
+      }
+      if (pt === 'Effector' || pt === 'Receptor') {
+        return [
+          { k: 'mechanism', t: 'uuid', v: provided.mechanism || '019cc49a-dc5a-76fd-94c7-8099ff821b3b' },
+          { k: 'archetype', t: 'uuid', v: provided.archetype || '019cc49a-dc5a-7a45-a4d5-15b6033b2a62' },
+        ];
+      }
+      if (pt === 'Directive') {
+        var dPurposeSeed = provided.purpose || String((s.uri || s.name || 'directive')).split(':').pop().replace(/\//g, '-');
+        return [
+          { k: 'structure', t: 'uuid', v: provided.structure || '019cc49a-dc59-7fef-9b0c-b3f100044603' },
+          { k: 'modal', t: 'enum', v: provided.modal || 'MUST' },
+          { k: 'verb', t: 'enum', v: provided.verb || 'ENSURE' },
+          { k: 'qualifier', t: 'uuid', v: provided.qualifier || '019cc49a-dc5a-7670-9ccb-5e161985340b' },
+          { k: 'purpose', t: 'string', v: toKebab(dPurposeSeed) },
+        ];
+      }
+      if (pt === 'Norm') {
+        return [
+          { k: 'structure', t: 'uuid', v: provided.structure || '019cc49a-dc59-7fef-9b0c-b3f100044603' },
+          { k: 'qualifier', t: 'uuid', v: provided.qualifier || '019cc49a-dc5a-7670-9ccb-5e161985340b' },
+          { k: 'applicability', t: 'string', v: provided.applicability || 'true' },
+          { k: 'assertion', t: 'string', v: provided.assertion || 'SecurityProperties.tlsEnabled == true' },
+          { k: 'toleranceMode', t: 'enum', v: provided.toleranceMode || 'INSTANTANEOUS' },
+          { k: 'temporalWindow', t: 'duration', v: provided.temporalWindow || 'PT5M' },
+          { k: 'temporalAggregation', t: 'enum', v: provided.temporalAggregation || 'P95' },
+          { k: 'sustainedThreshold', t: 'number', v: provided.sustainedThreshold || 0.95 },
+        ];
+      }
+      if (Object.keys(provided).length > 0) {
+        return slotsFromObject(provided);
+      }
+      return [];
+    }
+
+    // Archetype graph: horizontal flow rendered into #arc-graph.
+    // Per-slot archetype annotations — sourced from the framework JSON schemas
+    // (itip/def/frameworks/<kind>/.../*.schema.json). Surface $gsm:* keywords, pattern,
+    // enum, format, source, required, minLength inherited from the contributing archetype.
+    var SLOT_ANNOTATIONS = {
+      cpe_uri:          { '$schema': 'gsmarc://gsm/Structure/v1', type: 'string', pattern: '^cpe:2\\.3:[aoh*-]:', '$gsm:queryable': true, '$gsm:identityBound': true, required: true, source: 'NIST IR 7695 §5 (CPE 2.3 Formatted String Binding)' },
+      vendor:           { type: 'string', minLength: 1, '$gsm:queryable': true, required: true, source: 'NIST IR 7695 §5.3.2' },
+      product:          { type: 'string', minLength: 1, '$gsm:queryable': true, required: true, source: 'NIST IR 7695 §5.3.3' },
+      version:          { type: 'string', '$gsm:queryable': true, source: 'NIST IR 7695 §5.3.4' },
+      part:             { type: 'enum', enum: ['APPLICATION', 'OPERATING_SYSTEM', 'HARDWARE_DEVICE'], '$gsm:queryable': true, required: true, source: 'NIST IR 7695 §5.3.1' },
+      vulnerability_feed: { type: 'uri', format: 'uri', source: 'SCAP / NVD feed reference' },
+      scan_cadence:     { type: 'duration', format: 'ISO-8601 duration', source: 'SCAP Reporting Cadence' },
+      architectureTier: { type: 'enum', enum: ['PRESENTATION', 'APPLICATION', 'DATA', 'INTEGRATION'], '$gsm:queryable': true, required: true, source: 'TOGAF Application Architecture (Content Metamodel)' },
+      functionalDomain: { type: 'string', minLength: 1, '$gsm:queryable': true, source: 'TOGAF Application Architecture (Content Metamodel)' },
+      domain:           { type: 'string', '$gsm:queryable': true, source: 'TOGAF Content Metamodel' },
+      component_type:   { type: 'enum', enum: ['Logical', 'Physical'], '$gsm:queryable': true, source: 'TOGAF Content Metamodel' },
+      realises:         { type: 'array<ref>', '$gsm:queryable': true, source: 'TOGAF Content Metamodel (realisation relationship)' },
+      composed_of:      { type: 'array<ref>', '$gsm:queryable': true, source: 'TOGAF Content Metamodel (composition relationship)' },
+      purpose:          { '$schema': 'gsmarc://gsm/Structure/v1', type: 'string', pattern: '^[a-z][a-z0-9]*(-[a-z0-9]+)*$', '$gsm:identityBound': true, required: true, source: 'GSM Structure schema' },
+      structure:        { '$schema': 'gsmarc://gsm/Mechanism/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Mechanism schema' },
+      function:         { '$schema': 'gsmarc://gsm/Mechanism/v1', type: 'string', minLength: 1, '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Mechanism schema' },
+      rule:             { '$schema': 'gsmarc://gsm/Mechanism/v1', type: 'string', minLength: 1, required: true, source: 'GSM Mechanism schema' },
+      effector:         { '$schema': 'gsmarc://gsm/Interaction/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Interaction schema' },
+      receptor:         { '$schema': 'gsmarc://gsm/Interaction/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Interaction schema' },
+      mechanism:        { '$schema': 'gsmarc://gsm/Effector/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Effector/Receptor schema' },
+      archetype:        { '$schema': 'gsmarc://gsm/Effector/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Effector/Receptor schema' },
+      modal:            { '$schema': 'gsmarc://gsm/Directive/v1', type: 'enum', enum: ['MUST', 'MUST_NOT', 'SHOULD', 'SHOULD_NOT', 'MAY'], required: true, source: 'GSM Directive schema' },
+      verb:             { '$schema': 'gsmarc://gsm/Directive/v1', type: 'enum', enum: ['ENSURE', 'PREVENT', 'MAINTAIN', 'OPTIMIZE', 'MINIMIZE', 'MAXIMIZE', 'MONITOR', 'ENABLE'], required: true, source: 'GSM Directive schema' },
+      qualifier:        { '$schema': 'gsmarc://gsm/Directive/v1', type: 'string', format: 'uuid', '$gsm:identityBound': true, '$gsm:queryable': true, required: true, source: 'GSM Directive/Norm schema' },
+      applicability:    { '$schema': 'gsmarc://gsm/Norm/v1', type: 'string', source: 'GSM Norm schema (default true)' },
+      assertion:        { '$schema': 'gsmarc://gsm/Norm/v1', type: 'string', '$gsm:identityBound': true, required: true, source: 'GSM Norm schema' },
+      toleranceMode:    { '$schema': 'gsmarc://gsm/Norm/v1', type: 'enum', enum: ['INSTANTANEOUS', 'AGGREGATED', 'SUSTAINED'], required: true, source: 'GSM Norm schema' },
+      temporalWindow:   { '$schema': 'gsmarc://gsm/Norm/v1', type: 'duration', format: 'ISO-8601 duration', source: 'GSM Norm schema' },
+      temporalAggregation: { '$schema': 'gsmarc://gsm/Norm/v1', type: 'enum', enum: ['SUM', 'AVG', 'MIN', 'MAX', 'COUNT', 'P50', 'P90', 'P95', 'P99'], source: 'GSM Norm schema' },
+      sustainedThreshold: { '$schema': 'gsmarc://gsm/Norm/v1', type: 'number', source: 'GSM Norm schema' },
+      lawful_basis:     { type: 'enum', enum: ['CONSENT', 'CONTRACT', 'LEGAL_OBLIGATION', 'VITAL_INTERESTS', 'PUBLIC_TASK', 'LEGITIMATE_INTERESTS'], '$gsm:queryable': true, required: true, source: 'GDPR Art. 6(1)' },
+      data_categories:  { type: 'array<string>', '$gsm:queryable': true, source: 'GDPR Art. 4(1)' },
+      retention_max:    { type: 'duration', format: 'ISO-8601 duration', '$gsm:queryable': true, source: 'GDPR Art. 5(1)(e)' },
+      special_category: { type: 'bool', '$gsm:queryable': true, source: 'GDPR Art. 9' },
+      controller:       { type: 'string', '$gsm:queryable': true, source: 'GDPR Art. 4(7)' },
+      processor:        { type: 'string', '$gsm:queryable': true, source: 'GDPR Art. 4(8)' },
+      essential_service: { type: 'bool', '$gsm:queryable': true, source: 'NIS2 Annex I' },
+      incident_threshold: { type: 'string', '$gsm:queryable': true, source: 'NIS2 Art. 23 (reporting thresholds)' }
+    };
+
+    function annotateSlot(sl, archetype) {
+      var base = {
+        '$ref': archetype.uri || 'gsmarc://itip/frameworks/' + archetype.kind + '/' + archetype.name + '/v1',
+        type: sl.t
+      };
+      var known = SLOT_ANNOTATIONS[sl.k] || SLOT_ANNOTATIONS[sl.k.toLowerCase()] || {};
+      var ann = Object.assign({}, base, known);
+      // Defaults inferred from the slot's runtime type when unspecified
+      if (!ann.format) {
+        if (sl.t === 'uri') ann.format = 'uri';
+        else if (sl.t === 'duration') ann.format = 'ISO-8601 duration';
+        else if (sl.t === 'datetime') ann.format = 'date-time';
+      }
+      if (ann['$gsm:queryable'] === undefined && (sl.t === 'enum' || sl.t === 'uri' || sl.t === 'ref' || sl.t === 'string')) {
+        ann['$gsm:queryable'] = true;
+      }
+      return ann;
+    }
+
+    // -----------------------------------------------------------------------
+    // Schema-driven archetype rendering
+    // -----------------------------------------------------------------------
+    // SCHEMA_REGISTRY caches loaded JSON Schemas keyed by their canonical $id
+    // (e.g. gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1).
+    // The mockup ships sample data referencing real schema $ids; renderArcCard
+    // walks the schema's properties to render every archetype-defined field,
+    // showing a muted "—" placeholder for fields the sample didn't set.
+    // Requires http:// serving (file:// blocks fetch). Use python3 -m http.server.
+    var SCHEMA_REGISTRY = {};
+    var SCHEMA_AUDIT = []; // { uri, status: 'loaded'|'missing'|'error', reason? }
+
+    function uriToSchemaPath(uri) {
+      if (!uri) return null;
+      // GSM base archetypes live in sie-definition-manager/def/statement/
+      var m = uri.match(/^gsmarc:\/\/gsm\/([^/]+)\/v\d+$/);
+      if (m) {
+        return '../../../../../sie/sie-definition-manager/def/statement/' + m[1] + '.schema.json';
+      }
+      // ITIP root-level schemas (no /frameworks/itip/ prefix in $id)
+      m = uri.match(/^gsmarc:\/\/itip\/(SoftwareTechnology|AppraisalMeasure|AppraisalFinding|AppraisalTrigger|SourcedDirective|SourcedNorm)\/v\d+$/);
+      if (m) {
+        var subdir = m[1] === 'SoftwareTechnology' ? 'technology' : 'meta-governance';
+        return '../../../../../itip/def/frameworks/itip/' + subdir + '/' + m[1] + '.schema.json';
+      }
+      // Framework schemas: $id path = file path under itip/def/frameworks/
+      m = uri.match(/^gsmarc:\/\/itip\/frameworks\/(.+)\/v\d+$/);
+      if (m) {
+        return '../../../../../itip/def/frameworks/' + m[1] + '.schema.json';
+      }
+      return null;
+    }
+
+    function collectArchetypeUris(s) {
+      var uris = [];
+      var primitiveType = primitiveTypeFromGsm(s);
+      uris.push('gsmarc://gsm/' + primitiveType + '/v1');
+      (s.archetypes || []).forEach(function (a) {
+        if (a.uri) uris.push(a.uri);
+        (a.facets || []).forEach(function (f) { if (f.uri) uris.push(f.uri); });
+      });
+      return uris;
+    }
+
+    async function loadSchemas(uris) {
+      var unique = Array.from(new Set(uris));
+      await Promise.all(unique.map(async function (uri) {
+        if (SCHEMA_REGISTRY[uri] !== undefined) return;
+        var path = uriToSchemaPath(uri);
+        if (!path) {
+          SCHEMA_AUDIT.push({ uri: uri, status: 'missing', reason: 'unresolvable URI' });
+          SCHEMA_REGISTRY[uri] = null;
+          return;
+        }
+        try {
+          var r = await fetch(path);
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          var j = await r.json();
+          SCHEMA_REGISTRY[uri] = j;
+          SCHEMA_AUDIT.push({ uri: uri, status: 'loaded' });
+        } catch (e) {
+          SCHEMA_REGISTRY[uri] = null;
+          SCHEMA_AUDIT.push({ uri: uri, status: 'error', reason: e.message });
+        }
+      }));
+    }
+
+    // Derive a slot's runtime type label from a JSON Schema property definition.
+    function schemaPropType(p) {
+      if (!p) return 'string';
+      if (p.enum) return Array.isArray(p.enum) && p.enum.length ? 'enum' : 'string';
+      if (p.type === 'array') {
+        var it = p.items || {};
+        if (it.enum) return 'enum[]';
+        if (it.type === 'string' && it.format === 'uri') return 'uri[]';
+        if (it.type === 'string') return 'string[]';
+        if (it.type === 'object' || it['$ref']) return 'object[]';
+        return 'array';
+      }
+      if (p.type === 'object') return 'object';
+      if (p.format === 'uuid') return 'uuid';
+      if (p.format === 'uri' || p.format === 'uri-reference') return 'uri';
+      if (p.format === 'date-time') return 'datetime';
+      if (p.format === 'duration') return 'duration';
+      if (p.type === 'integer' || p.type === 'number') return 'number';
+      if (p.type === 'boolean') return 'bool';
+      return p.type || 'string';
+    }
+
+    // Static schema-level metadata for every archetype URI referenced in this
+    // mockup. Used as the primary source so the collapsible "schema" block
+    // always renders (works on file:// without HTTP serving). Mirrors the
+    // top-level meta fields of each *.schema.json file under sie/.../statement/
+    // and itip/def/frameworks/.
+    var SCHEMA_GLOBALS = {
+      'gsmarc://gsm/Structure/v1': {
+        '$schema': 'https://json-schema.org/draft/2020-12/schema',
+        '$id': 'gsmarc://gsm/Structure/v1',
+        title: 'GSM Structure statement',
+        description: 'A Structure declares an addressable element in the system: its purpose is identity-bound.',
+        type: 'object',
+        required: ['purpose'],
+        unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Mechanism/v1': {
+        '$id': 'gsmarc://gsm/Mechanism/v1', title: 'GSM Mechanism statement',
+        description: 'A Mechanism binds a Structure to a function and a deterministic rule.',
+        type: 'object', required: ['structure', 'function', 'rule'], unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Interaction/v1': {
+        '$id': 'gsmarc://gsm/Interaction/v1', title: 'GSM Interaction statement',
+        description: 'An Interaction couples an Effector to a Receptor.',
+        type: 'object', required: ['effector', 'receptor'], unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Effector/v1': {
+        '$id': 'gsmarc://gsm/Effector/v1', title: 'GSM Effector statement',
+        description: 'An Effector exposes a Mechanism to an Archetype as an emitter.',
+        type: 'object', required: ['mechanism', 'archetype'], unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Receptor/v1': {
+        '$id': 'gsmarc://gsm/Receptor/v1', title: 'GSM Receptor statement',
+        description: 'A Receptor exposes a Mechanism to an Archetype as a consumer.',
+        type: 'object', required: ['mechanism', 'archetype'], unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Directive/v1': {
+        '$id': 'gsmarc://gsm/Directive/v1', title: 'GSM Directive statement',
+        description: 'A Directive expresses intent: modal + verb + qualifier scoped to a Structure.',
+        type: 'object', required: ['structure', 'modal', 'verb', 'qualifier', 'purpose'], unevaluatedProperties: false,
+      },
+      'gsmarc://gsm/Norm/v1': {
+        '$id': 'gsmarc://gsm/Norm/v1', title: 'GSM Norm statement',
+        description: 'A Norm is an evaluable assertion against a Structure with a tolerance mode.',
+        type: 'object', required: ['structure', 'qualifier', 'assertion', 'toleranceMode'], unevaluatedProperties: false,
+      },
+      'gsmarc://itip/SoftwareTechnology/v1': {
+        '$id': 'gsmarc://itip/SoftwareTechnology/v1', title: 'ITIP SoftwareTechnology',
+        description: 'A piece of running software identified by CPE (extends gsm/Structure + scap/ScapPlatformIdentifier).',
+        type: 'object', required: ['type'],
+        allOf: ['gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1'],
+      },
+      'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1': {
+        '$id': 'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1',
+        title: 'TOGAF LogicalApplicationComponent',
+        description: 'A logical component in the TOGAF Application Architecture viewpoint.',
+        type: 'object', required: ['architectureTier'],
+        '$ref': 'gsmarc://gsm/Structure/v1',
+      },
+      'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1': {
+        '$id': 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1',
+        title: 'TOGAF DataEntity',
+        description: 'A persistent data entity in the TOGAF Data Architecture viewpoint.',
+        type: 'object', required: ['dataCategory'],
+      },
+      'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1': {
+        '$id': 'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1',
+        title: 'TOGAF OrganizationUnit',
+        description: 'An organizational unit in the TOGAF Business Architecture viewpoint.',
+        type: 'object', required: ['unitType'],
+        '$ref': 'gsmarc://gsm/Structure/v1',
+      },
+      'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1': {
+        '$id': 'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1',
+        title: 'TOGAF Actor',
+        description: 'A person, organization or system acting in the TOGAF Business Architecture.',
+        type: 'object', required: ['actorType'],
+        '$ref': 'gsmarc://gsm/Structure/v1',
+      },
+      'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1': {
+        '$id': 'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1',
+        title: 'TOGAF ApplicationService',
+        description: 'A service exposed by an application in the TOGAF Application Architecture viewpoint.',
+        type: 'object', required: ['serviceType'],
+        '$ref': 'gsmarc://gsm/Structure/v1',
+      },
+      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1': {
+        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1',
+        title: 'ISO 25010 ProductSecurity',
+        description: 'Security characteristic of the ISO 25010 product quality model.',
+        type: 'object', required: ['dataClassification'],
+      },
+      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1': {
+        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1',
+        title: 'ISO 25010 ProductFunctionalSuitability',
+        description: 'Functional suitability characteristic of the ISO 25010 product quality model.',
+        type: 'object', required: ['completeness'],
+      },
+      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1': {
+        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1',
+        title: 'ISO 25010 ProductReliability',
+        description: 'Reliability characteristic of the ISO 25010 product quality model.',
+        type: 'object', required: ['faultToleranceLevel'],
+      },
+      'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1': {
+        '$id': 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1',
+        title: 'ISO 25012 DataAccuracy',
+        description: 'Inherent data-quality characteristic: accuracy.',
+        type: 'object', required: ['accuracyLevel'],
+      },
+      'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1': {
+        '$id': 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1',
+        title: 'ISO 25012 DataCompleteness',
+        description: 'Inherent data-quality characteristic: completeness.',
+        type: 'object', required: ['completenessLevel'],
+      },
+      'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1': {
+        '$id': 'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1',
+        title: 'NIS2 Nis2RiskManagementMeasure',
+        description: 'A risk-management measure under NIS2 Art.21 §2.',
+        type: 'object', required: ['measureCategory', 'implementationLevel'],
+      },
+      'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1': {
+        '$id': 'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1',
+        title: 'NIS2 Nis2GovernanceAccountability',
+        description: 'Management-body accountability under NIS2 Art.20.',
+        type: 'object', required: ['managementApproval'],
+      },
+      'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1': {
+        '$id': 'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1',
+        title: 'NIS2 Nis2EntityClassification',
+        description: 'NIS2 entity-tier classification (Annex I / Annex II).',
+        type: 'object', required: ['entityTier'],
+      },
+      'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1': {
+        '$id': 'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1',
+        title: 'GDPR GdprControllerProcessorRole',
+        description: 'Controller/processor role under GDPR Art.4 / Art.26 / Art.28.',
+        type: 'object', required: ['role'],
+      },
+      'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1': {
+        '$id': 'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1',
+        title: 'GDPR GdprLawfulBasis',
+        description: 'Lawful basis for processing under GDPR Art.6.',
+        type: 'object', required: ['lawfulBasis'],
+      },
+      'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1': {
+        '$id': 'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1',
+        title: 'GDPR GdprTransferMechanism',
+        description: 'International transfer mechanism under GDPR Chapter V.',
+        type: 'object', required: ['internationalTransfer'],
+      },
+      'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1': {
+        '$id': 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1',
+        title: 'SCAP ScapPlatformIdentifier',
+        description: 'CPE 2.3 Formatted String Binding (NIST IR 7695).',
+        type: 'object', required: ['cpeUri', 'part', 'vendor', 'product'],
+      },
+    };
+
+    // Pluck the schema-level metadata block (global properties that don't
+    // apply to individual slots: $id, title, description, required[], type, etc.).
+    // Prefers SCHEMA_GLOBALS (static, always available) over loaded SCHEMA_REGISTRY.
+    function schemaMetaEntries(uri, schema) {
+      var src = SCHEMA_GLOBALS[uri] || schema;
+      if (!src) return [];
+      var out = [];
+      var keys = ['$schema', '$id', 'title', 'description', 'type', 'required', 'allOf', '$ref', 'unevaluatedProperties', 'additionalProperties'];
+      keys.forEach(function (k) {
+        if (src[k] !== undefined) out.push({ k: k, v: src[k] });
+      });
+      Object.keys(src).forEach(function (k) {
+        if (k.indexOf('$gsm:') === 0) out.push({ k: k, v: src[k] });
+      });
+      return out;
+    }
+
+    // Schema-driven slot annotation: merge JSON Schema property def + legacy overlay.
+    function annotateSlotFromSchema(slotKey, slotValue, schemaProp, archetype, isRequired) {
+      var ann = { '$ref': archetype.uri || '' };
+      if (schemaProp) {
+        ['type', 'format', 'pattern', 'enum', 'minLength', 'maxLength', 'minimum', 'maximum',
+         'minItems', 'maxItems', 'default', 'const', 'description', 'title', '$ref'].forEach(function (k) {
+          if (schemaProp[k] !== undefined) ann[k] = schemaProp[k];
+        });
+        // Pass through any $gsm:* keywords.
+        Object.keys(schemaProp).forEach(function (k) {
+          if (k.indexOf('$gsm:') === 0) ann[k] = schemaProp[k];
+        });
+        if (schemaProp.type === 'array' && schemaProp.items) {
+          ann['items.type'] = schemaProp.items.type || (schemaProp.items.enum ? 'enum' : 'object');
+          if (schemaProp.items.format) ann['items.format'] = schemaProp.items.format;
+        }
+      }
+      if (isRequired) ann.required = true;
+      // Fallback to legacy hand-crafted overlay (still useful for slots not in schema).
+      var legacy = SLOT_ANNOTATIONS[slotKey] || SLOT_ANNOTATIONS[String(slotKey).toLowerCase()];
+      if (legacy) {
+        Object.keys(legacy).forEach(function (k) {
+          if (ann[k] === undefined) ann[k] = legacy[k];
+        });
+      }
+      if (slotValue === undefined || slotValue === null) {
+        ann['(value)'] = 'not set';
+      }
+      return ann;
+    }
+
+    function getAscriptionId(s) {
+      var p = new URLSearchParams(location.search);
+      var a = p.get('ascription');
+      if (a && s.ascriptions && s.ascriptions.some(function (x) { return x.id === a; })) return a;
+      return s.ascriptions && s.ascriptions.length ? s.ascriptions[0].id : null;
+    }
+
+    function render() {
+      var key = getSubjectKey();
+      var s = SUBJECTS[key];
+      var ascId = getAscriptionId(s);
+      var ascList = s.ascriptions || [];
+      var asc = ascList.find(function (x) { return x.id === ascId; }) || { id: '—', state: s.state || 'active', created: s.created };
+      var primitiveType = primitiveTypeFromGsm(s);
+
+      document.getElementById('bc-subject').textContent = s.name;
+      document.getElementById('title-subject').textContent = primitiveType + ' Definition';
+      document.getElementById('auth-owner').textContent = s.owner;
+      document.getElementById('auth-created').textContent = s.created;
+      document.getElementById('auth-updated').textContent = s.updated;
+
+      // Single ascription/statement lifecycle
+      var NEXT = {
+        draft: ['proposed', 'abandoned'],
+        proposed: ['approved', 'rejected', 'draft'],
+        approved: ['active', 'proposed'],
+        active: ['suspended', 'deprecated'],
+        suspended: ['active', 'deprecated'],
+        deprecated: ['retired'],
+        retired: [],
+        rejected: [],
+        abandoned: [],
+      };
+      function stateLabel(st) { return st.charAt(0).toUpperCase() + st.slice(1); }
+
+      // Render ascription switcher (with compare-mode diff selection)
+      document.getElementById('asc-count').textContent = ascList.length ? '(' + ascList.length + ')' : '';
+      var switcherEl = document.getElementById('asc-switcher');
+      var toggleEl = document.getElementById('asc-compare-toggle');
+      var toolbarEl = document.getElementById('asc-diff-toolbar');
+      var hintEl = document.getElementById('asc-hint');
+      var diffHintEl = document.getElementById('asc-diff-hint');
+      var diffPairEl = document.getElementById('asc-diff-pair');
+      var diffOpenBtn = document.getElementById('asc-diff-open');
+      var diffClearBtn = document.getElementById('asc-diff-clear');
+      var compareMode = false;
+      // Pre-select the current ascription when the user enters compare mode.
+      var selected = [];
+
+      function renderSwitcher() {
+        switcherEl.className = 'asc-switcher' + (compareMode ? ' asc-switcher--compare' : '');
+        switcherEl.innerHTML = ascList.map(function (a) {
+          var cur = a.id === asc.id;
+          var sel = selected.indexOf(a.id) !== -1;
+          var classes = 'asc-pill';
+          if (cur) classes += ' asc-pill--current';
+          if (sel) classes += ' asc-pill--selected';
+          var check = compareMode
+            ? '<span class="asc-pill__check" aria-hidden="true">' + (sel ? '\u2713' : '') + '</span>'
+            : '';
+          var inner =
+            check +
+            '<span class="asc-pill__id">' + a.id + '</span>' +
+            '<span class="asc-pill__state"><span class="stmt-state stmt-state--' + a.state + '">' + stateLabel(a.state) + '</span></span>' +
+            '<span class="asc-pill__created">' + a.created + '</span>';
+          if (compareMode) {
+            return '<button type="button" class="' + classes + '" data-asc-id="' + a.id + '" aria-pressed="' + sel + '">' + inner + '</button>';
+          }
+          return '<a class="' + classes + '" href="?subject=' + key + '&ascription=' + a.id + '">' + inner + '</a>';
+        }).join('');
+        if (compareMode) {
+          switcherEl.querySelectorAll('.asc-pill').forEach(function (btn) {
+            btn.addEventListener('click', function () { toggleSelect(btn.getAttribute('data-asc-id')); });
+          });
+        }
+      }
+
+      function renderToolbar() {
+        if (!compareMode) { toolbarEl.hidden = true; return; }
+        toolbarEl.hidden = false;
+        var n = selected.length;
+        if (n === 0) {
+          diffHintEl.textContent = 'Select two ascriptions to compare (max 2).';
+          diffPairEl.hidden = true;
+          diffOpenBtn.disabled = true;
+        } else if (n === 1) {
+          diffHintEl.textContent = 'Select one more to compare.';
+          diffPairEl.hidden = true;
+          diffOpenBtn.disabled = true;
+        } else {
+          diffHintEl.textContent = 'Ready to compare:';
+          diffPairEl.hidden = false;
+          // Order by ascList position so older → newer reads naturally.
+          var ordered = ascList.map(function (a) { return a.id; }).filter(function (id) { return selected.indexOf(id) !== -1; });
+          var from = ordered[ordered.length - 1]; // older (later in list)
+          var to = ordered[0];                    // newer (first in list)
+          diffPairEl.innerHTML = '<span>' + from + '</span><span class="asc-diff-arrow">→</span><span>' + to + '</span>';
+          diffOpenBtn.disabled = false;
+          diffOpenBtn.onclick = function () {
+            window.location.href = 'ascription-diff.html?subject=' + encodeURIComponent(key) + '&from=' + encodeURIComponent(from) + '&to=' + encodeURIComponent(to);
+          };
+        }
+      }
+
+      function toggleSelect(id) {
+        var i = selected.indexOf(id);
+        if (i !== -1) {
+          selected.splice(i, 1);
+        } else {
+          if (selected.length >= 2) selected.shift(); // FIFO: drop oldest selection
+          selected.push(id);
+        }
+        renderSwitcher();
+        renderToolbar();
+      }
+
+      function setCompareMode(on) {
+        compareMode = on;
+        toggleEl.classList.toggle('asc-compare-toggle--on', on);
+        toggleEl.setAttribute('aria-pressed', String(on));
+        hintEl.textContent = on
+          ? 'Pick two ascriptions to diff. The current one is pre-selected.'
+          : 'Switch between historical and current ascriptions of this subject.';
+        if (on && selected.length === 0) selected = [asc.id];
+        renderSwitcher();
+        renderToolbar();
+      }
+
+      toggleEl.addEventListener('click', function () { setCompareMode(!compareMode); });
+      diffClearBtn.addEventListener('click', function () { selected = []; renderSwitcher(); renderToolbar(); });
+
+      renderSwitcher();
+
+      var st = asc.state;
+
+      var nexts = NEXT[st] || [];
+
+      // Render status state machine in sidebar (compact SVG sized for the narrow column).
+      // Layout: vertical spine (Draft → Proposed → Approved → Active → Deprecated → Retired)
+      // plus side branches for Abandoned, Rejected (terminals) and the Suspended ↔ Active loop.
+      var reachable = new Set(nexts);
+      var curPill = document.getElementById('lc-current-pill');
+      curPill.className = 'stmt-state stmt-state--' + st;
+      curPill.textContent = stateLabel(st);
+
+      (function renderStateMachine() {
+        var container = document.getElementById('sm-machine');
+        if (!container) return;
+
+        var NODE_W = 102, NODE_H = 26, RX = 6;
+        var SPINE_X = 14;
+        var SIDE_X = SPINE_X + NODE_W + 36;
+        var ROW_GAP = 56;
+        var TOP_PAD = 16;
+        var rows = {
+          draft:      TOP_PAD + 0 * ROW_GAP,
+          proposed:   TOP_PAD + 1 * ROW_GAP,
+          approved:   TOP_PAD + 2 * ROW_GAP,
+          active:     TOP_PAD + 3 * ROW_GAP,
+          deprecated: TOP_PAD + 4 * ROW_GAP,
+          retired:    TOP_PAD + 5 * ROW_GAP,
+        };
+        var nodes = [
+          { id: 'draft',      x: SPINE_X, y: rows.draft,      label: 'DRAFT' },
+          { id: 'proposed',   x: SPINE_X, y: rows.proposed,   label: 'PROPOSED' },
+          { id: 'approved',   x: SPINE_X, y: rows.approved,   label: 'APPROVED' },
+          { id: 'active',     x: SPINE_X, y: rows.active,     label: 'ACTIVE' },
+          { id: 'deprecated', x: SPINE_X, y: rows.deprecated, label: 'DEPRECATED' },
+          { id: 'retired',    x: SPINE_X, y: rows.retired,    label: 'RETIRED',    terminal: true },
+          { id: 'abandoned',  x: SIDE_X,  y: rows.draft,      label: 'ABANDONED',  terminal: true },
+          { id: 'rejected',   x: SIDE_X,  y: rows.proposed,   label: 'REJECTED',   terminal: true },
+          { id: 'suspended',  x: SIDE_X,  y: rows.active,     label: 'SUSPENDED' },
+        ];
+        var W = SIDE_X + NODE_W + 14;
+        var H = rows.retired + NODE_H + TOP_PAD;
+
+        function leftMid(n)   { return { x: n.x,            y: n.y + NODE_H / 2 }; }
+        function rightMid(n)  { return { x: n.x + NODE_W,   y: n.y + NODE_H / 2 }; }
+        function topMid(n)    { return { x: n.x + NODE_W/2, y: n.y }; }
+        function bottomMid(n) { return { x: n.x + NODE_W/2, y: n.y + NODE_H }; }
+        var byId = {};
+        nodes.forEach(function (n) { byId[n.id] = n; });
+
+        function vSpine(fromId, toId) {
+          var a = bottomMid(byId[fromId]), b = topMid(byId[toId]);
+          return { from: fromId, to: toId, d: 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y };
+        }
+        function rightBranch(fromId, toId) {
+          var a = rightMid(byId[fromId]), b = leftMid(byId[toId]);
+          return { from: fromId, to: toId, d: 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y };
+        }
+        function loopRightTo(fromId, toId, dy) {
+          var a = rightMid(byId[fromId]); a.y += dy;
+          var b = leftMid(byId[toId]);    b.y += dy;
+          return { from: fromId, to: toId, d: 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y };
+        }
+        function loopLeftTo(fromId, toId, dy) {
+          var a = leftMid(byId[fromId]); a.y += dy;
+          var b = rightMid(byId[toId]);  b.y += dy;
+          return { from: fromId, to: toId, d: 'M ' + a.x + ' ' + a.y + ' L ' + b.x + ' ' + b.y };
+        }
+
+        var edges = [
+          vSpine('draft', 'proposed'),
+          vSpine('proposed', 'approved'),
+          vSpine('approved', 'active'),
+          vSpine('active', 'deprecated'),
+          vSpine('deprecated', 'retired'),
+          rightBranch('draft', 'abandoned'),
+          rightBranch('proposed', 'rejected'),
+          loopRightTo('active', 'suspended', -4),
+          loopLeftTo('suspended', 'active', 4),
+        ];
+
+        var defs =
+          '<defs>' +
+            '<marker id="sm-arrow" markerUnits="userSpaceOnUse" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">' +
+              '<polygon points="0 0, 7 3, 0 6" fill="currentColor"/>' +
+            '</marker>' +
+          '</defs>';
+
+        var edgesSvg = edges.map(function (e) {
+          var isReachable = e.from === st && reachable.has(e.to);
+          var cls = 'sm-edge' + (isReachable ? ' sm-edge--reachable' : '');
+          var color = isReachable ? 'var(--itip-primary)' : 'var(--itip-text-muted)';
+          return '<g style="color:' + color + '"><path class="' + cls + '" d="' + e.d + '" marker-end="url(#sm-arrow)"/></g>';
+        }).join('');
+
+        var nodesSvg = nodes.map(function (n) {
+          var isCurrent = n.id === st;
+          var isReachable = !isCurrent && reachable.has(n.id);
+          var cls = 'sm-node';
+          if (isCurrent) cls += ' sm-node--current';
+          else if (n.terminal) cls += ' sm-node--terminal';
+          if (isReachable) cls += ' sm-node--reachable';
+          var dataAttrs = isReachable ? ' data-target="' + n.id + '"' : '';
+          var titleEl = isReachable
+            ? '<title>Transition ' + stateLabel(st) + ' → ' + stateLabel(n.id) + '</title>'
+            : (isCurrent ? '<title>Current state</title>' : '');
+          return '<g class="' + cls + '"' + dataAttrs + '>' +
+            titleEl +
+            '<rect x="' + n.x + '" y="' + n.y + '" width="' + NODE_W + '" height="' + NODE_H + '" rx="' + RX + '" ry="' + RX + '"/>' +
+            '<text x="' + (n.x + NODE_W / 2) + '" y="' + (n.y + NODE_H / 2 + 3.5) + '" text-anchor="middle">' + n.label + '</text>' +
+            '</g>';
+        }).join('');
+
+        var labelsHtml = nodes.map(function (n) {
+          var isCurrent = n.id === st;
+          var isReachable = !isCurrent && reachable.has(n.id);
+          var cls = 'sm-node-label';
+          if (isCurrent) cls += ' sm-node-label--current';
+          else if (isReachable) cls += ' sm-node-label--reachable';
+          else if (n.terminal) cls += ' sm-node-label--terminal';
+          var style = 'left:' + n.x + 'px;top:' + n.y + 'px;width:' + NODE_W + 'px;height:' + NODE_H + 'px;';
+          return '<div class="' + cls + '" style="' + style + '">' + n.label + '</div>';
+        }).join('');
+
+        container.innerHTML =
+          '<div class="sm-machine-stage">' +
+            '<svg class="sm-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">' +
+            defs + edgesSvg + nodesSvg +
+            '</svg>' +
+            labelsHtml +
+          '</div>';
+
+        container.querySelectorAll('.sm-node--reachable').forEach(function (g) {
+          g.addEventListener('click', function () {
+            var target = g.getAttribute('data-target');
+            if (typeof window.__stageTransition === 'function') {
+              window.__stageTransition(target);
+            }
+            // Switch to Status transition tab
+            document.querySelectorAll('#def-tabs .deftab').forEach(function (b) {
+              b.classList.toggle('deftab--active', b.getAttribute('data-deftab') === 'status');
+            });
+            document.querySelectorAll('.deftabpanel').forEach(function (p) {
+              p.classList.toggle('deftabpanel--active', p.id === 'deftabpanel-status');
+            });
+            var panel = document.getElementById('deftabpanel-status');
+            if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        });
+      })();
+
+      // Statement section: render base archetype + each framework archetype as arc-cards
+      function arcSlug(name) { return String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+      // Synthesize the base archetyped statement (the GSM primitive itself).
+      // The URI now points at the real GSM base schema $id so it loads from
+      // sie/sie-definition-manager/def/statement/<Primitive>.schema.json.
+      var baseArchetype = {
+        kind: 'gsm',
+        name: s.primitive.gsm,
+        uri: 'gsmarc://gsm/' + primitiveType + '/v1',
+        slots: primitiveSchemaSlots(s),
+      };
+      var allArchetypes = [baseArchetype].concat(s.archetypes);
+
+      // Render one slot row. Reused for schema-defined and sample-only slots.
+      // `setValue` is undefined when the sample data doesn't set this field;
+      // we render a muted "—" placeholder and the meta panel says "not set".
+      function renderSlotRow(slotKey, schemaProp, isRequired, setValue, slotIdPrefix, idx, archetype) {
+        var sl = { k: slotKey, t: schemaPropType(schemaProp), v: setValue };
+        var valClass = slotKey === 'name' ? 'slot-val slot-val--name' : 'slot-val';
+        var hasValue = setValue !== undefined && setValue !== null && !(Array.isArray(setValue) && setValue.length === 0);
+        var val;
+        if (!hasValue) {
+          val = '<span class="slot-val" style="color:var(--itip-text-muted);font-style:italic">—</span>';
+        } else if (Array.isArray(setValue)) {
+          val = setValue.map(function (x) { return '<code class="' + valClass + '">' + x + '</code>'; }).join(' ');
+        } else if (sl.t === 'uri' || sl.t === 'ref' || sl.t === 'uuid' || sl.t === 'duration' || sl.t === 'number' || sl.t === 'bool' || sl.t === 'datetime') {
+          val = '<code class="' + valClass + '">' + setValue + '</code>';
+        } else {
+          val = '<span class="' + valClass + '">' + setValue + '</span>';
+        }
+        var ann = annotateSlotFromSchema(slotKey, hasValue ? setValue : undefined, schemaProp, archetype, isRequired);
+        var metaRows = Object.keys(ann).map(function (k) {
+          var v = ann[k];
+          var rendered;
+          if (typeof v === 'boolean') {
+            rendered = v ? '<span class="slot-meta__bool--yes">true</span>' : '<span class="slot-meta__bool--no">false</span>';
+          } else if (Array.isArray(v)) {
+            rendered = v.map(function (x) { return '<code>' + x + '</code>'; }).join(' ');
+          } else if (k === 'pattern' || k === '$schema' || k === '$ref' || k === 'format' || k === 'type' || k === 'const' || k === 'default') {
+            rendered = '<code>' + v + '</code>';
+          } else if (typeof v === 'object' && v !== null) {
+            rendered = '<code>' + JSON.stringify(v) + '</code>';
+          } else {
+            rendered = String(v);
+          }
+          return '<span class="slot-meta__k">' + k + '</span><span class="slot-meta__v">' + rendered + '</span>';
+        }).join('');
+        var slotId = 'slot-meta-' + slotIdPrefix + '-' + idx;
+        var reqMark = isRequired ? '<span style="color:#b91c1c;font-weight:700;margin-left:2px" title="required">*</span>' : '';
+        return '<div class="slot-row">' +
+          '<span class="slot-key">' +
+            '<span class="slot-key__toggle" data-target="' + slotId + '">▸</span>' +
+            slotKey + reqMark +
+          '</span>' +
+          '<span class="slot-value">' + val + '</span>' +
+          '<div class="slot-meta" id="' + slotId + '">' + metaRows + '</div>' +
+          '</div>';
+      }
+
+      function renderArcCard(a) {
+        var schema = SCHEMA_REGISTRY[a.uri];
+        var auditEntry = SCHEMA_AUDIT.find(function (e) { return e.uri === a.uri; });
+
+        // Audit pass: compare sample slot keys against schema.properties.
+        var sampleSlots = a.slots || [];
+        var sampleByKey = {};
+        sampleSlots.forEach(function (sl) { sampleByKey[sl.k] = sl.v; });
+        var schemaProps = (schema && schema.properties) || null;
+        var schemaPropKeys = schemaProps ? Object.keys(schemaProps) : [];
+        var requiredSet = {};
+        if (schema && Array.isArray(schema.required)) {
+          schema.required.forEach(function (k) { requiredSet[k] = true; });
+        }
+
+        // Unknown sample keys (drift): keys present in sample but not in schema.
+        var unknownSampleKeys = sampleSlots
+          .filter(function (sl) { return schemaProps && !schemaProps[sl.k]; })
+          .map(function (sl) { return sl.k; });
+
+        // Build the full slot list: every schema property + any sample-only keys
+        // (which become drift rows). Schema property order is preserved.
+        var slotKeys = schemaProps
+          ? schemaPropKeys.concat(unknownSampleKeys)
+          : sampleSlots.map(function (sl) { return sl.k; });
+
+        var idPrefix = a.kind + '-' + arcSlug(a.name);
+        var slotsHtml = slotKeys.map(function (key, idx) {
+          var prop = schemaProps ? schemaProps[key] : null;
+          var sampleValue = sampleByKey[key];
+          return renderSlotRow(key, prop, !!requiredSet[key], sampleValue, idPrefix, idx, a);
+        }).join('');
+
+        // Compliance badge in card rail. Hide "missing" (we always show static
+        // schema globals from SCHEMA_GLOBALS so a runtime-missing fetch is noise).
+        var complianceBadge = '';
+        if (schema && unknownSampleKeys.length > 0) {
+          complianceBadge = '<span class="arc-card__audit arc-card__audit--drift" title="sample fields not in schema: ' +
+            unknownSampleKeys.join(', ') + '">' + unknownSampleKeys.length + ' drift</span>';
+        } else if (schema) {
+          complianceBadge = '<span class="arc-card__audit arc-card__audit--ok" title="all sample fields valid against schema">compliant</span>';
+        }
+
+        // Collapsible schema-meta block (global schema properties not applying to a slot).
+        // Lives in the card rail right under the pilled schema name.
+        var metaId = 'schema-meta-' + idPrefix;
+        var metaEntries = schemaMetaEntries(a.uri, schema);
+        var metaRows = metaEntries.map(function (e) {
+          var v = e.v;
+          var rendered;
+          if (Array.isArray(v)) {
+            rendered = v.map(function (x) { return '<code>' + x + '</code>'; }).join(' ');
+          } else if (typeof v === 'boolean') {
+            rendered = v ? '<span class="slot-meta__bool--yes">true</span>' : '<span class="slot-meta__bool--no">false</span>';
+          } else if (e.k === '$id' || e.k === '$schema' || e.k === 'type' || e.k === '$ref') {
+            rendered = '<code>' + v + '</code>';
+          } else if (typeof v === 'object' && v !== null) {
+            rendered = '<code>' + JSON.stringify(v) + '</code>';
+          } else {
+            rendered = String(v);
+          }
+          return '<span class="slot-meta__k">' + e.k + '</span><span class="slot-meta__v">' + rendered + '</span>';
+        }).join('');
+        var schemaMetaHtml = '<div class="slot-meta" id="' + metaId + '">' + metaRows + '</div>';
+
+        // Schema-name pill (last URI segment before /vN), colored by kind.
+        // The pill itself toggles the collapsible meta block underneath.
+        var schemaName = '';
+        if (a.uri) {
+          var um = a.uri.match(/^.*\/([^/]+)\/v\d+$/);
+          schemaName = um ? um[1] : a.uri;
+        }
+        var pillHtml = '<span class="arc-badge arc-badge--' + a.kind + ' slot-key__toggle" data-target="' + metaId + '">' + schemaName + '</span>';
+
+        return '<div class="arc-card arc-nav-target" id="arc-card-' + arcSlug(a.name) + '" style="border-left-color:' + colorFor(a.kind) + '">' +
+          '<div class="arc-card__header">' +
+            pillHtml +
+            complianceBadge +
+          '</div>' +
+          schemaMetaHtml +
+          '<div class="arc-card__body">' +
+            '<div class="slot-table">' + slotsHtml + '</div>' +
+          '</div>' +
+          '</div>';
+      }
+
+      var baseHtml = renderArcCard(baseArchetype);
+      var extendsHtml = '';
+      if (s.archetypes && s.archetypes.length > 0) {
+        // Split: facet archetypes are those whose URI is referenced in another
+        // archetype's facets[] (allOf composition). Render them nested under
+        // their parent; everything else is a sibling $ref extension of the base.
+        var byUri = {};
+        s.archetypes.forEach(function (a) { if (a.uri) byUri[a.uri] = a; });
+        var facetParentOf = {}; // childUri -> parentArchetype
+        s.archetypes.forEach(function (parent) {
+          (parent.facets || []).forEach(function (f) {
+            if (f.uri && byUri[f.uri]) {
+              facetParentOf[f.uri] = parent;
+            }
+          });
+        });
+        var siblings = s.archetypes.filter(function (a) { return !facetParentOf[a.uri]; });
+        function renderWithFacets(parent) {
+          var html = renderArcCard(parent);
+          var children = (parent.facets || [])
+            .map(function (f) { return byUri[f.uri]; })
+            .filter(Boolean);
+          if (children.length > 0) {
+            html +=
+              '<div class="arc-facets">' +
+                children.map(renderArcCard).join('') +
+              '</div>';
+          }
+          return html;
+        }
+        extendsHtml =
+          '<div class="arc-extends">' +
+            siblings.map(renderWithFacets).join('') +
+          '</div>';
+      }
+      document.getElementById('arc-list').innerHTML = baseHtml + extendsHtml;
+
+      // Render UML edges: generalization (IS A) and aggregation (HAS A)
+      function renderUMLEdges() {
+        var svg = document.getElementById('arc-edges');
+        var container = svg.parentElement;
+        var bbox = container.getBoundingClientRect();
+        svg.setAttribute('width', bbox.width);
+        svg.setAttribute('height', bbox.height);
+        svg.innerHTML = '<defs>' +
+          '<marker id="uml-generalization" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">' +
+            '<path d="M0 0 L8 4 L0 8 Z" fill="white" stroke="#8b949e" stroke-width="1.2" stroke-linejoin="miter"/>' +
+          '</marker>' +
+          '<marker id="uml-aggregation" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+            '<path d="M0 4 L4 0 L8 4 L4 8 Z" fill="white" stroke="#8b949e" stroke-width="1.2" stroke-linejoin="miter"/>' +
+          '</marker>' +
+        '</defs>';
+        
+        var baseCard = document.querySelector('.arc-card');
+        if (!baseCard) return;
+        var baseRect = baseCard.getBoundingClientRect();
+        var baseLeft = baseRect.left - bbox.left;
+        var baseBottomY = baseRect.top - bbox.top + baseRect.height;
+
+        // IS A edges: $ref children → base archetype (generalization with hollow triangle at base bottom)
+        document.querySelectorAll('.arc-extends > .arc-card').forEach(function(child) {
+          var childRect = child.getBoundingClientRect();
+          var childLeft = childRect.left - bbox.left;
+          var childMidY = childRect.top - bbox.top + childRect.height / 2;
+          var axisX = childLeft - 30;
+          var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          var d = 'M' + childLeft + ' ' + childMidY + ' L' + axisX + ' ' + childMidY + ' L' + axisX + ' ' + baseBottomY;
+          path.setAttribute('d', d);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#8b949e');
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('marker-end', 'url(#uml-generalization)');
+          svg.appendChild(path);
+        });
+
+        // HAS A edges: parent archetype → allOf facets (aggregation with hollow diamond at facet)
+        document.querySelectorAll('.arc-facets').forEach(function(facetsGroup) {
+          var parentCard = facetsGroup.previousElementSibling;
+          if (!parentCard || !parentCard.classList.contains('arc-card')) return;
+          var parentRect = parentCard.getBoundingClientRect();
+          var parentLeft = parentRect.left - bbox.left;
+          var parentMidY = parentRect.top - bbox.top + parentRect.height / 2;
+          facetsGroup.querySelectorAll('.arc-card').forEach(function(facet) {
+            var facetRect = facet.getBoundingClientRect();
+            var facetLeft = facetRect.left - bbox.left;
+            var facetMidY = facetRect.top - bbox.top + facetRect.height / 2;
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            var d = 'M' + parentLeft + ' ' + parentMidY + ' L' + (facetLeft - 30) + ' ' + parentMidY + ' L' + (facetLeft - 30) + ' ' + facetMidY + ' L' + (facetLeft - 1) + ' ' + facetMidY;
+            path.setAttribute('d', d);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', '#8b949e');
+            path.setAttribute('stroke-width', '1.5');
+            path.setAttribute('marker-end', 'url(#uml-aggregation)');
+            svg.appendChild(path);
+          });
+        });
+      }
+      setTimeout(renderUMLEdges, 50);
+
+      // Wire up slot-meta toggles
+      document.querySelectorAll('.slot-key__toggle').forEach(function (tog) {
+        tog.addEventListener('click', function () {
+          var target = document.getElementById(tog.getAttribute('data-target'));
+          if (!target) return;
+          var open = target.classList.toggle('slot-meta--open');
+          // Pill-style toggles (arc-badge) flip their ::after rotation via class.
+          // Arrow-only toggles (slot rows) flip their text glyph.
+          if (tog.classList.contains('arc-badge')) {
+            tog.classList.toggle('arc-badge--open', open);
+          } else {
+            tog.textContent = open ? '▾' : '▸';
+          }
+        });
+      });
+
+      // DNA governance — directives grouping their operationalizing norms
+      document.getElementById('dna-list').innerHTML = (s.directives || []).map(function (d) {
+        var dConf = rollupConformance(d.norms);
+        var normsHtml = (d.norms || []).map(function (n) {
+          return '<div class="dna-norm">' +
+            '<div><div class="dna-norm__name">' + esc(n.name) + '</div>' +
+            normGrammar(s.name, d.qualifier, n) + '</div>' +
+            '<div class="dna-meta">' + statusBadge(n.status) + conformanceBadge(n.conformance) + '</div>' +
+            '</div>';
+        }).join('');
+        return '<div class="dna-directive">' +
+          '<div class="dna-directive__head">' +
+            '<div><div class="dna-label">Directive</div>' + directiveGrammar(s.name, d) + '</div>' +
+            '<div class="dna-meta">' + fromBadge(d.from) + statusBadge(d.status) + conformanceBadge(dConf) + '</div>' +
+          '</div>' +
+          '<div class="dna-norms"><div class="dna-label">Operationalizing norms · ' + (d.norms ? d.norms.length : 0) + '</div>' +
+          normsHtml + '</div>' +
+        '</div>';
+      }).join('');
+
+      // Activity timeline
+      document.getElementById('activity-list').innerHTML = s.activity.map(function (a) {
+        return '<div class="timeline-item' + (a.current ? ' timeline-item--current' : '') + '">' +
+          '<div class="timeline-time">' + a.time + '</div>' +
+          '<div class="timeline-title">' + a.title + '</div>' +
+          '<div class="text-xs text-muted">' + a.meta + '</div></div>';
+      }).join('');
+
+      // Highlight active switcher
+      var sw = document.querySelectorAll('.subject-switcher a');
+      sw.forEach(function (a) {
+        a.classList.toggle('active', a.dataset.subject === key);
+      });
+      document.title = primitiveType + ' Definition';
+
+      // Render Schema tab graph (depth = 1)
+      renderSchemaGraph(s);
+    }
+
+    // Tabs wiring (main column)
+    document.querySelectorAll('#def-tabs .deftab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-deftab');
+        document.querySelectorAll('#def-tabs .deftab').forEach(function (b) {
+          b.classList.toggle('deftab--active', b === btn);
+        });
+        document.querySelectorAll('.deftabpanel').forEach(function (p) {
+          p.classList.toggle('deftabpanel--active', p.id === 'deftabpanel-' + key);
+        });
+      });
+    });
+
+    // Status-transition staging: wire confirm/reset buttons + expose staging hook
+    // for the sidebar lifecycle state machine to call when a reachable state is clicked.
+    (function wireTransitionStaging() {
+      var fromEl = document.getElementById('tx-from');
+      var toEl = document.getElementById('tx-to');
+      var precondEl = document.getElementById('tx-precond-desc');
+      var confirmBtn = document.getElementById('tx-confirm-btn');
+      var cancelBtn = document.getElementById('tx-cancel-btn');
+      var banner = document.getElementById('tx-confirm-banner');
+
+      var current = 'APPROVED';
+      var defaultTarget = 'ACTIVE';
+      var target = defaultTarget;
+
+      function paint() {
+        if (fromEl) fromEl.textContent = current;
+        if (toEl) {
+          toEl.textContent = target || '—';
+          toEl.style.visibility = target ? 'visible' : 'hidden';
+        }
+        if (precondEl) {
+          precondEl.innerHTML = target
+            ? (current + ' \u2192 ' + target + ' requires each reference in <strong>' + target + '</strong>')
+            : 'Select a reachable target state on the diagram.';
+        }
+        if (confirmBtn) confirmBtn.disabled = !target;
+      }
+
+      // Public hook: called by sidebar SM click handler.
+      window.__stageTransition = function (targetState) {
+        target = String(targetState || '').toUpperCase();
+        if (banner) banner.hidden = true;
+        paint();
+      };
+
+      if (cancelBtn) cancelBtn.addEventListener('click', function () {
+        target = defaultTarget;
+        if (banner) banner.hidden = true;
+        paint();
+      });
+      if (confirmBtn) confirmBtn.addEventListener('click', function () {
+        if (!target) return;
+        if (!window.confirm('Confirm transition ' + current + ' \u2192 ' + target + '?')) return;
+        if (banner) {
+          banner.textContent = 'Transition confirmed (mock): ' + current + ' \u2192 ' + target + '. Backend call would be issued here.';
+          banner.hidden = false;
+        }
+      });
+
+      paint();
+    })();
+
+    // Depth-1 schema graph: center node = this subject; satellites = related[] entries.
+    // Each satellite is connected by an edge labeled with the relation (`via`).
+    function renderSchemaGraph(s) {
+      var svg = document.getElementById('schema-graph-svg');
+      if (!svg) return;
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+      var W = svg.clientWidth || 720;
+      var H = 360;
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+      var NS = 'http://www.w3.org/2000/svg';
+      function el(name, attrs, text) {
+        var n = document.createElementNS(NS, name);
+        Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+        if (text != null) n.textContent = text;
+        return n;
+      }
+
+      // Arrow marker
+      var defs = el('defs', {});
+      var marker = el('marker', {
+        id: 'sg-arrow', viewBox: '0 0 8 8', refX: '7', refY: '4',
+        markerWidth: '7', markerHeight: '6', orient: 'auto', markerUnits: 'userSpaceOnUse'
+      });
+      marker.appendChild(el('path', { d: 'M0,0 L8,4 L0,8 z', fill: 'var(--itip-text-muted)' }));
+      defs.appendChild(marker);
+      svg.appendChild(defs);
+
+      var cx = W / 2, cy = H / 2;
+      var nodes = (s.related || []).slice(0, 8);
+      var n = nodes.length;
+      var radius = Math.min(W, H) * 0.36;
+
+      // Edges first (so they sit behind nodes)
+      nodes.forEach(function (r, i) {
+        var angle = (-Math.PI / 2) + (i * (2 * Math.PI / Math.max(n, 1)));
+        var x = cx + radius * Math.cos(angle);
+        var y = cy + radius * Math.sin(angle);
+        // shorten endpoints so the arrow tip doesn't overlap nodes
+        var dx = x - cx, dy = y - cy;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ux = dx / len, uy = dy / len;
+        var sx = cx + ux * 46, sy = cy + uy * 18;
+        var ex = x - ux * 60, ey = y - uy * 16;
+        svg.appendChild(el('line', {
+          x1: sx, y1: sy, x2: ex, y2: ey,
+          stroke: 'var(--itip-text-muted)', 'stroke-width': '1', 'stroke-dasharray': '4 3',
+          'marker-end': 'url(#sg-arrow)'
+        }));
+        // edge label
+        var lx = (sx + ex) / 2, ly = (sy + ey) / 2;
+        var labelW = Math.max(40, r.via.length * 6.5);
+        svg.appendChild(el('rect', {
+          x: lx - labelW / 2, y: ly - 8, width: labelW, height: 16,
+          rx: 8, ry: 8, fill: 'var(--itip-surface)', stroke: 'var(--itip-border)'
+        }));
+        svg.appendChild(el('text', {
+          x: lx, y: ly + 4, 'text-anchor': 'middle',
+          'font-size': '10', 'font-family': 'var(--font-base)',
+          fill: 'var(--itip-text-muted)'
+        }, r.via));
+      });
+
+      // Center node (this subject)
+      var centerW = Math.max(120, (s.name || '').length * 7 + 28);
+      svg.appendChild(el('rect', {
+        x: cx - centerW / 2, y: cy - 22, width: centerW, height: 44,
+        rx: 8, ry: 8,
+        fill: 'color-mix(in srgb, var(--itip-primary) 10%, var(--itip-surface))',
+        stroke: 'var(--itip-primary)', 'stroke-width': '2'
+      }));
+      svg.appendChild(el('text', {
+        x: cx, y: cy - 4, 'text-anchor': 'middle',
+        'font-size': '12', 'font-weight': '600', fill: 'var(--itip-text)'
+      }, s.name));
+      svg.appendChild(el('text', {
+        x: cx, y: cy + 12, 'text-anchor': 'middle',
+        'font-size': '10', fill: 'var(--itip-text-muted)'
+      }, s.primitive ? s.primitive.label : ''));
+
+      // Satellite nodes
+      nodes.forEach(function (r, i) {
+        var angle = (-Math.PI / 2) + (i * (2 * Math.PI / Math.max(n, 1)));
+        var x = cx + radius * Math.cos(angle);
+        var y = cy + radius * Math.sin(angle);
+        var w = Math.max(110, (r.name || '').length * 6.5 + 24);
+        var g = el('g', { style: 'cursor:pointer' });
+        var rect = el('rect', {
+          x: x - w / 2, y: y - 16, width: w, height: 32,
+          rx: 6, ry: 6,
+          fill: 'var(--itip-surface)', stroke: '#64748b', 'stroke-width': '1'
+        });
+        var txt = el('text', {
+          x: x, y: y + 4, 'text-anchor': 'middle',
+          'font-size': '11', fill: 'var(--itip-text)'
+        }, r.name);
+        g.appendChild(rect); g.appendChild(txt);
+        g.addEventListener('click', function () {
+          window.location.search = '?subject=' + r.subject;
+        });
+        svg.appendChild(g);
+      });
+
+      if (n === 0) {
+        svg.appendChild(el('text', {
+          x: cx, y: cy + 50, 'text-anchor': 'middle',
+          'font-size': '11', fill: 'var(--itip-text-muted)'
+        }, 'No depth-1 neighbors for this subject.'));
+      }
+    }
+
+    (async function bootstrap() {
+      // Pre-load every JSON Schema referenced by the active subject so that
+      // renderArcCard() can drive every archetype card from real schema
+      // properties (audit + complete field coverage + schema-meta block).
+      // NOTE: requires http:// (file:// blocks fetch). Serve with:
+      //   python3 -m http.server -d itip-web-frontend/def/mockups/v1
+      try {
+        var s = SUBJECTS[getSubjectKey()];
+        var uris = collectArchetypeUris(s);
+        await loadSchemas(uris);
+      } catch (e) {
+        // Non-fatal: render() will display "schema missing" audit badges.
+        console.warn('[mockup] schema preload failed:', e);
+      }
+      render();
+    })();
+  </script>
+</body>
+
+</html>

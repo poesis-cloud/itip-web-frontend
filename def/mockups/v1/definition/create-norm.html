@@ -459,6 +459,63 @@
       color: var(--itip-text-muted);
     }
 
+    /* ── Global archetype descriptor (chosen on previous step) ─── */
+    .arch-desc { display: flex; flex-direction: column; gap: 6px; }
+    .arch-desc__primitive {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 999px; font-size: var(--fs-sm); font-weight: 700;
+      color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+    .arch-desc__name { font-size: var(--fs-md); font-weight: 700; }
+    .arch-desc__uri { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--itip-text-muted); word-break: break-all; }
+    .arch-desc__text { font-size: var(--fs-sm); color: var(--itip-text); line-height: 1.55; margin: 4px 0 0; }
+    .arch-desc__layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: var(--sp-sm); font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+    .arc-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; border: 1px solid; }
+    .arc-badge--togaf { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .arc-badge--iso { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+    .arc-badge--nis2 { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+    .arc-badge--gdpr { background: #faf5ff; color: #7c3aed; border-color: #ddd6fe; }
+    .arc-badge--scap { background: #fefce8; color: #a16207; border-color: #fde68a; }
+    .arc-badge--swtech { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+    /* ── Statement fields rendered detail-page style (field + json-schema meta) ─── */
+    .arch-group {
+      display: flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); font-weight: 700; color: var(--itip-text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin: var(--sp-md) 0 var(--sp-sm);
+    }
+    .arch-group:first-child { margin-top: 0; }
+    .arch-group .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+    .field-card {
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+    }
+    .field-card:last-child { border-bottom: none; }
+    .field-card__main { display: grid; grid-template-columns: 160px 1fr; gap: var(--sp-sm); align-items: center; }
+    .field-card__label {
+      font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; color: var(--itip-text);
+    }
+    .field-card__label .ib { color: var(--itip-primary); }
+    .field-card__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 6px 0 0 160px; }
+    .meta-pill {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.03em; padding: 1px 6px; border-radius: 3px;
+      background: color-mix(in srgb, var(--itip-primary) 8%, var(--itip-bg));
+      border: 1px solid var(--itip-border); color: var(--itip-text-muted);
+    }
+    .meta-pill--req { color: var(--itip-primary); border-color: color-mix(in srgb, var(--itip-primary) 35%, transparent); }
+    .meta-pill--enum { color: #7c3aed; }
+    .field-card__desc { font-size: var(--fs-xs); color: var(--itip-text-muted); line-height: 1.45; }
+    @media (max-width: 720px) {
+      .field-card__main { grid-template-columns: 1fr; }
+      .field-card__meta { margin-left: 0; }
+    }
+
     /* ── Preview ─── */
     .eval-preview {
       padding: var(--sp-md);
@@ -495,16 +552,16 @@
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="../definition/def-dashboard.html">
+        <a class="nav-item" href="../definition/def-inventory.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
             <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          Dashboard
+          Inventory
         </a>
-        <a class="nav-item" href="../definition/registry.html">
+        <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d="M3 6h18M3 12h18M3 18h18" />
             <circle cx="7" cy="6" r="1.5" fill="currentColor" />
@@ -512,29 +569,6 @@
             <circle cx="7" cy="18" r="1.5" fill="currentColor" />
           </svg>
           Registry
-        </a>
-        <a class="nav-item" href="../definition/directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="9" y1="13" x2="15" y2="13" />
-            <line x1="9" y1="17" x2="15" y2="17" />
-          </svg>
-          Directives
-        </a>
-        <a class="nav-item active" href="../definition/norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 11l3 3L22 4" />
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-          </svg>
-          Norms
-        </a>
-        <a class="nav-item" href="../definition/ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12l3 3 5-6" />
-          </svg>
-          Ascriptions
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -562,7 +596,7 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="norms-list.html">Norms</a><span>/</span>
+        <a href="registry.html">Norms</a><span>/</span>
         <a href="ascription-create.html">Create</a><span>/</span>
         <strong>Norm</strong>
       </div>
@@ -587,253 +621,26 @@
       <p class="page-subtitle">Define a measurable assertion within a Directive's scope — constrains internal Elements
         of the governed Structure using CEL expressions for applicability and assertion.</p>
 
-      <!-- ═══ Section 1: Actors ═══ -->
+      <!-- ═══ Section 1: Archetype (base GSM governance primitive) ═══ -->
       <div class="form-section" style="margin-top:var(--sp-lg)">
         <div class="form-section__header">
-          <span class="form-section__title">Actors</span>
+          <span class="form-section__title">Archetype</span>
+          <a href="ascription-create.html" class="schema-preview__toggle" style="text-decoration:none">↩ Change archetype</a>
         </div>
         <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>Owner</label>
-              <select class="form-select">
-                <option>E. Archer (Enterprise Architect)</option>
-                <option selected>R. Patel (Compliance Analyst)</option>
-                <option>S. Kumar (Security Architect)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Author</label>
-              <input class="form-input" type="text" value="R. Patel (Compliance Analyst)" disabled>
-              <div class="form-help">Automatically detected from login session</div>
-            </div>
+          <div class="arch-desc">
+            <span class="arch-desc__primitive">◆ Norm</span>
+            <div class="arch-desc__name">GSM Norm — measurable assertion (DNA)</div>
+            <div class="arch-desc__uri">gsmarc://gsm/Norm/v1</div>
+            <p class="arch-desc__text">Selected on the previous step. A Norm is a <strong>governance primitive</strong>,
+              not a subject type — it operationalizes a parent Directive into a measurable assertion over a governed
+              Structure, evaluated as a <strong>CEL</strong> expression under a tolerance mode. Each field below carries
+              its schema properties and metadata.</p>
           </div>
         </div>
       </div>
 
-      <!-- ═══ Section 2: Archetypes ═══ -->
-      <div class="form-section">
-        <div class="form-section__header">
-          <span class="form-section__title">Archetypes</span>
-        </div>
-        <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>is</label>
-              <select class="form-select">
-                <option value="">Select archetype…</option>
-                <optgroup label="GSM Base">
-                  <option value="gsm/Norm/v1" selected>Norm (gsm/Norm/v1)</option>
-                </optgroup>
-                <optgroup label="NIS2">
-                  <option value="nis2/EncryptionNorm/v1">EncryptionNorm (nis2/EncryptionNorm/v1)</option>
-                  <option value="nis2/TransportSecurityNorm/v1">TransportSecurityNorm (nis2/TransportSecurityNorm/v1)
-                  </option>
-                </optgroup>
-                <optgroup label="GDPR">
-                  <option value="gdpr/RetentionNorm/v1">RetentionNorm (gdpr/RetentionNorm/v1)</option>
-                </optgroup>
-                <optgroup label="ITIP">
-                  <option value="itip/ApiPerformanceNorm/v1">ApiPerformanceNorm (itip/ApiPerformanceNorm/v1)</option>
-                </optgroup>
-              </select>
-              <div class="form-help">Typing archetype — determines statement schema via $ref chain</div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview schema
-                  properties</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__head"><strong>gsm/Norm/v1</strong> — Base GSM norm definition</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>directive</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Parent directive this norm implements</td>
-                      </tr>
-                      <tr>
-                        <td><code>structure</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Target structure governed by this norm</td>
-                      </tr>
-                      <tr>
-                        <td><code>name</code></td>
-                        <td>string</td>
-                        <td class="ib">⟡</td>
-                        <td>Unique norm identifier within directive scope</td>
-                      </tr>
-                      <tr>
-                        <td><code>qualifier</code></td>
-                        <td>uuid</td>
-                        <td class="ib">⟡</td>
-                        <td>Viability dimension being measured</td>
-                      </tr>
-                      <tr>
-                        <td><code>applicability</code></td>
-                        <td>string (CEL)</td>
-                        <td></td>
-                        <td>Activation condition — when must this norm be evaluated</td>
-                      </tr>
-                      <tr>
-                        <td><code>assertion</code></td>
-                        <td>string (CEL)</td>
-                        <td class="ib">⟡</td>
-                        <td>Compliance condition — must evaluate to true for satisfaction</td>
-                      </tr>
-                      <tr>
-                        <td><code>toleranceMode</code></td>
-                        <td>enum</td>
-                        <td class="ib">⟡</td>
-                        <td>Temporal evaluation mode (instantaneous, aggregated, sustained)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__head" style="border-top:1px solid var(--itip-border)">
-                    <strong>nis2/EncryptionNorm/v1</strong> — NIS2 encryption requirement norm</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>algorithm</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Required encryption algorithm (AES-128, AES-256, ChaCha20)</td>
-                      </tr>
-                      <tr>
-                        <td><code>keyLength</code></td>
-                        <td>integer</td>
-                        <td></td>
-                        <td>Minimum key length in bits</td>
-                      </tr>
-                      <tr>
-                        <td><code>scope</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Encryption scope (at-rest, in-transit, both)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>composed of</label>
-              <div class="form-help" style="margin-bottom:var(--sp-sm)">Additional archetype layers via allOf. Selected
-                facets contribute fields to the statement below.</div>
-              <div class="facet-pills">
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">NIS2 · EncryptionReqs <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">GDPR · RetentionLimits <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">ITIP · SLAMetrics <span
-                    class="pill-x">×</span></button>
-              </div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview facet properties (0
-                  active facets)</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#ef4444"></span> NIS2 ·
-                    EncryptionReqs</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>cipherSuite</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Required cipher suite identifier (e.g., TLS_AES_256_GCM_SHA384)</td>
-                      </tr>
-                      <tr>
-                        <td><code>keyRotationDays</code></td>
-                        <td>integer</td>
-                        <td></td>
-                        <td>Maximum days between key rotations</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#8b5cf6"></span> GDPR ·
-                    RetentionLimits</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>maxRetention</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Maximum data retention period — ISO 8601 duration</td>
-                      </tr>
-                      <tr>
-                        <td><code>legalBasis</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>GDPR legal basis (consent, contract, legal-obligation, legitimate-interest)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#3b82f6"></span> ITIP ·
-                    SLAMetrics</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>slaTarget</code></td>
-                        <td>number</td>
-                        <td></td>
-                        <td>Target SLA percentage (e.g., 99.9)</td>
-                      </tr>
-                      <tr>
-                        <td><code>measurementWindow</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Measurement window — ISO 8601 duration (e.g., P30D)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ Section 3: Statement ═══ -->
+      <!-- ═══ Section 2: Statement ═══ -->
       <div class="form-section">
         <div class="form-section__header">
           <span class="form-section__title">Statement</span>
@@ -848,38 +655,73 @@
           <!-- Guided panel -->
           <div class="stmt-panel active" id="stmtGuided">
 
-            <!-- Identity-bound statement fields -->
-            <div class="guided-field">
-              <span class="guided-field__label guided-field__ib">directive ⟡</span>
-              <select class="form-select" style="font-size:var(--fs-xs)">
-                <option value="">Select parent directive…</option>
-                <option>Data Encryption Standard (NIS2 · IT Ops → UserDatabase)</option>
-                <option selected>Performance SLA Baseline (ISO 25010 · IT Ops → API Gateway)</option>
-                <option>API Security Policy (TOGAF · Security Board → API Gateway)</option>
-                <option>Personal Data Processing (GDPR · Data Office → UserDatabase)</option>
-              </select>
+            <div class="arch-group"><span class="dot" style="background:var(--itip-primary)"></span> gsm/Norm/v1 — identity &amp; scope</div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">directive <span class="ib">⟡</span></span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option value="">Select parent directive…</option>
+                  <option>Data Encryption Standard (NIS2 · IT Ops → UserDatabase)</option>
+                  <option selected>Performance SLA Baseline (ISO 25010 · IT Ops → API Gateway)</option>
+                  <option>API Security Policy (TOGAF · Security Board → API Gateway)</option>
+                  <option>Personal Data Processing (GDPR · Data Office → UserDatabase)</option>
+                </select>
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">uuid</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="field-card__desc">Parent directive this norm implements — the governance scope it operationalizes.</span>
+              </div>
             </div>
-            <div class="guided-field">
-              <span class="guided-field__label guided-field__ib">structure ⟡</span>
-              <input class="form-input" type="text" value="API Gateway" disabled
-                style="background:var(--itip-bg); font-size:var(--fs-xs)">
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">structure <span class="ib">⟡</span></span>
+                <input class="form-input" type="text" value="API Gateway" disabled
+                  style="background:var(--itip-bg); font-size:var(--fs-xs)">
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">uuid</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="meta-pill">derived</span>
+                <span class="field-card__desc">Target structure governed by this norm — inherited from the parent directive's governed purpose.</span>
+              </div>
             </div>
-            <div class="guided-field">
-              <span class="guided-field__label guided-field__ib">name ⟡</span>
-              <input class="form-input" type="text" placeholder="e.g., response_time_p95, encryption_at_rest..."
-                value="response_time_p95" style="font-size:var(--fs-xs)">
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">name <span class="ib">⟡</span></span>
+                <input class="form-input" type="text" placeholder="e.g., response_time_p95, encryption_at_rest..."
+                  value="response_time_p95" style="font-size:var(--fs-xs)">
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="meta-pill">unique-in-directive</span>
+                <span class="field-card__desc">Unique norm identifier within the directive scope.</span>
+              </div>
             </div>
-            <div class="guided-field">
-              <span class="guided-field__label guided-field__ib">qualifier ⟡</span>
-              <select class="form-select" style="font-size:var(--fs-xs)">
-                <option value="">Select qualifier…</option>
-                <option selected>ISO 25010 · Performance</option>
-                <option>ISO 25010 · Security</option>
-                <option>ISO 25010 · Reliability</option>
-                <option>NIS2 · AccessControl</option>
-              </select>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">qualifier <span class="ib">⟡</span></span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option value="">Select qualifier…</option>
+                  <option selected>ISO 25010 · Performance</option>
+                  <option>ISO 25010 · Security</option>
+                  <option>ISO 25010 · Reliability</option>
+                  <option>NIS2 · AccessControl</option>
+                </select>
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">uuid</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="field-card__desc">Viability dimension being measured — the qualifier archetype this norm asserts against.</span>
+              </div>
             </div>
 
+            <div class="arch-group"><span class="dot" style="background:#1d4ed8"></span> gsm/Norm/v1 — CEL grammar &amp; tolerance</div>
             <!-- Tolerance Mode -->
             <div style="margin-top:var(--sp-lg); margin-bottom:var(--sp-lg)">
               <label
@@ -1103,7 +945,7 @@
       <!-- Actions -->
       <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
         <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
-        <a href="norms-list.html" class="btn btn--secondary">Cancel</a>
+        <a href="registry.html" class="btn btn--secondary">Cancel</a>
         <button class="btn btn--primary">Create Norm</button>
       </div>
     </main>

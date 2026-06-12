@@ -282,14 +282,14 @@
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="../definition/def-dashboard.html">
+        <a class="nav-item" href="../definition/def-inventory.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
             <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          Dashboard
+          Inventory
         </a>
         <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -299,29 +299,6 @@
             <circle cx="7" cy="18" r="1.5" fill="currentColor" />
           </svg>
           Registry
-        </a>
-        <a class="nav-item" href="../definition/directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="9" y1="13" x2="15" y2="13" />
-            <line x1="9" y1="17" x2="15" y2="17" />
-          </svg>
-          Directives
-        </a>
-        <a class="nav-item" href="../definition/norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 11l3 3L22 4" />
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-          </svg>
-          Norms
-        </a>
-        <a class="nav-item" href="../definition/ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12l3 3 5-6" />
-          </svg>
-          Ascriptions
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -349,7 +326,7 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="registry.html">Registry</a><span>/</span>
         <a href="ascription-create.html">Create</a><span>/</span>
         <strong>Archetype</strong>
       </div>
@@ -437,35 +414,7 @@
         </div>
       </div>
 
-      <!-- ═══ Section 2: Ownership ═══ -->
-      <div class="form-section">
-        <div class="form-section__header">
-          <span class="form-section__title">Ownership</span>
-        </div>
-        <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>Owner</label>
-              <select class="form-select">
-                <option selected>E. Archer (Enterprise Architect)</option>
-                <option>S. Kumar (Security Architect)</option>
-                <option>R. Patel (Compliance Analyst)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Author</label>
-              <select class="form-select">
-                <option selected>E. Archer (Enterprise Architect)</option>
-                <option>S. Kumar (Security Architect)</option>
-                <option>R. Patel (Compliance Analyst)</option>
-              </select>
-              <div class="form-help">Person who authored this ascription</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ Section 3: Statement (JSON Schema) ═══ -->
+      <!-- ═══ Section 2: Statement (JSON Schema) ═══ -->
       <div class="form-section">
         <div class="form-section__header">
           <span class="form-section__title">Statement (JSON Schema)</span>
@@ -614,7 +563,7 @@
         </div>
       </div>
 
-      <!-- ═══ Section 4: Preview ═══ -->
+      <!-- ═══ Section 3: Preview ═══ -->
       <div class="form-section">
         <div class="form-section__header">
           <span class="form-section__title">Ascription Preview</span>
@@ -644,7 +593,7 @@
       <!-- Actions -->
       <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
         <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
-        <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+        <a href="registry.html" class="btn btn--secondary">Cancel</a>
         <button class="btn btn--primary">Create Archetype</button>
       </div>
     </main>

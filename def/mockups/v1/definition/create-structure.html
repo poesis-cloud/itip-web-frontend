@@ -316,6 +316,63 @@
       display: inline-block;
     }
 
+    /* ── Global archetype descriptor (chosen on previous step) ─── */
+    .arch-desc { display: flex; flex-direction: column; gap: 6px; }
+    .arch-desc__primitive {
+      align-self: flex-start; display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px; border-radius: 999px; font-size: var(--fs-sm); font-weight: 700;
+      color: var(--itip-primary);
+      background: color-mix(in srgb, var(--itip-primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+    .arch-desc__name { font-size: var(--fs-md); font-weight: 700; }
+    .arch-desc__uri { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--itip-text-muted); word-break: break-all; }
+    .arch-desc__text { font-size: var(--fs-sm); color: var(--itip-text); line-height: 1.55; margin: 4px 0 0; }
+    .arch-desc__layers { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: var(--sp-sm); font-size: var(--fs-xs); color: var(--itip-text-muted); }
+
+    .arc-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; border: 1px solid; }
+    .arc-badge--togaf { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .arc-badge--iso { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+    .arc-badge--nis2 { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+    .arc-badge--gdpr { background: #faf5ff; color: #7c3aed; border-color: #ddd6fe; }
+    .arc-badge--scap { background: #fefce8; color: #a16207; border-color: #fde68a; }
+    .arc-badge--swtech { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+    /* ── Statement fields rendered detail-page style (field + json-schema meta) ─── */
+    .arch-group {
+      display: flex; align-items: center; gap: var(--sp-xs);
+      font-size: var(--fs-xs); font-weight: 700; color: var(--itip-text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin: var(--sp-md) 0 var(--sp-sm);
+    }
+    .arch-group:first-child { margin-top: 0; }
+    .arch-group .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+    .field-card {
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+    }
+    .field-card:last-child { border-bottom: none; }
+    .field-card__main { display: grid; grid-template-columns: 160px 1fr; gap: var(--sp-sm); align-items: center; }
+    .field-card__label {
+      font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: 600; color: var(--itip-text);
+    }
+    .field-card__label .ib { color: var(--itip-primary); }
+    .field-card__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 6px 0 0 160px; }
+    .meta-pill {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.03em; padding: 1px 6px; border-radius: 3px;
+      background: color-mix(in srgb, var(--itip-primary) 8%, var(--itip-bg));
+      border: 1px solid var(--itip-border); color: var(--itip-text-muted);
+    }
+    .meta-pill--req { color: var(--itip-primary); border-color: color-mix(in srgb, var(--itip-primary) 35%, transparent); }
+    .meta-pill--enum { color: #7c3aed; }
+    .field-card__desc { font-size: var(--fs-xs); color: var(--itip-text-muted); line-height: 1.45; }
+    @media (max-width: 720px) {
+      .field-card__main { grid-template-columns: 1fr; }
+      .field-card__meta { margin-left: 0; }
+    }
+
     /* ── Preview ─── */
     .preview-line {
       font-family: var(--font-mono);
@@ -339,14 +396,14 @@
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="../definition/def-dashboard.html">
+        <a class="nav-item" href="../definition/def-inventory.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
             <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          Dashboard
+          Inventory
         </a>
         <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -356,29 +413,6 @@
             <circle cx="7" cy="18" r="1.5" fill="currentColor" />
           </svg>
           Registry
-        </a>
-        <a class="nav-item" href="../definition/directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="9" y1="13" x2="15" y2="13" />
-            <line x1="9" y1="17" x2="15" y2="17" />
-          </svg>
-          Directives
-        </a>
-        <a class="nav-item" href="../definition/norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 11l3 3L22 4" />
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-          </svg>
-          Norms
-        </a>
-        <a class="nav-item" href="../definition/ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12l3 3 5-6" />
-          </svg>
-          Ascriptions
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -406,7 +440,7 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="registry.html">Registry</a><span>/</span>
         <a href="ascription-create.html">Create</a><span>/</span>
         <strong>Structure</strong>
       </div>
@@ -431,215 +465,26 @@
       <p class="page-subtitle">Define a new Structure — the foundational aggregate in GSM. A Structure's
         <code>purpose</code> is its identity and governance address.</p>
 
-      <!-- ═══ Section 1: Actors ═══ -->
+      <!-- ═══ Section 1: Archetype (selected on previous step) ═══ -->
       <div class="form-section" style="margin-top:var(--sp-lg)">
         <div class="form-section__header">
-          <span class="form-section__title">Actors</span>
+          <span class="form-section__title">Archetype</span>
+          <a href="ascription-create.html" class="schema-preview__toggle" style="text-decoration:none">↩ Change archetype</a>
         </div>
         <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>Owner</label>
-              <select class="form-select">
-                <option selected>E. Archer (Enterprise Architect)</option>
-                <option>S. Kumar (Security Architect)</option>
-                <option>R. Patel (Compliance Analyst)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Author</label>
-              <input class="form-input" type="text" value="E. Archer (Enterprise Architect)" disabled>
-              <div class="form-help">Automatically detected from login session</div>
-            </div>
+          <div class="arch-desc">
+            <span class="arch-desc__primitive">◆ Structure</span>
+            <div class="arch-desc__name"><span class="arc-badge arc-badge--togaf">TOGAF</span> Logical Application Component</div>
+            <div class="arch-desc__uri">gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1</div>
+            <p class="arch-desc__text">Selected on the previous step. A deployable / logical piece of the application
+              landscape. This archetype <strong>extends the GSM Structure primitive</strong> — its <code>$ref</code> chain
+              resolves <code>DefinitionSubjectType</code> to <strong>Structure</strong>. The statement below is structured
+              by this archetype's JSON Schema; each field carries its schema properties and metadata.</p>
           </div>
         </div>
       </div>
 
-      <!-- ═══ Section 2: Archetypes ═══ -->
-      <div class="form-section">
-        <div class="form-section__header">
-          <span class="form-section__title">Archetypes</span>
-        </div>
-        <div class="form-section__body">
-          <div class="create-form">
-            <div class="form-group">
-              <label>is</label>
-              <select class="form-select">
-                <option value="">Select archetype…</option>
-                <optgroup label="GSM Base">
-                  <option value="gsm/Structure/v1" selected>Structure (gsm/Structure/v1)</option>
-                </optgroup>
-                <optgroup label="TOGAF">
-                  <option value="togaf/LogicalAppComponent/v1">LogicalAppComponent</option>
-                  <option value="togaf/DataEntity/v1">DataEntity</option>
-                  <option value="togaf/TechnologyComponent/v1">TechnologyComponent</option>
-                  <option value="togaf/ApplicationService/v1">ApplicationService</option>
-                  <option value="togaf/PlatformService/v1">PlatformService</option>
-                  <option value="togaf/OrganizationUnit/v1">OrganizationUnit</option>
-                </optgroup>
-                <optgroup label="ITIP">
-                  <option value="itip/SoftwareTechnology/v1">SoftwareTechnology</option>
-                </optgroup>
-              </select>
-              <div class="form-help">Typing archetype — determines statement schema via $ref chain</div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview schema
-                  properties</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__head"><strong>gsm/Structure/v1</strong> — Base GSM structure definition
-                  </div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>purpose</code></td>
-                        <td>string</td>
-                        <td class="ib">⟡</td>
-                        <td>Unique name identifying this structure's functional purpose (kebab-case, globally unique)
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__head" style="border-top:1px solid var(--itip-border)">
-                    <strong>togaf/LogicalAppComponent/v1</strong> — TOGAF application building block</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>purpose</code></td>
-                        <td>string</td>
-                        <td class="ib">⟡</td>
-                        <td>Inherited — structure purpose identifier</td>
-                      </tr>
-                      <tr>
-                        <td><code>tier</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Deployment tier (public-facing, internal, backend, data)</td>
-                      </tr>
-                      <tr>
-                        <td><code>classification</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>Data classification level (public, internal, confidential, restricted)</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>composed of</label>
-              <div class="form-help" style="margin-bottom:var(--sp-sm)">Additional archetype layers via allOf. Selected
-                facets contribute fields to the statement below.</div>
-              <div class="facet-pills">
-                <button type="button" class="facet-pill active" onclick="toggleFacet(this)">ISO 25010 · Reliability
-                  <span class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">ISO 25010 · Security <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill active" onclick="toggleFacet(this)">NIS2 · Monitoring <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">GDPR · DataProcessing <span
-                    class="pill-x">×</span></button>
-                <button type="button" class="facet-pill" onclick="toggleFacet(this)">SCAP · CPE <span
-                    class="pill-x">×</span></button>
-              </div>
-              <div class="schema-preview">
-                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview facet properties (2
-                  active facets)</button>
-                <div class="schema-preview__panel" style="display:none">
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#22c55e"></span> ISO
-                    25010 · Reliability</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>availability</code></td>
-                        <td>number</td>
-                        <td></td>
-                        <td>Target availability percentage (e.g., 99.95)</td>
-                      </tr>
-                      <tr>
-                        <td><code>mttr</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Mean time to recovery — ISO 8601 duration (e.g., PT30M)</td>
-                      </tr>
-                      <tr>
-                        <td><code>mtbf</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Mean time between failures — ISO 8601 duration</td>
-                      </tr>
-                      <tr>
-                        <td><code>recoveryPoint</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Recovery point objective — ISO 8601 duration</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="schema-preview__group-label"><span class="dot" style="background:#ef4444"></span> NIS2 ·
-                    Monitoring</div>
-                  <table class="schema-preview__table">
-                    <thead>
-                      <tr>
-                        <th>Property</th>
-                        <th>Type</th>
-                        <th></th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><code>monitoringClass</code></td>
-                        <td>enum</td>
-                        <td></td>
-                        <td>NIS2 entity classification (essential, important)</td>
-                      </tr>
-                      <tr>
-                        <td><code>logRetention</code></td>
-                        <td>string</td>
-                        <td></td>
-                        <td>Minimum log retention period — ISO 8601 duration (e.g., P18M)</td>
-                      </tr>
-                      <tr>
-                        <td><code>incidentDetection</code></td>
-                        <td>boolean</td>
-                        <td></td>
-                        <td>Whether automated incident detection is enabled</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ Section 3: Statement ═══ -->
+      <!-- ═══ Section 2: Statement ═══ -->
       <div class="form-section">
         <div class="form-section__header">
           <span class="form-section__title">Statement</span>
@@ -653,52 +498,69 @@
 
           <!-- Guided mode -->
           <div class="stmt-panel active" id="stmtGuided">
-            <div class="guided-field">
-              <span class="guided-field__label guided-field__ib">purpose ⟡</span>
-              <input class="form-input" type="text" value="monitoring-stack" placeholder="kebab-case, globally unique">
+
+            <div class="arch-group"><span class="dot" style="background:var(--itip-primary)"></span> gsm/Structure/v1 — base primitive</div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">purpose <span class="ib">⟡</span></span>
+                <input class="form-input" type="text" value="monitoring-stack" placeholder="kebab-case, globally unique">
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--req">required</span>
+                <span class="meta-pill">identity-bound</span>
+                <span class="meta-pill">unique</span>
+                <span class="field-card__desc">Unique name identifying this structure's functional purpose (kebab-case, globally unique). $gsm:identity — contributes to the governance address.</span>
+              </div>
             </div>
 
-            <!-- Facet-contributed fields -->
-            <div class="facet-fields">
-              <div class="facet-group-label"><span class="dot" style="background:#22c55e"></span> ISO 25010 ·
-                Reliability</div>
-              <div class="guided-field">
-                <span class="guided-field__label">availability</span>
-                <input class="form-input" type="text" value="99.95" placeholder="% target">
-              </div>
-              <div class="guided-field">
-                <span class="guided-field__label">mttr</span>
-                <input class="form-input" type="text" value="PT30M" placeholder="ISO 8601 duration">
-              </div>
-
-              <div class="facet-group-label"><span class="dot" style="background:#ef4444"></span> NIS2 · Monitoring
-              </div>
-              <div class="guided-field">
-                <span class="guided-field__label">monitoringClass</span>
-                <select class="form-select" style="font-size:var(--fs-xs)">
-                  <option>essential</option>
-                  <option selected>important</option>
+            <div class="arch-group"><span class="dot" style="background:#1d4ed8"></span> TOGAF · Logical Application Component</div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">tier</span>
+                <select class="form-select">
+                  <option>public-facing</option>
+                  <option selected>internal</option>
+                  <option>backend</option>
+                  <option>data</option>
                 </select>
               </div>
-              <div class="guided-field">
-                <span class="guided-field__label">logRetention</span>
-                <input class="form-input" type="text" value="P18M" placeholder="ISO 8601 duration">
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--enum">enum</span>
+                <span class="meta-pill">$gsm:queryable</span>
+                <span class="field-card__desc">Deployment tier — one of: public-facing · internal · backend · data. TOGAF mapping: Logical Application Component placement.</span>
+              </div>
+            </div>
+            <div class="field-card">
+              <div class="field-card__main">
+                <span class="field-card__label">classification</span>
+                <select class="form-select">
+                  <option>public</option>
+                  <option selected>internal</option>
+                  <option>confidential</option>
+                  <option>restricted</option>
+                </select>
+              </div>
+              <div class="field-card__meta">
+                <span class="meta-pill">string</span>
+                <span class="meta-pill meta-pill--enum">enum</span>
+                <span class="meta-pill">$gsm:queryable</span>
+                <span class="field-card__desc">Data classification level — one of: public · internal · confidential · restricted. Drives downstream security &amp; compliance norms.</span>
               </div>
             </div>
           </div>
 
           <!-- JSON mode -->
           <div class="stmt-panel" id="stmtJson">
-            <textarea class="form-input" rows="10" style="font-family:var(--font-mono); font-size:var(--fs-xs)">{
+            <textarea class="form-input" rows="8" style="font-family:var(--font-mono); font-size:var(--fs-xs)">{
   "purpose": "monitoring-stack",
-  "availability": 99.95,
-  "mttr": "PT30M",
-  "monitoringClass": "important",
-  "logRetention": "P18M"
+  "tier": "internal",
+  "classification": "internal"
 }</textarea>
           </div>
-          <div class="form-help" style="margin-top:var(--sp-sm)">Validated against <strong>gsm/Structure/v1</strong> —
-            schema: purpose [+ active facet fields]</div>
+          <div class="form-help" style="margin-top:var(--sp-sm)">Validated against
+            <strong>togaf/LogicalApplicationComponent/v1</strong> → <strong>gsm/Structure/v1</strong></div>
         </div>
       </div>
 
@@ -710,13 +572,11 @@
         <div class="form-section__body">
           <div class="preview-line">
             <strong>STRUCTURE</strong> "monitoring-stack" TYPED BY <span
+              style="color:var(--itip-primary)">togaf/LogicalApplicationComponent/v1</span> → <span
               style="color:var(--itip-primary)">gsm/Structure/v1</span>
           </div>
           <div class="preview-badges">
-            <span class="badge" style="background:#14532d; color:#86efac; font-size:var(--fs-xs)">ISO 25010 ·
-              Reliability</span>
-            <span class="badge" style="background:#7f1d1d; color:#fca5a5; font-size:var(--fs-xs)">NIS2 ·
-              Monitoring</span>
+            <span class="arc-badge arc-badge--togaf">TOGAF · Logical Application Component</span>
             <span class="badge badge--draft">Initial state: DRAFT</span>
           </div>
         </div>
@@ -725,7 +585,7 @@
       <!-- Actions -->
       <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
         <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
-        <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+        <a href="registry.html" class="btn btn--secondary">Cancel</a>
         <button class="btn btn--primary">Create Structure</button>
       </div>
     </main>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Truth Sources</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .sources-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
+    .sources-toolbar .form-input { flex:1; min-width:200px; }
+    .source-card { border:1px solid var(--itip-border); border-radius:var(--radius-lg); padding:var(--sp-lg); margin-bottom:var(--sp-md); display:flex; align-items:center; gap:var(--sp-lg); transition:border-color .15s; }
+    .source-card:hover { border-color:var(--itip-primary); }
+    .source-icon { width:48px; height:48px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:var(--fs-xl); font-weight:700; flex-shrink:0; }
+    .source-icon--git { background:#f97316; color:#fff; }
+    .source-icon--artifactory { background:#40b882; color:#fff; }
+    .source-icon--registry { background:#6366f1; color:#fff; }
+    .source-info { flex:1; }
+    .source-name { font-weight:600; font-size:var(--fs-base); }
+    .source-name a { color:inherit; text-decoration:none; }
+    .source-name a:hover { color:var(--itip-primary); text-decoration:underline; }
+    .source-meta { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:2px; }
+    .source-stats { display:flex; gap:var(--sp-lg); text-align:center; }
+    .source-stat__value { font-size:var(--fs-lg); font-weight:700; }
+    .source-stat__label { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-inventory.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Inventory
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+        <div class="nav-section">Artifactory</div>
+        <a class="nav-item" href="../artifactory/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 17l9 4 9-4"/><path d="M3 12l9 4 9-4"/></svg>
+          Artifact Catalog
+        </a>
+        <a class="nav-item" href="../artifactory/jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h4"/></svg>
+          Generation Jobs
+        </a>
+        <div class="nav-section">Truth Sourcing</div>
+        <a class="nav-item active" href="sources-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Sources
+        </a>
+        <a class="nav-item" href="sync-jobs.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Sync Jobs
+        </a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="../admin/users.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+        <a class="nav-item" href="../admin/integrations.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Integrations
+        </a>
+      </nav>
+      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Truth Sourcing</span><span>/</span>
+        <strong>Sources</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-lg);">
+        <div>
+          <h1 class="page-title">Truth Sources</h1>
+          <p class="page-subtitle">Definition sourcer connections — code repositories, registries, and artifact stores</p>
+        </div>
+        <button class="btn btn--primary">+ Register Source</button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="sources-toolbar">
+        <input type="text" class="form-input" placeholder="Search sources...">
+        <select class="form-select" style="width:160px">
+          <option>All Types</option>
+          <option>Git Repository</option>
+          <option>Artifactory</option>
+          <option>Schema Registry</option>
+        </select>
+        <select class="form-select" style="width:140px">
+          <option>All Status</option>
+          <option>Synced</option>
+          <option>Syncing</option>
+          <option>Error</option>
+          <option>Stale</option>
+        </select>
+      </div>
+
+      <!-- Source cards -->
+      <div class="source-card">
+        <div class="source-icon source-icon--git">G</div>
+        <div class="source-info">
+          <div class="source-name"><a href="source-detail.html">acme-corp/platform-services</a></div>
+          <div class="source-meta">Git Repository &middot; github.com &middot; main branch &middot; Last sync: 5 min ago</div>
+          <div style="margin-top:4px"><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Synced</span></div>
+        </div>
+        <div class="source-stats">
+          <div><div class="source-stat__value">47</div><div class="source-stat__label">Structures</div></div>
+          <div><div class="source-stat__value">12</div><div class="source-stat__label">Definitions</div></div>
+        </div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-icon source-icon--git">G</div>
+        <div class="source-info">
+          <div class="source-name"><a href="source-detail.html">acme-corp/data-platform</a></div>
+          <div class="source-meta">Git Repository &middot; github.com &middot; main branch &middot; Last sync: 2 hours ago</div>
+          <div style="margin-top:4px"><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Synced</span></div>
+        </div>
+        <div class="source-stats">
+          <div><div class="source-stat__value">23</div><div class="source-stat__label">Structures</div></div>
+          <div><div class="source-stat__value">8</div><div class="source-stat__label">Definitions</div></div>
+        </div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-icon source-icon--artifactory">A</div>
+        <div class="source-info">
+          <div class="source-name"><a href="source-detail.html">acme-artifactory/releases</a></div>
+          <div class="source-meta">JFrog Artifactory &middot; artifactory.acme.internal &middot; Last sync: 1 day ago</div>
+          <div style="margin-top:4px"><span class="sync-status"><span class="sync-dot sync-dot--stale"></span> Stale</span></div>
+        </div>
+        <div class="source-stats">
+          <div><div class="source-stat__value">156</div><div class="source-stat__label">Artifacts</div></div>
+          <div><div class="source-stat__value">31</div><div class="source-stat__label">Definitions</div></div>
+        </div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-icon source-icon--registry">R</div>
+        <div class="source-info">
+          <div class="source-name"><a href="source-detail.html">acme-schema-registry</a></div>
+          <div class="source-meta">Confluent Schema Registry &middot; kafka.acme.internal &middot; Last sync: 30 min ago</div>
+          <div style="margin-top:4px"><span class="sync-status"><span class="sync-dot sync-dot--syncing"></span> Syncing&hellip;</span></div>
+        </div>
+        <div class="source-stats">
+          <div><div class="source-stat__value">89</div><div class="source-stat__label">Schemas</div></div>
+          <div><div class="source-stat__value">15</div><div class="source-stat__label">Definitions</div></div>
+        </div>
+      </div>
+
+      <div class="source-card">
+        <div class="source-icon source-icon--git">G</div>
+        <div class="source-info">
+          <div class="source-name"><a href="source-detail.html">acme-corp/legacy-monolith</a></div>
+          <div class="source-meta">Git Repository &middot; gitlab.acme.internal &middot; develop branch &middot; Last sync: 3 days ago</div>
+          <div style="margin-top:4px"><span class="sync-status"><span class="sync-dot sync-dot--error"></span> Error &mdash; authentication failed</span></div>
+        </div>
+        <div class="source-stats">
+          <div><div class="source-stat__value">34</div><div class="source-stat__label">Structures</div></div>
+          <div><div class="source-stat__value">5</div><div class="source-stat__label">Definitions</div></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

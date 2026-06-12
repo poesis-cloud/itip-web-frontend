@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITIP — Artifact Template</title>
+    <link rel="stylesheet" href="../itip-design-system.css">
+    <style>
+        .back-link {
+            font-size: var(--fs-xs);
+            color: var(--itip-text-muted);
+            text-decoration: none;
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: var(--sp-sm);
+        }
+
+        .back-link:hover {
+            color: var(--itip-primary);
+        }
+
+        .back-link:focus-visible {
+            outline: 2px solid var(--itip-primary);
+            outline-offset: 2px;
+        }
+
+        .detail-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--sp-md);
+            margin-bottom: var(--sp-lg);
+            flex-wrap: wrap;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: var(--sp-sm);
+            align-items: center;
+        }
+
+        .lifecycle {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--sp-lg);
+            flex-wrap: wrap;
+        }
+
+        .lifecycle__step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: var(--fs-xs);
+            color: var(--itip-text-muted);
+            border: 1px solid var(--itip-border);
+            border-right: none;
+            background: var(--itip-surface);
+        }
+
+        .lifecycle__step:first-child {
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+        }
+
+        .lifecycle__step:last-child {
+            border-right: 1px solid var(--itip-border);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .lifecycle__step--current {
+            background: var(--itip-primary);
+            color: #fff;
+            border-color: var(--itip-primary);
+            font-weight: 700;
+        }
+
+        .lifecycle__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: var(--sp-lg);
+            align-items: start;
+        }
+
+        @media (max-width:1000px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            border: 1px solid var(--itip-border);
+            border-radius: var(--radius-lg);
+            background: var(--itip-surface);
+            margin-bottom: var(--sp-lg);
+        }
+
+        .card__header {
+            padding: 10px var(--sp-md);
+            background: var(--itip-bg);
+            border-bottom: 1px solid var(--itip-border);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            font-weight: 700;
+            font-size: var(--fs-sm);
+        }
+
+        .card__body {
+            padding: var(--sp-md);
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--sp-md);
+            padding: 6px 0;
+            font-size: var(--fs-sm);
+            border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+        }
+
+        .meta-row:last-child {
+            border-bottom: none;
+        }
+
+        .meta-row__label {
+            color: var(--itip-text-muted);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chips .badge {
+            font-size: 10px;
+        }
+
+        .path-inline {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            background: var(--itip-bg);
+            padding: 1px 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        .prop-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .prop-table th {
+            font-size: var(--fs-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--itip-text-muted);
+            text-align: left;
+            padding: var(--sp-xs) var(--sp-sm);
+            border-bottom: 2px solid var(--itip-border);
+        }
+
+        .prop-table td {
+            padding: var(--sp-sm);
+            border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+            font-size: var(--fs-xs);
+            vertical-align: top;
+        }
+
+        .prop-table code {
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        .binding-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: var(--radius-sm);
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .binding-badge--ai {
+            background: #818cf8;
+            color: #fff;
+        }
+
+        .binding-badge--det {
+            background: var(--itip-border);
+            color: var(--itip-text);
+        }
+
+        .resolution-preview {
+            background: var(--itip-bg);
+            padding: var(--sp-md);
+            border-radius: var(--radius-md);
+        }
+
+        .resolution-preview__row {
+            padding: var(--sp-sm);
+            border-bottom: 1px solid var(--itip-border);
+            display: grid;
+            grid-template-columns: 170px 1fr 110px;
+            gap: var(--sp-md);
+        }
+
+        .resolution-preview__row:last-child {
+            border-bottom: none;
+        }
+
+        .resolution-preview__prop {
+            font-weight: 600;
+            font-size: var(--fs-sm);
+        }
+
+        .resolution-preview__value {
+            color: var(--itip-text-muted);
+            font-family: var(--font-mono);
+            font-size: var(--fs-xs);
+        }
+
+        .resolution-preview__mode--ai {
+            color: #818cf8;
+            font-weight: 600;
+            font-size: var(--fs-xs);
+        }
+
+        .resolution-preview__mode--det {
+            color: var(--itip-text-muted);
+            font-size: var(--fs-xs);
+        }
+
+        .preview-note {
+            margin-top: var(--sp-md);
+            padding: var(--sp-sm);
+            background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
+            border-left: 3px solid var(--itip-primary);
+            border-radius: var(--radius-sm);
+            font-size: var(--fs-xs);
+        }
+
+        .mix-bar {
+            display: flex;
+            height: 10px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-bottom: var(--sp-sm);
+        }
+
+        .mix-seg--mapped {
+            background: #64748b;
+        }
+
+        .mix-seg--computed {
+            background: #0ea5e9;
+        }
+
+        .mix-seg--ai {
+            background: #818cf8;
+        }
+
+        .mix-seg--static {
+            background: #cbd5e1;
+        }
+
+        .mix-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: var(--fs-xs);
+        }
+
+        .mix-legend__row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mix-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: var(--sp-md);
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--itip-surface);
+            border: 1px solid var(--itip-border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--sp-md);
+            padding: var(--sp-lg);
+            border-bottom: 1px solid var(--itip-border);
+        }
+
+        .modal__title {
+            font-size: var(--fs-xl);
+            font-weight: 700;
+        }
+
+        .modal__subtitle {
+            font-size: var(--fs-xs);
+            color: var(--itip-text-muted);
+            margin-top: 2px;
+        }
+
+        .modal__close {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--itip-text-muted);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal__close:hover {
+            background: var(--itip-bg);
+            color: var(--itip-text);
+        }
+
+        .modal__body {
+            padding: var(--sp-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-md);
+        }
+
+        .modal__footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--sp-sm);
+            padding: var(--sp-lg);
+            border-top: 1px solid var(--itip-border);
+        }
+
+        .modal-field {
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-xs);
+        }
+
+        .modal-field label {
+            font-size: var(--fs-sm);
+            font-weight: 600;
+        }
+
+        .modal-field input,
+        .modal-field select {
+            font-size: var(--fs-sm);
+            padding: 8px 12px;
+            border: 1px solid var(--itip-border);
+            border-radius: var(--radius-md);
+            background: var(--itip-surface);
+            color: var(--itip-text);
+        }
+
+        .modal-field .form-help {
+            font-size: var(--fs-xs);
+            color: var(--itip-text-muted);
+        }
+
+        .scope-readout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .scope-readout .badge {
+            font-size: 10px;
+        }
+
+        .adv-section {
+            border: 1px solid var(--itip-border);
+            border-radius: var(--radius-md);
+        }
+
+        .adv-section>summary {
+            padding: var(--sp-sm) var(--sp-md);
+            cursor: pointer;
+            font-size: var(--fs-sm);
+            font-weight: 600;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .adv-section>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .adv-section>summary:hover {
+            background: var(--itip-bg);
+        }
+
+        .adv-section>summary:focus-visible {
+            outline: 2px solid var(--itip-primary);
+            outline-offset: -2px;
+        }
+
+        .adv-section__body {
+            padding: var(--sp-md);
+            border-top: 1px solid var(--itip-border);
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-md);
+        }
+
+        .adv-chevron {
+            transition: transform 0.15s;
+        }
+
+        .adv-section[open] .adv-chevron {
+            transform: rotate(90deg);
+        }
+
+        .radio-row {
+            display: flex;
+            gap: var(--sp-lg);
+        }
+
+        .radio-row label {
+            font-weight: 400;
+            font-size: var(--fs-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+            <nav class="app-sidebar__nav">
+                <div class="nav-section">Definition</div>
+                <a class="nav-item" href="../definition/def-inventory.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>Inventory</a>
+                <a class="nav-item" href="../definition/registry.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 6h18M3 12h18M3 18h18" />
+                        <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+                        <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+                        <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+                    </svg>Registry</a>
+                <div class="nav-section">Frameworks</div>
+                <a class="nav-item" href="../frameworks/catalog.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                    </svg>Catalog <span class="nav-badge">5</span></a>
+                <a class="nav-item" href="../frameworks/stack-composer.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M12 8v8M8 12h8" />
+                    </svg>Stack Composer</a>
+                <div class="nav-section">Artifactory</div>
+                <a class="nav-item active" href="catalog.html"><svg class="nav-icon" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M3 7l9-4 9 4-9 4-9-4z" />
+                        <path d="M3 17l9 4 9-4" />
+                        <path d="M3 12l9 4 9-4" />
+                    </svg>Artifact Catalog</a>
+                <a class="nav-item" href="jobs.html"><svg class="nav-icon" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <path d="M7 8h10M7 12h6M7 16h4" />
+                    </svg>Generation Jobs</a>
+                <div class="nav-section">Truth Sourcing</div>
+                <a class="nav-item" href="../truth-sourcing/sources-list.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>Sources</a>
+                <a class="nav-item" href="../truth-sourcing/sync-jobs.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M23 4v6h-6" />
+                        <path d="M1 20v-6h6" />
+                        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                    </svg>Sync Jobs</a>
+                <div class="nav-section">Admin</div>
+                <a class="nav-item" href="../admin/users.html"><svg class="nav-icon" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>Users</a>
+                <a class="nav-item" href="../admin/integrations.html"><svg class="nav-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                    </svg>Integrations</a>
+            </nav>
+            <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong>
+                    &middot; &copy; 2024&ndash;2026</span></div>
+        </aside>
+
+        <header class="app-header">
+            <div class="app-header__breadcrumb"><span>Artifactory</span><span>/</span><a href="catalog.html"
+                    style="color:inherit;">Artifact Catalog</a><span>/</span><strong id="bc-name">Template</strong>
+            </div>
+            <div class="app-header__actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                </button>
+                <div class="avatar">EA</div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <a class="back-link" href="catalog.html">&larr; Artifact Catalog</a>
+            <div class="detail-head">
+                <div>
+                    <h1 class="page-title" id="t-name">Template</h1>
+                    <p class="page-subtitle" id="t-desc"></p>
+                </div>
+                <div class="detail-actions">
+                    <span class="badge" id="t-state">Active</span>
+                    <button class="btn btn--secondary" onclick="window.location.href='template-new.html'">Edit</button>
+                    <button class="btn btn--primary" id="t-generate">Generate</button>
+                </div>
+            </div>
+
+            <div class="lifecycle" id="t-lifecycle" aria-label="Governance lifecycle"></div>
+
+            <div class="detail-grid">
+                <div>
+                    <div class="card">
+                        <div class="card__header">Identity &amp; Scope</div>
+                        <div class="card__body" id="t-identity"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">Output Properties &amp; Bindings</div>
+                        <div class="card__body" style="overflow-x:auto;">
+                            <table class="prop-table">
+                                <thead>
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Type</th>
+                                        <th>Req</th>
+                                        <th>Binding</th>
+                                        <th>Source / Instruction</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="t-props"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">Resolution Preview</div>
+                        <div class="card__body">
+                            <div class="resolution-preview" id="t-resolution"></div>
+                            <div class="preview-note" id="t-note"></div>
+                        </div>
+                    </div>
+                </div>
+                <aside>
+                    <div class="card">
+                        <div class="card__header">Governance</div>
+                        <div class="card__body" id="t-gov"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">Binding Mix</div>
+                        <div class="card__body" id="t-mix"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card__header">Recent Runs</div>
+                        <div class="card__body">
+                            <p style="font-size:var(--fs-sm); color:var(--itip-text-muted); margin-top:0;">No runs
+                                recorded for the current state.</p>
+                            <a class="btn btn--secondary btn--sm" href="jobs.html">View Generation Jobs</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="generate-modal" role="dialog" aria-modal="true" aria-labelledby="gen-modal-title"
+        aria-hidden="true">
+        <div class="modal">
+            <div class="modal__header">
+                <div>
+                    <div class="modal__title" id="gen-modal-title">Generate Artifact</div>
+                    <div class="modal__subtitle" id="gen-modal-template">Template</div>
+                </div>
+                <button class="modal__close" onclick="closeGenerateModal()" aria-label="Close dialog"><svg fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <div class="modal__body">
+                <div class="modal-field">
+                    <label for="gen-subject">Subject <span style="color:#ef4444;">*</span></label>
+                    <select id="gen-subject" required>
+                        <option value="">Select a definition&hellip;</option>
+                        <option>Directive D-AC-027 &mdash; Authentication audit logging</option>
+                        <option>Directive D-AC-031 &mdash; Data retention policy</option>
+                        <option>Norm N-SEC-014 &mdash; Encryption at rest</option>
+                        <option>Structure S-IAM-002 &mdash; IAM Gateway</option>
+                        <option>Structure S-PAY-001 &mdash; Payment Core</option>
+                    </select>
+                    <div class="form-help">The concrete definition this artifact is about. Filtered to this template's
+                        accepted types.</div>
+                </div>
+                <div class="modal-field"><span
+                        style="font-size:var(--fs-xs); color:var(--itip-text-muted);">Accepts</span>
+                    <div class="scope-readout" id="gen-scope-readout"></div>
+                </div>
+                <details class="adv-section">
+                    <summary><svg class="adv-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14"
+                            height="14">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>Advanced options</summary>
+                    <div class="adv-section__body">
+                        <div class="modal-field">
+                            <label>State to generate from</label>
+                            <div class="radio-row"><label><input type="radio" name="gen-asof" value="current" checked>
+                                    Current state</label><label><input type="radio" name="gen-asof" value="snapshot">
+                                    Named snapshot</label></div>
+                            <label for="gen-snapshot"
+                                style="font-weight:400; font-size:var(--fs-xs); color:var(--itip-text-muted);">Snapshot</label>
+                            <select id="gen-snapshot" disabled>
+                                <option>2026-Q1 Baseline</option>
+                                <option>NIS2 Controls Sprint 12</option>
+                                <option>Pre-migration freeze</option>
+                            </select>
+                            <div class="form-help">Generate against the live model or a fixed point in time.</div>
+                        </div>
+                        <div class="modal-field" id="gen-ai-overrides">
+                            <label>AI-assisted property overrides</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-sm);">
+                                <div class="modal-field"><label for="gen-tone"
+                                        style="font-weight:400; font-size:var(--fs-xs);">Tone</label><select
+                                        id="gen-tone">
+                                        <option>Template default</option>
+                                        <option>Neutral</option>
+                                        <option>Formal</option>
+                                        <option>Concise</option>
+                                    </select></div>
+                                <div class="modal-field"><label for="gen-maxlen"
+                                        style="font-weight:400; font-size:var(--fs-xs);">Max length</label><input
+                                        type="number" id="gen-maxlen" placeholder="Template default"></div>
+                            </div>
+                            <div class="form-help">Adjust AI-assisted properties for this run only. Leave blank to use
+                                template defaults.</div>
+                        </div>
+                        <div class="modal-field"><label for="gen-output-name">Output name</label><input type="text"
+                                id="gen-output-name" placeholder="Auto-generated from subject">
+                            <div class="form-help">Optional filename for the produced artifact.</div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--secondary" onclick="closeGenerateModal()">Cancel</button>
+                <button class="btn btn--primary" onclick="window.location.href='jobs.html'">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+        function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+        function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+        // Per-class output property shapes (grounded source paths).
+        var CLASS_PROPS = {
+            'Governance': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Directive.name' },
+                { n: 'context', t: 'text', r: true, b: 'AI-Generated', s: 'AI · grounded in Directive.rationale, Norm.assertion' },
+                { n: 'decisionDrivers', t: 'list', r: true, b: 'Computed', s: 'collect(Norm.assertion) where Norm.structure = Directive.governedStructure' },
+                { n: 'consequences', t: 'text', r: false, b: 'AI-Generated', s: 'AI · grounded in Directive.qualifier, Norm.assertion' },
+                { n: 'traceability', t: 'list', r: true, b: 'Direct (Map)', s: 'Directive.sourceFramework' },
+                { n: 'template', t: 'string', r: true, b: 'Static', s: 'adr-template-v2' }
+            ],
+            'Architecture': [
+                { n: 'name', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure.purpose' },
+                { n: 'criticality', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure[TOGAF:BusinessService].businessCriticality' },
+                { n: 'components', t: 'list', r: true, b: 'Computed', s: 'collect(Mechanism.function) where Mechanism.structure = Structure' },
+                { n: 'interfaces', t: 'list', r: true, b: 'Computed', s: 'collect(Interaction.target) where Interaction.source = Structure' },
+                { n: 'owner', t: 'string', r: false, b: 'Direct (Map)', s: 'Structure[TOGAF:OrganizationUnit].name' },
+                { n: 'indexTemplate', t: 'string', r: true, b: 'Static', s: 'arch-baseline-v1' }
+            ],
+            'Visualization': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure.purpose' },
+                { n: 'diagramType', t: 'string', r: true, b: 'Static', s: 'C4-Container' },
+                { n: 'elements', t: 'list', r: true, b: 'Computed', s: 'collect(Mechanism.function) where Mechanism.structure = Structure' },
+                { n: 'relationships', t: 'list', r: true, b: 'Computed', s: 'collect(Interaction) where Interaction.source = Structure' }
+            ],
+            'Impact / Change': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Directive.name' },
+                { n: 'impactedSystems', t: 'list', r: true, b: 'Computed', s: 'collect(Interaction.target) where Interaction.source = Directive.governedStructure' },
+                { n: 'changeType', t: 'string', r: true, b: 'Direct (Map)', s: 'Directive.verb' },
+                { n: 'blastRadius', t: 'text', r: false, b: 'AI-Generated', s: 'AI · grounded in Interaction.target, Norm.assertion' },
+                { n: 'migrationSteps', t: 'list', r: true, b: 'AI-Generated', s: 'AI · grounded in Directive.qualifier, Structure.purpose' }
+            ],
+            'Operations': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure.purpose' },
+                { n: 'sloTargets', t: 'list', r: true, b: 'Direct (Map)', s: 'Norm.assertion' },
+                { n: 'steps', t: 'list', r: true, b: 'Computed', s: 'collect(Mechanism.function) where Mechanism.structure = Structure' },
+                { n: 'rollback', t: 'text', r: false, b: 'AI-Generated', s: 'AI · grounded in Norm.assertion, Directive.qualifier' },
+                { n: 'checklistTemplate', t: 'string', r: true, b: 'Static', s: 'release-checklist-v3' }
+            ],
+            'Security & Privacy': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure.purpose' },
+                { n: 'assets', t: 'list', r: true, b: 'Computed', s: 'collect(Mechanism.function) where Mechanism.structure = Structure' },
+                { n: 'lawfulBasis', t: 'string', r: false, b: 'Direct (Map)', s: 'Structure[GDPR:PersonalData].lawfulBasis' },
+                { n: 'threats', t: 'list', r: true, b: 'AI-Generated', s: 'AI · grounded in Structure.purpose, Interaction.target' },
+                { n: 'mitigations', t: 'list', r: true, b: 'AI-Generated', s: 'AI · grounded in Norm.assertion, Directive.qualifier' },
+                { n: 'residualRisk', t: 'text', r: false, b: 'AI-Generated', s: 'AI · grounded in threats, mitigations' }
+            ],
+            'Onboarding': [
+                { n: 'title', t: 'string', r: true, b: 'Direct (Map)', s: 'Structure.purpose' },
+                { n: 'overview', t: 'text', r: true, b: 'AI-Generated', s: 'AI · grounded in Structure.purpose, Directive.rationale' },
+                { n: 'keyConcepts', t: 'list', r: true, b: 'AI-Generated', s: 'AI · grounded in Structure.archetypes' },
+                { n: 'glossary', t: 'list', r: false, b: 'AI-Generated', s: 'AI · grounded in Structure.archetypes, Directive.qualifier' }
+            ]
+        };
+
+        // Per-class grounded sample resolution (against a registry subject).
+        var CLASS_RES = {
+            'Governance': {
+                subj: 'Directive “API Security Policy” (NIS2-sourced) governing the API Gateway Structure', rows: [
+                    ['title', '"API Security Policy"', 'det'],
+                    ['context', '"API Gateway MUST ENFORCE rate limiting and authentication on ExternalEndpoints, fulfilling NIS2 Art.21 §2(a)…"', 'ai'],
+                    ['decisionDrivers', '["rate_limit_enforcement","oauth2_required"]', 'det'],
+                    ['traceability', '["NIS2:Art.21 §2(a)"]', 'det'],
+                    ['template', '"adr-template-v2"', 'det']]
+            },
+            'Architecture': {
+                subj: 'Structure “Payment Service” (TOGAF:ApplicationService)', rows: [
+                    ['name', '"Payment Service"', 'det'],
+                    ['criticality', '"BUSINESS_CRITICAL"', 'det'],
+                    ['components', '["Payment Capture","Settlement","Refund Handling"]', 'det'],
+                    ['interfaces', '["EventBus","UserDatabase"]', 'det'],
+                    ['owner', '"IT Operations Division"', 'det']]
+            },
+            'Visualization': {
+                subj: 'Structure “API Gateway” (TOGAF:LogicalAppComponent)', rows: [
+                    ['title', '"API Gateway"', 'det'],
+                    ['diagramType', '"C4-Container"', 'det'],
+                    ['elements', '["TLS Termination","Request Routing"]', 'det'],
+                    ['relationships', '["Request Routing ⇄ Payment Capture"]', 'det']]
+            },
+            'Impact / Change': {
+                subj: 'Directive “API Security Policy” governing the API Gateway Structure', rows: [
+                    ['title', '"API Security Policy"', 'det'],
+                    ['impactedSystems', '["ExternalEndpoints","Payment Service","UserDatabase"]', 'det'],
+                    ['changeType', '"ENFORCE"', 'det'],
+                    ['blastRadius', '"3 downstream services; OAuth2 rollout required before enforcement…"', 'ai'],
+                    ['migrationSteps', '["Enable rate limiting","Roll OAuth2 to consumers","Cut over"]', 'ai']]
+            },
+            'Operations': {
+                subj: 'Structure “Payment Service” with Norm slo targets', rows: [
+                    ['title', '"Payment Service"', 'det'],
+                    ['sloTargets', '["availability >= 99.95%","p99 latency <= 250ms"]', 'det'],
+                    ['steps', '["Payment Capture","Settlement","Refund Handling"]', 'det'],
+                    ['rollback', '"Revert to previous deployment; replay settlement queue from checkpoint…"', 'ai']]
+            },
+            'Security & Privacy': {
+                subj: 'Structure “UserDatabase” (GDPR:PersonalData, ISO25012:DataAccuracy)', rows: [
+                    ['title', '"UserDatabase"', 'det'],
+                    ['assets', '["User Query","Credential Store"]', 'det'],
+                    ['lawfulBasis', '"LEGITIMATE_INTEREST"', 'det'],
+                    ['threats', '["Tampering: SQL injection","Disclosure: PII exfiltration"]', 'ai'],
+                    ['mitigations', '["Parameterized queries","Encryption at rest (Norm N-SEC-014)"]', 'ai']]
+            },
+            'Onboarding': {
+                subj: 'Structure “Payment Service” (TOGAF:ApplicationService)', rows: [
+                    ['title', '"Payment Service"', 'det'],
+                    ['overview', '"Payment Service captures and settles customer payments across web and API channels…"', 'ai'],
+                    ['keyConcepts', '["ApplicationService","MICROSERVICE","FunctionalSuitability"]', 'ai'],
+                    ['glossary', '["Settlement","Refund Handling","Idempotency key"]', 'ai']]
+            }
+        };
+
+        // Templates (metadata grounded from the catalog + registry).
+        var TEMPLATES = {
+            'adr-decision-pack': { name: 'ADR Decision Pack', cls: 'Governance', fmt: 'Markdown + YAML frontmatter', state: 'Active', ai: true, ver: 'v4', owner: 'Architecture Board', updated: '2026-05-28', scopes: ['Directive', 'Norm'], fw: ['NIS2', 'TOGAF'], filter: "sourceFramework = 'NIS2'", mix: { mapped: 5, ai: 2, computed: 0, static: 1 }, desc: 'Generates an ADR bundle per impacted directive/norm chain with decision context, options, consequences, and traceability links.' },
+            'compliance-evidence-pack': { name: 'Compliance Evidence Pack', cls: 'Governance', fmt: 'PDF + CSV evidence matrix', state: 'Active', ai: false, ver: 'v2', owner: 'Compliance Office', updated: '2026-05-12', scopes: ['Directive', 'Norm', 'Archetype'], fw: ['NIS2', 'GDPR', 'ISO 25010'], filter: "archetype in {NIS2:*, GDPR:*}", mix: { mapped: 8, ai: 0, computed: 0, static: 1 }, desc: 'Control-mapping pack with audit trail, evidence links, compliance status per directive, and gap analysis against framework norms.' },
+            'architecture-baseline-folder': { name: 'Architecture Baseline Folder', cls: 'Architecture', fmt: 'Folder scaffold + index', state: 'Active', ai: false, ver: 'v3', owner: 'Architecture Board', updated: '2026-04-30', scopes: ['Structure', 'Interaction'], fw: ['TOGAF'], filter: "archetype = 'TOGAF:ApplicationService'", mix: { mapped: 6, ai: 0, computed: 2, static: 0 }, desc: 'Creates architecture repository structure: context map, component inventory, interface matrix, and ownership map aligned with ascribed archetypes.' },
+            'capability-service-catalog-entry': { name: 'Capability/Service Catalog Entry', cls: 'Architecture', fmt: 'Markdown + JSON metadata', state: 'Draft', ai: true, ver: 'v1', owner: 'Architecture Board', updated: '2026-06-02', scopes: ['Structure', 'Archetype'], fw: ['TOGAF'], filter: "archetype = 'TOGAF:BusinessService'", mix: { mapped: 4, ai: 1, computed: 1, static: 0 }, desc: 'Generates service catalog page with capability statement, dependencies, SLAs, ownership, and integration points.' },
+            'interface-contract-sheet-icd': { name: 'Interface Contract Sheet (ICD)', cls: 'Architecture', fmt: 'OpenAPI + AsyncAPI', state: 'Active', ai: false, ver: 'v2', owner: 'Integration Guild', updated: '2026-05-20', scopes: ['Interaction', 'Archetype'], fw: ['TOGAF', 'HTTP', 'gRPC'], filter: "archetype = 'TOGAF:ApplicationInterface'", mix: { mapped: 7, ai: 0, computed: 1, static: 0 }, desc: 'Interface control document with request/response schemas, error codes, rate limits, and change history per interaction.' },
+            'c4-sequence-diagram-pack': { name: 'C4 + Sequence Diagram Pack', cls: 'Visualization', fmt: 'PlantUML sources + PNG exports', state: 'Active', ai: false, ver: 'v5', owner: 'Architecture Board', updated: '2026-05-25', scopes: ['Structure', 'Interaction'], fw: ['TOGAF'], filter: '—', mix: { mapped: 9, ai: 0, computed: 3, static: 0 }, desc: 'Builds context/container/component diagrams and critical interaction sequences from current model definitions and relations.' },
+            'integration-impact-dossier': { name: 'Integration Impact Dossier', cls: 'Impact / Change', fmt: 'Change matrix + rollout plan', state: 'Active', ai: true, ver: 'v3', owner: 'Change Advisory Board', updated: '2026-06-05', scopes: ['Structure', 'Interaction'], fw: ['TOGAF', 'NIS2'], filter: '—', mix: { mapped: 6, ai: 3, computed: 1, static: 0 }, desc: 'Evaluates integration/de-integration impacts: API consumers, event contracts, IAM scope changes, and operational blast radius.' },
+            'de-integration-decommission-plan': { name: 'De-integration / Decommission Plan', cls: 'Impact / Change', fmt: 'Markdown checklist + timeline', state: 'Active', ai: true, ver: 'v2', owner: 'Change Advisory Board', updated: '2026-05-18', scopes: ['Structure', 'Interaction', 'Directive'], fw: ['TOGAF'], filter: '—', mix: { mapped: 4, ai: 2, computed: 0, static: 0 }, desc: 'Sunset plan with dependency reversal, data migration steps, cutover checklist, and rollback procedures for safe de-integration.' },
+            'api-contract-delta-pack': { name: 'API Contract Delta Pack', cls: 'Impact / Change', fmt: 'OpenAPI diff + consumer advisory', state: 'Active', ai: false, ver: 'v4', owner: 'Integration Guild', updated: '2026-06-01', scopes: ['Interaction', 'Archetype'], fw: ['HTTP', 'gRPC', 'GraphQL'], filter: '—', mix: { mapped: 5, ai: 0, computed: 2, static: 0 }, desc: 'Compares previous and target interface definitions, classifies breaking changes, and produces migration guidance per consumer segment.' },
+            'release-readiness-bundle': { name: 'Release Readiness Bundle', cls: 'Operations', fmt: 'Checklist + evidence links', state: 'Active', ai: false, ver: 'v3', owner: 'Release Management', updated: '2026-05-15', scopes: ['Directive', 'Norm', 'Structure'], fw: ['NIS2'], filter: '—', mix: { mapped: 7, ai: 0, computed: 0, static: 1 }, desc: 'Produces cutover checklist, rollback plan, observability coverage summary, and runbook links for change advisory board review.' },
+            'runbook-operational-playbook': { name: 'Runbook / Operational Playbook', cls: 'Operations', fmt: 'Markdown + YAML metadata', state: 'Active', ai: true, ver: 'v2', owner: 'SRE Guild', updated: '2026-06-03', scopes: ['Structure', 'Directive'], fw: ['TOGAF'], filter: '—', mix: { mapped: 5, ai: 2, computed: 1, static: 0 }, desc: 'Operational runbook with troubleshooting decision trees, escalation paths, SLO recovery procedures, and known failure modes.' },
+            'slo-service-level-spec': { name: 'SLO / Service-Level Spec', cls: 'Operations', fmt: 'JSON + Prometheus rules', state: 'Active', ai: false, ver: 'v3', owner: 'SRE Guild', updated: '2026-05-22', scopes: ['Norm', 'Structure'], fw: ['ISO 25010'], filter: "archetype = 'ISO25010:Reliability'", mix: { mapped: 6, ai: 0, computed: 2, static: 0 }, desc: 'Service-level objective spec with SLIs, error budgets, burn-rate alerts, and observability query templates derived from norm tolerances.' },
+            'threat-model-stride-dossier': { name: 'Threat Model / STRIDE Dossier', cls: 'Security & Privacy', fmt: 'Markdown + threat matrix', state: 'Draft', ai: true, ver: 'v1', owner: 'Security Office', updated: '2026-06-08', scopes: ['Structure', 'Interaction', 'Directive'], fw: ['NIS2', 'SCAP'], filter: '—', mix: { mapped: 4, ai: 3, computed: 1, static: 0 }, desc: 'STRIDE-based threat model with attack surface analysis, trust boundaries, mitigation strategies, and residual risk assessment.' },
+            'data-flow-dpia-pack': { name: 'Data-Flow & DPIA Pack', cls: 'Security & Privacy', fmt: 'Diagram + impact assessment', state: 'Active', ai: true, ver: 'v2', owner: 'Data Protection Officer', updated: '2026-05-30', scopes: ['Interaction', 'Archetype'], fw: ['GDPR'], filter: "archetype = 'GDPR:PersonalData'", mix: { mapped: 5, ai: 2, computed: 0, static: 0 }, desc: 'Data protection impact assessment with data-flow diagrams, PII inventory, processing grounds, and retention/deletion policies.' },
+            'domain-primer': { name: 'Domain Primer', cls: 'Onboarding', fmt: 'Markdown + glossary', state: 'Active', ai: true, ver: 'v2', owner: 'Enablement', updated: '2026-04-28', scopes: ['Structure', 'Directive', 'Archetype'], fw: ['TOGAF'], filter: '—', mix: { mapped: 3, ai: 4, computed: 0, static: 0 }, desc: 'Domain introduction with concepts, key structures, governance context, and architectural decisions — generated narrative from definitions.' }
+        };
+
+        var LIFECYCLE = ['Draft', 'Proposed', 'Active', 'Deprecated'];
+
+        function badge(text, cls) { return '<span class="badge ' + (cls || '') + '">' + text + '</span>'; }
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        function render() {
+            var params = new URLSearchParams(window.location.search);
+            var slug = params.get('t');
+            var tpl = TEMPLATES[slug];
+            if (!tpl) {
+                // Fall back to the first template if the slug is unknown.
+                slug = Object.keys(TEMPLATES)[0]; tpl = TEMPLATES[slug];
+            }
+            document.title = 'ITIP — ' + tpl.name;
+            document.getElementById('bc-name').textContent = tpl.name;
+            document.getElementById('t-name').textContent = tpl.name;
+            document.getElementById('t-desc').textContent = tpl.desc;
+            var stateBadge = { Active: 'badge--active', Draft: 'badge--draft', Proposed: 'badge--proposed', Deprecated: 'badge--warn' }[tpl.state] || '';
+            document.getElementById('t-state').className = 'badge ' + stateBadge;
+            document.getElementById('t-state').textContent = tpl.state;
+
+            // Lifecycle
+            var lc = document.getElementById('t-lifecycle');
+            lc.innerHTML = LIFECYCLE.map(function (st) {
+                var cur = (st === tpl.state) ? ' lifecycle__step--current' : '';
+                return '<div class="lifecycle__step' + cur + '"><span class="lifecycle__dot"></span>' + st + '</div>';
+            }).join('');
+
+            // Identity & scope
+            var scopeChips = tpl.scopes.map(function (s) { return badge(s, 'badge--proposed'); }).join(' ');
+            var fwChips = tpl.fw.map(function (f) { return badge(f); }).join(' ');
+            document.getElementById('t-identity').innerHTML =
+                '<div class="meta-row"><span class="meta-row__label">Artifact class</span><span>' + esc(tpl.cls) + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Output format</span><span>' + esc(tpl.fmt) + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Target scope</span><span class="chips">' + scopeChips + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Source frameworks</span><span class="chips">' + fwChips + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Scope filter</span><span class="path-inline">' + esc(tpl.filter) + '</span></div>' +
+                (tpl.ai ? '<div class="meta-row"><span class="meta-row__label">Assistance</span><span>' + badge('AI-assisted') + '</span></div>' : '');
+
+            // Properties
+            var props = CLASS_PROPS[tpl.cls] || [];
+            document.getElementById('t-props').innerHTML = props.map(function (p) {
+                var isAI = /AI-Generated/.test(p.b);
+                var bb = isAI ? '<span class="binding-badge binding-badge--ai">' + p.b + '</span>' : '<span class="binding-badge binding-badge--det">' + p.b + '</span>';
+                return '<tr><td><code>' + esc(p.n) + '</code></td><td>' + esc(p.t) + '</td><td>' + (p.r ? '✓' : '—') + '</td><td>' + bb + '</td><td><code>' + esc(p.s) + '</code></td></tr>';
+            }).join('');
+
+            // Resolution
+            var res = CLASS_RES[tpl.cls];
+            document.getElementById('t-resolution').innerHTML = res.rows.map(function (row) {
+                var mode = row[2] === 'ai' ? '<div class="resolution-preview__mode--ai">AI-assisted</div>' : '<div class="resolution-preview__mode--det">Deterministic</div>';
+                return '<div class="resolution-preview__row"><div class="resolution-preview__prop">' + esc(row[0]) + '</div><div class="resolution-preview__value">' + esc(row[1]) + '</div>' + mode + '</div>';
+            }).join('');
+            document.getElementById('t-note').innerHTML = '<strong>Note:</strong> Sample resolution against ' + esc(res.subj) + '. Deterministic bindings produce consistent values; AI-assisted bindings generate contextual narrative grounded in the cited source paths.';
+
+            // Governance aside
+            document.getElementById('t-gov').innerHTML =
+                '<div class="meta-row"><span class="meta-row__label">State</span><span>' + badge(tpl.state, stateBadge) + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Version</span><span>' + esc(tpl.ver) + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Owner</span><span>' + esc(tpl.owner) + '</span></div>' +
+                '<div class="meta-row"><span class="meta-row__label">Updated</span><span>' + esc(tpl.updated) + '</span></div>';
+
+            // Binding mix aside
+            var m = tpl.mix; var total = m.mapped + m.ai + m.computed + m.static || 1;
+            function seg(k, v) { return v ? '<div class="mix-seg--' + k + '" style="width:' + (v / total * 100) + '%"></div>' : ''; }
+            function leg(k, label, v) { return v ? '<div class="mix-legend__row"><span class="mix-dot mix-seg--' + k + '"></span>' + label + ' &times;' + v + '</div>' : ''; }
+            document.getElementById('t-mix').innerHTML =
+                '<div class="mix-bar">' + seg('mapped', m.mapped) + seg('computed', m.computed) + seg('ai', m.ai) + seg('static', m.static) + '</div>' +
+                '<div class="mix-legend">' + leg('mapped', 'Mapped', m.mapped) + leg('computed', 'Computed', m.computed) + leg('ai', 'AI-assisted', m.ai) + leg('static', 'Static', m.static) + '</div>';
+
+            // Generate button wiring
+            document.getElementById('t-generate').onclick = function () { openGenerateModal(tpl.name, tpl.scopes, tpl.ai); };
+        }
+
+        function openGenerateModal(templateName, scope, isAI) {
+            document.getElementById('gen-modal-template').textContent = templateName;
+            var readout = document.getElementById('gen-scope-readout');
+            readout.innerHTML = '';
+            (scope || []).forEach(function (t) { var b = document.createElement('span'); b.className = 'badge badge--proposed'; b.textContent = t; readout.appendChild(b); });
+            document.getElementById('gen-ai-overrides').style.display = isAI ? '' : 'none';
+            var overlay = document.getElementById('generate-modal');
+            overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false');
+            setTimeout(function () { document.getElementById('gen-subject').focus(); }, 50);
+        }
+        function closeGenerateModal() { var o = document.getElementById('generate-modal'); o.classList.remove('open'); o.setAttribute('aria-hidden', 'true'); }
+        document.addEventListener('change', function (e) { if (e.target && e.target.name === 'gen-asof') { document.getElementById('gen-snapshot').disabled = (e.target.value !== 'snapshot'); } });
+        document.getElementById('generate-modal').addEventListener('click', function (e) { if (e.target === this) closeGenerateModal(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeGenerateModal(); });
+
+        render();
+    </script>
+</body>
+
+</html>

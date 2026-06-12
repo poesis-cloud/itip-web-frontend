@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Ascriptions</title>
+  <title>ITIP — Definition Registry</title>
   <link rel="stylesheet" href="../itip-design-system.css">
   <style>
-    .ascriptions-toolbar {
+    .registry-toolbar {
       display: flex;
       gap: var(--sp-md);
       align-items: center;
@@ -15,7 +15,7 @@
       flex-wrap: wrap;
     }
 
-    .ascriptions-toolbar .form-input {
+    .registry-toolbar .form-input {
       flex: 1;
       min-width: 200px;
     }
@@ -32,7 +32,7 @@
       overflow-y: auto;
     }
 
-    .ascription-row {
+    .registry-row {
       display: grid;
       grid-template-columns: 200px 1fr 100px 80px;
       align-items: center;
@@ -46,28 +46,28 @@
       transition: box-shadow 0.15s, border-color 0.15s;
     }
 
-    .ascription-row:hover {
+    .registry-row:hover {
       border-color: var(--itip-primary);
       box-shadow: var(--shadow-md);
     }
 
-    .ascription-subject {
+    .registry-subject {
       font-weight: 600;
       font-size: var(--fs-sm);
     }
 
-    .ascription-subject-type {
+    .registry-subject-type {
       font-size: var(--fs-xs);
       color: var(--itip-text-muted);
     }
 
-    .layer-stack {
+    .arc-stack {
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
     }
 
-    .layer-badge {
+    .arc-badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -78,43 +78,50 @@
       border: 1px solid;
     }
 
-    .layer-badge--togaf {
+    .arc-badge--togaf {
       background: #eff6ff;
       color: #1d4ed8;
       border-color: #bfdbfe;
     }
 
-    .layer-badge--iso {
+    .arc-badge--iso {
       background: #f0fdf4;
       color: #15803d;
       border-color: #bbf7d0;
     }
 
-    .layer-badge--nis2 {
+    .arc-badge--nis2 {
       background: #fef2f2;
       color: #b91c1c;
       border-color: #fecaca;
     }
 
-    .layer-badge--gdpr {
+    .arc-badge--gdpr {
       background: #faf5ff;
       color: #7c3aed;
       border-color: #ddd6fe;
     }
 
-    .layer-badge--scap {
+    .arc-badge--scap {
       background: #fefce8;
       color: #a16207;
       border-color: #fde68a;
     }
 
-    .layer-badge--swtech {
+    .arc-badge--swtech {
       background: #f1f5f9;
       color: #475569;
       border-color: #cbd5e1;
     }
 
-    .ascription-header {
+    .arc-badge--gsm {
+      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      color: var(--itip-primary);
+      border-color: color-mix(in srgb, var(--itip-primary) 25%, transparent);
+      font-family: var(--font-mono);
+    }
+
+    .registry-header {
       display: grid;
       grid-template-columns: 200px 1fr 100px 80px;
       align-items: center;
@@ -127,11 +134,11 @@
       color: var(--itip-text-muted);
     }
 
-    .ascription-row>div:nth-child(n+3) {
+    .registry-row>div:nth-child(n+3) {
       text-align: center;
     }
 
-    .ascription-header>span:nth-child(n+3) {
+    .registry-header>span:nth-child(n+3) {
       text-align: center;
     }
 
@@ -228,26 +235,26 @@
       height: 14px;
     }
 
-    .layer-detail {
+    .arc-detail {
       padding: var(--sp-md);
       border: 1px solid var(--itip-border);
       border-radius: var(--radius-md);
       margin-bottom: var(--sp-sm);
     }
 
-    .layer-detail__title {
+    .arc-detail__title {
       font-weight: 600;
       font-size: var(--fs-sm);
       margin-bottom: 4px;
     }
 
-    .layer-detail__field {
+    .arc-detail__field {
       font-size: var(--fs-xs);
       color: var(--itip-text-muted);
       padding: 2px 0;
     }
 
-    .layer-detail__field strong {
+    .arc-detail__field strong {
       color: var(--itip-text);
     }
   </style>
@@ -261,16 +268,16 @@
       <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
       <nav class="app-sidebar__nav">
         <div class="nav-section">Definition</div>
-        <a class="nav-item" href="../definition/def-dashboard.html">
+        <a class="nav-item" href="../definition/def-inventory.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" rx="1" />
             <rect x="14" y="3" width="7" height="7" rx="1" />
             <rect x="3" y="14" width="7" height="7" rx="1" />
             <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          Dashboard
+          Inventory
         </a>
-        <a class="nav-item" href="../definition/registry.html">
+        <a class="nav-item active" href="../definition/registry.html">
           <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d="M3 6h18M3 12h18M3 18h18" />
             <circle cx="7" cy="6" r="1.5" fill="currentColor" />
@@ -278,29 +285,6 @@
             <circle cx="7" cy="18" r="1.5" fill="currentColor" />
           </svg>
           Registry
-        </a>
-        <a class="nav-item" href="../definition/directives-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="9" y1="13" x2="15" y2="13" />
-            <line x1="9" y1="17" x2="15" y2="17" />
-          </svg>
-          Directives
-        </a>
-        <a class="nav-item" href="../definition/norms-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M9 11l3 3L22 4" />
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-          </svg>
-          Norms
-        </a>
-        <a class="nav-item active" href="../definition/ascriptions-list.html">
-          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12l3 3 5-6" />
-          </svg>
-          Ascriptions
         </a>
         <div class="nav-section">Frameworks</div>
         <a class="nav-item" href="../frameworks/catalog.html">
@@ -328,10 +312,10 @@
     <header class="app-header">
       <div class="app-header__breadcrumb">
         <span>Definition</span><span>/</span>
-        <strong>Ascriptions</strong>
+        <strong>Registry</strong>
       </div>
       <div class="app-header__actions">
-        <a href="ascription-create.html" class="btn btn--primary btn--sm">+ New Ascription</a>
+        <a href="ascription-create.html" class="btn btn--primary btn--sm">+ New Definition</a>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="5" />
@@ -350,14 +334,61 @@
     <main class="app-main" style="padding:0">
       <div class="list-and-detail">
         <div class="list-content">
-          <h1 class="page-title">Ascriptions</h1>
-          <p class="page-subtitle">Governed snapshots binding Definitions to subjects via Archetypes — immutable after
-            creation, only status transitions are allowed.</p>
+          <h1 class="page-title">Definition Registry</h1>
+          <p class="page-subtitle">Every governed subject in one place — filter by the archetypes that describe them in
+            <em>your</em> language (GSM base, TOGAF, ISO, NIS2, GDPR, SCAP…), not by abstract internal types.</p>
 
-          <div class="ascriptions-toolbar">
-            <input class="form-input" type="text" placeholder="Search subjects, archetypes...">
-            <select class="form-select" style="width:160px">
-              <option>All Layers</option>
+          <div class="registry-toolbar">
+            <input class="form-input" type="text" placeholder="Search subjects or archetype URIs…">
+            <select class="form-select" style="width:240px" title="Filter by archetype applied to the subject">
+              <option>All Archetypes</option>
+              <optgroup label="GSM (base)">
+                <option>gsm/Structure/v1</option>
+                <option>gsm/Mechanism/v1</option>
+                <option>gsm/Effector/v1</option>
+                <option>gsm/Receptor/v1</option>
+                <option>gsm/Interaction/v1</option>
+                <option>gsm/Archetype/v1</option>
+                <option>gsm/Directive/v1</option>
+                <option>gsm/Norm/v1</option>
+              </optgroup>
+              <optgroup label="TOGAF">
+                <option>togaf/LogicalApplicationComponent/v1</option>
+                <option>togaf/ApplicationService/v1</option>
+                <option>togaf/DataEntity/v1</option>
+                <option>togaf/OrganizationUnit/v1</option>
+                <option>togaf/Actor/v1</option>
+              </optgroup>
+              <optgroup label="SoftwareTechnology">
+                <option>swtech/ApplicationServer/v1</option>
+                <option>swtech/RelationalDatabase/v1</option>
+                <option>swtech/Microservice/v1</option>
+                <option>swtech/MessageBroker/v1</option>
+              </optgroup>
+              <optgroup label="ISO">
+                <option>iso25010/Security/v1</option>
+                <option>iso25010/Reliability/v1</option>
+                <option>iso25010/FunctionalSuitability/v1</option>
+                <option>iso25012/DataAccuracy/v1</option>
+                <option>iso25012/DataCompleteness/v1</option>
+              </optgroup>
+              <optgroup label="NIS2">
+                <option>nis2/AccessControl/v1</option>
+                <option>nis2/EssentialEntity/v1</option>
+                <option>nis2/SecurityManagement/v1</option>
+              </optgroup>
+              <optgroup label="GDPR">
+                <option>gdpr/PersonalData/v1</option>
+                <option>gdpr/DataProcessing/v1</option>
+                <option>gdpr/CrossBorderTransfer/v1</option>
+              </optgroup>
+              <optgroup label="SCAP">
+                <option>scap/CPE/v1</option>
+              </optgroup>
+            </select>
+            <select class="form-select" style="width:140px" title="Filter by sourcing framework">
+              <option>All Frameworks</option>
+              <option>GSM (base)</option>
               <option>TOGAF</option>
               <option>SoftwareTechnology</option>
               <option>ISO 25010</option>
@@ -367,19 +398,13 @@
               <option>SCAP</option>
             </select>
             <select class="form-select" style="width:130px">
-              <option>All States</option>
+              <option selected>All States</option>
               <option>Draft</option>
               <option>Proposed</option>
-              <option selected>Active</option>
-            </select>
-            <select class="form-select" style="width:140px">
-              <option>All Types</option>
-              <option selected>Structure</option>
-              <option>Mechanism</option>
-              <option>Interaction</option>
-              <option>Directive</option>
-              <option>Norm</option>
-              <option>Archetype</option>
+              <option>Active</option>
+              <option>Suspended</option>
+              <option>Deprecated</option>
+              <option>Retired</option>
             </select>
             <button class="panel-toggle active"
               onclick="var p=document.getElementById('detailPanel');p.classList.toggle('open');this.classList.toggle('active')"
@@ -387,114 +412,180 @@
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <line x1="15" y1="3" x2="15" y2="21" />
               </svg> Detail</button>
-            <span class="text-xs text-muted" style="margin-left:auto">256 of 384 ascriptions</span>
+            <span class="text-xs text-muted" style="margin-left:auto">256 of 384 definitions</span>
           </div>
 
-          <div class="ascription-header">
+          <div class="registry-header">
             <span>Subject</span>
-            <span>Archetype Layers</span>
+            <span>Archetypes</span>
             <span>State</span>
-            <span>Layers</span>
+            <span>Count</span>
           </div>
 
-          <div class="ascription-row" style="border-color:var(--itip-primary); cursor:pointer"
-            onclick="location.href='ascription-transition.html'">
+          <div class="registry-row" style="border-color:var(--itip-primary); cursor:pointer"
+            onclick="location.href='definition-detail.html?subject=api-gateway'">
             <div>
-              <div class="ascription-subject">API Gateway</div>
-              <div class="ascription-subject-type">Structure · Application Component</div>
+              <div class="registry-subject">API Gateway</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:LogicalAppComponent</span>
-              <span class="layer-badge layer-badge--swtech">SWTech:APPLICATION_SERVER</span>
-              <span class="layer-badge layer-badge--iso">ISO25010:Security</span>
-              <span class="layer-badge layer-badge--nis2">NIS2:AccessControl</span>
-              <span class="layer-badge layer-badge--scap">SCAP:CPE</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Structure/v1</span>
+              <span class="arc-badge arc-badge--togaf">TOGAF:LogicalAppComponent</span>
+              <span class="arc-badge arc-badge--swtech">SWTech:APPLICATION_SERVER</span>
+              <span class="arc-badge arc-badge--iso">ISO25010:Security</span>
+              <span class="arc-badge arc-badge--nis2">NIS2:AccessControl</span>
+              <span class="arc-badge arc-badge--scap">SCAP:CPE</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">5</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=user-database'">
             <div>
-              <div class="ascription-subject">UserDatabase</div>
-              <div class="ascription-subject-type">Structure · Data Store</div>
+              <div class="registry-subject">UserDatabase</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:DataEntity</span>
-              <span class="layer-badge layer-badge--swtech">SWTech:RELATIONAL_DATABASE</span>
-              <span class="layer-badge layer-badge--iso">ISO25012:DataAccuracy</span>
-              <span class="layer-badge layer-badge--gdpr">GDPR:PersonalData</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--togaf">TOGAF:DataEntity</span>
+              <span class="arc-badge arc-badge--swtech">SWTech:RELATIONAL_DATABASE</span>
+              <span class="arc-badge arc-badge--iso">ISO25012:DataAccuracy</span>
+              <span class="arc-badge arc-badge--gdpr">GDPR:PersonalData</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">4</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=it-operations-division'">
             <div>
-              <div class="ascription-subject">IT Operations Division</div>
-              <div class="ascription-subject-type">Structure · Organization Unit</div>
+              <div class="registry-subject">IT Operations Division</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:OrganizationUnit</span>
-              <span class="layer-badge layer-badge--nis2">NIS2:EssentialEntity</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--togaf">TOGAF:OrganizationUnit</span>
+              <span class="arc-badge arc-badge--nis2">NIS2:EssentialEntity</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">2</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=payment-service'">
             <div>
-              <div class="ascription-subject">Payment Service</div>
-              <div class="ascription-subject-type">Structure · Application Service</div>
+              <div class="registry-subject">Payment Service</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:ApplicationService</span>
-              <span class="layer-badge layer-badge--swtech">SWTech:MICROSERVICE</span>
-              <span class="layer-badge layer-badge--iso">ISO25010:FunctionalSuitability</span>
-              <span class="layer-badge layer-badge--gdpr">GDPR:DataProcessing</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--togaf">TOGAF:ApplicationService</span>
+              <span class="arc-badge arc-badge--swtech">SWTech:MICROSERVICE</span>
+              <span class="arc-badge arc-badge--iso">ISO25010:FunctionalSuitability</span>
+              <span class="arc-badge arc-badge--gdpr">GDPR:DataProcessing</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">4</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=event-bus'">
             <div>
-              <div class="ascription-subject">EventBus</div>
-              <div class="ascription-subject-type">Mechanism · Messaging</div>
+              <div class="registry-subject">EventBus</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--swtech">SWTech:MESSAGE_BROKER</span>
-              <span class="layer-badge layer-badge--iso">ISO25010:Reliability</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--swtech">SWTech:MESSAGE_BROKER</span>
+              <span class="arc-badge arc-badge--iso">ISO25010:Reliability</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">2</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=customer-data-flow'">
             <div>
-              <div class="ascription-subject">CustomerDataFlow</div>
-              <div class="ascription-subject-type">Interaction · Data Exchange</div>
+              <div class="registry-subject">CustomerDataFlow</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:DataEntity</span>
-              <span class="layer-badge layer-badge--gdpr">GDPR:CrossBorderTransfer</span>
-              <span class="layer-badge layer-badge--iso">ISO25012:DataCompleteness</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--togaf">TOGAF:DataEntity</span>
+              <span class="arc-badge arc-badge--gdpr">GDPR:CrossBorderTransfer</span>
+              <span class="arc-badge arc-badge--iso">ISO25012:DataCompleteness</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">3</div>
           </div>
 
-          <div class="ascription-row">
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=chief-security-officer'">
             <div>
-              <div class="ascription-subject">Chief Security Officer</div>
-              <div class="ascription-subject-type">Structure · Actor / Stakeholder</div>
+              <div class="registry-subject">Chief Security Officer</div>
             </div>
-            <div class="layer-stack">
-              <span class="layer-badge layer-badge--togaf">TOGAF:Actor</span>
-              <span class="layer-badge layer-badge--nis2">NIS2:SecurityManagement</span>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--togaf">TOGAF:Actor</span>
+              <span class="arc-badge arc-badge--nis2">NIS2:SecurityManagement</span>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-sm" style="text-align:center;font-weight:600">2</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=mech-tls-termination'">
+            <div>
+              <div class="registry-subject">TLS Termination</div>
+              <div class="registry-subject-type">Mechanism · part of API Gateway</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Mechanism/v1</span>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=mech-request-routing'">
+            <div>
+              <div class="registry-subject">Request Routing</div>
+              <div class="registry-subject-type">Mechanism · part of API Gateway</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Mechanism/v1</span>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=mech-payment-capture'">
+            <div>
+              <div class="registry-subject">Payment Capture</div>
+              <div class="registry-subject-type">Mechanism · part of Payment Service</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Mechanism/v1</span>
+            </div>
+            <div><span class="badge badge--deprecated">Deprecated</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=mech-user-query'">
+            <div>
+              <div class="registry-subject">User Query</div>
+              <div class="registry-subject-type">Mechanism · part of UserDatabase</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Mechanism/v1</span>
+            </div>
+            <div><span class="badge badge--suspended">Suspended</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=ix-routing-payment'">
+            <div>
+              <div class="registry-subject">Request Routing ⇄ Payment Capture</div>
+              <div class="registry-subject-type">Interaction · links two mechanisms</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Interaction/v1</span>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
+          </div>
+
+          <div class="registry-row" style="cursor:pointer" onclick="location.href='definition-detail.html?subject=ix-tls-userquery'">
+            <div>
+              <div class="registry-subject">TLS Termination ⇄ User Query</div>
+              <div class="registry-subject-type">Interaction · links two mechanisms</div>
+            </div>
+            <div class="arc-stack">
+              <span class="arc-badge arc-badge--gsm">gsm/Interaction/v1</span>
+            </div>
+            <div><span class="badge badge--active">Active</span></div>
+            <div class="text-sm" style="text-align:center;font-weight:600">1</div>
           </div>
 
         </div>
@@ -502,7 +593,7 @@
         <!-- Detail panel -->
         <div class="detail-panel open" id="detailPanel">
           <div class="detail-panel__header">
-            <h3 style="font-size:var(--fs-base);font-weight:600">Multi-Layer View</h3>
+            <h3 style="font-size:var(--fs-base);font-weight:600">Multi-Archetype View</h3>
             <button class="panel-close"
               onclick="document.getElementById('detailPanel').classList.remove('open');var t=document.querySelector('.panel-toggle');if(t)t.classList.remove('active')"
               title="Close"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -520,51 +611,51 @@
             </div>
 
             <div class="detail-section">
-              <div class="detail-label">Archetype Layers (5)</div>
-              <p class="text-xs text-muted mb-md">Each layer binds the subject to an archetype from a specific
+              <div class="detail-label">Archetypes (5)</div>
+              <p class="text-xs text-muted mb-md">Each archetype binds the subject to a schema from a specific
                 framework, applying that framework's norms and governance rules.</p>
 
-              <div class="layer-detail" style="border-color:#bfdbfe">
-                <div class="layer-detail__title"><span class="layer-badge layer-badge--togaf"
+              <div class="arc-detail" style="border-color:#bfdbfe">
+                <div class="arc-detail__title"><span class="arc-badge arc-badge--togaf"
                     style="font-size:10px">TOGAF</span> LogicalApplicationComponent</div>
-                <div class="layer-detail__field"><strong>Domain:</strong> Application Architecture</div>
-                <div class="layer-detail__field"><strong>Norms bound:</strong> 4 (arch_principle, tech_standard, ...)
+                <div class="arc-detail__field"><strong>Domain:</strong> Application Architecture</div>
+                <div class="arc-detail__field"><strong>Norms bound:</strong> 4 (arch_principle, tech_standard, ...)
                 </div>
-                <div class="layer-detail__field"><strong>State:</strong> Active since 2024-09-15</div>
+                <div class="arc-detail__field"><strong>State:</strong> Active since 2024-09-15</div>
               </div>
 
-              <div class="layer-detail" style="border-color:#cbd5e1">
-                <div class="layer-detail__title"><span class="layer-badge layer-badge--swtech"
+              <div class="arc-detail" style="border-color:#cbd5e1">
+                <div class="arc-detail__title"><span class="arc-badge arc-badge--swtech"
                     style="font-size:10px">SoftwareTechnology</span> APPLICATION_SERVER</div>
-                <div class="layer-detail__field"><strong>Functional type:</strong> Application Server (HTTP/gRPC)</div>
-                <div class="layer-detail__field"><strong>Norms bound:</strong> 2 (availability_sla, resource_limits)
+                <div class="arc-detail__field"><strong>Functional type:</strong> Application Server (HTTP/gRPC)</div>
+                <div class="arc-detail__field"><strong>Norms bound:</strong> 2 (availability_sla, resource_limits)
                 </div>
-                <div class="layer-detail__field"><strong>State:</strong> Active since 2024-09-15</div>
+                <div class="arc-detail__field"><strong>State:</strong> Active since 2024-09-15</div>
               </div>
 
-              <div class="layer-detail" style="border-color:#bbf7d0">
-                <div class="layer-detail__title"><span class="layer-badge layer-badge--iso" style="font-size:10px">ISO
+              <div class="arc-detail" style="border-color:#bbf7d0">
+                <div class="arc-detail__title"><span class="arc-badge arc-badge--iso" style="font-size:10px">ISO
                     25010</span> Security</div>
-                <div class="layer-detail__field"><strong>Quality char:</strong> Confidentiality, Integrity, Authenticity
+                <div class="arc-detail__field"><strong>Quality char:</strong> Confidentiality, Integrity, Authenticity
                 </div>
-                <div class="layer-detail__field"><strong>Norms bound:</strong> 3</div>
-                <div class="layer-detail__field"><strong>State:</strong> Active since 2024-10-01</div>
+                <div class="arc-detail__field"><strong>Norms bound:</strong> 3</div>
+                <div class="arc-detail__field"><strong>State:</strong> Active since 2024-10-01</div>
               </div>
 
-              <div class="layer-detail" style="border-color:#fecaca">
-                <div class="layer-detail__title"><span class="layer-badge layer-badge--nis2"
+              <div class="arc-detail" style="border-color:#fecaca">
+                <div class="arc-detail__title"><span class="arc-badge arc-badge--nis2"
                     style="font-size:10px">NIS2</span> AccessControl</div>
-                <div class="layer-detail__field"><strong>Article:</strong> Art.21 §2(d) — access management</div>
-                <div class="layer-detail__field"><strong>Norms bound:</strong> 2 (mfa_enforcement, rbac_check)</div>
-                <div class="layer-detail__field"><strong>State:</strong> Active since 2024-11-01</div>
+                <div class="arc-detail__field"><strong>Article:</strong> Art.21 §2(d) — access management</div>
+                <div class="arc-detail__field"><strong>Norms bound:</strong> 2 (mfa_enforcement, rbac_check)</div>
+                <div class="arc-detail__field"><strong>State:</strong> Active since 2024-11-01</div>
               </div>
 
-              <div class="layer-detail" style="border-color:#fde68a">
-                <div class="layer-detail__title"><span class="layer-badge layer-badge--scap"
+              <div class="arc-detail" style="border-color:#fde68a">
+                <div class="arc-detail__title"><span class="arc-badge arc-badge--scap"
                     style="font-size:10px">SCAP</span> CPE Platform Identifier</div>
-                <div class="layer-detail__field"><strong>CPE:</strong> cpe:2.3:a:nginx:nginx:1.25:*:*:*:*:*:*:*</div>
-                <div class="layer-detail__field"><strong>Norms bound:</strong> 1 (vulnerability_scan)</div>
-                <div class="layer-detail__field"><strong>State:</strong> Active since 2024-12-01</div>
+                <div class="arc-detail__field"><strong>CPE:</strong> cpe:2.3:a:nginx:nginx:1.25:*:*:*:*:*:*:*</div>
+                <div class="arc-detail__field"><strong>Norms bound:</strong> 1 (vulnerability_scan)</div>
+                <div class="arc-detail__field"><strong>State:</strong> Active since 2024-12-01</div>
               </div>
 
             </div>
