@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Norm Detail</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .authoring-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: var(--sp-lg);
+      min-height: calc(100vh - 56px - var(--sp-lg) * 2);
+    }
+
+    /* Read-only display */
+    .detail-value {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      padding: 6px 0;
+    }
+
+    .detail-text {
+      font-size: var(--fs-sm);
+      color: var(--itip-text);
+      line-height: 1.6;
+    }
+
+    /* Grammar preview */
+    .grammar-builder {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--sp-sm);
+      flex-wrap: wrap;
+      margin-top: var(--sp-md);
+    }
+
+    .grammar-slot {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .grammar-slot__label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--itip-text-muted);
+    }
+
+    .grammar-slot__value {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      color: var(--itip-primary);
+      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+    }
+
+    .grammar-arrow {
+      margin-bottom: 4px;
+      font-weight: 700;
+      color: var(--itip-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    /* CEL display */
+    .cel-display {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      line-height: 1.6;
+      padding: var(--sp-md);
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      white-space: pre-wrap;
+    }
+
+    /* Tolerance card */
+    .tolerance-card {
+      padding: var(--sp-md) var(--sp-lg);
+      border: 2px solid var(--itip-primary);
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--itip-primary) 5%, transparent);
+    }
+
+    .tolerance-card__label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--itip-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .tolerance-card__name {
+      font-weight: 600;
+      font-size: var(--fs-sm);
+    }
+
+    .tolerance-card__desc {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Preview panel */
+    .preview-panel {
+      background: var(--itip-surface);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-panel__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid var(--itip-border);
+      font-weight: 600;
+      font-size: var(--fs-sm);
+    }
+
+    .preview-panel__body {
+      padding: var(--sp-lg);
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .preview-section {
+      margin-bottom: var(--sp-lg);
+    }
+
+    .preview-label {
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--itip-text-muted);
+      margin-bottom: var(--sp-sm);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--itip-border);
+      margin-bottom: var(--sp-lg);
+    }
+
+    .tab {
+      padding: var(--sp-sm) var(--sp-lg);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--itip-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+
+    .tab:hover {
+      color: var(--itip-text);
+    }
+
+    .tab.active {
+      color: var(--itip-primary);
+      border-bottom-color: var(--itip-primary);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item active" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span><span>Registry</span><span>/</span>
+        <strong>response_time_p95</strong>
+      </div>
+      <div class="app-header__actions">
+        <a href="create-norm.html" class="btn btn--primary btn--sm">✎ Edit</a>
+        <a href="ascription-transition.html" class="btn btn--sm"
+          style="border:1.5px solid var(--itip-primary); color:var(--itip-primary)">⟳ Transition</a>
+        <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </button>
+        <div class="avatar">LM</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div class="authoring-layout">
+
+        <!-- Left: Detail -->
+        <div>
+          <div class="tabs">
+            <span class="tab active">Norm</span>
+            <span class="tab">Evaluation History</span>
+            <span class="tab">Parent Directive</span>
+          </div>
+
+          <!-- Norm metadata -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Norm Definition</span>
+              <span class="badge badge--active">Active</span>
+            </div>
+            <div class="card__body">
+              <div class="form-group">
+                <label class="form-label">Norm Name</label>
+                <div class="detail-value" style="font-weight:600">response_time_p95</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Parent Directive</label>
+                <div class="detail-value">
+                  <a href="directive-detail.html"
+                    style="color:var(--itip-primary);text-decoration:none;font-weight:500">Performance SLA Baseline</a>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Archetyping</label>
+                <div style="display:flex; gap:6px; align-items:center; margin-top:4px">
+                  <span
+                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted)">ref</span>
+                  <span class="arc-chip arc-chip--gsm"
+                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, var(--itip-primary) 10%, transparent);color:var(--itip-primary);border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent)">gsm/Norm/v1</span>
+                  <span
+                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted);margin-left:8px">allOf</span>
+                  <span class="arc-chip arc-chip--fw"
+                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, #d97706 10%, transparent);color:#92400e;border:1px solid color-mix(in srgb, #d97706 25%, transparent)">itip/PerformanceNorm/v1</span>
+                </div>
+              </div>
+
+              <div class="form-group mt-md">
+                <label class="form-label">Description</label>
+                <div class="detail-text">Asserts that the 95th percentile response time for all API endpoints governed
+                  by the Performance SLA Baseline directive must not exceed 200 milliseconds. Evaluates continuously
+                  against real-time telemetry.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Norm grammar -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Norm Grammar</span>
+            </div>
+            <div class="card__body">
+              <div class="grammar-builder">
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Directive</span>
+                  <span class="grammar-slot__value">Performance SLA Baseline</span>
+                </div>
+                <span class="grammar-arrow">/</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Structure</span>
+                  <span class="grammar-slot__value">API Gateway</span>
+                </div>
+                <span class="grammar-arrow">/</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Name</span>
+                  <span class="grammar-slot__value">response_time_p95</span>
+                </div>
+                <span class="grammar-arrow">/</span>
+                <div class="grammar-slot">
+                  <span class="grammar-slot__label">Qualifier</span>
+                  <span class="grammar-slot__value">latency</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tolerance -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Tolerance</span>
+            </div>
+            <div class="card__body">
+              <div class="tolerance-card">
+                <div class="tolerance-card__label">Selected Mode</div>
+                <div class="tolerance-card__name">AGGREGATED</div>
+                <div class="tolerance-card__desc">Evaluate over a rolling window. The assertion is checked periodically
+                  against aggregated values (e.g. avg, p95, max) across the window.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Applicability (WHEN) -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Applicability (WHEN)</span>
+            </div>
+            <div class="card__body">
+              <div class="cel-display">subject.type == "API_ENDPOINT"
+                && subject.labels.exists(l, l == "production")
+                && resource.status == "ACTIVE"</div>
+            </div>
+          </div>
+
+          <!-- Assertion (ASSERT) -->
+          <div class="card mb-lg">
+            <div class="card__header">
+              <span class="card__title">Assertion (ASSERT)</span>
+            </div>
+            <div class="card__body">
+              <div class="cel-display">metrics.response_time_p95_ms &lt;= 200
+                && metrics.error_rate_pct &lt; 1.0</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Preview panel -->
+        <div class="preview-panel">
+          <div class="preview-panel__header">
+            Norm Overview
+          </div>
+          <div class="preview-panel__body">
+
+            <div class="preview-section">
+              <div class="preview-label">Status</div>
+              <span class="badge badge--active">Active</span>
+              <span class="text-xs text-muted" style="margin-left:8px">Since 2025-09-12</span>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Ownership</div>
+              <div class="text-sm"><strong>Owner:</strong> L. Murray (SRE Lead)</div>
+              <div class="text-sm"><strong>Author:</strong> L. Murray (SRE Lead)</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Tolerance Mode</div>
+              <div
+                style="padding:var(--sp-sm) var(--sp-md);background:color-mix(in srgb, var(--itip-primary) 6%, transparent);border:1px solid color-mix(in srgb, var(--itip-primary) 20%, transparent);border-radius:var(--radius-md)">
+                <div class="text-sm" style="font-weight:600">AGGREGATED</div>
+                <div class="text-xs text-muted">Rolling window evaluation</div>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Governed Structure</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span
+                  style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#0d9488;margin-right:4px">S</span>
+                <a href="structure-detail.html" style="color:var(--itip-primary);text-decoration:none">API Gateway</a>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Parent Directive</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span
+                  style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#6366f1;margin-right:4px">D</span>
+                <a href="directive-detail.html" style="color:var(--itip-primary);text-decoration:none">Performance SLA
+                  Baseline</a>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Last Evaluation</div>
+              <div
+                style="padding:var(--sp-sm) var(--sp-md);background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-md)">
+                <div class="text-sm" style="font-weight:600;color:#166534">✓ Passing</div>
+                <div class="text-xs text-muted">p95 = 142ms (threshold: 200ms)</div>
+                <div class="text-xs text-muted">2025-11-28 14:32 UTC</div>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Sibling Norms</div>
+              <div class="text-sm" style="padding:4px 0">
+                <span
+                  style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#ec4899;margin-right:4px">N</span>
+                error_rate_max
+                <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+              <div class="text-sm" style="padding:4px 0">
+                <span
+                  style="width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px;color:white;background:#ec4899;margin-right:4px">N</span>
+                uptime_sla
+                <span class="badge badge--active" style="margin-left:4px">Active</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+  </script>
+</body>
+
+</html>

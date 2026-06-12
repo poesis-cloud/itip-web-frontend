@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Create Ascription</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .create-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-lg); }
+    .create-form .full-width { grid-column:1/-1; }
+    .form-group { display:flex; flex-direction:column; gap:var(--sp-xs); }
+    .form-group label { font-size:var(--fs-sm); font-weight:600; }
+    .form-group .form-help { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .layer-preview { display:flex; flex-wrap:wrap; gap:var(--sp-sm); margin-top:var(--sp-sm); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item active" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <strong>Create</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <h1 class="page-title">Create Ascription</h1>
+      <p class="page-subtitle">Select the primitive type for the new ascription. Each type has a dedicated form with fields specific to its GSM semantics.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--sp-lg); margin-top:var(--sp-lg)">
+
+        <a href="create-structure.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x1f3db;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Structure</h3>
+          <p class="text-xs text-muted" style="margin:0">Foundational aggregate — identity + governance address. Constituted of Mechanisms.</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">256 active</span></div>
+        </a>
+
+        <a href="create-mechanism.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x2699;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Mechanism</h3>
+          <p class="text-xs text-muted" style="margin:0">Logical causal unit inside a Structure. Composite of rule + I/O ports (Effectors, Receptors).</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">72 active</span></div>
+        </a>
+
+        <a href="create-interaction.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x1f517;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Interaction</h3>
+          <p class="text-xs text-muted" style="margin:0">Causal coupling between Mechanisms via Effector → Receptor binding.</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">56 active</span></div>
+        </a>
+
+        <a href="create-archetype.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x1f4d0;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Archetype</h3>
+          <p class="text-xs text-muted" style="margin:0">Static type definition (JSON Schema). Structural or rootless. Used for typing, qualifier, and data roles.</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">89 active</span></div>
+        </a>
+
+        <a href="create-directive.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x1f4dc;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Directive</h3>
+          <p class="text-xs text-muted" style="margin:0">Opens governance scope — constitutive act between governing and governed Structures along a viability dimension.</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">42 active</span></div>
+        </a>
+
+        <a href="create-norm.html" class="card" style="padding:var(--sp-lg); text-decoration:none; color:inherit; transition:border-color 0.15s, box-shadow 0.15s">
+          <div style="font-size:28px; margin-bottom:var(--sp-sm)">&#x1f4cb;</div>
+          <h3 style="margin:0 0 var(--sp-xs)">Norm</h3>
+          <p class="text-xs text-muted" style="margin:0">Measurable assertion within a Directive scope — constrains governed Structure Elements via CEL expressions.</p>
+          <div style="margin-top:var(--sp-md)"><span class="badge badge--active">137 active</span></div>
+        </a>
+
+      </div>
+
+      <div style="margin-top:var(--sp-lg); padding:var(--sp-md); background:#dbeafe; border-radius:var(--radius-md); border-left:3px solid var(--itip-primary); font-size:var(--fs-sm)">
+        <strong>Note:</strong> Effectors and Receptors are <em>auto-derived</em> from Mechanism rules by the Definition Manager — they do not require manual creation.
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

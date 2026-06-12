@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Directive Impact Analysis</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .impact-graph { display:flex; flex-direction:column; gap:var(--sp-md); }
+    .impact-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-md); margin-bottom:var(--sp-lg); }
+    .impact-stat { text-align:center; padding:var(--sp-lg); background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-lg); }
+    .impact-stat__value { font-size:var(--fs-2xl); font-weight:700; }
+    .impact-stat__label { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:var(--sp-xs); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item active" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="directives-list.html">Directives</a><span>/</span>
+        <a href="directive-detail.html">Data Encryption Standard</a><span>/</span>
+        <strong>Impact Analysis</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <div class="detail-header">
+        <div>
+          <h1 class="page-title">Data Encryption Standard</h1>
+          <div class="detail-header__meta">
+            <span class="badge badge--active">Active</span>
+            <span class="text-muted text-sm">NIS2 · AccessControl · EncryptionAtRest</span>
+          </div>
+        </div>
+        <a href="directive-detail.html" class="btn btn--secondary">← Back to Detail</a>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="sub-tabs">
+        <a class="sub-tab" href="directive-detail.html">Overview</a>
+        <a class="sub-tab" href="directive-norms.html">Norms <span class="sub-tab__count">3</span></a>
+        <a class="sub-tab active" href="directive-impact.html">Impact Analysis</a>
+        <a class="sub-tab" href="directive-history.html">History</a>
+      </div>
+
+      <!-- Impact summary -->
+      <div class="impact-summary">
+        <div class="impact-stat">
+          <div class="impact-stat__value" style="color:var(--compliance-fail)">12</div>
+          <div class="impact-stat__label">Structures Affected</div>
+        </div>
+        <div class="impact-stat">
+          <div class="impact-stat__value" style="color:var(--compliance-warn)">20</div>
+          <div class="impact-stat__label">Ascriptions Impacted</div>
+        </div>
+        <div class="impact-stat">
+          <div class="impact-stat__value">3</div>
+          <div class="impact-stat__label">Cascading Directives</div>
+        </div>
+      </div>
+
+      <!-- Impact graph -->
+      <div class="card" style="padding:var(--sp-lg)">
+        <h3 style="margin-bottom:var(--sp-md)">Affected Structures</h3>
+        <div class="impact-graph">
+          <div class="impact-node impact-node--high">
+            <div style="flex:1">
+              <div style="font-weight:600">UserDatabase</div>
+              <div class="text-muted text-sm">DataEntity · 4 norms affected · 8 ascriptions</div>
+            </div>
+            <span class="badge badge--fail">High</span>
+          </div>
+          <div class="impact-node impact-node--high">
+            <div style="flex:1">
+              <div style="font-weight:600">CustomerDB</div>
+              <div class="text-muted text-sm">DataEntity · 3 norms affected · 6 ascriptions</div>
+            </div>
+            <span class="badge badge--fail">High</span>
+          </div>
+          <div class="impact-node impact-node--medium">
+            <div style="flex:1">
+              <div style="font-weight:600">Payment Service</div>
+              <div class="text-muted text-sm">ApplicationService · 2 norms affected · 3 ascriptions</div>
+            </div>
+            <span class="badge badge--warn">Medium</span>
+          </div>
+          <div class="impact-node impact-node--medium">
+            <div style="flex:1">
+              <div style="font-weight:600">API Gateway</div>
+              <div class="text-muted text-sm">LogicalApplicationComponent · 1 norm affected · 2 ascriptions</div>
+            </div>
+            <span class="badge badge--warn">Medium</span>
+          </div>
+          <div class="impact-node impact-node--low">
+            <div style="flex:1">
+              <div style="font-weight:600">AuditService</div>
+              <div class="text-muted text-sm">ApplicationService · 1 norm affected · 1 ascription</div>
+            </div>
+            <span class="badge badge--pass">Low</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cascading directives -->
+      <div class="card" style="padding:var(--sp-lg); margin-top:var(--sp-lg)">
+        <h3 style="margin-bottom:var(--sp-md)">Cascading Directives</h3>
+        <div class="impact-graph">
+          <div class="impact-node impact-node--medium">
+            <div style="flex:1">
+              <div style="font-weight:600">API Security Policy</div>
+              <div class="text-muted text-sm">TOGAF · SecurityArchitecture — shared structures overlap on TLS requirements</div>
+            </div>
+            <a href="directive-detail.html" class="btn btn--ghost btn--sm">View →</a>
+          </div>
+          <div class="impact-node impact-node--low">
+            <div style="flex:1">
+              <div style="font-weight:600">Personal Data Processing</div>
+              <div class="text-muted text-sm">GDPR · DataProtection — encryption norms overlap on PII-classified entities</div>
+            </div>
+            <a href="directive-detail.html" class="btn btn--ghost btn--sm">View →</a>
+          </div>
+          <div class="impact-node impact-node--low">
+            <div style="flex:1">
+              <div style="font-weight:600">Incident Response Protocol</div>
+              <div class="text-muted text-sm">NIS2 · IncidentHandling — crypto-failure triggers incident notification norm</div>
+            </div>
+            <a href="directive-detail.html" class="btn btn--ghost btn--sm">View →</a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

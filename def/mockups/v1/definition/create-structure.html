@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Create Structure</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Base form ─── */
+    .create-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-md);
+    }
+
+    .create-form .full-width {
+      grid-column: 1/-1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-xs);
+    }
+
+    .form-group label {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    .form-help {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+
+    .identity-bound {
+      border-left: 3px solid var(--itip-primary);
+      padding-left: var(--sp-sm);
+    }
+
+    .identity-bound label::after {
+      content: " ⟡";
+      color: var(--itip-primary);
+      font-size: var(--fs-xs);
+    }
+
+    /* ── Sections ─── */
+    .form-section {
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--sp-lg);
+      background: var(--itip-surface);
+    }
+
+    .form-section__header {
+      padding: 10px var(--sp-md);
+      background: var(--itip-bg);
+      border-bottom: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section__title {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--itip-text-muted);
+    }
+
+    .form-section__body {
+      padding: var(--sp-md);
+    }
+
+    .form-section__body .create-form {
+      gap: var(--sp-md);
+    }
+
+    /* ── Facet pills ─── */
+    .facet-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .facet-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 12px;
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--itip-border);
+      background: transparent;
+      color: var(--itip-text-muted);
+    }
+
+    .facet-pill:hover {
+      border-color: var(--itip-primary-light);
+      color: var(--itip-text);
+    }
+
+    .facet-pill.active {
+      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      border-color: var(--itip-primary);
+      color: var(--itip-primary);
+      font-weight: 600;
+    }
+
+    .facet-pill .pill-x {
+      font-size: 11px;
+      margin-left: 2px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    .facet-pill.active .pill-x {
+      opacity: 1;
+    }
+
+    /* ── Facet-contributed fields ─── */
+    .facet-fields {
+      margin-top: var(--sp-md);
+      padding-top: var(--sp-md);
+      border-top: 1px dashed color-mix(in srgb, var(--itip-border) 60%, transparent);
+    }
+
+    .facet-group-label {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      color: var(--itip-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--sp-sm);
+      margin-top: var(--sp-md);
+    }
+
+    .facet-group-label:first-child {
+      margin-top: 0;
+    }
+
+    .facet-group-label .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── Statement mode toggle ─── */
+    .mode-toggle {
+      display: inline-flex;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .mode-toggle__btn {
+      padding: 4px 12px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--itip-text-muted);
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mode-toggle__btn:hover {
+      color: var(--itip-text);
+    }
+
+    .mode-toggle__btn.active {
+      background: var(--itip-primary);
+      color: white;
+    }
+
+    .stmt-panel {
+      display: none;
+      margin-top: var(--sp-md);
+    }
+
+    .stmt-panel.active {
+      display: block;
+    }
+
+    /* ── Guided fields ─── */
+    .guided-field {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: var(--sp-sm);
+      align-items: center;
+      padding: var(--sp-sm) 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+    }
+
+    .guided-field:last-child {
+      border-bottom: none;
+    }
+
+    .guided-field__label {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--itip-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .guided-field__ib {
+      color: var(--itip-primary);
+    }
+
+    /* ── Schema preview ─── */
+    .schema-preview {
+      margin-top: var(--sp-sm);
+    }
+
+    .schema-preview__toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: var(--fs-xs);
+      color: var(--itip-primary);
+      cursor: pointer;
+      padding: 2px 0;
+      border: none;
+      background: none;
+      font-weight: 500;
+    }
+
+    .schema-preview__toggle:hover {
+      text-decoration: underline;
+    }
+
+    .schema-preview__panel {
+      margin-top: var(--sp-sm);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      background: var(--itip-bg);
+      overflow: hidden;
+    }
+
+    .schema-preview__head {
+      padding: var(--sp-sm) var(--sp-md);
+      border-bottom: 1px solid var(--itip-border);
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+
+    .schema-preview__head strong {
+      color: var(--itip-text);
+    }
+
+    .schema-preview__table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-xs);
+    }
+
+    .schema-preview__table th {
+      text-align: left;
+      padding: 5px var(--sp-md);
+      background: color-mix(in srgb, var(--itip-bg) 60%, var(--itip-border));
+      font-weight: 600;
+      color: var(--itip-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 10px;
+      border-bottom: 1px solid var(--itip-border);
+    }
+
+    .schema-preview__table td {
+      padding: 5px var(--sp-md);
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+      vertical-align: top;
+    }
+
+    .schema-preview__table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .schema-preview__table code {
+      font-size: var(--fs-xs);
+      color: var(--itip-primary);
+    }
+
+    .schema-preview__table .ib {
+      color: var(--itip-primary);
+      font-size: 10px;
+    }
+
+    .schema-preview__group-label {
+      padding: var(--sp-sm) var(--sp-md);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      color: var(--itip-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--itip-border);
+    }
+
+    .schema-preview__group-label .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── Preview ─── */
+    .preview-line {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+    }
+
+    .preview-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar (placeholder — batch script will replace) -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Structure</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Create Structure Ascription</h1>
+      <p class="page-subtitle">Define a new Structure — the foundational aggregate in GSM. A Structure's
+        <code>purpose</code> is its identity and governance address.</p>
+
+      <!-- ═══ Section 1: Actors ═══ -->
+      <div class="form-section" style="margin-top:var(--sp-lg)">
+        <div class="form-section__header">
+          <span class="form-section__title">Actors</span>
+        </div>
+        <div class="form-section__body">
+          <div class="create-form">
+            <div class="form-group">
+              <label>Owner</label>
+              <select class="form-select">
+                <option selected>E. Archer (Enterprise Architect)</option>
+                <option>S. Kumar (Security Architect)</option>
+                <option>R. Patel (Compliance Analyst)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Author</label>
+              <input class="form-input" type="text" value="E. Archer (Enterprise Architect)" disabled>
+              <div class="form-help">Automatically detected from login session</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 2: Archetypes ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Archetypes</span>
+        </div>
+        <div class="form-section__body">
+          <div class="create-form">
+            <div class="form-group">
+              <label>is</label>
+              <select class="form-select">
+                <option value="">Select archetype…</option>
+                <optgroup label="GSM Base">
+                  <option value="gsm/Structure/v1" selected>Structure (gsm/Structure/v1)</option>
+                </optgroup>
+                <optgroup label="TOGAF">
+                  <option value="togaf/LogicalAppComponent/v1">LogicalAppComponent</option>
+                  <option value="togaf/DataEntity/v1">DataEntity</option>
+                  <option value="togaf/TechnologyComponent/v1">TechnologyComponent</option>
+                  <option value="togaf/ApplicationService/v1">ApplicationService</option>
+                  <option value="togaf/PlatformService/v1">PlatformService</option>
+                  <option value="togaf/OrganizationUnit/v1">OrganizationUnit</option>
+                </optgroup>
+                <optgroup label="ITIP">
+                  <option value="itip/SoftwareTechnology/v1">SoftwareTechnology</option>
+                </optgroup>
+              </select>
+              <div class="form-help">Typing archetype — determines statement schema via $ref chain</div>
+              <div class="schema-preview">
+                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview schema
+                  properties</button>
+                <div class="schema-preview__panel" style="display:none">
+                  <div class="schema-preview__head"><strong>gsm/Structure/v1</strong> — Base GSM structure definition
+                  </div>
+                  <table class="schema-preview__table">
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th></th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>purpose</code></td>
+                        <td>string</td>
+                        <td class="ib">⟡</td>
+                        <td>Unique name identifying this structure's functional purpose (kebab-case, globally unique)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="schema-preview__head" style="border-top:1px solid var(--itip-border)">
+                    <strong>togaf/LogicalAppComponent/v1</strong> — TOGAF application building block</div>
+                  <table class="schema-preview__table">
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th></th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>purpose</code></td>
+                        <td>string</td>
+                        <td class="ib">⟡</td>
+                        <td>Inherited — structure purpose identifier</td>
+                      </tr>
+                      <tr>
+                        <td><code>tier</code></td>
+                        <td>enum</td>
+                        <td></td>
+                        <td>Deployment tier (public-facing, internal, backend, data)</td>
+                      </tr>
+                      <tr>
+                        <td><code>classification</code></td>
+                        <td>enum</td>
+                        <td></td>
+                        <td>Data classification level (public, internal, confidential, restricted)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>composed of</label>
+              <div class="form-help" style="margin-bottom:var(--sp-sm)">Additional archetype layers via allOf. Selected
+                facets contribute fields to the statement below.</div>
+              <div class="facet-pills">
+                <button type="button" class="facet-pill active" onclick="toggleFacet(this)">ISO 25010 · Reliability
+                  <span class="pill-x">×</span></button>
+                <button type="button" class="facet-pill" onclick="toggleFacet(this)">ISO 25010 · Security <span
+                    class="pill-x">×</span></button>
+                <button type="button" class="facet-pill active" onclick="toggleFacet(this)">NIS2 · Monitoring <span
+                    class="pill-x">×</span></button>
+                <button type="button" class="facet-pill" onclick="toggleFacet(this)">GDPR · DataProcessing <span
+                    class="pill-x">×</span></button>
+                <button type="button" class="facet-pill" onclick="toggleFacet(this)">SCAP · CPE <span
+                    class="pill-x">×</span></button>
+              </div>
+              <div class="schema-preview">
+                <button class="schema-preview__toggle" onclick="togglePreview(this)">▸ Preview facet properties (2
+                  active facets)</button>
+                <div class="schema-preview__panel" style="display:none">
+                  <div class="schema-preview__group-label"><span class="dot" style="background:#22c55e"></span> ISO
+                    25010 · Reliability</div>
+                  <table class="schema-preview__table">
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th></th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>availability</code></td>
+                        <td>number</td>
+                        <td></td>
+                        <td>Target availability percentage (e.g., 99.95)</td>
+                      </tr>
+                      <tr>
+                        <td><code>mttr</code></td>
+                        <td>string</td>
+                        <td></td>
+                        <td>Mean time to recovery — ISO 8601 duration (e.g., PT30M)</td>
+                      </tr>
+                      <tr>
+                        <td><code>mtbf</code></td>
+                        <td>string</td>
+                        <td></td>
+                        <td>Mean time between failures — ISO 8601 duration</td>
+                      </tr>
+                      <tr>
+                        <td><code>recoveryPoint</code></td>
+                        <td>string</td>
+                        <td></td>
+                        <td>Recovery point objective — ISO 8601 duration</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="schema-preview__group-label"><span class="dot" style="background:#ef4444"></span> NIS2 ·
+                    Monitoring</div>
+                  <table class="schema-preview__table">
+                    <thead>
+                      <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th></th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>monitoringClass</code></td>
+                        <td>enum</td>
+                        <td></td>
+                        <td>NIS2 entity classification (essential, important)</td>
+                      </tr>
+                      <tr>
+                        <td><code>logRetention</code></td>
+                        <td>string</td>
+                        <td></td>
+                        <td>Minimum log retention period — ISO 8601 duration (e.g., P18M)</td>
+                      </tr>
+                      <tr>
+                        <td><code>incidentDetection</code></td>
+                        <td>boolean</td>
+                        <td></td>
+                        <td>Whether automated incident detection is enabled</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 3: Statement ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Statement</span>
+          <div class="mode-toggle">
+            <button type="button" class="mode-toggle__btn active" onclick="switchStmtMode(this,'guided')">⚡
+              Guided</button>
+            <button type="button" class="mode-toggle__btn" onclick="switchStmtMode(this,'json')">{&nbsp;} JSON</button>
+          </div>
+        </div>
+        <div class="form-section__body">
+
+          <!-- Guided mode -->
+          <div class="stmt-panel active" id="stmtGuided">
+            <div class="guided-field">
+              <span class="guided-field__label guided-field__ib">purpose ⟡</span>
+              <input class="form-input" type="text" value="monitoring-stack" placeholder="kebab-case, globally unique">
+            </div>
+
+            <!-- Facet-contributed fields -->
+            <div class="facet-fields">
+              <div class="facet-group-label"><span class="dot" style="background:#22c55e"></span> ISO 25010 ·
+                Reliability</div>
+              <div class="guided-field">
+                <span class="guided-field__label">availability</span>
+                <input class="form-input" type="text" value="99.95" placeholder="% target">
+              </div>
+              <div class="guided-field">
+                <span class="guided-field__label">mttr</span>
+                <input class="form-input" type="text" value="PT30M" placeholder="ISO 8601 duration">
+              </div>
+
+              <div class="facet-group-label"><span class="dot" style="background:#ef4444"></span> NIS2 · Monitoring
+              </div>
+              <div class="guided-field">
+                <span class="guided-field__label">monitoringClass</span>
+                <select class="form-select" style="font-size:var(--fs-xs)">
+                  <option>essential</option>
+                  <option selected>important</option>
+                </select>
+              </div>
+              <div class="guided-field">
+                <span class="guided-field__label">logRetention</span>
+                <input class="form-input" type="text" value="P18M" placeholder="ISO 8601 duration">
+              </div>
+            </div>
+          </div>
+
+          <!-- JSON mode -->
+          <div class="stmt-panel" id="stmtJson">
+            <textarea class="form-input" rows="10" style="font-family:var(--font-mono); font-size:var(--fs-xs)">{
+  "purpose": "monitoring-stack",
+  "availability": 99.95,
+  "mttr": "PT30M",
+  "monitoringClass": "important",
+  "logRetention": "P18M"
+}</textarea>
+          </div>
+          <div class="form-help" style="margin-top:var(--sp-sm)">Validated against <strong>gsm/Structure/v1</strong> —
+            schema: purpose [+ active facet fields]</div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 4: Preview ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Ascription Preview</span>
+        </div>
+        <div class="form-section__body">
+          <div class="preview-line">
+            <strong>STRUCTURE</strong> "monitoring-stack" TYPED BY <span
+              style="color:var(--itip-primary)">gsm/Structure/v1</span>
+          </div>
+          <div class="preview-badges">
+            <span class="badge" style="background:#14532d; color:#86efac; font-size:var(--fs-xs)">ISO 25010 ·
+              Reliability</span>
+            <span class="badge" style="background:#7f1d1d; color:#fca5a5; font-size:var(--fs-xs)">NIS2 ·
+              Monitoring</span>
+            <span class="badge badge--draft">Initial state: DRAFT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
+        <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+        <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+        <button class="btn btn--primary">Create Structure</button>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    function switchStmtMode(btn, mode) {
+      btn.closest('.mode-toggle').querySelectorAll('.mode-toggle__btn').forEach(function (b) { b.classList.remove('active') });
+      btn.classList.add('active');
+      document.getElementById('stmtGuided').classList.toggle('active', mode === 'guided');
+      document.getElementById('stmtJson').classList.toggle('active', mode === 'json');
+    }
+    function toggleFacet(pill) { pill.classList.toggle('active'); }
+    function togglePreview(btn) {
+      var panel = btn.nextElementSibling;
+      var open = panel.style.display !== 'none';
+      panel.style.display = open ? 'none' : 'block';
+      btn.textContent = btn.textContent.replace(/^[▸▾]/, open ? '▸' : '▾');
+    }
+  </script>
+</body>
+
+</html>

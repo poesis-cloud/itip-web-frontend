@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Directive Norms</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item active" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="directives-list.html">Directives</a><span>/</span>
+        <a href="directive-detail.html">Data Encryption Standard</a><span>/</span>
+        <strong>Norms</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+      <div class="detail-header">
+        <div>
+          <h1 class="page-title">Data Encryption Standard</h1>
+          <div class="detail-header__meta">
+            <span class="badge badge--active">Active</span>
+            <span class="text-muted text-sm">NIS2 · AccessControl · EncryptionAtRest</span>
+          </div>
+        </div>
+        <a href="directive-detail.html" class="btn btn--secondary">← Back to Detail</a>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="sub-tabs">
+        <a class="sub-tab" href="directive-detail.html">Overview</a>
+        <a class="sub-tab active" href="directive-norms.html">Norms <span class="sub-tab__count">3</span></a>
+        <a class="sub-tab" href="directive-impact.html">Impact Analysis</a>
+        <a class="sub-tab" href="directive-history.html">History</a>
+      </div>
+
+      <!-- Norms list for this directive -->
+      <div class="card" style="margin-bottom:var(--sp-lg)">
+        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--itip-border)">
+          <strong>3 Norms derived from this directive</strong>
+          <button class="btn btn--primary btn--sm">+ Add Norm</button>
+        </div>
+
+        <!-- Norm 1 -->
+        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start">
+            <div>
+              <div style="font-weight:600">encryption_at_rest</div>
+              <div class="text-muted text-sm" style="margin-top:2px">ON UserDatabase, CustomerDB · WHEN data.classification == "PII"</div>
+            </div>
+            <span class="badge badge--active">Active</span>
+          </div>
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+            ASSERT subject.encryption.algorithm in ["AES-256", "ChaCha20"] &amp;&amp; subject.encryption.keyRotationDays &lt;= 90
+          </div>
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+            <span>Ascriptions: <strong>12</strong></span>
+            <span>Pass rate: <strong style="color:var(--compliance-pass)">92%</strong></span>
+            <span>Last evaluated: 2h ago</span>
+          </div>
+        </div>
+
+        <!-- Norm 2 -->
+        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start">
+            <div>
+              <div style="font-weight:600">encryption_in_transit</div>
+              <div class="text-muted text-sm" style="margin-top:2px">ON ALL ApplicationService · WHEN interaction.type == "external"</div>
+            </div>
+            <span class="badge badge--active">Active</span>
+          </div>
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+            ASSERT subject.tls.version &gt;= "1.2" &amp;&amp; subject.tls.cipherSuite != "NULL"
+          </div>
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+            <span>Ascriptions: <strong>8</strong></span>
+            <span>Pass rate: <strong style="color:var(--compliance-pass)">100%</strong></span>
+            <span>Last evaluated: 2h ago</span>
+          </div>
+        </div>
+
+        <!-- Norm 3 -->
+        <div style="padding:var(--sp-md)">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start">
+            <div>
+              <div style="font-weight:600">key_management_rotation</div>
+              <div class="text-muted text-sm" style="margin-top:2px">ON ALL TechnologyComponent · WHEN subject.hasEncryptionKeys == true</div>
+            </div>
+            <span class="badge badge--proposed">Proposed</span>
+          </div>
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+            ASSERT subject.keyRotation.enabled == true &amp;&amp; subject.keyRotation.intervalDays &lt;= 90
+          </div>
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+            <span>Ascriptions: <strong>0</strong> (pending)</span>
+            <span>Pass rate: <strong>—</strong></span>
+            <span>Awaiting approval</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

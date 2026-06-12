@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — NIS2</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    .fw-header { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--sp-lg); margin-bottom:var(--sp-lg); }
+    .fw-header__info { flex:1; }
+    .fw-header__version { font-size:var(--fs-sm); color:var(--itip-text-muted); }
+    .fw-stats { display:flex; gap:var(--sp-xl); margin:var(--sp-lg) 0; }
+    .fw-stat { text-align:center; }
+    .fw-stat__value { font-size:var(--fs-2xl); font-weight:700; }
+    .fw-stat__label { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .domain-card { border:1px solid var(--itip-border); border-radius:var(--radius-lg); padding:var(--sp-lg); margin-bottom:var(--sp-md); }
+    .domain-card__header { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-sm); }
+    .domain-card__title { font-weight:600; }
+    .domain-card__count { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .archetype-chip { display:inline-block; padding:2px 8px; font-size:var(--fs-xs); border-radius:var(--radius-full); background:var(--itip-bg); border:1px solid var(--itip-border); margin:2px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ======== Sidebar ======== -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item active" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- ======== Header ======== -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Frameworks</span><span>/</span>
+        <a href="catalog.html">Catalog</a><span>/</span>
+        <strong>NIS2</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="btn btn--secondary btn--sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="btn btn--ghost btn--sm" title="Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- ======== Main ======== -->
+    <main class="app-main">
+
+      <!-- Framework Header -->
+      <div class="fw-header">
+        <div class="fw-header__info">
+          <h1 class="page-title">NIS2</h1>
+          <div class="fw-header__version">Directive (EU) 2022/2555 &middot; Network and Information Security Directive &middot; Sourced Jan 2026</div>
+        </div>
+        <div>
+          <span class="badge badge--approved">Active</span>
+        </div>
+      </div>
+
+      <!-- Sub-tabs -->
+      <div class="sub-tabs">
+        <a class="sub-tab active" href="framework-detail-nis2.html">Overview</a>
+        <a class="sub-tab" href="#">Archetypes <span class="sub-tab__count">6</span></a>
+        <a class="sub-tab" href="#">Directives <span class="sub-tab__count">4</span></a>
+        <a class="sub-tab" href="#">Norms <span class="sub-tab__count">21</span></a>
+        <a class="sub-tab" href="#">Sourcing History</a>
+      </div>
+
+      <!-- KPI stats -->
+      <div class="fw-stats">
+        <div class="fw-stat">
+          <div class="fw-stat__value">6</div>
+          <div class="fw-stat__label">Archetype Schemas</div>
+        </div>
+        <div class="fw-stat">
+          <div class="fw-stat__value">4</div>
+          <div class="fw-stat__label">Domains</div>
+        </div>
+        <div class="fw-stat">
+          <div class="fw-stat__value">4</div>
+          <div class="fw-stat__label">Directives</div>
+        </div>
+        <div class="fw-stat">
+          <div class="fw-stat__value">21</div>
+          <div class="fw-stat__label">Norms</div>
+        </div>
+        <div class="fw-stat">
+          <div class="fw-stat__value" style="color:var(--compliance-pass)">100%</div>
+          <div class="fw-stat__label">Schema Valid</div>
+        </div>
+      </div>
+
+      <!-- Domain cards -->
+      <h2 style="font-size:var(--fs-lg); margin-bottom:var(--sp-md);">Domains</h2>
+
+      <div class="domain-card">
+        <div class="domain-card__header">
+          <div class="domain-card__title">Entity Classification</div>
+          <div class="domain-card__count">1 archetype &middot; 1 directive</div>
+        </div>
+        <div>
+          <span class="archetype-chip">Nis2EntityClassification</span>
+        </div>
+      </div>
+
+      <div class="domain-card">
+        <div class="domain-card__header">
+          <div class="domain-card__title">Incident Reporting</div>
+          <div class="domain-card__count">2 archetypes &middot; 1 directive &middot; 6 norms</div>
+        </div>
+        <div>
+          <span class="archetype-chip">Nis2IncidentReporting</span>
+          <span class="archetype-chip">Nis2IncidentSeverity</span>
+        </div>
+      </div>
+
+      <div class="domain-card">
+        <div class="domain-card__header">
+          <div class="domain-card__title">Risk Management</div>
+          <div class="domain-card__count">2 archetypes &middot; 1 directive &middot; 12 norms</div>
+        </div>
+        <div>
+          <span class="archetype-chip">Nis2RiskManagement</span>
+          <span class="archetype-chip">Nis2SecurityPolicy</span>
+        </div>
+      </div>
+
+      <div class="domain-card">
+        <div class="domain-card__header">
+          <div class="domain-card__title">Supply Chain Security</div>
+          <div class="domain-card__count">1 archetype &middot; 1 directive &middot; 3 norms</div>
+        </div>
+        <div>
+          <span class="archetype-chip">Nis2SupplyChainAssessment</span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Copilot Agent Chat Toggle -->
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span class="copilot-toggle__badge">&#10022;</span>
+  </button>
+  <script>
+    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+  </script>
+</body>
+</html>

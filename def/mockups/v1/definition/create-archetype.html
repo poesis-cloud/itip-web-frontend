@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITIP — Create Archetype</title>
+  <link rel="stylesheet" href="../itip-design-system.css">
+  <style>
+    /* ── Base form ─── */
+    .create-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-md);
+    }
+
+    .create-form .full-width {
+      grid-column: 1/-1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-xs);
+    }
+
+    .form-group label {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    .form-help {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+    }
+
+    /* ── Sections ─── */
+    .form-section {
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--sp-lg);
+      background: var(--itip-surface);
+    }
+
+    .form-section__header {
+      padding: 10px var(--sp-md);
+      background: var(--itip-bg);
+      border-bottom: 1px solid var(--itip-border);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-section__title {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--itip-text-muted);
+    }
+
+    .form-section__body {
+      padding: var(--sp-md);
+    }
+
+    .form-section__body .create-form {
+      gap: var(--sp-md);
+    }
+
+    /* ── Kind selector ─── */
+    .role-selector {
+      display: flex;
+      gap: var(--sp-md);
+    }
+
+    .role-card {
+      flex: 1;
+      padding: var(--sp-md);
+      border: 2px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: border-color 0.15s;
+      text-align: center;
+    }
+
+    .role-card:hover {
+      border-color: var(--itip-primary-light);
+    }
+
+    .role-card--selected {
+      border-color: var(--itip-primary);
+      background: var(--itip-bg);
+    }
+
+    .role-card__title {
+      font-weight: 600;
+      font-size: var(--fs-sm);
+    }
+
+    .role-card__desc {
+      font-size: var(--fs-xs);
+      color: var(--itip-text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Statement mode toggle ─── */
+    .mode-toggle {
+      display: inline-flex;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .mode-toggle__btn {
+      padding: 4px 12px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--itip-text-muted);
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mode-toggle__btn:hover {
+      color: var(--itip-text);
+    }
+
+    .mode-toggle__btn.active {
+      background: var(--itip-primary);
+      color: white;
+    }
+
+    .stmt-panel {
+      display: none;
+      margin-top: var(--sp-md);
+    }
+
+    .stmt-panel.active {
+      display: block;
+    }
+
+    /* ── Schema builder ─── */
+    .schema-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-sm);
+      margin-bottom: var(--sp-md);
+      padding: var(--sp-md);
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+    }
+
+    .schema-meta label {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--itip-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .schema-meta .full {
+      grid-column: 1/-1;
+    }
+
+    .code-editor {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      padding: var(--sp-md);
+      line-height: 1.6;
+    }
+
+    .prop-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--sp-sm);
+    }
+
+    .prop-table th {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--itip-text-muted);
+      text-align: left;
+      padding: var(--sp-xs) var(--sp-sm);
+      border-bottom: 2px solid var(--itip-border);
+    }
+
+    .prop-table td {
+      padding: var(--sp-xs) var(--sp-sm);
+      border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+      vertical-align: middle;
+      font-size: var(--fs-xs);
+    }
+
+    .prop-table input,
+    .prop-table select {
+      font-size: var(--fs-xs);
+      padding: 4px 8px;
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-sm);
+      background: var(--itip-surface);
+      color: var(--itip-text);
+      width: 100%;
+    }
+
+    .prop-table .prop-remove {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--itip-text-muted);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .prop-table .prop-remove:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .add-prop {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--itip-primary);
+      background: transparent;
+      border: 1px dashed var(--itip-primary);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      margin-top: var(--sp-sm);
+    }
+
+    .add-prop:hover {
+      background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
+    }
+
+    /* ── Preview ─── */
+    .chain-preview {
+      padding: var(--sp-md);
+      background: var(--itip-bg);
+      border: 1px solid var(--itip-border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+    }
+
+    .chain-arrow {
+      color: var(--itip-primary);
+      font-weight: 600;
+    }
+
+    .preview-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar (placeholder) -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__logo"><span class="logo-icon">AC</span> ACME Corp</div>
+      <nav class="app-sidebar__nav">
+        <div class="nav-section">Definition</div>
+        <a class="nav-item" href="../definition/def-dashboard.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item active" href="../definition/registry.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+            <circle cx="7" cy="6" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="7" cy="18" r="1.5" fill="currentColor" />
+          </svg>
+          Registry
+        </a>
+        <a class="nav-item" href="../definition/directives-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="9" y1="13" x2="15" y2="13" />
+            <line x1="9" y1="17" x2="15" y2="17" />
+          </svg>
+          Directives
+        </a>
+        <a class="nav-item" href="../definition/norms-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          Norms
+        </a>
+        <a class="nav-item" href="../definition/ascriptions-list.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l3 3 5-6" />
+          </svg>
+          Ascriptions
+        </a>
+        <div class="nav-section">Frameworks</div>
+        <a class="nav-item" href="../frameworks/catalog.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+          Catalog <span class="nav-badge">5</span>
+        </a>
+        <a class="nav-item" href="../frameworks/stack-composer.html">
+          <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M12 8v8M8 12h8" />
+          </svg>
+          Stack Composer
+        </a>
+      </nav>
+      <div class="app-sidebar__footer">
+        <span>IT Intelligence Platform</span>
+        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-header__breadcrumb">
+        <span>Definition</span><span>/</span>
+        <a href="ascriptions-list.html">Ascriptions</a><span>/</span>
+        <a href="ascription-create.html">Create</a><span>/</span>
+        <strong>Archetype</strong>
+      </div>
+      <div class="app-header__actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="theme-icon--dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </button>
+        <div class="avatar">EA</div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="app-main">
+      <h1 class="page-title">Create Archetype Ascription</h1>
+      <p class="page-subtitle">Define a new Archetype — a static type definition (JSON Schema). Structural archetypes
+        have an allOf chain to a GSM base; rootless archetypes serve as qualifiers or data types.</p>
+
+      <!-- ═══ Section 1: Identity & Typing ═══ -->
+      <div class="form-section" style="margin-top:var(--sp-lg)">
+        <div class="form-section__header">
+          <span class="form-section__title">Identity &amp; Typing</span>
+        </div>
+        <div class="form-section__body">
+          <!-- Kind selector -->
+          <div style="margin-bottom:var(--sp-md)">
+            <label style="font-size:var(--fs-sm); font-weight:600; display:block; margin-bottom:var(--sp-xs)">Archetype
+              Kind</label>
+            <div class="role-selector">
+              <div class="role-card role-card--selected" onclick="selectKind(this,'structural')">
+                <div class="role-card__title">Structural</div>
+                <div class="role-card__desc">Has allOf chain to one GSM base (Structure, Mechanism, etc.). Used for
+                  <strong>typing</strong> role.</div>
+              </div>
+              <div class="role-card" onclick="selectKind(this,'rootless')">
+                <div class="role-card__title">Rootless</div>
+                <div class="role-card__desc">No allOf to GSM base. Used for <strong>qualifier</strong> and
+                  <strong>data</strong> roles (viability dimensions, data contracts).</div>
+              </div>
+            </div>
+          </div>
+          <div class="create-form">
+            <div class="form-group">
+              <label>Archetype Name</label>
+              <input class="form-input" type="text" placeholder="e.g., LogicalApplicationComponent"
+                value="InfrastructureService">
+              <div class="form-help">Must be unique within the source framework</div>
+            </div>
+            <div class="form-group">
+              <label>Source Framework</label>
+              <select class="form-select">
+                <option value="">Select framework…</option>
+                <option selected>TOGAF</option>
+                <option>ISO 25010</option>
+                <option>ISO 25012</option>
+                <option>NIS2</option>
+                <option>GDPR</option>
+                <option>SCAP</option>
+                <option>SoftwareTechnology</option>
+                <option>Custom (tenant-defined)</option>
+              </select>
+              <div class="form-help">The governance framework this archetype belongs to</div>
+            </div>
+            <div class="form-group" id="gsmBaseGroup">
+              <label>GSM Base Type</label>
+              <select class="form-select">
+                <option value="">Select GSM base…</option>
+                <option selected>Structure</option>
+                <option>Mechanism</option>
+                <option>Effector</option>
+                <option>Receptor</option>
+                <option>Interaction</option>
+                <option>Directive</option>
+                <option>Norm</option>
+              </select>
+              <div class="form-help">The GSM primitive this archetype extends via allOf chain (structural only)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 2: Ownership ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Ownership</span>
+        </div>
+        <div class="form-section__body">
+          <div class="create-form">
+            <div class="form-group">
+              <label>Owner</label>
+              <select class="form-select">
+                <option selected>E. Archer (Enterprise Architect)</option>
+                <option>S. Kumar (Security Architect)</option>
+                <option>R. Patel (Compliance Analyst)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Author</label>
+              <select class="form-select">
+                <option selected>E. Archer (Enterprise Architect)</option>
+                <option>S. Kumar (Security Architect)</option>
+                <option>R. Patel (Compliance Analyst)</option>
+              </select>
+              <div class="form-help">Person who authored this ascription</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 3: Statement (JSON Schema) ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Statement (JSON Schema)</span>
+          <div class="mode-toggle">
+            <button type="button" class="mode-toggle__btn active" onclick="switchStmtMode(this,'guided')">⚡
+              Builder</button>
+            <button type="button" class="mode-toggle__btn" onclick="switchStmtMode(this,'json')">{&nbsp;} JSON
+              Schema</button>
+          </div>
+        </div>
+        <div class="form-section__body">
+
+          <!-- Builder mode -->
+          <div class="stmt-panel active" id="stmtGuided">
+            <div class="schema-meta">
+              <div>
+                <label>$id</label>
+                <input class="form-input" type="text" value="togaf:InfrastructureService" readonly
+                  style="font-family:var(--font-mono); font-size:var(--fs-xs); background:color-mix(in srgb, var(--itip-bg) 80%, var(--itip-border))">
+              </div>
+              <div>
+                <label>Title</label>
+                <input class="form-input" type="text" value="TOGAF Infrastructure Service">
+              </div>
+              <div class="full">
+                <label>Description</label>
+                <input class="form-input" type="text"
+                  value="An infrastructure service providing foundational IT capabilities (networking, storage, compute)">
+              </div>
+            </div>
+
+            <label style="font-size:var(--fs-sm); font-weight:600">Properties</label>
+            <table class="prop-table">
+              <thead>
+                <tr>
+                  <th style="width:150px">Name</th>
+                  <th style="width:90px">Type</th>
+                  <th>Description</th>
+                  <th style="width:60px">Req</th>
+                  <th style="width:60px">$gsm:ib</th>
+                  <th style="width:32px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input value="purpose" style="font-family:var(--font-mono)"></td>
+                  <td><select>
+                      <option selected>string</option>
+                      <option>number</option>
+                      <option>boolean</option>
+                      <option>object</option>
+                      <option>array</option>
+                    </select></td>
+                  <td><input value="The service's raison d'être"></td>
+                  <td style="text-align:center"><input type="checkbox" checked></td>
+                  <td style="text-align:center"><input type="checkbox" checked></td>
+                  <td><button class="prop-remove" title="Remove">×</button></td>
+                </tr>
+                <tr>
+                  <td><input value="serviceType" style="font-family:var(--font-mono)"></td>
+                  <td><select>
+                      <option selected>string</option>
+                      <option>number</option>
+                      <option>boolean</option>
+                      <option>object</option>
+                      <option>array</option>
+                    </select></td>
+                  <td><input value="enum: compute, storage, networking, security, monitoring"></td>
+                  <td style="text-align:center"><input type="checkbox" checked></td>
+                  <td style="text-align:center"><input type="checkbox"></td>
+                  <td><button class="prop-remove" title="Remove">×</button></td>
+                </tr>
+                <tr>
+                  <td><input value="sla" style="font-family:var(--font-mono)"></td>
+                  <td><select>
+                      <option>string</option>
+                      <option>number</option>
+                      <option>boolean</option>
+                      <option selected>object</option>
+                      <option>array</option>
+                    </select></td>
+                  <td><input value="SLA: availability, rto, rpo"></td>
+                  <td style="text-align:center"><input type="checkbox"></td>
+                  <td style="text-align:center"><input type="checkbox"></td>
+                  <td><button class="prop-remove" title="Remove">×</button></td>
+                </tr>
+                <tr>
+                  <td><input value="provider" style="font-family:var(--font-mono)"></td>
+                  <td><select>
+                      <option selected>string</option>
+                      <option>number</option>
+                      <option>boolean</option>
+                      <option>object</option>
+                      <option>array</option>
+                    </select></td>
+                  <td><input value="on-prem, AWS, Azure, GCP"></td>
+                  <td style="text-align:center"><input type="checkbox"></td>
+                  <td style="text-align:center"><input type="checkbox"></td>
+                  <td><button class="prop-remove" title="Remove">×</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="add-prop" type="button">+ Add property</button>
+            <div
+              style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:var(--sp-md); padding-top:var(--sp-sm); border-top:1px dashed var(--itip-border)">
+              <strong>Tip:</strong> For complex schemas (nested objects, patterns, conditionals), switch to JSON Schema
+              mode. The builder auto-generates <code>allOf: [{"$ref": "gsm:Structure"}]</code> based on GSM Base Type.
+            </div>
+          </div>
+
+          <!-- JSON Schema mode -->
+          <div class="stmt-panel" id="stmtJson">
+            <textarea class="code-editor" rows="24">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "togaf:InfrastructureService",
+  "title": "TOGAF Infrastructure Service",
+  "description": "An infrastructure service providing foundational IT capabilities",
+  "allOf": [
+    { "$ref": "gsm:Structure" }
+  ],
+  "properties": {
+    "purpose": {
+      "type": "string",
+      "$gsm:identityBound": true,
+      "description": "The service's raison d'être"
+    },
+    "serviceType": {
+      "type": "string",
+      "enum": ["compute", "storage", "networking", "security", "monitoring"]
+    },
+    "sla": {
+      "type": "object",
+      "properties": {
+        "availability": { "type": "number", "minimum": 0, "maximum": 100 },
+        "rto": { "type": "string", "pattern": "^PT[0-9]+[HM]$" },
+        "rpo": { "type": "string", "pattern": "^PT[0-9]+[HM]$" }
+      }
+    },
+    "provider": { "type": "string" }
+  },
+  "required": ["purpose", "serviceType"]
+}</textarea>
+            <div class="form-help">Full JSON Schema (draft 2020-12). Use <code>$gsm:identityBound</code> to mark
+              identity-bound properties.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Section 4: Preview ═══ -->
+      <div class="form-section">
+        <div class="form-section__header">
+          <span class="form-section__title">Ascription Preview</span>
+        </div>
+        <div class="form-section__body">
+          <label style="font-size:var(--fs-sm); font-weight:600; margin-bottom:var(--sp-xs); display:block">allOf
+            Resolution Chain</label>
+          <div class="chain-preview">
+            <span style="color:var(--itip-text-muted)">gsm:Ascription</span>
+            <span class="chain-arrow"> → </span>
+            <span style="color:var(--itip-text-muted)">gsm:Structure</span>
+            <span class="chain-arrow"> → </span>
+            <span style="font-weight:600">togaf:InfrastructureService</span>
+            <span style="margin-left:var(--sp-lg); color:var(--itip-text-muted)">DefinitionSubjectType =
+              STRUCTURE</span>
+          </div>
+          <div class="preview-badges">
+            <span class="badge" style="background:#1e3a5f; color:#93c5fd; font-size:var(--fs-xs)">Kind:
+              Structural</span>
+            <span class="badge" style="background:#14532d; color:#86efac; font-size:var(--fs-xs)">Framework:
+              TOGAF</span>
+            <span class="badge badge--draft">Initial state: DRAFT</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex; gap:var(--sp-md); justify-content:flex-end">
+        <a href="ascription-create.html" class="btn btn--secondary">← Back to Types</a>
+        <a href="ascriptions-list.html" class="btn btn--secondary">Cancel</a>
+        <button class="btn btn--primary">Create Archetype</button>
+      </div>
+    </main>
+  </div>
+
+  <button class="copilot-toggle" title="Copilot Agent">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+    <span class="copilot-toggle__badge">✦</span>
+  </button>
+  <script>
+    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    function switchStmtMode(btn, mode) {
+      btn.closest('.mode-toggle').querySelectorAll('.mode-toggle__btn').forEach(function (b) { b.classList.remove('active') });
+      btn.classList.add('active');
+      document.getElementById('stmtGuided').classList.toggle('active', mode === 'guided');
+      document.getElementById('stmtJson').classList.toggle('active', mode === 'json');
+    }
+    function selectKind(card, kind) {
+      card.closest('.role-selector').querySelectorAll('.role-card').forEach(function (c) { c.classList.remove('role-card--selected') });
+      card.classList.add('role-card--selected');
+      var g = document.getElementById('gsmBaseGroup');
+      if (g) g.style.display = kind === 'structural' ? '' : 'none';
+    }
+  </script>
+</body>
+
+</html>
