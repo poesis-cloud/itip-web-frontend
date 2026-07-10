@@ -1,23 +1,37 @@
 <div class="dashboard-page">
   <div class="dashboard-shell">
-    <aside class="dashboard-sidebar">
+    <aside
+      class="dashboard-sidebar"
+      [class.is-mobile-open]="isMobileSidebarOpen()"
+      [attr.aria-hidden]="!isMobileSidebarOpen() ? 'true' : null"
+      [attr.inert]="!isMobileSidebarOpen() ? '' : null"
+    >
       <div class="dashboard-sidebar-brand">
         <div class="dashboard-sidebar-logo">IT</div>
         <div class="dashboard-sidebar-brand-name">ITIP</div>
+        <button
+          #mobileSidebarCloseButton
+          type="button"
+          class="dashboard-sidebar-close"
+          aria-label="Close menu"
+          (click)="closeMobileSidebar()"
+        >
+          <i class="pi pi-times"></i>
+        </button>
       </div>
 
-      <nav class="dashboard-sidebar-nav" aria-label="Sidebar navigation">
+      <nav id="dashboard-sidebar-nav" class="dashboard-sidebar-nav" aria-label="Sidebar navigation">
         <div class="dashboard-sidebar-section">Overview</div>
-        <a class="dashboard-sidebar-link is-active" href="#">
+        <button type="button" class="dashboard-sidebar-link is-active" aria-current="page" (click)="closeMobileSidebar()">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Dashboard
-        </a>
+        </button>
 
         <div class="dashboard-sidebar-section">Admin</div>
-        <a class="dashboard-sidebar-link" href="#">
+        <button type="button" class="dashboard-sidebar-link" (click)="closeMobileSidebar()">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Users
-        </a>
+        </button>
       </nav>
 
       <div class="dashboard-sidebar-footer">
@@ -26,8 +40,30 @@
       </div>
     </aside>
 
+    <button
+      type="button"
+      class="dashboard-sidebar-backdrop"
+      [class.is-visible]="isMobileSidebarOpen()"
+      aria-label="Close menu"
+      [attr.tabindex]="isMobileSidebarOpen() ? '0' : '-1'"
+      [attr.aria-hidden]="!isMobileSidebarOpen()"
+      (click)="closeMobileSidebar()"
+    ></button>
+
     <div class="dashboard-main">
       <header class="dashboard-header">
+        <button
+          #mobileMenuButton
+          type="button"
+          class="dashboard-hamburger"
+          [attr.aria-label]="isMobileSidebarOpen() ? 'Close menu' : 'Open menu'"
+          [attr.aria-expanded]="isMobileSidebarOpen()"
+          aria-controls="dashboard-sidebar-nav"
+          (click)="toggleMobileSidebar()"
+        >
+          <i class="pi" [class.pi-bars]="!isMobileSidebarOpen()" [class.pi-times]="isMobileSidebarOpen()"></i>
+        </button>
+
         <div class="dashboard-breadcrumb">
           <span>Overview</span>
           <span>/</span>
