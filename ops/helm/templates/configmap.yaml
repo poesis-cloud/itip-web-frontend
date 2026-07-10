@@ -1,0 +1,14 @@
+{{- if .Values.deployApp }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "itip-web-frontend.fullname" . }}-runtime
+  labels:
+    app: {{ include "itip-web-frontend.fullname" . }}
+data:
+  runtime-config.js: |
+    window.__APP_CONFIG__ = {
+      envName: {{ .Values.runtime.envName | quote }},
+      apiBaseUrl: {{ .Values.runtime.apiBaseUrl | quote }}
+    };
+{{- end }}

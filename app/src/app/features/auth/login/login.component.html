@@ -1,0 +1,90 @@
+<div class="login-page">
+  <section class="login-shell">
+    <aside class="login-brand-panel">
+      <div class="brand-top">
+        <div class="brand-mark">ITIP</div>
+        <p class="brand-kicker">IT Intelligence Platform</p>
+      </div>
+
+      <div class="brand-copy">
+        <h1>Design, govern and evaluate your enterprise architecture.</h1>
+        <p>Structures, management rules and compliance &mdash; administered end to end.</p>
+      </div>
+    </aside>
+
+    <div class="login-form-panel">
+      <div class="login-head">
+        <div>
+          <p class="login-overline">Connexion</p>
+          <h2>Welcome back</h2>
+          <p>Sign in to the acme-corp workspace.</p>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+        <div class="field-group">
+          <label for="email">Adresse email</label>
+          <input
+            id="email"
+            pInputText
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+          />
+          @if (form.controls.email.invalid && form.controls.email.touched) {
+            <small class="field-error">Adresse email invalide.</small>
+          }
+        </div>
+
+        <div class="field-group">
+          <label for="password">Mot de passe</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            [fluid]="true"
+            autocomplete="current-password"
+          />
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <small class="field-error">Mot de passe requis.</small>
+          }
+        </div>
+
+        <label class="keep-session">
+          <input type="checkbox" />
+          Keep me signed in
+        </label>
+
+        @if (errorMessage()) {
+          <p class="auth-error">{{ errorMessage() }}</p>
+        }
+
+        <p-button
+          type="submit"
+          label="Se connecter"
+          [loading]="loading()"
+          [disabled]="loading()"
+          styleClass="w-full"
+        />
+
+        <div class="divider">OR</div>
+
+        <button type="button" class="sso-btn" disabled>
+          <i class="pi pi-lock"></i>
+          Continue with Enterprise SSO
+          <span class="soon-pill">SOON</span>
+        </button>
+
+        <div class="theme-switch" aria-label="Theme switch">
+          <span>Mode sombre</span>
+          <p-toggleswitch
+            [ngModel]="theme.isDark()"
+            [ngModelOptions]="{ standalone: true }"
+            (onChange)="theme.toggle()"
+          />
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

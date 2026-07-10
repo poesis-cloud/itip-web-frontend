@@ -1,0 +1,128 @@
+{
+  "$meta": {
+    "name": "ITIP UI Design Tokens",
+    "version": "1.0.0",
+    "system": "Indigo",
+    "note": "Machine-readable mirror of tokens/itip-tokens.css. Source of truth for values. No component may hard-code a color/space/radius outside this set."
+  },
+  "color": {
+    "primary":            "#4F46E5",
+    "primaryHover":       "#4338CA",
+    "primaryTint":        "#EEF2FF",
+    "primaryTintBorder":  "#DFE3FF",
+    "primaryTintText":    "#4338CA",
+    "brandGradient":      "linear-gradient(135deg,#6366F1,#4F46E5)",
+    "copilotGradient":    "linear-gradient(135deg,#7C3AED,#6366F1)",
+    "bg":                 "#F5F6F8",
+    "surface":            "#FFFFFF",
+    "surfaceMuted":       "#FAFBFC",
+    "surfaceSunken":      "#F8F9FB",
+    "sidebarBg":          "#0F1729",
+    "sidebarText":        "#94A3B8",
+    "sidebarSection":     "#4B5A73",
+    "sidebarActiveBg":    "rgba(79,70,229,0.18)",
+    "sidebarActiveBorder":"#4F46E5",
+    "text":               "#0F172A",
+    "textMuted":          "#64748B",
+    "textLight":          "#94A3B8",
+    "border":             "#E6E8EC",
+    "borderHairline":     "#EEF0F3",
+    "borderStrong":       "#D3D8E0",
+    "borderOutline":      "#E3E7EE",
+    "lifecycle": {
+      "draft":          "#94A3B8",
+      "proposed":       "#3B82F6",
+      "active":         "#16A34A",
+      "deprecated":     "#D97706",
+      "deprecatedText": "#A16207",
+      "retired":        "#9CA3AF"
+    },
+    "compliance": {
+      "pass":     "#16A34A",
+      "warn":     "#F59E0B",
+      "warnText": "#B45309",
+      "fail":     "#EF4444",
+      "failText": "#DC2626"
+    },
+    "node": {
+      "structure":   "#4F46E5",
+      "mechanism":   "#7C3AED",
+      "interaction": "#059669",
+      "effector":    "#EA580C",
+      "receptor":    "#0891B2"
+    }
+  },
+  "typography": {
+    "fontUi":   "'Hanken Grotesk', system-ui, -apple-system, sans-serif",
+    "fontMono": "'JetBrains Mono', ui-monospace, monospace",
+    "weight": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700, "black": 800 },
+    "size": {
+      "cap": 10, "meta": 11, "sm": 12, "body": 13, "base": 14,
+      "cardTitle": 16, "modalTitle": 18, "h1": 25
+    },
+    "letterSpacing": { "tight": "-0.02em", "caps": "0.05em" },
+    "rules": {
+      "pageTitle": "800 / 25px / -0.02em",
+      "sectionTitle": "800",
+      "tableHeader": "700 / 10.5px / uppercase / 0.05em / color=textLight",
+      "body": "400-500 / 13-14px",
+      "mono": "ids, emails, code, CEL expressions"
+    }
+  },
+  "space": { "base": 4, "scale": [4, 8, 12, 16, 20, 24, 28], "mainPadding": "26px 28px", "cardPadding": "16px 17px", "panelPadding": "18px 20px" },
+  "radius": { "input": 9, "card": 16, "cardCurrent": 13, "modal": 16, "pill": 9999 },
+  "shadow": {
+    "card":         "0 1px 2px rgba(16,24,40,.04), 0 10px 26px -14px rgba(15,23,42,.16)",
+    "cardHover":    "0 6px 12px rgba(16,24,40,.07), 0 22px 46px -18px rgba(15,23,42,.28)",
+    "raised":       "0 6px 24px -8px rgba(15,23,42,.14)",
+    "node":         "0 4px 10px -3px rgba(15,23,42,.15)",
+    "nodeSelected": "0 6px 16px -4px rgba(79,70,229,.4)",
+    "modal":        "0 30px 60px -15px rgba(15,23,42,.4)"
+  },
+  "motion": { "ease": "cubic-bezier(.2,.6,.2,1)", "duration": "0.18s" },
+  "darkTheme": {
+    "activateBy": "data-theme=\"dark\" on html/body",
+    "bg": "#0A0F1C",
+    "bgDeep": "#05070D",
+    "surface": "#141B2D",
+    "surfaceMuted": "#1A2236",
+    "surfaceSunken": "#182031",
+    "diagramCanvas": "#0F1524",
+    "text": "#EAEEF6",
+    "text2": "#C6CEDD",
+    "textMuted": "#9AA5B8",
+    "textLight": "#94A3B8",
+    "border": "#2A3450",
+    "borderHairline": "#232C42",
+    "borderStrong": "#38456A",
+    "primaryTint": "#1F2547",
+    "primaryTintBorder": "#37407B",
+    "primaryTintText": "#B7BEF7",
+    "greyPillBg": "#232C40",
+    "blueTintBg": "#16233D",
+    "greenTintBg": "#10261A",
+    "warnTintBg": "#2A2410",
+    "failTintBg": "#2A1414",
+    "nodeEdge": "#46527A",
+    "semanticText": { "pass": "#22C55E", "warn": "#FBBF24", "fail": "#F87171", "proposed": "#60A5FA" },
+    "shadowCard": "0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.65)",
+    "shadowCardHover": "0 8px 16px rgba(0,0,0,.5), 0 24px 50px -18px rgba(0,0,0,.8)",
+    "notes": "Sidebar (#0F1729) unchanged across themes. Solid lifecycle badge fills unchanged; only text-on-transparent lightens. Brand/Copilot gradients unchanged. Default theme is Light; dark is opt-in."
+  },
+  "cards": {
+    "statClass": "itip-stat",
+    "panelClass": "itip-panel",
+    "hover": "stat cards lift (translateY(-3px) + cardHover shadow); panels are STATIC (no hover)",
+    "treatments": ["elevated", "outline", "accent"],
+    "tweakable": {
+      "cardStyle":   { "type": "enum", "options": ["Elevated", "Outline", "Accent"], "default": "Accent" },
+      "cardRadius":  { "type": "range", "min": 8, "max": 22, "step": 1, "unit": "px", "default": 13 },
+      "accentColor": { "type": "color", "default": "#0f766e", "swatches": ["#4f46e5", "#0f766e", "#b45309", "#be123c"] },
+      "theme":       { "type": "enum", "options": ["Light", "Dark"], "default": "Light" }
+    }
+  },
+  "auth": {
+    "primaryVariant": "1b split-screen",
+    "sso": "Enterprise SSO button present but disabled with a 'SOON' badge — reserved for a later OIDC phase"
+  }
+}

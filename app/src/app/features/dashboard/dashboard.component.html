@@ -1,0 +1,206 @@
+<div class="dashboard-page">
+  <div class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+      <div class="dashboard-sidebar-brand">
+        <div class="dashboard-sidebar-logo">IT</div>
+        <div class="dashboard-sidebar-brand-name">ITIP</div>
+      </div>
+
+      <nav class="dashboard-sidebar-nav" aria-label="Sidebar navigation">
+        <div class="dashboard-sidebar-section">Overview</div>
+        <a class="dashboard-sidebar-link is-active" href="#">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+
+        <div class="dashboard-sidebar-section">Admin</div>
+        <a class="dashboard-sidebar-link" href="#">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Users
+        </a>
+      </nav>
+
+      <div class="dashboard-sidebar-footer">
+        IT intelligence platform<br />
+        by <strong>Poesis</strong>
+      </div>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <div class="dashboard-breadcrumb">
+          <span>Overview</span>
+          <span>/</span>
+          <strong>Dashboard</strong>
+        </div>
+
+        <div class="dashboard-search" role="search">
+          <i class="pi pi-search"></i>
+          <input
+            type="search"
+            class="dashboard-search-input"
+            placeholder="Search ITIP"
+            aria-label="Search ITIP"
+          />
+        </div>
+
+        <div class="dashboard-header-actions">
+          <button
+            type="button"
+            class="dashboard-icon-button"
+            [attr.aria-label]="themeToggleLabel()"
+            [title]="themeToggleLabel()"
+            (click)="theme.toggle()"
+          >
+            <i [class]="themeToggleIcon()"></i>
+          </button>
+          <button type="button" class="dashboard-icon-button" aria-label="Notifications" title="Notifications">
+            <i class="pi pi-bell"></i>
+          </button>
+          <div class="dashboard-avatar">IT</div>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <section class="dashboard-hero">
+          <div>
+            <p class="dashboard-eyebrow">Overview</p>
+            <h1>Dashboard</h1>
+            <p class="dashboard-subtitle">Governance, compliance & architecture health - instance ITIP</p>
+          </div>
+
+          <div class="dashboard-page-actions">
+            <p-button
+              label="Last 12 months"
+              severity="secondary"
+              icon="pi pi-chevron-down"
+              iconPos="right"
+            />
+            <p-button label="+ New definition" />
+          </div>
+        </section>
+
+        <section class="stat-grid" aria-label="Overview metrics">
+          @for (card of statCards; track card.label) {
+            <article class="dashboard-card dashboard-stat-card">
+              <div class="dashboard-card-accent"></div>
+              <p class="dashboard-card-label">{{ card.label }}</p>
+              <div class="dashboard-card-value-shell">
+                <span class="dashboard-card-value">{{ card.valueSlot }}</span>
+              </div>
+              <p class="dashboard-card-caption">{{ card.caption }}</p>
+            </article>
+          }
+        </section>
+
+        <section class="content-grid">
+          <article class="dashboard-card dashboard-panel dashboard-chart-panel">
+            <div class="dashboard-panel-header">
+              <div>
+                <h2>Compliance trend</h2>
+                <p>Overall pass rate, monthly</p>
+              </div>
+              <div class="dashboard-legend">
+                @for (item of trendLegend; track item.label) {
+                  <span class="dashboard-legend-item" [attr.data-tone]="item.tone">
+                    <span class="dashboard-legend-dot"></span>
+                    {{ item.label }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="chart-placeholder">
+              <div class="chart-gridlines"></div>
+              <div class="chart-line"></div>
+              <div class="chart-line chart-line-secondary"></div>
+              <div class="chart-axis">
+                <span>Jul</span>
+                <span>Oct</span>
+                <span>Jan</span>
+                <span>Apr</span>
+                <span>Jun</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="dashboard-card dashboard-panel dashboard-donut-panel">
+            <div class="dashboard-panel-header">
+              <div>
+                <h2>Ascriptions by lifecycle</h2>
+                <p>142 structures</p>
+              </div>
+              <div class="dashboard-legend dashboard-legend-column">
+                @for (item of lifecycleLegend; track item.label) {
+                  <span class="dashboard-legend-item" [attr.data-tone]="item.tone">
+                    <span class="dashboard-legend-dot"></span>
+                    {{ item.label }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="donut-placeholder">
+              <div class="donut-ring">
+                <div class="donut-core">
+                  <strong>API</strong>
+                  <span>slot</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="bottom-grid">
+          <article class="dashboard-card dashboard-panel">
+            <div class="dashboard-panel-header">
+              <div>
+                <h2>Findings by class</h2>
+                <p>Feed-ready cards for future class aggregation APIs</p>
+              </div>
+            </div>
+
+            <div class="findings-list">
+              @for (row of findingsRows; track row.title) {
+                <div class="findings-row">
+                  <div class="findings-row-head">
+                    <span>{{ row.title }}</span>
+                    <span class="findings-row-detail">{{ row.detail }}</span>
+                  </div>
+                  <div class="findings-bar">
+                    <span></span>
+                  </div>
+                </div>
+              }
+            </div>
+          </article>
+
+          <article class="dashboard-card dashboard-panel">
+            <div class="dashboard-panel-header">
+              <div>
+                <h2>Pending approvals</h2>
+                <p>Placeholder rows for the upcoming review API</p>
+              </div>
+              <span class="dashboard-pill">5 pending</span>
+            </div>
+
+            <div class="approvals-list">
+              @for (row of approvalsRows; track row.title) {
+                <div class="approval-row">
+                  <div>
+                    <p class="approval-title">{{ row.title }}</p>
+                    <p class="approval-detail">{{ row.detail }}</p>
+                  </div>
+                  <div class="approval-actions">
+                    <p-button label="Approve" size="small" [disabled]="true" />
+                    <p-button label="Review" size="small" severity="secondary" [disabled]="true" />
+                  </div>
+                </div>
+              }
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
