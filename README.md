@@ -1,15 +1,38 @@
-# ITIP UI
+# ITIP Web Frontend
 
-Design-time UI mockups and user workflow wireframes for the IT Intelligence Platform.
+Angular 21 LTS frontend for ITIP with PrimeNG, Tailwind, signal-based authentication, Docker runtime, and Helm deployment.
 
 ## Structure
 
 ```
+app/            # Angular application (source, tests, Cypress)
 def/
-  mockups/      # HTML/CSS interactive screen mockups
-  workflows/    # User workflow wireframe sequences
+  mockups/      # HTML/CSS interactive screen mockups and design references
+ops/            # Docker + Helm deployment assets
 ```
 
-## Viewing Mockups
+## Local development
 
-Open any `.html` file in a browser. All mockups are self-contained (no external dependencies).
+```bash
+cd app
+nvm use 20.19.0
+npm ci
+npm run start
+```
+
+The dev profile uses an Angular proxy so `/api` requests are forwarded to `http://localhost:8080`.
+
+## Container build
+
+```bash
+docker build -t itip-web-frontend:local .
+docker run --rm -p 8081:80 itip-web-frontend:local
+```
+
+## Helm deployment
+
+```bash
+make dev-check
+make dev-up
+make run-ui
+```

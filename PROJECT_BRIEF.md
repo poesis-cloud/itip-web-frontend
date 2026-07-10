@@ -64,45 +64,48 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 
 ## 5. Key Files Map
 
-| Area | Path | Contents |
-|------|------|----------|
-| Mockups | `def/mockups/` | HTML mockups by section (evaluation, definition, frameworks, ...) |
-| Design system | `def/mockups/itip-design-system.css` | Reference CSS for colors, typography, components |
-| Entry point | `src/main.tsx` | App bootstrap (to be created Sprint 1) |
-| Components | `src/components/` | Shared UI components |
-| Pages | `src/pages/` | Route-level page components |
-| API client | `src/api/` | REST client, hooks, types |
-| Sprint docs | `docs/sprint-N/` | Plans, progress trackers, done files |
-| QA docs | `docs/qa/` | Sprint sign-off reports |
+| Area          | Path                                 | Contents                                                          |
+| ------------- | ------------------------------------ | ----------------------------------------------------------------- |
+| Mockups       | `def/mockups/`                       | HTML mockups by section (evaluation, definition, frameworks, ...) |
+| Design system | `def/mockups/itip-design-system.css` | Reference CSS for colors, typography, components                  |
+| Entry point   | `src/main.tsx`                       | App bootstrap (to be created Sprint 1)                            |
+| Components    | `src/components/`                    | Shared UI components                                              |
+| Pages         | `src/pages/`                         | Route-level page components                                       |
+| API client    | `src/api/`                           | REST client, hooks, types                                         |
+| Sprint docs   | `docs/sprint-N/`                     | Plans, progress trackers, done files                              |
+| QA docs       | `docs/qa/`                           | Sprint sign-off reports                                           |
 
 ## 6. Team Roles
 
-| Agent | Name | Role |
-|-------|------|------|
-| Producer | **Remy** | Sprint planning, mockup review, backlog, GitHub Issues, UX coordination |
-| Frontend | **Nova** | UI components, state management, React/TypeScript |
-| Backend/API | **Sage** | REST API integration, data contracts, type generation |
-| Art/CSS | **Milo** | Design system implementation, accessibility, visual polish |
-| QA | **Ivy** | E2E tests, accessibility audit, mockup parity, sign-off |
+| Agent       | Name     | Role                                                                    |
+| ----------- | -------- | ----------------------------------------------------------------------- |
+| Producer    | **Remy** | Sprint planning, mockup review, backlog, GitHub Issues, UX coordination |
+| Frontend    | **Nova** | UI components, state management, React/TypeScript                       |
+| Backend/API | **Sage** | REST API integration, data contracts, type generation                   |
+| Art/CSS     | **Milo** | Design system implementation, accessibility, visual polish              |
+| QA          | **Ivy**  | E2E tests, accessibility audit, mockup parity, sign-off                 |
 
 ## 7. Sprint Status
 
-| Sprint | Name | Status | Scope |
-|--------|------|--------|-------|
-| 0 | Bootstrap | Done | PROJECT_BRIEF, team setup, mockup inventory |
-| 1 | Foundation | Planned | Vite+React scaffold, routing, design system tokens, overview dashboard |
+| Sprint | Name       | Status  | Scope                                                                  |
+| ------ | ---------- | ------- | ---------------------------------------------------------------------- |
+| 0      | Bootstrap  | Done    | PROJECT_BRIEF, team setup, mockup inventory                            |
+| 1      | Foundation | Planned | Vite+React scaffold, routing, design system tokens, overview dashboard |
 
 ## 8. Current State (rewrite every sprint)
 
 **What works:**
+
 - Mockups exist for all major UI sections (HTML + design system CSS)
 - Team files bootstrapped (PROJECT_BRIEF, copilot-instructions, prompts)
 
 **What does not work yet:**
+
 - No runnable frontend code exists
 - Tech stack not yet confirmed (Vite + React + TypeScript is the default candidate)
 
 **What is next:**
+
 - Sprint 1: confirm tech stack, scaffold project, implement overview dashboard from mockup
 
 ## 9. Security Rules
@@ -137,6 +140,7 @@ Every sprint chat must do these before finishing:
 The repo is the shared memory. If skipped, the next chat starts blind.
 
 **Context recovery prompt:**
+
 ```
 Read PROJECT_BRIEF.md and docs/sprint-N/progress.md.
 Continue from where it left off.
@@ -160,6 +164,7 @@ git clone git@github.com:poesis-cloud/itip-web-frontend.git itip-web-frontend-qa
 ```
 
 **Branch strategy:**
+
 - `main` — stable, coordination hub (Remy)
 - `feature/sprint-N` — Dev team work
 - `feature/qa-N` — QA work
