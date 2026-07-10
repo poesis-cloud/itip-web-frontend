@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, computed, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ThemeService } from '../../core/theme/theme.service';
 
@@ -28,9 +28,56 @@ type SectionRow = {
 })
 export class DashboardComponent {
   readonly theme = inject(ThemeService);
+  readonly isMobileSidebarOpen = signal(false);
+  @ViewChild('mobileMenuButton') private mobileMenuButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('mobileSidebarCloseButton') private mobileSidebarCloseButton?: ElementRef<HTMLButtonElement>;
 
   readonly themeToggleIcon = computed(() => (this.theme.isDark() ? 'pi pi-sun' : 'pi pi-moon'));
   readonly themeToggleLabel = computed(() => (this.theme.isDark() ? 'Light mode' : 'Dark mode'));
+
+  toggleMobileSidebar(): void {
+    const nextState = !this.isMobileSidebarOpen();
+    this.isMobileSidebarOpen.set(nextState);
+    this.setMobileScrollLock(nextState);
+
+    queueMicrotask(() => {
+      if (nextState) {
+        this.mobileSidebarCloseButton?.nativeElement.focus();
+      } else {
+        this.mobileMenuButton?.nativeElement.focus();
+      }
+    });
+  }
+
+  closeMobileSidebar(restoreFocus = true): void {
+    if (!this.isMobileSidebarOpen()) {
+      return;
+    }
+
+    this.isMobileSidebarOpen.set(false);
+    this.setMobileScrollLock(false);
+
+    if (restoreFocus) {
+      queueMicrotask(() => this.mobileMenuButton?.nativeElement.focus());
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.isMobileSidebarOpen()) {
+      this.closeMobileSidebar();
+    }
+  }
+
+  private setMobileScrollLock(isLocked: boolean): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (window.matchMedia('(max-width: 1200px)').matches) {
+      document.body.style.overflow = isLocked ? 'hidden' : '';
+    }
+  }
 
   readonly statCards: StatCard[] = [
     { label: 'Structures', valueSlot: 'API slot', caption: 'Will be fed by structure summary API' },
