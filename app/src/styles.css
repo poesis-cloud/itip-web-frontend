@@ -348,7 +348,7 @@ body {
     margin-left: auto;
     font: 600 10px var(--itip-font-mono);
     background: rgba(255, 255, 255, 0.12);
-    color: #cbd5e1;
+    color: var(--itip-sidebar-text);
     padding: 1px 7px;
     border-radius: 20px;
   }
@@ -359,11 +359,11 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     font-size: 12px;
     line-height: 1.45;
-    color: #4b5a73;
+    color: var(--itip-sidebar-section);
   }
 
   .app-shell-sidebar-footer strong {
-    color: #94a3b8;
+    color: var(--itip-sidebar-text);
   }
 
   .app-shell-main {

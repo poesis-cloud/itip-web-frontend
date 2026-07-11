@@ -29,7 +29,7 @@
   justify-content: center;
   background:
     radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.12) 1px, transparent 0),
-    linear-gradient(160deg, #132347, #1a2c53 55%, #20355f);
+    linear-gradient(160deg, #0f1729, #182338 55%, #1e2c47);
   background-size: 22px 22px, auto;
 }
 
