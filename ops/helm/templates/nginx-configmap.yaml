@@ -19,6 +19,22 @@ data:
             try_files $uri =404;
         }
 
+        location ^~ /api/ {
+          return 404;
+        }
+
+        location = /api {
+          return 404;
+        }
+
+        location ^~ /actuator/ {
+          return 404;
+        }
+
+        location = /actuator {
+          return 404;
+        }
+
         location / {
             try_files $uri $uri/ /index.html;
         }
