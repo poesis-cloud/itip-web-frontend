@@ -19,7 +19,7 @@
 
         <section class="stat-grid" aria-label="Overview metrics">
           @for (card of statCards; track card.label) {
-            <article class="dashboard-card dashboard-stat-card">
+            <article class="dashboard-card dashboard-stat-card itip-stat">
               <div class="dashboard-card-accent"></div>
               <p class="dashboard-card-label">{{ card.label }}</p>
               <div class="dashboard-card-value-shell">
@@ -31,7 +31,7 @@
         </section>
 
         <section class="content-grid">
-          <article class="dashboard-card dashboard-panel dashboard-chart-panel">
+          <article class="dashboard-card dashboard-panel dashboard-chart-panel itip-panel">
             <div class="dashboard-panel-header">
               <div>
                 <h2>Compliance trend</h2>
@@ -61,7 +61,7 @@
             </div>
           </article>
 
-          <article class="dashboard-card dashboard-panel dashboard-donut-panel">
+          <article class="dashboard-card dashboard-panel dashboard-donut-panel itip-panel">
             <div class="dashboard-panel-header">
               <div>
                 <h2>Ascriptions by lifecycle</h2>
@@ -89,7 +89,7 @@
         </section>
 
         <section class="bottom-grid">
-          <article class="dashboard-card dashboard-panel">
+          <article class="dashboard-card dashboard-panel itip-panel">
             <div class="dashboard-panel-header">
               <div>
                 <h2>Findings by class</h2>
@@ -112,7 +112,7 @@
             </div>
           </article>
 
-          <article class="dashboard-card dashboard-panel">
+          <article class="dashboard-card dashboard-panel itip-panel">
             <div class="dashboard-panel-header">
               <div>
                 <h2>Pending approvals</h2>

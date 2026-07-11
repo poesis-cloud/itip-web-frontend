@@ -36,6 +36,8 @@ helm upgrade --install itip-web-frontend \
 ## Dev deployment
 
 Use `make dev-up` from `itip-web-frontend` to deploy the service to your local cluster.
+The dev values default `runtime.apiBaseUrl` to `http://localhost:8080`, so keep the backend reachable there
+(for example via local backend run or backend port-forward).
 
 ```bash
 cd itip-web-frontend && make dev-check

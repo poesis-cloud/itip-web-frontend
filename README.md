@@ -26,7 +26,16 @@ The dev profile uses an Angular proxy so `/api` requests are forwarded to `http:
 
 ```bash
 docker build -t itip-web-frontend:local .
-docker run --rm -p 8081:80 itip-web-frontend:local
+cat > /tmp/runtime-config.js <<'EOF'
+window.__APP_CONFIG__ = {
+  apiBaseUrl: 'http://localhost:8080'
+};
+EOF
+
+docker run --rm \
+  -p 8081:80 \
+  -v /tmp/runtime-config.js:/usr/share/nginx/html/runtime-config.js:ro \
+  itip-web-frontend:local
 ```
 
 ## Helm deployment
