@@ -15,7 +15,7 @@ ops/            # Docker + Helm deployment assets
 
 ```bash
 cd app
-nvm use 20.19.0
+nvm use 22.21.1
 npm ci
 npm run start
 ```

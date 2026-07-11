@@ -28,16 +28,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.meta.outputs.image_tag }}
-    defaults:
-      run:
-        working-directory: itip/itip-web-frontend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20.19.0"
+          node-version: "22.21.1"
           cache: npm
-          cache-dependency-path: itip/itip-web-frontend/app/package-lock.json
+          cache-dependency-path: app/package-lock.json
       - name: Build frontend bundle
         run: |
           cd app
@@ -66,9 +63,6 @@ jobs:
     needs: package
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
-    defaults:
-      run:
-        working-directory: itip/itip-web-frontend
     steps:
       - uses: actions/checkout@v4
       - name: Azure login (OIDC)
@@ -93,9 +87,6 @@ jobs:
     if: ${{ github.event.inputs.target == 'onprem' }}
     needs: package
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: itip/itip-web-frontend
     steps:
       - uses: actions/checkout@v4
       - name: Package helm chart
@@ -104,4 +95,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: itip-web-frontend-helm-package
-          path: itip/itip-web-frontend/*.tgz
+          path: '*.tgz'

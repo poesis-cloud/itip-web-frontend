@@ -3,6 +3,7 @@ SHELL := /bin/bash
 
 .PHONY: dev-check dev-up dev-down run-ui deploy-check prod-deploy package-helm test verify
 
+-include .env
 -include .env.dev
 
 NAMESPACE        ?= poesis

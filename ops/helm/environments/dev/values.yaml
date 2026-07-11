@@ -20,7 +20,7 @@ service:
 
 runtime:
   envName: dev
-  apiBaseUrl: /api
+  apiBaseUrl: ""
 
 resources:
   requests:
