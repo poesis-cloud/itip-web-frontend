@@ -89,7 +89,7 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 | Sprint | Name       | Status  | Scope                                                                  |
 | ------ | ---------- | ------- | ---------------------------------------------------------------------- |
 | 0      | Bootstrap  | Done    | PROJECT_BRIEF, team setup, mockup inventory                            |
-| 1      | Foundation | Planned | Vite+React scaffold, routing, design system tokens, overview dashboard |
+| 1      | Foundation | Planned | Angular scaffold, routing, design system tokens, overview dashboard |
 
 ## 8. Current State (rewrite every sprint)
 
