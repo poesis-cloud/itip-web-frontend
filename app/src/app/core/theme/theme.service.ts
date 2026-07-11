@@ -11,11 +11,11 @@ export class ThemeService {
   readonly isDark = this.dark.asReadonly();
 
   constructor() {
-    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    const saved = this.readSavedTheme();
     const prefersDark =
       saved !== null
         ? saved === 'dark'
-        : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false);
+        : this.systemPrefersDark();
 
     this.setDarkMode(prefersDark);
   }
@@ -31,6 +31,30 @@ export class ThemeService {
     this.document.documentElement.setAttribute('data-theme', themeValue);
     this.document.body.setAttribute('data-theme', themeValue);
 
-    localStorage.setItem(THEME_STORAGE_KEY, isDark ? 'dark' : 'light');
+    this.writeSavedTheme(isDark ? 'dark' : 'light');
+  }
+
+  private systemPrefersDark(): boolean {
+    try {
+      return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    } catch {
+      return false;
+    }
+  }
+
+  private readSavedTheme(): string | null {
+    try {
+      return globalThis.localStorage?.getItem(THEME_STORAGE_KEY) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private writeSavedTheme(theme: 'dark' | 'light'): void {
+    try {
+      globalThis.localStorage?.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // Storage can be unavailable in privacy/sandboxed environments.
+    }
   }
 }

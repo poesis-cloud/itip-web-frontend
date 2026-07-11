@@ -334,9 +334,9 @@ body {
   }
 
   .app-shell-sidebar-link.is-active {
-    color: #fff;
-    background: rgba(79, 70, 229, 0.18);
-    border-left-color: var(--itip-primary);
+    color: var(--itip-surface);
+    background: var(--itip-sidebar-active-bg);
+    border-left-color: var(--itip-sidebar-active-border);
   }
 
   .app-shell-sidebar-link-badge {
