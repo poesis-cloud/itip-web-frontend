@@ -114,7 +114,6 @@ jobs:
       - name: Helm lint (preprod)
         run: |
           helm lint ops/helm -f ops/helm/environments/preprod/values.yaml
-        working-directory: itip/itip-web-frontend
 
   security:
     runs-on: ubuntu-latest
