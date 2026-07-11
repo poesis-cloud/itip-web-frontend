@@ -12,7 +12,7 @@ RUN npm run build -- --configuration ${BUILD_CONFIGURATION}
 FROM nginx:1.27-alpine
 WORKDIR /usr/share/nginx/html
 
-COPY ops/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ops/helm/files/nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/app/dist/app/browser/ ./
 COPY app/public/runtime-config.js ./runtime-config.js
 

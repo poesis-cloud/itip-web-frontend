@@ -7,36 +7,5 @@ metadata:
     app: {{ include "itip-web-frontend.fullname" . }}
 data:
   default.conf: |
-    server {
-        listen 80;
-        server_name _;
-
-        root /usr/share/nginx/html;
-        index index.html;
-
-        location = /runtime-config.js {
-            add_header Cache-Control "no-store" always;
-            try_files $uri =404;
-        }
-
-        location ^~ /api/ {
-          return 404;
-        }
-
-        location = /api {
-          return 404;
-        }
-
-        location ^~ /actuator/ {
-          return 404;
-        }
-
-        location = /actuator {
-          return 404;
-        }
-
-        location / {
-            try_files $uri $uri/ /index.html;
-        }
-    }
+{{ .Files.Get "files/nginx/default.conf" | nindent 4 }}
 {{- end }}

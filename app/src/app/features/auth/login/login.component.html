@@ -76,9 +76,10 @@
           <span class="soon-pill">SOON</span>
         </button>
 
-        <div class="theme-switch" aria-label="Theme switch">
-          <span>Mode sombre</span>
+        <div class="theme-switch">
+          <label id="theme-switch-label" for="theme-switch-toggle">Mode sombre</label>
           <p-toggleswitch
+            inputId="theme-switch-toggle"
             [ngModel]="theme.isDark()"
             [ngModelOptions]="{ standalone: true }"
             (onChange)="theme.toggle()"

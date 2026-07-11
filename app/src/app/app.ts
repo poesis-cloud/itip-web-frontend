@@ -1,6 +1,14 @@
 import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { LucideLayoutDashboard, LucideUsers } from '@lucide/angular';
+import {
+  LucideBell,
+  LucideLayoutDashboard,
+  LucideMenu,
+  LucideMoon,
+  LucideSun,
+  LucideUsers,
+  LucideX,
+} from '@lucide/angular';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 import { ShellService } from './core/layout/shell.service';
@@ -11,7 +19,18 @@ const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1200px)';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideLayoutDashboard, LucideUsers],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    LucideLayoutDashboard,
+    LucideUsers,
+    LucideMenu,
+    LucideX,
+    LucideBell,
+    LucideSun,
+    LucideMoon,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -20,7 +39,6 @@ export class App {
   readonly shell = inject(ShellService);
   readonly theme = inject(ThemeService);
   readonly isMobileViewport = signal(false);
-  readonly themeToggleIcon = computed(() => (this.theme.isDark() ? 'pi pi-sun' : 'pi pi-moon'));
   readonly themeToggleLabel = computed(() => (this.theme.isDark() ? 'Light mode' : 'Dark mode'));
   readonly breadcrumb = computed(() => this.buildBreadcrumb(this.currentUrl()));
 

@@ -327,6 +327,11 @@ body {
     cursor: pointer;
   }
 
+  .app-shell-sidebar-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
+  }
+
   .app-shell-sidebar-link svg {
     width: 16px;
     height: 16px;
@@ -410,8 +415,15 @@ body {
     cursor: pointer;
   }
 
-  .app-shell-hamburger .pi {
+  .app-shell-hamburger svg {
     font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .app-shell-hamburger:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
   }
 
   .app-shell-breadcrumb {
@@ -506,8 +518,15 @@ body {
     box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
   }
 
-  .app-shell-icon-button .pi {
+  .app-shell-icon-button svg {
     font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .app-shell-icon-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.14);
   }
 
   .app-shell-avatar {

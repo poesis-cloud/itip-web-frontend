@@ -16,7 +16,7 @@
             aria-label="Close menu"
             (click)="closeMobileSidebar()"
           >
-            <i class="pi pi-times"></i>
+            <svg lucideX aria-hidden="true"></svg>
           </button>
         </div>
 
@@ -65,7 +65,11 @@
             aria-controls="app-shell-sidebar-nav"
             (click)="toggleMobileSidebar()"
           >
-            <i class="pi" [class.pi-bars]="!shell.isMobileSidebarOpen()" [class.pi-times]="shell.isMobileSidebarOpen()"></i>
+            @if (shell.isMobileSidebarOpen()) {
+              <svg lucideX aria-hidden="true"></svg>
+            } @else {
+              <svg lucideMenu aria-hidden="true"></svg>
+            }
           </button>
 
           <div class="app-shell-breadcrumb">
@@ -92,10 +96,14 @@
               [title]="themeToggleLabel()"
               (click)="toggleTheme()"
             >
-              <i [class]="themeToggleIcon()"></i>
+              @if (theme.isDark()) {
+                <svg lucideSun aria-hidden="true"></svg>
+              } @else {
+                <svg lucideMoon aria-hidden="true"></svg>
+              }
             </button>
             <button type="button" class="app-shell-icon-button" aria-label="Notifications" title="Notifications">
-              <i class="pi pi-bell"></i>
+              <svg lucideBell aria-hidden="true"></svg>
             </button>
             <div class="app-shell-avatar">IT</div>
           </div>

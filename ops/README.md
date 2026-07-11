@@ -12,8 +12,8 @@ Install with defaults:
 
 ```bash
 helm upgrade --install itip-web-frontend \
-  itip-web-frontend/ops/helm \
-  -n itip --create-namespace
+  ./ops/helm \
+  -n poesis --create-namespace
 ```
 
 Environment values:
@@ -28,9 +28,9 @@ Recommended deploy command:
 
 ```bash
 helm upgrade --install itip-web-frontend \
-  itip-web-frontend/ops/helm \
-  -n itip --create-namespace \
-  -f itip-web-frontend/ops/helm/environments/preprod/values.yaml
+  ./ops/helm \
+  -n poesis --create-namespace \
+  -f ./ops/helm/environments/preprod/values.yaml
 ```
 
 ## Dev deployment

@@ -1,6 +1,8 @@
 /* ============================================================================
    ITIP UI — Design tokens (v1, Indigo system)
-   Source of truth for the ITIP visual system.
+  Runtime token copy consumed by the frontend app.
+  Canonical design handoff reference lives under:
+  def/mockups/design_handoff_itip_ui/tokens/itip-tokens.css
    Import once at the app root. Every color/space/radius/shadow in the UI
    MUST come from a token below — no hard-coded hex values in components.
    ============================================================================ */

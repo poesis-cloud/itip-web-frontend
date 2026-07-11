@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -55,8 +56,13 @@ export class LoginComponent {
         next: () => {
           void this.router.navigate(['/dashboard']);
         },
-        error: () => {
-          this.errorMessage.set('Adresse email ou mot de passe invalide.');
+        error: (error: unknown) => {
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            this.errorMessage.set('Adresse email ou mot de passe invalide.');
+            return;
+          }
+
+          this.errorMessage.set('La connexion a echoue. Veuillez reessayer plus tard.');
         },
       });
   }
