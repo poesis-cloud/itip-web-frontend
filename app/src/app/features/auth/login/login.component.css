@@ -211,25 +211,3 @@
   padding: 2px 8px;
 }
 
-@media (max-width: 960px) {
-  .login-shell {
-    min-height: 100vh;
-    grid-template-columns: 1fr;
-    overflow: auto;
-  }
-
-  .login-brand-panel {
-    display: none;
-  }
-
-  .login-form-panel {
-    padding: 24px 20px 28px;
-    align-items: stretch;
-    border-left: 0;
-  }
-
-  .login-head,
-  .login-form {
-    width: 100%;
-  }
-}

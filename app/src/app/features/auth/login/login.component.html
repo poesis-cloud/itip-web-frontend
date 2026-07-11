@@ -1,6 +1,6 @@
 <div class="login-page">
-  <section class="login-shell">
-    <aside class="login-brand-panel">
+  <section class="login-shell max-[960px]:min-h-screen max-[960px]:grid-cols-1 max-[960px]:overflow-auto">
+    <aside class="login-brand-panel max-[960px]:hidden">
       <div class="brand-top">
         <div class="brand-mark">ITIP</div>
         <p class="brand-kicker">IT Intelligence Platform</p>
@@ -12,8 +12,8 @@
       </div>
     </aside>
 
-    <div class="login-form-panel">
-      <div class="login-head">
+    <div class="login-form-panel max-[960px]:px-5 max-[960px]:pt-6 max-[960px]:pb-7 max-[960px]:items-stretch max-[960px]:border-l-0">
+      <div class="login-head max-[960px]:w-full">
         <div>
           <p class="login-overline">Connexion</p>
           <h2>Welcome back</h2>
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form max-[960px]:w-full">
         <div class="field-group">
           <label for="email">Adresse email</label>
           <input

@@ -9,6 +9,9 @@ These rules are mandatory for all future Copilot work in this repository.
 - UI stack is PrimeNG + Tailwind.
 - Primary visual references are in `def/mockups/` and `def/mockups/*/itip-design-system.css`.
 - Keep custom CSS to a minimum. Prefer PrimeNG components and Tailwind utilities.
+- For responsive behavior across screen sizes, prefer Tailwind responsive utilities directly in templates (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`, and `max-[...]` when needed).
+- Prefer Tailwind responsive utilities over component-level `@media` rules whenever the same result can be achieved cleanly.
+- Keep component CSS media queries only for cases not reasonably expressible with Tailwind utilities.
 
 ## Architecture and signals policy
 

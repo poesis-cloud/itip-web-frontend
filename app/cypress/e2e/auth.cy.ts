@@ -22,6 +22,27 @@ describe('Authentication flow', () => {
     cy.url().should('include', '/dashboard');
   });
 
+  it('renders dashboard content after successful login', () => {
+    cy.intercept('POST', '/api/auth/login', {
+      statusCode: 200,
+      body: {
+        token: 'fake-jwt-token',
+        expiresAt: Date.now() + 60_000
+      }
+    }).as('login');
+
+    cy.visit('/login');
+    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#password').type('secret');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@login');
+    cy.url().should('include', '/dashboard');
+    cy.contains('h1', 'Dashboard').should('be.visible');
+    cy.contains('.dashboard-eyebrow', 'Overview').should('be.visible');
+    cy.get('section[aria-label="Overview metrics"]').should('be.visible');
+  });
+
   it('shows error for invalid credentials', () => {
     cy.intercept('POST', '/api/auth/login', {
       statusCode: 401,
