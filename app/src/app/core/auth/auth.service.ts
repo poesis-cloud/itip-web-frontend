@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LoginRequest, LoginResponse } from './auth.models';
 import { getRuntimeConfig } from '../config/runtime-config';
 
@@ -35,8 +35,13 @@ export class AuthService {
 
   login(payload: LoginRequest) {
     return this.http.post<LoginResponse>(`${this.config.apiBaseUrl}/api/auth/login`, payload).pipe(
-      tap((response) => this.storeSession(response)),
-      map(() => void 0),
+      map((response) => {
+        if (!this.storeSession(response)) {
+          throw new Error('Invalid login response');
+        }
+
+        return void 0;
+      }),
     );
   }
 
@@ -50,10 +55,10 @@ export class AuthService {
     void this.router.navigate(['/login']);
   }
 
-  private storeSession(response: LoginResponse) {
+  private storeSession(response: LoginResponse): boolean {
     if (!response.token) {
       this.clearSession();
-      return;
+      return false;
     }
 
     const expiresAt =
@@ -63,11 +68,13 @@ export class AuthService {
 
     if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
       this.clearSession();
-      return;
+      return false;
     }
 
     this.token.set(response.token);
     this.expiresAt.set(expiresAt);
+
+    return true;
   }
 
   private clearSession() {

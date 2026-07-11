@@ -84,6 +84,41 @@ describe('authInterceptor', () => {
     expect(unauthorizedSpy).toHaveBeenCalled();
   });
 
+  it('adds Authorization header to protected actuator calls', () => {
+    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    httpMock
+      .expectOne('/api/auth/login')
+      .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
+
+    http.get('/actuator/health').subscribe();
+
+    const request = httpMock.expectOne('/actuator/health');
+    expect(request.request.headers.get('Authorization')).toBe('Bearer jwt-token');
+    request.flush({ status: 'UP' });
+  });
+
+  it('triggers unauthorized handler on 401 from protected actuator endpoint', () => {
+    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    httpMock
+      .expectOne('/api/auth/login')
+      .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
+
+    const unauthorizedSpy = vi.spyOn(authService, 'handleUnauthorized').mockImplementation(() => {
+      // Prevent router side effects in isolated interceptor test.
+    });
+
+    http.get('/actuator/health').subscribe({
+      error: () => {
+        // expected
+      },
+    });
+
+    const request = httpMock.expectOne('/actuator/health');
+    request.flush({}, { status: 401, statusText: 'Unauthorized' });
+
+    expect(unauthorizedSpy).toHaveBeenCalled();
+  });
+
   it('does not attach token when request origin differs from configured api base url', () => {
     setup('https://api.example.com');
 

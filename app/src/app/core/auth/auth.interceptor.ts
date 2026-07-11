@@ -14,11 +14,19 @@ function startsWithApiPath(pathname: string): boolean {
   return pathname === '/api' || pathname.startsWith('/api/');
 }
 
+function startsWithActuatorPath(pathname: string): boolean {
+  return pathname === '/actuator' || pathname.startsWith('/actuator/');
+}
+
+function isProtectedPath(pathname: string): boolean {
+  return startsWithApiPath(pathname) || startsWithActuatorPath(pathname);
+}
+
 function isProtectedApiRequest(request: HttpRequest<unknown>, apiBaseUrl: string): boolean {
   const requestUrl = new URL(request.url, window.location.origin);
 
   if (!apiBaseUrl) {
-    return requestUrl.origin === window.location.origin && startsWithApiPath(requestUrl.pathname);
+    return requestUrl.origin === window.location.origin && isProtectedPath(requestUrl.pathname);
   }
 
   const baseUrl = new URL(apiBaseUrl, window.location.origin);
@@ -30,11 +38,14 @@ function isProtectedApiRequest(request: HttpRequest<unknown>, apiBaseUrl: string
   const basePath = baseUrl.pathname.replace(/\/$/, '');
 
   if (!basePath) {
-    return startsWithApiPath(requestUrl.pathname);
+    return isProtectedPath(requestUrl.pathname);
   }
 
   return (
-    requestUrl.pathname === `${basePath}/api` || requestUrl.pathname.startsWith(`${basePath}/api/`)
+    requestUrl.pathname === `${basePath}/api` ||
+    requestUrl.pathname.startsWith(`${basePath}/api/`) ||
+    requestUrl.pathname === `${basePath}/actuator` ||
+    requestUrl.pathname.startsWith(`${basePath}/actuator/`)
   );
 }
 

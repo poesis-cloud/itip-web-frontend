@@ -51,7 +51,7 @@ dev-down:
 	helm uninstall $(RELEASE) -n $(NAMESPACE) || true
 
 run-ui:
-	@kubectl -n $(NAMESPACE) port-forward service/$(RELEASE) $(FRONTEND_PORT):80 >/dev/null 2>&1 & echo $$! > "$(PORT_FORWARD_PID_FILE)"
+	@kubectl -n $(NAMESPACE) port-forward service/$(RELEASE) $(FRONTEND_PORT):80 >/dev/null 2>&1 & echo $$! >> "$(PORT_FORWARD_PID_FILE)"
 	@echo "Frontend available on http://localhost:$(FRONTEND_PORT)"
 
 prod-deploy:

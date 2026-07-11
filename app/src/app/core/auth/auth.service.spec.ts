@@ -39,27 +39,43 @@ describe('AuthService', () => {
   });
 
   it('clears session if login response expiresAt is invalid', () => {
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    let error: unknown;
+    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+      error: (err) => {
+        error = err;
+      },
+    });
 
     const request = httpMock.expectOne('/api/auth/login');
     request.flush({ token: 'jwt-token', expiresAt: 'invalid-date' });
 
+    expect(error).toBeInstanceOf(Error);
     expect(service.isAuthenticated()).toBe(false);
     expect(service.accessToken()).toBeNull();
   });
 
   it('clears session if login response token is empty', () => {
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    let error: unknown;
+    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+      error: (err) => {
+        error = err;
+      },
+    });
 
     const request = httpMock.expectOne('/api/auth/login');
     request.flush({ token: '', expiresAt: Date.now() + 60_000 });
 
+    expect(error).toBeInstanceOf(Error);
     expect(service.isAuthenticated()).toBe(false);
     expect(service.accessToken()).toBeNull();
   });
 
   it('returns null token when expired and clears session', () => {
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+      error: () => {
+        // expected invalid session payload
+      },
+    });
 
     const request = httpMock.expectOne('/api/auth/login');
     request.flush({ token: 'jwt-token', expiresAt: Date.now() - 1_000 });

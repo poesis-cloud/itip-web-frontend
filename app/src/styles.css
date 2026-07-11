@@ -281,7 +281,7 @@ body {
     background: var(--itip-brand-gradient);
     display: grid;
     place-items: center;
-    color: #fff;
+    color: var(--itip-surface);
     font-size: 11px;
     font-weight: var(--itip-fw-black);
   }

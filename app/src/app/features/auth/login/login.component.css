@@ -70,7 +70,7 @@
 
 .brand-copy h1 {
   margin: 0 0 10px;
-  color: #ffffff;
+  color: var(--itip-surface);
   font-size: clamp(44px, 3.4vw, 56px);
   font-weight: var(--itip-fw-black);
   letter-spacing: var(--itip-ls-tight);
