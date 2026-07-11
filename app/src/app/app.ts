@@ -1,5 +1,6 @@
 import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { LucideLayoutDashboard, LucideUsers } from '@lucide/angular';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 import { ShellService } from './core/layout/shell.service';
@@ -9,7 +10,7 @@ const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1200px)';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideLayoutDashboard, LucideUsers],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

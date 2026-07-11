@@ -507,8 +507,8 @@ body {
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: #fff;
+    background: var(--itip-brand-gradient);
+    color: var(--itip-surface);
     display: grid;
     place-items: center;
     font-size: 12px;

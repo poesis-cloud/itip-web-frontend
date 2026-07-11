@@ -39,8 +39,7 @@ deploy-check:
 dev-up:
 	kubectl get ns $(NAMESPACE) >/dev/null 2>&1 || kubectl create ns $(NAMESPACE) >/dev/null
 	helm upgrade --install $(RELEASE) $(CHART) -n $(NAMESPACE) --create-namespace --wait --timeout 5m0s \
-	-f $(CHART)/environments/dev/values.yaml \
-	--set persistence.enabled=true
+	-f $(CHART)/environments/dev/values.yaml
 	@echo "itip-web-frontend deployed. Run: make run-ui"
 
 dev-down:
