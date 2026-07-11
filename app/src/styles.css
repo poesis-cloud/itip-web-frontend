@@ -339,6 +339,11 @@ body {
     border-left-color: var(--itip-sidebar-active-border);
   }
 
+  :where([data-theme='dark']) .app-shell-sidebar-brand-name,
+  :where([data-theme='dark']) .app-shell-sidebar-link.is-active {
+    color: var(--itip-text);
+  }
+
   .app-shell-sidebar-link-badge {
     margin-left: auto;
     font: 600 10px var(--itip-font-mono);
