@@ -1,110 +1,110 @@
 @if (isShellRoute()) {
-	<div class="app-shell-page">
-		<div class="app-shell-layout">
-			<aside
-				class="app-shell-sidebar"
-				[class.is-mobile-open]="shell.isMobileSidebarOpen()"
-				[attr.aria-hidden]="isMobileViewport() && !shell.isMobileSidebarOpen() ? 'true' : null"
-				[attr.inert]="isMobileViewport() && !shell.isMobileSidebarOpen() ? '' : null"
-			>
-				<div class="app-shell-sidebar-brand">
-					<div class="app-shell-sidebar-logo">IT</div>
-					<div class="app-shell-sidebar-brand-name">ITIP</div>
-					<button
-						type="button"
-						class="app-shell-sidebar-close"
-						aria-label="Close menu"
-						(click)="closeMobileSidebar()"
-					>
-						<i class="pi pi-times"></i>
-					</button>
-				</div>
+  <div class="app-shell-page">
+    <div class="app-shell-layout">
+      <aside
+        class="app-shell-sidebar"
+        [class.is-mobile-open]="shell.isMobileSidebarOpen()"
+        [attr.aria-hidden]="isMobileViewport() && !shell.isMobileSidebarOpen() ? 'true' : null"
+        [attr.inert]="isMobileViewport() && !shell.isMobileSidebarOpen() ? '' : null"
+      >
+        <div class="app-shell-sidebar-brand">
+          <div class="app-shell-sidebar-logo">IT</div>
+          <div class="app-shell-sidebar-brand-name">ITIP</div>
+          <button
+            type="button"
+            class="app-shell-sidebar-close"
+            aria-label="Close menu"
+            (click)="closeMobileSidebar()"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
 
-				<nav id="app-shell-sidebar-nav" class="app-shell-sidebar-nav" aria-label="Sidebar navigation">
-					<div class="app-shell-sidebar-section">Overview</div>
-					<a
-						routerLink="/dashboard"
-						routerLinkActive="is-active"
-						class="app-shell-sidebar-link"
-						(click)="closeMobileSidebar()"
-					>
-						<svg lucideLayoutDashboard aria-hidden="true"></svg>
-						Dashboard
-					</a>
+        <nav id="app-shell-sidebar-nav" class="app-shell-sidebar-nav" aria-label="Sidebar navigation">
+          <div class="app-shell-sidebar-section">Overview</div>
+          <a
+            routerLink="/dashboard"
+            routerLinkActive="is-active"
+            class="app-shell-sidebar-link"
+            (click)="closeMobileSidebar()"
+          >
+            <svg lucideLayoutDashboard aria-hidden="true"></svg>
+            Dashboard
+          </a>
 
-					<div class="app-shell-sidebar-section">Admin</div>
-					<button type="button" class="app-shell-sidebar-link" (click)="closeMobileSidebar()">
-						<svg lucideUsers aria-hidden="true"></svg>
-						Users
-					</button>
-				</nav>
+          <div class="app-shell-sidebar-section">Admin</div>
+          <button type="button" class="app-shell-sidebar-link" (click)="closeMobileSidebar()">
+            <svg lucideUsers aria-hidden="true"></svg>
+            Users
+          </button>
+        </nav>
 
-				<div class="app-shell-sidebar-footer">
-					IT intelligence platform<br />
-					by <strong>Poesis</strong>
-				</div>
-			</aside>
+        <div class="app-shell-sidebar-footer">
+          IT intelligence platform<br />
+          by <strong>Poesis</strong>
+        </div>
+      </aside>
 
-			<button
-				type="button"
-				class="app-shell-sidebar-backdrop"
-				[class.is-visible]="shell.isMobileSidebarOpen()"
-				aria-label="Close menu"
-				[attr.tabindex]="shell.isMobileSidebarOpen() ? '0' : '-1'"
-				[attr.aria-hidden]="!shell.isMobileSidebarOpen()"
-				(click)="closeMobileSidebar()"
-			></button>
+      <button
+        type="button"
+        class="app-shell-sidebar-backdrop"
+        [class.is-visible]="shell.isMobileSidebarOpen()"
+        aria-label="Close menu"
+        [attr.tabindex]="shell.isMobileSidebarOpen() ? '0' : '-1'"
+        [attr.aria-hidden]="!shell.isMobileSidebarOpen()"
+        (click)="closeMobileSidebar()"
+      ></button>
 
-			<div class="app-shell-main">
-				<header class="app-shell-header">
-					<button
-						type="button"
-						class="app-shell-hamburger"
-						[attr.aria-label]="shell.isMobileSidebarOpen() ? 'Close menu' : 'Open menu'"
-						[attr.aria-expanded]="shell.isMobileSidebarOpen()"
-						aria-controls="app-shell-sidebar-nav"
-						(click)="toggleMobileSidebar()"
-					>
-						<i class="pi" [class.pi-bars]="!shell.isMobileSidebarOpen()" [class.pi-times]="shell.isMobileSidebarOpen()"></i>
-					</button>
+      <div class="app-shell-main">
+        <header class="app-shell-header">
+          <button
+            type="button"
+            class="app-shell-hamburger"
+            [attr.aria-label]="shell.isMobileSidebarOpen() ? 'Close menu' : 'Open menu'"
+            [attr.aria-expanded]="shell.isMobileSidebarOpen()"
+            aria-controls="app-shell-sidebar-nav"
+            (click)="toggleMobileSidebar()"
+          >
+            <i class="pi" [class.pi-bars]="!shell.isMobileSidebarOpen()" [class.pi-times]="shell.isMobileSidebarOpen()"></i>
+          </button>
 
-					<div class="app-shell-breadcrumb">
-						<span>{{ breadcrumb().section }}</span>
-						<span>/</span>
-						<strong>{{ breadcrumb().current }}</strong>
-					</div>
+          <div class="app-shell-breadcrumb">
+            <span>{{ breadcrumb().section }}</span>
+            <span>/</span>
+            <strong>{{ breadcrumb().current }}</strong>
+          </div>
 
-					<div class="app-shell-search" role="search">
-						<i class="pi pi-search"></i>
-						<input
-							type="search"
-							class="app-shell-search-input"
-							placeholder="Search ITIP"
-							aria-label="Search ITIP"
-						/>
-					</div>
+          <div class="app-shell-search" role="search">
+            <i class="pi pi-search"></i>
+            <input
+              type="search"
+              class="app-shell-search-input"
+              placeholder="Search ITIP"
+              aria-label="Search ITIP"
+            />
+          </div>
 
-					<div class="app-shell-header-actions">
-						<button
-							type="button"
-							class="app-shell-icon-button"
-							[attr.aria-label]="themeToggleLabel()"
-							[title]="themeToggleLabel()"
-							(click)="toggleTheme()"
-						>
-							<i [class]="themeToggleIcon()"></i>
-						</button>
-						<button type="button" class="app-shell-icon-button" aria-label="Notifications" title="Notifications">
-							<i class="pi pi-bell"></i>
-						</button>
-						<div class="app-shell-avatar">IT</div>
-					</div>
-				</header>
+          <div class="app-shell-header-actions">
+            <button
+              type="button"
+              class="app-shell-icon-button"
+              [attr.aria-label]="themeToggleLabel()"
+              [title]="themeToggleLabel()"
+              (click)="toggleTheme()"
+            >
+              <i [class]="themeToggleIcon()"></i>
+            </button>
+            <button type="button" class="app-shell-icon-button" aria-label="Notifications" title="Notifications">
+              <i class="pi pi-bell"></i>
+            </button>
+            <div class="app-shell-avatar">IT</div>
+          </div>
+        </header>
 
-				<router-outlet></router-outlet>
-			</div>
-		</div>
-	</div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
 } @else {
-	<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 }
