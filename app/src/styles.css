@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import 'primeicons/primeicons.css';
-@import '../../def/mockups/design_handoff_itip_ui/tokens/itip-tokens.css';
+@import './itip-tokens.css';
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 

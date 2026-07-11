@@ -5,13 +5,7 @@ describe('Authentication flow', () => {
   });
 
   it('logs in and redirects to dashboard', () => {
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 200,
-      body: {
-        token: 'fake-jwt-token',
-        expiresAt: Date.now() + 60_000
-      }
-    }).as('login');
+    cy.mockAuthLoginSuccess('login');
 
     cy.visit('/login');
     cy.get('input#email').type('john.doe@itip.local');
@@ -23,13 +17,7 @@ describe('Authentication flow', () => {
   });
 
   it('renders dashboard content after successful login', () => {
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 200,
-      body: {
-        token: 'fake-jwt-token',
-        expiresAt: Date.now() + 60_000
-      }
-    }).as('login');
+    cy.mockAuthLoginSuccess('login');
 
     cy.visit('/login');
     cy.get('input#email').type('john.doe@itip.local');
@@ -44,10 +32,7 @@ describe('Authentication flow', () => {
   });
 
   it('shows error for invalid credentials', () => {
-    cy.intercept('POST', '/api/auth/login', {
-      statusCode: 401,
-      body: {}
-    }).as('loginFailed');
+    cy.mockAuthLoginFailure('loginFailed');
 
     cy.visit('/login');
     cy.get('input#email').type('john.doe@itip.local');
@@ -55,6 +40,20 @@ describe('Authentication flow', () => {
     cy.contains('button', 'Se connecter').click();
 
     cy.wait('@loginFailed');
+    cy.contains('Adresse email ou mot de passe invalide.').should('be.visible');
+  });
+
+  it('loads login view and uses mocked auth API only', () => {
+    cy.mockAuthLoginFailure('mockedLoginFailed');
+
+    cy.visit('/login');
+    cy.contains('Connexion').should('be.visible');
+
+    cy.get('input#email').type('e2e@itip.local');
+    cy.get('input#password').type('wrong');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@mockedLoginFailed');
     cy.contains('Adresse email ou mot de passe invalide.').should('be.visible');
   });
 });

@@ -5,7 +5,8 @@ These rules are mandatory for all future Copilot work in this repository.
 ## Project baseline
 
 - Frontend stack is Angular 21 LTS.
-- Runtime baseline is Node 20.19.0 or higher.
+- Runtime baseline is Node 22 or higher LTS.
+- Always run npm commands with the Node 22 or higher LTS toolchain (npm bundled with Node 22). Do not run npm commands from older Node runtimes.
 - UI stack is PrimeNG + Tailwind.
 - Primary visual references are in `def/mockups/` and `def/mockups/*/itip-design-system.css`.
 - Keep custom CSS to a minimum. Prefer PrimeNG components and Tailwind utilities.
@@ -57,6 +58,8 @@ These rules are mandatory for all future Copilot work in this repository.
 - Maintain high coverage and keep target at 90%+ when reporting coverage.
 - Add/adjust tests when adding or changing signal logic, interceptors, guards, and resources.
 - Maintain E2E authentication scenarios in Cypress.
+- Cypress E2E tests must run in full mock mode for APIs by default.
+- Never call the real backend from Cypress tests (no direct backend URL calls and no live API dependency in CI/local test runs).
 
 ## Formatting and code hygiene
 

@@ -1,11 +1,13 @@
 FROM node:20.19.0-alpine AS build
 WORKDIR /workspace/app
 
+ARG BUILD_CONFIGURATION=production
+
 COPY app/package*.json ./
 RUN npm ci
 
 COPY app/ ./
-RUN npm run build -- --configuration production
+RUN npm run build -- --configuration ${BUILD_CONFIGURATION}
 
 FROM nginx:1.27-alpine
 WORKDIR /usr/share/nginx/html

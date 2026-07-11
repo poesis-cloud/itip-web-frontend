@@ -8,8 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
     "test:watch": "ng test",
-    "e2e": "cypress run",
-    "e2e:open": "cypress open"
+    "ui-e2e-mock": "cypress run --config-file cypress.config.js",
+    "ui-e2e-mock:open": "cypress open --config-file cypress.config.js",
+    "e2e": "npm run ui-e2e-mock",
+    "e2e:open": "npm run ui-e2e-mock:open"
   },
   "private": true,
   "packageManager": "npm@10.8.2",
