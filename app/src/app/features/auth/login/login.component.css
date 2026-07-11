@@ -10,6 +10,19 @@
 
 .login-brand-panel {
 	color: var(--itip-text-light);
+	background:
+		radial-gradient(
+			circle at 1px 1px,
+			color-mix(in srgb, var(--itip-surface) 12%, transparent) 1px,
+			transparent 0
+		),
+		linear-gradient(
+			160deg,
+			var(--itip-sidebar-bg),
+			color-mix(in srgb, var(--itip-sidebar-bg) 84%, var(--itip-surface) 16%) 55%,
+			color-mix(in srgb, var(--itip-sidebar-bg) 72%, var(--itip-surface) 28%)
+		);
+	background-size: 22px 22px, auto;
 }
 
 .brand-mark {

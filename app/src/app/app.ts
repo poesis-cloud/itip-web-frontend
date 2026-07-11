@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -14,12 +15,13 @@ import { filter, map, startWith } from 'rxjs';
 import { ShellService } from './core/layout/shell.service';
 import { ThemeService } from './core/theme/theme.service';
 
-const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1200px)';
+const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1279px)';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    NgClass,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,

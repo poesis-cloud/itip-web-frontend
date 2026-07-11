@@ -1,6 +1,6 @@
 <div class="login-page min-h-screen overflow-x-clip">
-  <section class="login-shell grid w-full min-h-screen overflow-hidden border-0 rounded-none grid-cols-[minmax(420px,56%)_minmax(420px,44%)] max-[960px]:min-h-screen max-[960px]:grid-cols-1 max-[960px]:overflow-auto">
-    <aside class="login-brand-panel relative flex flex-col justify-center p-9 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.12)_1px,transparent_0),linear-gradient(160deg,#0f1729,#182338_55%,#1e2c47)] bg-[length:22px_22px,auto] max-[960px]:hidden">
+  <section class="login-shell grid w-full min-h-screen overflow-hidden border-0 rounded-none grid-cols-[minmax(420px,56%)_minmax(420px,44%)] max-lg:min-h-screen max-lg:grid-cols-1 max-lg:overflow-auto">
+    <aside class="login-brand-panel relative flex flex-col justify-center p-9 max-lg:hidden">
       <div class="brand-top absolute top-9 left-9">
         <div class="brand-mark flex h-[52px] w-[52px] items-center justify-center rounded-[11px] text-[13px] tracking-[0.06em]">ITIP</div>
         <p class="brand-kicker m-0 pt-2 uppercase">IT Intelligence Platform</p>
@@ -12,8 +12,8 @@
       </div>
     </aside>
 
-    <div class="login-form-panel flex flex-col items-center justify-center overflow-y-auto px-14 py-12 max-[960px]:px-5 max-[960px]:pt-6 max-[960px]:pb-7 max-[960px]:items-stretch max-[960px]:border-l-0">
-      <div class="login-head flex items-start gap-4 mb-7 w-full max-w-[500px] max-[960px]:w-full">
+    <div class="login-form-panel flex flex-col items-center justify-center overflow-y-auto px-14 py-12 max-lg:px-5 max-lg:pt-6 max-lg:pb-7 max-lg:border-l-0">
+      <div class="login-head flex items-start gap-4 mb-7 w-full max-w-[500px] max-lg:mx-auto">
         <div>
           <p class="login-overline">Connexion</p>
           <h2 class="m-0 text-[22px]">Welcome back</h2>
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form grid w-full max-w-[500px] gap-[14px] max-[960px]:w-full">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form grid w-full max-w-[500px] gap-[14px] max-lg:mx-auto">
         <div class="field-group grid gap-[7px]">
           <label for="email">Adresse email</label>
           <input
