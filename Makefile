@@ -15,6 +15,7 @@ ENV_FILE         ?= $(CHART)/environments/$(DEPLOY_ENV)/values.yaml
 
 PORT_FORWARD_PID_FILE ?= .dev-port-forwards.pids
 FRONTEND_PORT ?= 4200
+PORT_FORWARD_SERVICE ?= $(shell case "$(RELEASE)" in *itip-web-frontend*) echo "$(RELEASE)";; *) echo "$(RELEASE)-itip-web-frontend";; esac)
 
 dev-check:
 	@command -v kubectl >/dev/null 2>&1 || { echo "Missing required command: kubectl"; exit 1; }
@@ -53,7 +54,7 @@ dev-down:
 	helm uninstall $(RELEASE) -n $(NAMESPACE) || true
 
 run-ui:
-	@kubectl -n $(NAMESPACE) port-forward service/$(RELEASE) $(FRONTEND_PORT):80 >/dev/null 2>&1 & echo $$! >> "$(PORT_FORWARD_PID_FILE)"
+	@kubectl -n $(NAMESPACE) port-forward service/$(PORT_FORWARD_SERVICE) $(FRONTEND_PORT):80 >/dev/null 2>&1 & echo $$! >> "$(PORT_FORWARD_PID_FILE)"
 	@echo "Frontend available on http://localhost:$(FRONTEND_PORT)"
 
 prod-deploy:

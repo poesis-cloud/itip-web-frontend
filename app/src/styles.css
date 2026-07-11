@@ -305,7 +305,7 @@ body {
     margin-top: 10px;
     font-size: 10px;
     font-weight: var(--itip-fw-bold);
-    letter-spacing: 0.09em;
+    letter-spacing: var(--itip-ls-caps);
     text-transform: uppercase;
     color: var(--itip-sidebar-section);
   }

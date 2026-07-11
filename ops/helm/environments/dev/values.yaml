@@ -18,7 +18,7 @@ service:
 
 runtime:
   envName: dev
-  apiBaseUrl: ""
+  apiBaseUrl: "http://localhost:8080"
 
 resources:
   requests:
