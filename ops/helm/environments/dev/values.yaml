@@ -15,8 +15,6 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 80
-  name: itip-web-frontend
-  namespace: poesis
 
 runtime:
   envName: dev

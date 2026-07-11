@@ -10,6 +10,7 @@ const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1200px)';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideLayoutDashboard, LucideUsers],
   templateUrl: './app.html',
   styleUrl: './app.css',

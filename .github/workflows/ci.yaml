@@ -81,10 +81,11 @@ jobs:
             echo "    git commit --amend -s --no-edit"
             echo "    git push"
             echo ""
-            echo "To add sign-off to multiple existing commits:"
+            echo "To avoid rebasing a shared branch, use a fresh signed branch:"
             echo ""
-            echo "    git rebase --signoff <base>"
-            echo "    git push --force-with-lease"
+            echo "    git checkout -b <new-branch>"
+            echo "    git cherry-pick -x -s <oldest-commit>^..<newest-commit>"
+            echo "    git push origin <new-branch>"
             exit 1
           fi
 
