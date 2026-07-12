@@ -1,0 +1,33 @@
+# Preprod environment values
+
+replicaCount: 1
+
+deployApp: true
+
+image:
+  repository: ghcr.io/your-org/itip-web-frontend
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+runtime:
+  envName: preprod
+  apiBaseUrl: https://api-preprod.example.com
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

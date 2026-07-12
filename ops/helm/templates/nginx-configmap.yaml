@@ -1,0 +1,11 @@
+{{- if .Values.deployApp }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "itip-web-frontend.fullname" . }}-nginx
+  labels:
+    app: {{ include "itip-web-frontend.fullname" . }}
+data:
+  default.conf: |
+{{ .Files.Get "files/nginx/default.conf" | nindent 4 }}
+{{- end }}

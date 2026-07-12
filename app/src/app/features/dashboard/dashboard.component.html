@@ -1,0 +1,140 @@
+<main class="dashboard-content min-w-0 grid gap-[18px] overflow-visible px-7 pt-6 pb-7 max-xl:px-4 max-xl:pt-[18px] max-xl:pb-5">
+  <section class="dashboard-hero flex items-start justify-between gap-5 max-md:flex-col">
+          <div>
+            <p class="dashboard-eyebrow m-0 mb-[6px] uppercase">Overview</p>
+            <h1>Dashboard</h1>
+            <p class="dashboard-subtitle mt-[6px] mb-0">Governance, compliance & architecture health - instance ITIP</p>
+          </div>
+
+          <div class="dashboard-page-actions flex items-center gap-[10px] flex-wrap">
+            <p-button
+              label="Last 12 months"
+              severity="secondary"
+              icon="pi pi-chevron-down"
+              iconPos="right"
+            />
+            <p-button label="+ New definition" />
+          </div>
+        </section>
+
+        <section class="stat-grid grid grid-cols-5 gap-[14px] max-xl:grid-cols-2 max-md:grid-cols-1" aria-label="Overview metrics">
+          @for (card of statCards; track card.label) {
+            <article class="dashboard-card dashboard-stat-card itip-stat relative min-h-[118px] overflow-hidden px-4 pt-[18px] pb-4 max-md:px-[14px]">
+              <div class="dashboard-card-accent"></div>
+              <p class="dashboard-card-label m-0 mb-[10px] uppercase">{{ card.label }}</p>
+              <div class="dashboard-card-value-shell min-h-10 flex items-center">
+                <span class="dashboard-card-value inline-flex items-center min-h-8 min-w-20 rounded-full px-[10px]">{{ card.valueSlot }}</span>
+              </div>
+              <p class="dashboard-card-caption mt-[10px] mb-0">{{ card.caption }}</p>
+            </article>
+          }
+        </section>
+
+        <section class="content-grid grid grid-cols-[minmax(0,1.5fr)_minmax(320px,0.9fr)] gap-[14px] max-xl:grid-cols-1">
+          <article class="dashboard-card dashboard-panel dashboard-chart-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+            <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
+              <div>
+                <h2>Compliance trend</h2>
+                <p>Overall pass rate, monthly</p>
+              </div>
+              <div class="dashboard-legend flex items-center gap-[14px] flex-wrap">
+                @for (item of trendLegend; track item.label) {
+                  <span class="dashboard-legend-item inline-flex items-center gap-2" [attr.data-tone]="item.tone">
+                    <span class="dashboard-legend-dot w-[9px] h-[9px] rounded-full"></span>
+                    {{ item.label }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="chart-placeholder">
+              <div class="chart-gridlines"></div>
+              <div class="chart-line"></div>
+              <div class="chart-line chart-line-secondary"></div>
+              <div class="chart-axis">
+                <span>Jul</span>
+                <span>Oct</span>
+                <span>Jan</span>
+                <span>Apr</span>
+                <span>Jun</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="dashboard-card dashboard-panel dashboard-donut-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+            <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
+              <div>
+                <h2>Ascriptions by lifecycle</h2>
+                <p>142 structures</p>
+              </div>
+              <div class="dashboard-legend dashboard-legend-column flex items-center gap-[14px] flex-wrap flex-col items-start gap-2">
+                @for (item of lifecycleLegend; track item.label) {
+                  <span class="dashboard-legend-item inline-flex items-center gap-2" [attr.data-tone]="item.tone">
+                    <span class="dashboard-legend-dot w-[9px] h-[9px] rounded-full"></span>
+                    {{ item.label }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="donut-placeholder">
+              <div class="donut-ring">
+                <div class="donut-core">
+                  <strong>API</strong>
+                  <span>slot</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="bottom-grid grid grid-cols-2 gap-[14px] max-xl:grid-cols-1">
+          <article class="dashboard-card dashboard-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+            <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
+              <div>
+                <h2>Findings by class</h2>
+                <p>Feed-ready cards for future class aggregation APIs</p>
+              </div>
+            </div>
+
+            <div class="findings-list grid gap-3">
+              @for (row of findingsRows; track row.title) {
+                <div class="findings-row grid gap-2">
+                  <div class="findings-row-head flex items-baseline justify-between gap-3">
+                    <span>{{ row.title }}</span>
+                    <span class="findings-row-detail">{{ row.detail }}</span>
+                  </div>
+                  <div class="findings-bar h-[10px] rounded-full overflow-hidden">
+                    <span></span>
+                  </div>
+                </div>
+              }
+            </div>
+          </article>
+
+          <article class="dashboard-card dashboard-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+            <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
+              <div>
+                <h2>Pending approvals</h2>
+                <p>Placeholder rows for the upcoming review API</p>
+              </div>
+              <span class="dashboard-pill inline-flex items-center rounded-full px-[10px] py-1 uppercase">5 pending</span>
+            </div>
+
+            <div class="approvals-list grid gap-3">
+              @for (row of approvalsRows; track row.title) {
+                <div class="approval-row flex items-start justify-between gap-[14px] pb-3">
+                  <div>
+                    <p class="approval-title m-0">{{ row.title }}</p>
+                    <p class="approval-detail">{{ row.detail }}</p>
+                  </div>
+                  <div class="approval-actions flex items-center gap-2 flex-wrap">
+                    <p-button label="Approve" size="small" [disabled]="true" />
+                    <p-button label="Review" size="small" severity="secondary" [disabled]="true" />
+                  </div>
+                </div>
+              }
+            </div>
+          </article>
+        </section>
+</main>

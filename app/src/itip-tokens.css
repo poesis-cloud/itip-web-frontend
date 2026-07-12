@@ -1,0 +1,208 @@
+/* ============================================================================
+   ITIP UI — Design tokens (v1, Indigo system)
+  Runtime token copy consumed by the frontend app.
+  Canonical design handoff reference lives under:
+  def/mockups/design_handoff_itip_ui/tokens/itip-tokens.css
+   Import once at the app root. Every color/space/radius/shadow in the UI
+   MUST come from a token below — no hard-coded hex values in components.
+   ============================================================================ */
+
+:root {
+  /* ---- Brand / primary (indigo) ---- */
+  --itip-primary:            #4F46E5;   /* buttons, active nav, links, focus, selected */
+  --itip-primary-hover:      #4338CA;
+  --itip-primary-tint:       #EEF2FF;   /* tinted chips, info banners, selected node, avatar bg */
+  --itip-primary-tint-border:#DFE3FF;
+  --itip-primary-tint-text:  #4338CA;
+  --itip-brand-gradient:     linear-gradient(135deg, #6366F1, #4F46E5);
+
+  /* ---- AI / Copilot (RESERVED — never use as primary) ---- */
+  --itip-copilot-gradient:   linear-gradient(135deg, #7C3AED, #6366F1);
+
+  /* ---- Surfaces ---- */
+  --itip-bg:            #F5F6F8;
+  --itip-surface:       #FFFFFF;
+  --itip-surface-muted: #FAFBFC;   /* table header, footer strips */
+  --itip-surface-sunken:#F8F9FB;   /* nested property boxes */
+
+  /* ---- Sidebar (dark shell) ---- */
+  --itip-sidebar-bg:      #0F1729;
+  --itip-sidebar-text:    #94A3B8;
+  --itip-sidebar-section: #4B5A73;  /* uppercase group labels */
+  --itip-sidebar-active-bg:     rgba(79,70,229,.18);
+  --itip-sidebar-active-border: #4F46E5;
+
+  /* ---- Text ---- */
+  --itip-text:        #0F172A;
+  --itip-text-muted:  #64748B;
+  --itip-text-light:  #94A3B8;
+
+  /* ---- Borders ---- */
+  --itip-border:          #E6E8EC;
+  --itip-border-hairline: #EEF0F3;  /* in-card dividers, card border in Elevated */
+  --itip-border-strong:   #D3D8E0;  /* inputs */
+  --itip-border-outline:  #E3E7EE;  /* Outline card treatment */
+
+  /* ---- Lifecycle status ---- */
+  --itip-life-draft:      #94A3B8;
+  --itip-life-proposed:   #3B82F6;
+  --itip-life-active:     #16A34A;
+  --itip-life-deprecated: #D97706;
+  --itip-life-deprecated-text: #A16207;
+  --itip-life-retired:    #9CA3AF;
+
+  /* ---- Compliance ---- */
+  --itip-pass:      #16A34A;
+  --itip-warn:      #F59E0B;
+  --itip-warn-text: #B45309;
+  --itip-fail:      #EF4444;
+  --itip-fail-text: #DC2626;
+
+  /* ---- Diagram node types (2px border) ---- */
+  --itip-node-structure:   #4F46E5;
+  --itip-node-mechanism:   #7C3AED;
+  --itip-node-interaction: #059669;
+  --itip-node-effector:    #EA580C;
+  --itip-node-receptor:    #0891B2;
+
+  /* ---- Typography ---- */
+  --itip-font-ui:   'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --itip-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --itip-fw-regular: 400;
+  --itip-fw-medium:  500;
+  --itip-fw-semibold:600;
+  --itip-fw-bold:    700;
+  --itip-fw-black:   800;
+  --itip-fs-cap:    10px;  /* chip/label caps */
+  --itip-fs-meta:   11px;
+  --itip-fs-sm:     12px;
+  --itip-fs-body:   13px;  /* table / body */
+  --itip-fs-base:   14px;  /* inputs, buttons */
+  --itip-fs-card-title: 16px;
+  --itip-fs-modal-title:18px;
+  --itip-fs-h1:     25px;  /* page title */
+  --itip-ls-tight:  -.02em; /* headings */
+  --itip-ls-caps:    .05em; /* uppercase labels */
+
+  /* ---- Spacing (4px base) ---- */
+  --itip-space-1: 4px;
+  --itip-space-2: 8px;
+  --itip-space-3: 12px;
+  --itip-space-4: 16px;
+  --itip-space-5: 20px;
+  --itip-space-6: 24px;
+  --itip-space-7: 28px;
+  --itip-main-padding: 26px 28px;
+  --itip-card-padding: 16px 17px;
+  --itip-panel-padding: 18px 20px;
+
+  /* ---- Radius ---- */
+  --itip-radius-input:  9px;
+  --itip-radius-card:   16px;  /* tweakable 8–22 via --itip-card-radius */
+  --itip-radius-modal:  16px;
+  --itip-radius-pill:   9999px;
+  --itip-card-radius:   13px;  /* current card radius (tweakable) */
+
+  /* ---- Shadows ---- */
+  --itip-shadow-card:  0 1px 2px rgba(16,24,40,.04), 0 10px 26px -14px rgba(15,23,42,.16);
+  --itip-shadow-card-hover: 0 6px 12px rgba(16,24,40,.07), 0 22px 46px -18px rgba(15,23,42,.28);
+  --itip-shadow-raised:0 6px 24px -8px rgba(15,23,42,.14);
+  --itip-shadow-node:  0 4px 10px -3px rgba(15,23,42,.15);
+  --itip-shadow-node-selected: 0 6px 16px -4px rgba(79,70,229,.4);
+  --itip-shadow-modal: 0 30px 60px -15px rgba(15,23,42,.4);
+
+  /* ---- Card accent (themeable) ---- */
+  --itip-card-accent:   #4F46E5;   /* top bar / hover border; indigo default */
+  --itip-card-treatment: elevated; /* elevated | outline | accent */
+
+  /* ---- Motion ---- */
+  --itip-ease: cubic-bezier(.2,.6,.2,1);
+  --itip-dur:  .18s;
+}
+
+/* ============================================================================
+   DARK THEME — set data-theme="dark" on <html>/<body>. Clear, legible, calm.
+   Surfaces are defined by elevation + hairline borders (same system as light).
+   ============================================================================ */
+[data-theme="dark"] {
+  --itip-bg:            #0A0F1C;   /* app canvas */
+  --itip-bg-deep:       #05070D;   /* behind cards */
+  --itip-surface:       #141B2D;
+  --itip-surface-muted: #1A2236;
+  --itip-surface-sunken:#182031;
+  --itip-diagram-canvas:#0F1524;
+
+  --itip-text:        #EAEEF6;
+  --itip-text-2:      #C6CEDD;   /* was #334155 */
+  --itip-text-muted:  #9AA5B8;   /* was #64748B */
+  --itip-text-light:  #94A3B8;   /* unchanged — legible on dark */
+
+  --itip-border:          #2A3450;
+  --itip-border-hairline: #232C42;
+  --itip-border-strong:   #38456A;  /* inputs */
+  --itip-border-outline:  #38456A;
+
+  --itip-primary-tint:       #1F2547;
+  --itip-primary-tint-border:#37407B;
+  --itip-primary-tint-text:  #B7BEF7;
+
+  /* semantic text lightened for contrast on dark */
+  --itip-pass:  #22C55E;
+  --itip-warn:  #FBBF24;
+  --itip-fail:  #F87171;
+  --itip-life-proposed: #60A5FA;
+
+  /* diagram relation lines */
+  --itip-node-edge: #46527A;
+
+  /* card shadows go deeper/softer on dark */
+  --itip-shadow-card:       0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.65);
+  --itip-shadow-card-hover: 0 8px 16px rgba(0,0,0,.5), 0 24px 50px -18px rgba(0,0,0,.8);
+}
+/* The dark sidebar (#0F1729) is intentionally unchanged — it already reads as the
+   nav shell in both themes. Lifecycle SOLID badges (green/amber/red fills) also
+   stay as-is; only their TEXT-on-transparent uses lighten to the semantic vars. */
+
+/* ============================================================================
+   Card system — apply .itip-stat to number/KPI cards, .itip-panel to content
+   panels. Only stat cards lift on hover; panels stay static.
+   ============================================================================ */
+.itip-stat,
+.itip-panel {
+  background: var(--itip-surface);
+  border: 1px solid var(--itip-border-hairline);
+  border-radius: var(--itip-card-radius);
+  box-shadow: var(--itip-shadow-card);
+}
+.itip-stat {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--itip-dur) var(--itip-ease),
+              box-shadow var(--itip-dur) var(--itip-ease),
+              border-color var(--itip-dur) var(--itip-ease);
+}
+.itip-stat:hover {                 /* number cards animate */
+  transform: translateY(-3px);
+  box-shadow: var(--itip-shadow-card-hover);
+}
+/* .itip-panel intentionally has NO :hover rule — content panels are static. */
+
+/* Accent treatment: colored top bar on stat cards */
+[data-card-treatment="accent"] .itip-stat { padding-top: 19px; }
+[data-card-treatment="accent"] .itip-stat::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: linear-gradient(90deg, var(--itip-card-accent),
+              color-mix(in srgb, var(--itip-card-accent) 45%, #a5b4fc));
+}
+
+/* Outline treatment: crisp border, no shadow */
+[data-card-treatment="outline"] .itip-stat,
+[data-card-treatment="outline"] .itip-panel {
+  border: 1.5px solid var(--itip-border-outline);
+  box-shadow: none;
+}
+[data-card-treatment="outline"] .itip-stat:hover {
+  border-color: var(--itip-card-accent);
+  transform: translateY(-2px);
+}

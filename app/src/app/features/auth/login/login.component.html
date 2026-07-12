@@ -1,0 +1,91 @@
+<div class="login-page min-h-screen overflow-x-clip">
+  <section class="login-shell grid w-full min-h-screen overflow-hidden border-0 rounded-none grid-cols-[minmax(420px,56%)_minmax(420px,44%)] max-lg:min-h-screen max-lg:grid-cols-1 max-lg:overflow-auto">
+    <aside class="login-brand-panel relative flex flex-col justify-center p-9 max-lg:hidden">
+      <div class="brand-top absolute top-9 left-9">
+        <div class="brand-mark flex h-[52px] w-[52px] items-center justify-center rounded-[11px] text-[13px] tracking-[0.06em]">ITIP</div>
+        <p class="brand-kicker m-0 pt-2 uppercase">IT Intelligence Platform</p>
+      </div>
+
+      <div class="brand-copy w-full max-w-[760px]">
+        <h1 class="m-0 mb-[10px] text-[clamp(44px,3.4vw,56px)] leading-[1.1]">Design, govern and evaluate your enterprise architecture.</h1>
+        <p class="m-0 text-[clamp(18px,1.3vw,24px)] leading-[1.35]">Structures, management rules and compliance &mdash; administered end to end.</p>
+      </div>
+    </aside>
+
+    <div class="login-form-panel flex flex-col items-center justify-center overflow-y-auto px-14 py-12 max-lg:px-5 max-lg:pt-6 max-lg:pb-7 max-lg:border-l-0">
+      <div class="login-head flex items-start gap-4 mb-7 w-full max-w-[500px] max-lg:mx-auto">
+        <div>
+          <p class="login-overline">Connexion</p>
+          <h2 class="m-0 text-[22px]">Welcome back</h2>
+          <p>Sign in to the acme-corp workspace.</p>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form grid w-full max-w-[500px] gap-[14px] max-lg:mx-auto">
+        <div class="field-group grid gap-[7px]">
+          <label for="email">Adresse email</label>
+          <input
+            id="email"
+            pInputText
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+          />
+          @if (form.controls.email.invalid && form.controls.email.touched) {
+            <small class="field-error">Adresse email invalide.</small>
+          }
+        </div>
+
+        <div class="field-group grid gap-[7px]">
+          <label for="password">Mot de passe</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            [fluid]="true"
+            autocomplete="current-password"
+          />
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <small class="field-error">Mot de passe requis.</small>
+          }
+        </div>
+
+        <label class="keep-session">
+          <input type="checkbox" disabled aria-disabled="true" />
+          Keep me signed in (soon)
+        </label>
+
+        @if (errorMessage()) {
+          <p class="auth-error m-0 px-[13px] py-[11px]">{{ errorMessage() }}</p>
+        }
+
+        <p-button
+          type="submit"
+          label="Se connecter"
+          [loading]="loading()"
+          [disabled]="loading()"
+          styleClass="w-full"
+        />
+
+        <div class="divider text-center">OR</div>
+
+        <button type="button" class="sso-btn flex min-h-11 items-center justify-center gap-2 px-4 py-3.5" disabled>
+          <i class="pi pi-lock"></i>
+          Continue with Enterprise SSO
+          <span class="soon-pill ml-[3px] px-2 py-[2px]">SOON</span>
+        </button>
+
+        <div class="theme-switch mt-3 flex min-h-11 items-center justify-end gap-2">
+          <label id="theme-switch-label" for="theme-switch-toggle">Mode sombre</label>
+          <p-toggleswitch
+            inputId="theme-switch-toggle"
+            [ngModel]="theme.isDark()"
+            [ngModelOptions]="{ standalone: true }"
+            (onChange)="theme.toggle()"
+          />
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

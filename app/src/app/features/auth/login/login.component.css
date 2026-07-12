@@ -1,0 +1,130 @@
+
+.login-page {
+	background: var(--itip-bg);
+	color: var(--itip-text);
+}
+
+.login-shell {
+	background: var(--itip-surface);
+}
+
+.login-brand-panel {
+	color: var(--itip-text-light);
+	background:
+		radial-gradient(
+			circle at 1px 1px,
+			color-mix(in srgb, var(--itip-surface) 12%, transparent) 1px,
+			transparent 0
+		),
+		linear-gradient(
+			160deg,
+			var(--itip-sidebar-bg),
+			color-mix(in srgb, var(--itip-sidebar-bg) 84%, var(--itip-surface) 16%) 55%,
+			color-mix(in srgb, var(--itip-sidebar-bg) 72%, var(--itip-surface) 28%)
+		);
+	background-size: 22px 22px, auto;
+}
+
+.brand-mark {
+	background: var(--itip-brand-gradient);
+	color: var(--itip-surface);
+	font-family: var(--itip-font-ui);
+	font-weight: var(--itip-fw-black);
+}
+
+.brand-kicker {
+	font-size: var(--itip-fs-meta);
+	font-weight: var(--itip-fw-semibold);
+	letter-spacing: var(--itip-ls-caps);
+	color: var(--itip-text-light);
+}
+
+.brand-copy h1 {
+	color: var(--itip-surface);
+	font-weight: var(--itip-fw-black);
+	letter-spacing: var(--itip-ls-tight);
+}
+
+:host-context([data-theme='dark']) .brand-mark,
+:host-context([data-theme='dark']) .brand-copy h1 {
+	color: var(--itip-text);
+}
+
+.brand-copy p {
+	color: var(--itip-text-light);
+}
+
+.login-form-panel {
+	border-left: 1px solid var(--itip-border-hairline);
+}
+
+.login-overline {
+	font-size: var(--itip-fs-meta);
+	font-weight: var(--itip-fw-semibold);
+	color: var(--itip-primary);
+	letter-spacing: var(--itip-ls-caps);
+	text-transform: uppercase;
+}
+
+.login-head h2 {
+	letter-spacing: var(--itip-ls-tight);
+	font-weight: var(--itip-fw-black);
+	color: var(--itip-text);
+}
+
+.login-head p {
+	color: var(--itip-text-muted);
+	font-size: var(--itip-fs-body);
+}
+
+.field-group label {
+	font-size: var(--itip-fs-body);
+	font-weight: var(--itip-fw-semibold);
+	color: var(--itip-text-muted);
+}
+
+.field-error {
+	color: var(--itip-fail-text);
+	font-size: var(--itip-fs-sm);
+	font-weight: var(--itip-fw-medium);
+}
+
+.auth-error {
+	border-radius: var(--itip-radius-input);
+	border: 1px solid color-mix(in srgb, var(--itip-fail) 40%, transparent);
+	background: color-mix(in srgb, var(--itip-fail) 14%, transparent);
+	color: var(--itip-fail);
+	font-size: var(--itip-fs-sm);
+	font-weight: var(--itip-fw-medium);
+}
+
+.divider {
+	font-size: var(--itip-fs-sm);
+	color: var(--itip-text-muted);
+}
+
+.sso-btn {
+	border: 1px solid var(--itip-border-strong);
+	background: var(--itip-surface-muted);
+	color: var(--itip-text-muted);
+	border-radius: var(--itip-radius-input);
+	font-size: var(--itip-fs-base);
+	font-weight: var(--itip-fw-medium);
+}
+
+.theme-switch {
+	font-size: var(--itip-fs-sm);
+	color: var(--itip-text-muted);
+}
+
+.soon-pill {
+	border-radius: var(--itip-radius-pill);
+	border: 1px solid var(--itip-primary-tint-border);
+	background: var(--itip-primary-tint);
+	color: var(--itip-primary-tint-text);
+	font-size: var(--itip-fs-cap);
+	font-weight: var(--itip-fw-bold);
+	letter-spacing: var(--itip-ls-caps);
+}
+
+

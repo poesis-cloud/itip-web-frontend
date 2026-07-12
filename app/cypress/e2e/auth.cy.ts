@@ -1,0 +1,59 @@
+describe('Authentication flow', () => {
+  it('redirects unauthenticated users from /dashboard to /login', () => {
+    cy.visit('/dashboard');
+    cy.url().should('include', '/login');
+  });
+
+  it('logs in and redirects to dashboard', () => {
+    cy.mockAuthLoginSuccess('login');
+
+    cy.visit('/login');
+    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#password').type('secret');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@login');
+    cy.url().should('include', '/dashboard');
+  });
+
+  it('renders dashboard content after successful login', () => {
+    cy.mockAuthLoginSuccess('login');
+
+    cy.visit('/login');
+    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#password').type('secret');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@login');
+    cy.url().should('include', '/dashboard');
+    cy.contains('h1', 'Dashboard').should('be.visible');
+    cy.contains('.dashboard-eyebrow', 'Overview').should('be.visible');
+    cy.get('section[aria-label="Overview metrics"]').should('be.visible');
+  });
+
+  it('shows error for invalid credentials', () => {
+    cy.mockAuthLoginFailure('loginFailed');
+
+    cy.visit('/login');
+    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#password').type('wrong');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@loginFailed');
+    cy.contains('Adresse email ou mot de passe invalide.').should('be.visible');
+  });
+
+  it('loads login view and uses mocked auth API only', () => {
+    cy.mockAuthLoginFailure('mockedLoginFailed');
+
+    cy.visit('/login');
+    cy.contains('Connexion').should('be.visible');
+
+    cy.get('input#email').type('e2e@itip.local');
+    cy.get('input#password').type('wrong');
+    cy.contains('button', 'Se connecter').click();
+
+    cy.wait('@mockedLoginFailed');
+    cy.contains('Adresse email ou mot de passe invalide.').should('be.visible');
+  });
+});

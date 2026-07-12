@@ -1,6 +1,6 @@
 # PROJECT_BRIEF.md — itip-web-frontend
 
-> Last updated: 2025-07 | Sprint 0 | Status: Design Phase
+> Last updated: 2026-07 | Sprint 1 | Status: Active Development
 
 ## 1. Project Overview
 
@@ -23,11 +23,11 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 
 ## 3. Tech Stack
 
-- **Frontend:** Vite + React + TypeScript (TBD — confirm before Sprint 1)
-- **Styling:** TBD (Tailwind CSS likely, referencing `def/mockups/itip-design-system.css`)
-- **State Management:** TBD (Zustand or React Query)
-- **Routing:** React Router v6
-- **Testing:** Vitest (unit) + Playwright (E2E)
+- **Frontend:** Angular 21 + TypeScript
+- **Styling:** Tailwind CSS + PrimeNG + ITIP design tokens
+- **State Management:** Angular signals + RxJS
+- **Routing:** Angular Router
+- **Testing:** Vitest (unit) + Cypress (E2E mock)
 - **Backend (external):** `itip-web-backend` REST API
 - **CI/CD:** GitHub Actions
 
@@ -35,7 +35,7 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 
 ```
 +-------------------------------------------------------------+
-|  Browser — itip-web-frontend (Vite + React + TypeScript)    |
+|  Browser — itip-web-frontend (Angular + TypeScript)          |
 |                                                             |
 |  Pages/Routes                                               |
 |  +-- /overview            — Activity dashboard              |
@@ -64,46 +64,49 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 
 ## 5. Key Files Map
 
-| Area | Path | Contents |
-|------|------|----------|
-| Mockups | `def/mockups/` | HTML mockups by section (evaluation, definition, frameworks, ...) |
-| Design system | `def/mockups/itip-design-system.css` | Reference CSS for colors, typography, components |
-| Entry point | `src/main.tsx` | App bootstrap (to be created Sprint 1) |
-| Components | `src/components/` | Shared UI components |
-| Pages | `src/pages/` | Route-level page components |
-| API client | `src/api/` | REST client, hooks, types |
-| Sprint docs | `docs/sprint-N/` | Plans, progress trackers, done files |
-| QA docs | `docs/qa/` | Sprint sign-off reports |
+| Area          | Path                      | Contents                                                           |
+| ------------- | ------------------------- | ------------------------------------------------------------------ |
+| Angular app   | `app/src/`                | Application source (core/auth, login, dashboard, shell)           |
+| Entry point   | `app/src/main.ts`         | Angular bootstrap                                                  |
+| Routes        | `app/src/app/app.routes.ts` | Public/protected route definitions                              |
+| Global styles | `app/src/styles.css`      | Tailwind + PrimeNG + token bridge + shell styling                 |
+| Tokens        | `app/src/itip-tokens.css` | Local design token source                                          |
+| E2E tests     | `app/cypress/e2e/`        | Cypress full-mock auth/UI end-to-end tests                        |
+| Helm assets   | `ops/helm/`               | Chart templates + dev/preprod/prod values                         |
 
 ## 6. Team Roles
 
-| Agent | Name | Role |
-|-------|------|------|
-| Producer | **Remy** | Sprint planning, mockup review, backlog, GitHub Issues, UX coordination |
-| Frontend | **Nova** | UI components, state management, React/TypeScript |
-| Backend/API | **Sage** | REST API integration, data contracts, type generation |
-| Art/CSS | **Milo** | Design system implementation, accessibility, visual polish |
-| QA | **Ivy** | E2E tests, accessibility audit, mockup parity, sign-off |
+| Agent       | Name     | Role                                                                    |
+| ----------- | -------- | ----------------------------------------------------------------------- |
+| Producer    | **Remy** | Sprint planning, mockup review, backlog, GitHub Issues, UX coordination |
+| Frontend    | **Nova** | UI components, state management, React/TypeScript                       |
+| Backend/API | **Sage** | REST API integration, data contracts, type generation                   |
+| Art/CSS     | **Milo** | Design system implementation, accessibility, visual polish              |
+| QA          | **Ivy**  | E2E tests, accessibility audit, mockup parity, sign-off                 |
 
 ## 7. Sprint Status
 
-| Sprint | Name | Status | Scope |
-|--------|------|--------|-------|
-| 0 | Bootstrap | Done | PROJECT_BRIEF, team setup, mockup inventory |
-| 1 | Foundation | Planned | Vite+React scaffold, routing, design system tokens, overview dashboard |
+| Sprint | Name       | Status  | Scope                                                                  |
+| ------ | ---------- | ------- | ---------------------------------------------------------------------- |
+| 0      | Bootstrap  | Done    | PROJECT_BRIEF, team setup, mockup inventory                            |
+| 1      | Foundation | In progress | Angular scaffold, routing, design system tokens, overview dashboard |
 
 ## 8. Current State (rewrite every sprint)
 
 **What works:**
+
 - Mockups exist for all major UI sections (HTML + design system CSS)
 - Team files bootstrapped (PROJECT_BRIEF, copilot-instructions, prompts)
 
 **What does not work yet:**
-- No runnable frontend code exists
-- Tech stack not yet confirmed (Vite + React + TypeScript is the default candidate)
+
+- No real-backend E2E flow (policy is full-mock Cypress in this repo)
+- No production deployment executed from CD workflow in this repo yet
 
 **What is next:**
-- Sprint 1: confirm tech stack, scaffold project, implement overview dashboard from mockup
+
+- Stabilize CI/CD and deployment hardening
+- Expand dashboard/business feature coverage and acceptance tests
 
 ## 9. Security Rules
 
@@ -115,16 +118,16 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 ## 10. How to Run Locally
 
 ```bash
-# (Once scaffold exists — Sprint 1)
-npm install
-cp .env.example .env.local   # fill in VITE_API_BASE_URL
-npm run dev
+cd app
+nvm use 22.21.1
+npm ci
+npm run start
 ```
 
 ## 11. How to Deploy
 
 TBD (Sprint 1+). Likely: GitHub Actions → build → deploy to static host or container.
-Environment: `VITE_API_BASE_URL` pointing to `itip-web-backend`.
+Environment: runtime config via `app/public/runtime-config.js` and Helm `runtime.apiBaseUrl`.
 
 ## 12. Cross-Chat Handoff Protocol
 
@@ -137,6 +140,7 @@ Every sprint chat must do these before finishing:
 The repo is the shared memory. If skipped, the next chat starts blind.
 
 **Context recovery prompt:**
+
 ```
 Read PROJECT_BRIEF.md and docs/sprint-N/progress.md.
 Continue from where it left off.
@@ -160,6 +164,7 @@ git clone git@github.com:poesis-cloud/itip-web-frontend.git itip-web-frontend-qa
 ```
 
 **Branch strategy:**
+
 - `main` — stable, coordination hub (Remy)
 - `feature/sprint-N` — Dev team work
 - `feature/qa-N` — QA work

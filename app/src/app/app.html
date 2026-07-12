@@ -1,0 +1,118 @@
+@if (isShellRoute()) {
+  <div class="app-shell-page min-h-[100dvh] overflow-hidden">
+    <div class="app-shell-layout grid min-h-[100dvh] items-start grid-cols-[236px_minmax(0,1fr)] max-xl:grid-cols-1">
+      <aside
+        class="app-shell-sidebar flex flex-col h-[100dvh] sticky top-0 overflow-hidden z-40 max-xl:fixed max-xl:inset-y-0 max-xl:left-0 max-xl:w-[min(80vw,280px)] max-xl:max-w-[280px] max-xl:transition-transform max-xl:duration-[180ms] max-xl:shadow-[0_18px_48px_rgba(2,6,23,0.45)]"
+        [ngClass]="shell.isMobileSidebarOpen() ? 'max-xl:translate-x-0' : 'max-xl:-translate-x-full'"
+        [attr.aria-hidden]="isMobileViewport() && !shell.isMobileSidebarOpen() ? 'true' : null"
+        [attr.inert]="isMobileViewport() && !shell.isMobileSidebarOpen() ? '' : null"
+      >
+        <div class="app-shell-sidebar-brand h-[60px] flex items-center gap-[10px] px-5">
+          <div class="app-shell-sidebar-logo w-[30px] h-[30px] rounded-[8px] grid place-items-center text-[11px]">IT</div>
+          <div class="app-shell-sidebar-brand-name text-[14px]">ITIP</div>
+          <button
+            type="button"
+            class="app-shell-sidebar-close hidden ml-auto w-[30px] h-[30px] rounded-[8px] items-center justify-center cursor-pointer max-xl:inline-flex"
+            aria-label="Close menu"
+            (click)="closeMobileSidebar()"
+          >
+            <svg lucideX aria-hidden="true"></svg>
+          </button>
+        </div>
+
+        <nav id="app-shell-sidebar-nav" class="app-shell-sidebar-nav flex-1 min-h-0 py-3 overflow-y-auto overflow-x-hidden" aria-label="Sidebar navigation">
+          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">Overview</div>
+          <a
+            routerLink="/dashboard"
+            routerLinkActive="is-active"
+            class="app-shell-sidebar-link flex items-center gap-[11px] py-2 px-5 text-[13px] border-l-[3px] border-l-transparent w-full bg-transparent border-t-0 border-r-0 border-b-0 text-left cursor-pointer"
+            (click)="closeMobileSidebar()"
+          >
+            <svg lucideLayoutDashboard aria-hidden="true"></svg>
+            Dashboard
+          </a>
+
+          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">Admin</div>
+          <button type="button" class="app-shell-sidebar-link flex items-center gap-[11px] py-2 px-5 text-[13px] border-l-[3px] border-l-transparent w-full bg-transparent border-t-0 border-r-0 border-b-0 text-left cursor-pointer" (click)="closeMobileSidebar()">
+            <svg lucideUsers aria-hidden="true"></svg>
+            Users
+          </button>
+        </nav>
+
+        <div class="app-shell-sidebar-footer mt-auto py-3 px-5 text-[12px] leading-[1.45]">
+          IT intelligence platform<br />
+          by <strong>Poesis</strong>
+        </div>
+      </aside>
+
+      <button
+        type="button"
+        class="app-shell-sidebar-backdrop hidden max-xl:fixed max-xl:inset-0 max-xl:border-0 max-xl:bg-[rgba(2,6,23,0.5)] max-xl:block max-xl:transition-opacity max-xl:duration-[180ms] max-xl:z-30"
+        [ngClass]="shell.isMobileSidebarOpen() ? 'max-xl:opacity-100 max-xl:pointer-events-auto' : 'max-xl:opacity-0 max-xl:pointer-events-none'"
+        aria-label="Close menu"
+        [attr.tabindex]="shell.isMobileSidebarOpen() ? '0' : '-1'"
+        [attr.aria-hidden]="!shell.isMobileSidebarOpen()"
+        (click)="closeMobileSidebar()"
+      ></button>
+
+      <div class="app-shell-main min-w-0 flex flex-col h-[100dvh] min-h-0 overflow-y-auto overflow-x-hidden">
+        <header class="app-shell-header min-h-[60px] sticky top-0 z-[60] flex items-center justify-between gap-4 px-6 max-xl:px-4 max-xl:flex-nowrap max-xl:h-auto max-xl:pt-3 max-xl:pb-3 max-xl:justify-between max-md:flex-nowrap max-md:items-center max-md:gap-y-0 max-md:gap-x-2 max-md:justify-between max-sm:gap-x-1.5 max-sm:px-2.5">
+          <button
+            type="button"
+            class="app-shell-hamburger hidden w-[34px] h-[34px] rounded-[10px] items-center justify-center cursor-pointer max-xl:inline-flex max-sm:w-8 max-sm:h-8"
+            [attr.aria-label]="shell.isMobileSidebarOpen() ? 'Close menu' : 'Open menu'"
+            [attr.aria-expanded]="shell.isMobileSidebarOpen()"
+            aria-controls="app-shell-sidebar-nav"
+            (click)="toggleMobileSidebar()"
+          >
+            @if (shell.isMobileSidebarOpen()) {
+              <svg lucideX aria-hidden="true"></svg>
+            } @else {
+              <svg lucideMenu aria-hidden="true"></svg>
+            }
+          </button>
+
+          <div class="app-shell-breadcrumb flex items-center gap-2 text-[13px] min-w-0 max-xl:flex-[1_1_auto] max-xl:min-w-0 max-xl:order-1 max-md:hidden">
+            <span>{{ breadcrumb().section }}</span>
+            <span>/</span>
+            <strong>{{ breadcrumb().current }}</strong>
+          </div>
+
+          <div class="app-shell-search w-[min(100%,305px)] flex items-center gap-2 rounded-[12px] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] transition-[border-color,box-shadow] duration-[120ms] ease-[ease] max-xl:order-2 max-xl:flex-[0_1_clamp(220px,36vw,420px)] max-xl:w-auto max-xl:max-w-[420px] max-xl:min-w-[220px] max-xl:mx-auto max-md:order-1 max-md:flex max-md:flex-[1_1_auto] max-md:w-auto max-md:max-w-[220px] max-md:min-w-[132px] max-md:mt-0 max-md:mx-auto max-sm:max-w-[180px] max-sm:min-w-[108px]" role="search">
+            <i class="pi pi-search"></i>
+            <input
+              type="search"
+              class="app-shell-search-input appearance-none border-0 outline-0 bg-transparent w-full min-w-0 p-0 leading-[1.2]"
+              placeholder="Search ITIP"
+              aria-label="Search ITIP"
+            />
+          </div>
+
+          <div class="app-shell-header-actions flex items-center gap-[10px] max-xl:order-3 max-xl:ml-0 max-xl:flex-[0_0_auto] max-md:order-2 max-md:ml-0 max-md:flex-[0_0_auto] max-sm:gap-[6px]">
+            <button
+              type="button"
+              class="app-shell-icon-button w-[34px] h-[34px] rounded-[10px] grid place-items-center shadow-[0_1px_2px_rgba(16,24,40,0.04)] max-sm:w-8 max-sm:h-8"
+              [attr.aria-label]="themeToggleLabel()"
+              [title]="themeToggleLabel()"
+              (click)="toggleTheme()"
+            >
+              @if (theme.isDark()) {
+                <svg lucideSun aria-hidden="true"></svg>
+              } @else {
+                <svg lucideMoon aria-hidden="true"></svg>
+              }
+            </button>
+            <button type="button" class="app-shell-icon-button w-[34px] h-[34px] rounded-[10px] grid place-items-center shadow-[0_1px_2px_rgba(16,24,40,0.04)] max-sm:w-8 max-sm:h-8" aria-label="Notifications" title="Notifications">
+              <svg lucideBell aria-hidden="true"></svg>
+            </button>
+            <div class="app-shell-avatar w-[34px] h-[34px] rounded-full grid place-items-center text-[12px] max-sm:w-8 max-sm:h-8">IT</div>
+          </div>
+        </header>
+
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}

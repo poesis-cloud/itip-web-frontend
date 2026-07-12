@@ -1,87 +1,74 @@
-# Copilot Instructions — itip-web-frontend
+# Copilot Instructions - itip-web-frontend
 
-This is the **web frontend for ITIP** (IT Intelligence Platform), a domain application that translates the Generative System Model (GSM) for IT governance. UI mockups live in `def/mockups/`. No runnable code exists yet — Sprint 1 scaffolds the project.
+These rules are mandatory for all future Copilot work in this repository.
 
----
+## Project baseline
 
-## Team
+- Frontend stack is Angular 21 LTS.
+- Runtime baseline is Node 22 or higher LTS.
+- Always run npm commands with the Node 22 or higher LTS toolchain (npm bundled with Node 22). Do not run npm commands from older Node runtimes.
+- UI stack is PrimeNG + Tailwind.
+- Primary visual references are in `def/mockups/` and `def/mockups/*/itip-design-system.css`.
+- Keep custom CSS to a minimum. Prefer PrimeNG components and Tailwind utilities.
+- For responsive behavior across screen sizes, prefer Tailwind responsive utilities directly in templates (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`, and `max-[...]` when needed).
+- Prefer Tailwind responsive utilities over component-level `@media` rules whenever the same result can be achieved cleanly.
+- Keep component CSS media queries only for cases not reasonably expressible with Tailwind utilities.
 
-| Agent | Name | Role | Key Skills |
-|-------|------|------|------------|
-| Producer | **Remy** | Sprint planning, backlog, GitHub Issues, UX coordination, PR merges | `product-manager`, `create-pr`, `update-pr`, `sync`, `commit`, `chronicle`, `breakdown-epic-pm`, `breakdown-feature-prd` |
-| Dev | **Nova / Sage / Milo** | Frontend implementation, React/TypeScript, REST API integration, CSS/accessibility | `gsm-knowledge`, `drawio`, `md-to-docx`, `agent-customization`, `update-skills`, `commit`, `create-pr`, `context-map`, `refactor-plan` |
-| QA | **Ivy** | UI testing, accessibility, mockup parity, visual regression | `code-review`, `commit` |
+## Architecture and signals policy
 
-Remy **never writes application code**. Dev team **never merges to main directly** — always via PR.
+- Use Angular signals as the default local state mechanism.
+- Use computed for derived state only.
+- Use effects only for intentional side effects.
+- For backend data retrieval (read-side resources), use Angular signal resources (`resource` or `rxResource`) by default.
+- Keep command-style actions (login, submit, mutations) explicit; do not force them into resources.
+- Never create subscriptions inside reactive contexts in ways Angular flags as unsafe.
 
----
+## Authentication and security policy
 
-## Frontend Rules (mandatory for all agents)
+- Authentication is email/password via `POST /api/auth/login`.
+- Store JWT in memory only (no localStorage or sessionStorage for auth token).
+- Attach Authorization header only to trusted API endpoints.
+- On `401` from protected API, clear session and redirect to `/login`.
+- Do not leak bearer tokens to third-party origins.
 
-### Mockup-first workflow
-- **Always check `def/mockups/`** before implementing any UI component or page.
-- Mockup sections: `overview/`, `evaluation/`, `definition/`, `frameworks/`, `compliance/`, `review/`, `workflows/`, `deliverables/`, `lenses/`, `truth-sourcing/`, `admin/`.
-- The design system CSS is `def/mockups/itip-design-system.css` — reference it for colors, typography, and component patterns.
-- Design artifacts in `def/` are **read-only reference** — never delete or modify mockup files.
+## Routing policy
 
-### GSM display fidelity
-- **Definition/Ascription lifecycle states must be visually distinct** — states have specific semantics per GSM (use `gsm-knowledge` skill if needed for exact state names and transitions).
-- The 8 GSM primitives (Structure, Mechanism, Effector, Receptor, Interaction, Archetype, Directive, Norm) each need distinct visual treatment.
-- Directive/Norm relationship (DNA governance grammar) must be navigable from the UI.
+- Public route: `/login`.
+- Protected route: `/dashboard`.
+- Redirect authenticated users away from `/login` to `/dashboard`.
+- Redirect unauthenticated users away from protected routes to `/login`.
 
-### Appraisal indicators
-- 29 indicators across **7 bilateral classes**: AA, AC, DD, DN, NA, NN, NX.
-- Each indicator has a **measure type**: percent / count / days / ratio.
-- Two zones: **meta-governance** (NA, NX) and **governance** (AA, AC, DD, DN, NN).
-- Reference mockups in `def/mockups/evaluation/` for exact layout.
-- Use `itip-appraisal-indicators` skill for precise measure/finding semantics before implementing indicator display.
+## Environment policy
 
-### Accessibility
-- **WCAG 2.1 AA minimum** — not optional. All interactive components, color contrast, keyboard navigation.
-- Ivy audits every sprint for accessibility regressions.
+- Keep explicit frontend environments for dev, preprod, and prod.
+- Dev backend base URL defaults to proxy usage (`/api` via Angular proxy to localhost:8080).
+- Preprod/prod use explicit placeholder URLs until real values are available.
+- Runtime deploy-time overrides must be supported via `public/runtime-config.js`.
 
-### Repository discipline
-- **Git history preservation**: use `git mv`, `git rm` for tracked file operations. Never plain `mv`/`rm`.
-- **Archive folders are read-only**: `archives/` and `archive/` — never edit, update, or delete.
-- **Commit trailer** (required on every commit):
-  ```
-  Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
-  ```
-- **No squash, no rebase** on feature branches — preserves commit history.
-- **Secrets** go in `.env.local` (gitignored) — never in source code.
+## Docker and Helm policy
 
----
+- Frontend must run through Docker/Kubernetes flows, not only host-native runtime.
+- Keep Dockerfile and Helm chart operational and validated.
+- Keep env values in `ops/helm/environments/{dev,preprod,prod}/values.yaml`.
+- Use Makefile targets for dev/prod flows.
 
-## Prompt Files
+## Testing and quality gates
 
-| Prompt | Path | Use |
-|--------|------|-----|
-| Remy sprint plan | `.github/prompts/remy-sprint-plan.prompt.md` | Start a new sprint with Remy |
-| Dev feature impl | `.github/prompts/dev-feature-impl.prompt.md` | Implement a feature with Nova/Sage/Milo |
-| Ivy test review | `.github/prompts/ivy-test-review.prompt.md` | QA sign-off with Ivy |
+- Keep unit tests green on every change.
+- Maintain high coverage and keep target at 90%+ when reporting coverage.
+- Add/adjust tests when adding or changing signal logic, interceptors, guards, and resources.
+- Maintain E2E authentication scenarios in Cypress.
+- Cypress E2E tests must run in full mock mode for APIs by default.
+- Never call the real backend from Cypress tests (no direct backend URL calls and no live API dependency in CI/local test runs).
 
----
+## Formatting and code hygiene
 
-## Context Recovery
+- Keep formatting clean and consistent. Use Prettier for TS/HTML/CSS/JSON/YAML/MD files.
+- Keep code ASCII unless a file already relies on non-ASCII content.
+- Prefer small focused changes over broad refactors.
+- Never commit secrets.
 
-When a chat overflows, save state then start fresh:
-```
-Read PROJECT_BRIEF.md and docs/sprint-N/progress.md.
-Continue from where it left off.
-```
+## Operational discipline
 
----
-
-## SE Plugin Agents (global — invoke by name)
-
-These agents are installed globally via the `software-engineering-team` plugin. Invoke them by name in any chat.
-
-| When | Invoke |
-|---|---|
-| Security review before any merge | `SE: Security` |
-| Architecture decision or structurant PR | `SE: Architect` |
-| CI/CD pipeline, Helm, deployment debug | `SE: DevOps/CI` |
-| Writing/updating API docs, ADRs, README | `SE: Technical Writer` |
-| Authoring GitHub Issues or backlog items | `SE: Product Manager Advisor` |
-| UX/UI design, Figma specs, user journeys | `SE: UX/UI Designer` |
-| Accessibility and bias review | `SE: Responsible AI` |
+- Read `PROJECT_BRIEF.md` before non-trivial work and keep it updated when conventions evolve.
+- If new recurring user instructions appear, add them to this file in the same change.

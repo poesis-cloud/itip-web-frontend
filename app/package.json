@@ -1,0 +1,52 @@
+{
+  "name": "app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --configuration development",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test",
+    "ui-e2e-mock": "cypress run --config-file cypress.config.js",
+    "ui-e2e-mock:open": "cypress open --config-file cypress.config.js",
+    "e2e": "npm run ui-e2e-mock",
+    "e2e:open": "npm run ui-e2e-mock:open"
+  },
+  "private": true,
+  "packageManager": "npm@10.9.4",
+  "engines": {
+    "node": "22.x",
+    "npm": ">=10"
+  },
+  "dependencies": {
+    "@angular/animations": "^21.2.17",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "@lucide/angular": "^1.23.0",
+    "@primeuix/themes": "^2.0.3",
+    "primeicons": "^7.0.0",
+    "primeng": "^21.1.9",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.18",
+    "@angular/cli": "^21.2.18",
+    "@angular/compiler-cli": "^21.2.0",
+    "@tailwindcss/postcss": "^4.3.2",
+    "@testing-library/angular": "^19.4.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "cypress": "^15.18.1",
+    "jsdom": "^28.0.0",
+    "postcss": "^8.5.16",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.3.2",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
+  }
+}
