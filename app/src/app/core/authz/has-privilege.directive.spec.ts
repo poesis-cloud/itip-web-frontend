@@ -46,7 +46,7 @@ function hydrateVia(
     .expectOne('/api/auth/login')
     .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
 
-  TestBed.tick();
+  TestBed.flushEffects();
 
   const profile: AuthzProfile = {
     id: 'u',
@@ -56,7 +56,7 @@ function hydrateVia(
     privileges,
   };
   httpMock.expectOne('/api/auth/me').flush(profile);
-  TestBed.tick();
+  TestBed.flushEffects();
 }
 
 describe('HasPrivilegeDirective', () => {
@@ -70,7 +70,7 @@ describe('HasPrivilegeDirective', () => {
     expect(screen.queryByText('GATED')).not.toBeNull();
 
     auth.logout();
-    TestBed.tick();
+    TestBed.flushEffects();
     fixture.detectChanges();
     expect(screen.queryByText('GATED')).toBeNull();
 

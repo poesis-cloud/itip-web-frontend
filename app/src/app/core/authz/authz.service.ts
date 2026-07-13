@@ -31,6 +31,7 @@ export class AuthzService {
   private readonly rolesSignal = signal<ReadonlySet<string>>(new Set<string>());
   private readonly privilegesSignal = signal<ReadonlySet<string>>(new Set<string>());
   private readonly hydrationCompleteSignal = signal(false);
+  private profileRequestVersion = 0;
 
   readonly identity = this.identitySignal.asReadonly();
   readonly roles = this.rolesSignal.asReadonly();
@@ -84,6 +85,8 @@ export class AuthzService {
   }
 
   clear(): void {
+    // Invalidate any in-flight /me response from the previous session.
+    this.profileRequestVersion += 1;
     this.resetState();
     // A cleared session (logout/401) returns to the in-flight state so the next
     // authenticated session re-fetches and guards fail-open until it resolves.
@@ -103,9 +106,19 @@ export class AuthzService {
    * to fail-closed (resolved).
    */
   loadProfile(): void {
+    const requestVersion = ++this.profileRequestVersion;
+
     this.http.get<AuthzProfile>(`${this.auth.apiBaseUrl}/api/auth/me`).subscribe({
-      next: (profile) => this.hydrate(profile),
+      next: (profile) => {
+        if (requestVersion !== this.profileRequestVersion || !this.auth.isAuthenticated()) {
+          return;
+        }
+        this.hydrate(profile);
+      },
       error: () => {
+        if (requestVersion !== this.profileRequestVersion || !this.auth.isAuthenticated()) {
+          return;
+        }
         // Fail-closed: leave privileges empty but record completion so the
         // guard stops failing open once the fetch has finished.
         this.resetState();

@@ -108,7 +108,7 @@ describe('AuthzService', () => {
   it('effect fetches /me and hydrates when authentication flips true', () => {
     authenticate(auth, httpMock);
 
-    TestBed.tick();
+    TestBed.flushEffects();
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
 
     expect(authz.isHydrated()).toBe(true);
@@ -122,13 +122,13 @@ describe('AuthzService', () => {
     vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     authenticate(auth, httpMock);
-    TestBed.tick();
+    TestBed.flushEffects();
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
     expect(authz.isHydrated()).toBe(true);
     expect(authz.hydrationComplete()).toBe(true);
 
     auth.logout();
-    TestBed.tick();
+    TestBed.flushEffects();
 
     expect(authz.isHydrated()).toBe(false);
     expect(authz.hydrationComplete()).toBe(false);
@@ -138,7 +138,7 @@ describe('AuthzService', () => {
   it('fails closed but marks hydration complete when /me errors', () => {
     authenticate(auth, httpMock);
 
-    TestBed.tick();
+    TestBed.flushEffects();
     httpMock.expectOne('/api/auth/me').flush({}, { status: 500, statusText: 'Server Error' });
 
     // Fail-closed: no identity, no privileges...
@@ -149,11 +149,39 @@ describe('AuthzService', () => {
   });
 
   it('loadProfile() can be invoked explicitly', () => {
+    authenticate(auth, httpMock);
+    TestBed.flushEffects();
+    httpMock.expectOne('/api/auth/me').flush(PROFILE);
+
+    authz.clear();
+
     authz.loadProfile();
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
 
     expect(authz.isHydrated()).toBe(true);
     expect(authz.hydrationComplete()).toBe(true);
     expect(authz.hasPrivilege('dashboard:manage')).toBe(true);
+  });
+
+  it('ignores a late /me response after logout', () => {
+    const router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    authenticate(auth, httpMock);
+    TestBed.flushEffects();
+
+    // Keep the /me request in-flight, then clear the session.
+    const meRequest = httpMock.expectOne('/api/auth/me');
+    auth.logout();
+    TestBed.flushEffects();
+
+    // A late success from the stale request must be ignored.
+    meRequest.flush(PROFILE);
+
+    expect(auth.isAuthenticated()).toBe(false);
+    expect(authz.hydrationComplete()).toBe(false);
+    expect(authz.isHydrated()).toBe(false);
+    expect(authz.identity()).toBeNull();
+    expect(authz.privileges().size).toBe(0);
   });
 });
