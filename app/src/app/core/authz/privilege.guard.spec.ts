@@ -55,11 +55,24 @@ describe('privilegeGuard', () => {
     expect(runGuard({ privileges: ['dashboard:view'] })).toEqual(router.parseUrl('/login'));
   });
 
-  it('allows when authenticated but not yet hydrated (fail-open on hydration)', () => {
+  it('allows while the /me fetch is still in flight (fail-open on in-flight)', () => {
     authenticate();
 
-    expect(authz.isHydrated()).toBe(false);
+    // No profile flushed yet: hydration has not completed.
+    expect(authz.hydrationComplete()).toBe(false);
     expect(runGuard({ privileges: ['dashboard:view'] })).toBe(true);
+  });
+
+  it('denies with /forbidden once hydration completes with no privilege (fail-closed)', () => {
+    authenticate();
+
+    // Simulate a failed /me: hydration completes but privileges stay empty.
+    authz.loadProfile();
+    httpMock.expectOne('/api/auth/me').flush({}, { status: 500, statusText: 'Server Error' });
+
+    expect(authz.hydrationComplete()).toBe(true);
+    expect(authz.privileges().size).toBe(0);
+    expect(runGuard({ privileges: ['dashboard:view'] })).toEqual(router.parseUrl('/forbidden'));
   });
 
   it('mode any: allows when at least one privilege is held', () => {

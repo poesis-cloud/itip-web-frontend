@@ -15,7 +15,12 @@ import { AuthzIdentity, AuthzProfile } from './authz.models';
  * - Hydration is decoupled from `AuthService` via an `effect()` watching
  *   `isAuthenticated()`; this avoids a circular dependency and needs no edit to
  *   `AuthService`.
- * - Fail-closed: any error fetching `/me` leaves privileges empty.
+ * - `hydrationComplete` tracks whether the `/me` fetch has RESOLVED (success or
+ *   error), distinct from `isHydrated` (which only reflects a populated
+ *   identity). Guards fail-open while the fetch is in flight but fail-closed
+ *   once it has completed, even on error.
+ * - Fail-closed: any error fetching `/me` leaves privileges empty while still
+ *   marking hydration complete.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthzService {
@@ -25,6 +30,7 @@ export class AuthzService {
   private readonly identitySignal = signal<AuthzIdentity | null>(null);
   private readonly rolesSignal = signal<ReadonlySet<string>>(new Set<string>());
   private readonly privilegesSignal = signal<ReadonlySet<string>>(new Set<string>());
+  private readonly hydrationCompleteSignal = signal(false);
 
   readonly identity = this.identitySignal.asReadonly();
   readonly roles = this.rolesSignal.asReadonly();
@@ -32,11 +38,21 @@ export class AuthzService {
 
   readonly isHydrated = computed(() => this.identitySignal() !== null);
 
+  /**
+   * `true` once the `/me` fetch has RESOLVED for the current session — on both
+   * success and error. Guards must key their fail-open/fail-closed decision off
+   * THIS signal (completion), not `isHydrated` (identity presence): an errored
+   * fetch leaves the identity null yet hydration is complete, so gated routes
+   * must deny rather than stay permanently fail-open.
+   */
+  readonly hydrationComplete = this.hydrationCompleteSignal.asReadonly();
+
   constructor() {
     effect(() => {
       if (this.auth.isAuthenticated()) {
-        // Fetch the profile once per authenticated session.
-        if (!this.isHydrated()) {
+        // Fetch the profile once per authenticated session, keyed off
+        // completion so a failed fetch is not retried in a loop.
+        if (!this.hydrationCompleteSignal()) {
           this.loadProfile();
         }
       } else {
@@ -63,9 +79,18 @@ export class AuthzService {
     });
     this.rolesSignal.set(new Set(profile.roles));
     this.privilegesSignal.set(new Set(profile.privileges));
+    // A successfully loaded profile marks hydration as complete.
+    this.hydrationCompleteSignal.set(true);
   }
 
   clear(): void {
+    this.resetState();
+    // A cleared session (logout/401) returns to the in-flight state so the next
+    // authenticated session re-fetches and guards fail-open until it resolves.
+    this.hydrationCompleteSignal.set(false);
+  }
+
+  private resetState(): void {
     this.identitySignal.set(null);
     this.rolesSignal.set(new Set<string>());
     this.privilegesSignal.set(new Set<string>());
@@ -73,12 +98,19 @@ export class AuthzService {
 
   /**
    * Fetch `GET {apiBaseUrl}/api/auth/me` and hydrate. Exposed for explicit or
-   * bootstrap-time use. Fails closed: on any error the authz state is cleared.
+   * bootstrap-time use. Fails closed: on any error privileges stay empty, but
+   * hydration is still marked complete so guards flip from fail-open (in-flight)
+   * to fail-closed (resolved).
    */
   loadProfile(): void {
     this.http.get<AuthzProfile>(`${this.auth.apiBaseUrl}/api/auth/me`).subscribe({
       next: (profile) => this.hydrate(profile),
-      error: () => this.clear(),
+      error: () => {
+        // Fail-closed: leave privileges empty but record completion so the
+        // guard stops failing open once the fetch has finished.
+        this.resetState();
+        this.hydrationCompleteSignal.set(true);
+      },
     });
   }
 }

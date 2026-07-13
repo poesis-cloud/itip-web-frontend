@@ -45,6 +45,7 @@ describe('AuthzService', () => {
 
   it('starts empty and not hydrated', () => {
     expect(authz.isHydrated()).toBe(false);
+    expect(authz.hydrationComplete()).toBe(false);
     expect(authz.identity()).toBeNull();
     expect(authz.roles().size).toBe(0);
     expect(authz.privileges().size).toBe(0);
@@ -54,6 +55,7 @@ describe('AuthzService', () => {
     authz.hydrate(PROFILE);
 
     expect(authz.isHydrated()).toBe(true);
+    expect(authz.hydrationComplete()).toBe(true);
     expect(authz.identity()).toEqual({
       id: 'user-1',
       email: 'john.doe@itip.local',
@@ -97,6 +99,7 @@ describe('AuthzService', () => {
     authz.clear();
 
     expect(authz.isHydrated()).toBe(false);
+    expect(authz.hydrationComplete()).toBe(false);
     expect(authz.identity()).toBeNull();
     expect(authz.roles().size).toBe(0);
     expect(authz.privileges().size).toBe(0);
@@ -109,6 +112,7 @@ describe('AuthzService', () => {
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
 
     expect(authz.isHydrated()).toBe(true);
+    expect(authz.hydrationComplete()).toBe(true);
     expect(authz.hasPrivilege('dashboard:view')).toBe(true);
     expect(authz.hasRole('ADMIN')).toBe(true);
   });
@@ -121,22 +125,27 @@ describe('AuthzService', () => {
     TestBed.tick();
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
     expect(authz.isHydrated()).toBe(true);
+    expect(authz.hydrationComplete()).toBe(true);
 
     auth.logout();
     TestBed.tick();
 
     expect(authz.isHydrated()).toBe(false);
+    expect(authz.hydrationComplete()).toBe(false);
     expect(authz.privileges().size).toBe(0);
   });
 
-  it('fails closed when /me errors', () => {
+  it('fails closed but marks hydration complete when /me errors', () => {
     authenticate(auth, httpMock);
 
     TestBed.tick();
     httpMock.expectOne('/api/auth/me').flush({}, { status: 500, statusText: 'Server Error' });
 
+    // Fail-closed: no identity, no privileges...
     expect(authz.isHydrated()).toBe(false);
     expect(authz.privileges().size).toBe(0);
+    // ...but hydration is still recorded as complete so guards fail-closed.
+    expect(authz.hydrationComplete()).toBe(true);
   });
 
   it('loadProfile() can be invoked explicitly', () => {
@@ -144,6 +153,7 @@ describe('AuthzService', () => {
     httpMock.expectOne('/api/auth/me').flush(PROFILE);
 
     expect(authz.isHydrated()).toBe(true);
+    expect(authz.hydrationComplete()).toBe(true);
     expect(authz.hasPrivilege('dashboard:manage')).toBe(true);
   });
 });
