@@ -1,0 +1,131 @@
+{
+  "language": {
+    "label": "Langue",
+    "selectorAriaLabel": "Selecteur de langue"
+  },
+  "common": {
+    "soon": "BIENTOT"
+  },
+  "theme": {
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair"
+  },
+  "app": {
+    "shell": {
+      "overview": "Vue generale",
+      "dashboard": "Tableau de bord",
+      "admin": "Administration",
+      "users": "Utilisateurs",
+      "searchPlaceholder": "Rechercher ITIP",
+      "searchAria": "Rechercher ITIP",
+      "closeMenu": "Fermer le menu",
+      "openMenu": "Ouvrir le menu",
+      "notifications": "Alertes",
+      "sidebarNavigation": "Navigation laterale",
+      "sidebarFooterLine1": "Plateforme d intelligence IT",
+      "sidebarFooterLine2": "par"
+    }
+  },
+  "login": {
+    "brand": {
+      "kicker": "Plateforme d intelligence IT",
+      "title": "Concevez, gouvernez et evaluez votre architecture d'entreprise.",
+      "subtitle": "Structures, regles de gestion et conformite - administrees de bout en bout."
+    },
+    "header": {
+      "overline": "Connexion",
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous a l espace acme-corp."
+    },
+    "form": {
+      "emailLabel": "Adresse email",
+      "passwordLabel": "Mot de passe",
+      "keepSignedIn": "Rester connecte (bientot)",
+      "signIn": "Se connecter",
+      "or": "OU",
+      "sso": "Continuer avec le SSO entreprise"
+    },
+    "errors": {
+      "invalidEmail": "Adresse email invalide.",
+      "passwordRequired": "Mot de passe requis.",
+      "invalidCredentials": "Adresse email ou mot de passe invalide.",
+      "generic": "La connexion a echoue. Veuillez reessayer plus tard."
+    }
+  },
+  "dashboard": {
+    "metricsAriaLabel": "Metriques de vue generale",
+    "header": {
+      "overview": "Vue generale",
+      "title": "Tableau de bord",
+      "subtitle": "Gouvernance, conformite et sante de l architecture - instance ITIP"
+    },
+    "actions": {
+      "last12Months": "12 derniers mois",
+      "newDefinition": "+ Nouvelle definition"
+    },
+    "stats": {
+      "structures": {
+        "label": "Structures",
+        "caption": "Alimente par l API de synthese des structures"
+      },
+      "directives": {
+        "label": "Directives",
+        "caption": "Alimente par l API des metriques de gouvernance"
+      },
+      "ascriptions": {
+        "label": "Ascriptions",
+        "caption": "Alimente par l API de capture runtime"
+      },
+      "compliance": {
+        "label": "Conformite",
+        "caption": "Alimente par l API d aggregation de conformite"
+      },
+      "openViolations": {
+        "label": "Violations ouvertes",
+        "caption": "Alimente par l API des constats"
+      }
+    },
+    "legend": {
+      "overall": "Global",
+      "target": "Cible"
+    },
+    "lifecycle": {
+      "active": "Actif",
+      "draft": "Brouillon",
+      "deprecated": "Obsolete",
+      "proposed": "Propose"
+    },
+    "complianceTrend": {
+      "title": "Tendance de conformite",
+      "subtitle": "Taux global de reussite par mois"
+    },
+    "chart": {
+      "months": ["Juil", "Oct", "Jan", "Avr", "Juin"]
+    },
+    "lifecyclePanel": {
+      "title": "Ascriptions par cycle de vie",
+      "subtitle": "142 structures"
+    },
+    "findings": {
+      "title": "Constats par classe",
+      "subtitle": "Cartes pretes pour les futures API d aggregation"
+    },
+    "approvals": {
+      "heading": "Approbations en attente",
+      "subtitle": "Lignes temporaires pour la future API de revue",
+      "pendingCount": "5 en attente",
+      "approve": "Approuver",
+      "review": "Revoir",
+      "directiveTitle": "Directive - API Gateway DOIT APPLIQUER la limitation de debit",
+      "normTitle": "Norme - encryption_at_rest sur DataStore",
+      "structureTitle": "Structure - Service Paiement (nouveau)"
+    },
+    "placeholders": {
+      "api": "API",
+      "slot": "emplacement",
+      "apiSlot": "Emplacement API",
+      "findingsFeedSlot": "Emplacement du flux de constats",
+      "approvalFeedSlot": "Emplacement du flux d approbation"
+    }
+  }
+}

@@ -13,15 +13,15 @@
           <button
             type="button"
             class="app-shell-sidebar-close hidden ml-auto w-[30px] h-[30px] rounded-[8px] items-center justify-center cursor-pointer max-xl:inline-flex"
-            aria-label="Close menu"
+            [attr.aria-label]="'app.shell.closeMenu' | transloco"
             (click)="closeMobileSidebar()"
           >
             <svg lucideX aria-hidden="true"></svg>
           </button>
         </div>
 
-        <nav id="app-shell-sidebar-nav" class="app-shell-sidebar-nav flex-1 min-h-0 py-3 overflow-y-auto overflow-x-hidden" aria-label="Sidebar navigation">
-          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">Overview</div>
+        <nav id="app-shell-sidebar-nav" class="app-shell-sidebar-nav flex-1 min-h-0 py-3 overflow-y-auto overflow-x-hidden" [attr.aria-label]="'app.shell.sidebarNavigation' | transloco">
+          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">{{ 'app.shell.overview' | transloco }}</div>
           <a
             routerLink="/dashboard"
             routerLinkActive="is-active"
@@ -29,19 +29,19 @@
             (click)="closeMobileSidebar()"
           >
             <svg lucideLayoutDashboard aria-hidden="true"></svg>
-            Dashboard
+            {{ 'app.shell.dashboard' | transloco }}
           </a>
 
-          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">Admin</div>
+          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">{{ 'app.shell.admin' | transloco }}</div>
           <button type="button" class="app-shell-sidebar-link flex items-center gap-[11px] py-2 px-5 text-[13px] border-l-[3px] border-l-transparent w-full bg-transparent border-t-0 border-r-0 border-b-0 text-left cursor-pointer" (click)="closeMobileSidebar()">
             <svg lucideUsers aria-hidden="true"></svg>
-            Users
+            {{ 'app.shell.users' | transloco }}
           </button>
         </nav>
 
         <div class="app-shell-sidebar-footer mt-auto py-3 px-5 text-[12px] leading-[1.45]">
-          IT intelligence platform<br />
-          by <strong>Poesis</strong>
+          {{ 'app.shell.sidebarFooterLine1' | transloco }}<br />
+          {{ 'app.shell.sidebarFooterLine2' | transloco }} <strong>Poesis</strong>
         </div>
       </aside>
 
@@ -49,7 +49,7 @@
         type="button"
         class="app-shell-sidebar-backdrop hidden max-xl:fixed max-xl:inset-0 max-xl:border-0 max-xl:bg-[rgba(2,6,23,0.5)] max-xl:block max-xl:transition-opacity max-xl:duration-[180ms] max-xl:z-30"
         [ngClass]="shell.isMobileSidebarOpen() ? 'max-xl:opacity-100 max-xl:pointer-events-auto' : 'max-xl:opacity-0 max-xl:pointer-events-none'"
-        aria-label="Close menu"
+        [attr.aria-label]="'app.shell.closeMenu' | transloco"
         [attr.tabindex]="shell.isMobileSidebarOpen() ? '0' : '-1'"
         [attr.aria-hidden]="!shell.isMobileSidebarOpen()"
         (click)="closeMobileSidebar()"
@@ -60,7 +60,7 @@
           <button
             type="button"
             class="app-shell-hamburger hidden w-[34px] h-[34px] rounded-[10px] items-center justify-center cursor-pointer max-xl:inline-flex max-sm:w-8 max-sm:h-8"
-            [attr.aria-label]="shell.isMobileSidebarOpen() ? 'Close menu' : 'Open menu'"
+            [attr.aria-label]="shell.isMobileSidebarOpen() ? ('app.shell.closeMenu' | transloco) : ('app.shell.openMenu' | transloco)"
             [attr.aria-expanded]="shell.isMobileSidebarOpen()"
             aria-controls="app-shell-sidebar-nav"
             (click)="toggleMobileSidebar()"
@@ -82,13 +82,15 @@
             <i class="pi pi-search"></i>
             <input
               type="search"
+              pInputText
               class="app-shell-search-input appearance-none border-0 outline-0 bg-transparent w-full min-w-0 p-0 leading-[1.2]"
-              placeholder="Search ITIP"
-              aria-label="Search ITIP"
+              [placeholder]="'app.shell.searchPlaceholder' | transloco"
+              [attr.aria-label]="'app.shell.searchAria' | transloco"
             />
           </div>
 
           <div class="app-shell-header-actions flex items-center gap-[10px] max-xl:order-3 max-xl:ml-0 max-xl:flex-[0_0_auto] max-md:order-2 max-md:ml-0 max-md:flex-[0_0_auto] max-sm:gap-[6px]">
+            <app-language-switcher [compact]="true"></app-language-switcher>
             <button
               type="button"
               class="app-shell-icon-button w-[34px] h-[34px] rounded-[10px] grid place-items-center shadow-[0_1px_2px_rgba(16,24,40,0.04)] max-sm:w-8 max-sm:h-8"
@@ -102,7 +104,7 @@
                 <svg lucideMoon aria-hidden="true"></svg>
               }
             </button>
-            <button type="button" class="app-shell-icon-button w-[34px] h-[34px] rounded-[10px] grid place-items-center shadow-[0_1px_2px_rgba(16,24,40,0.04)] max-sm:w-8 max-sm:h-8" aria-label="Notifications" title="Notifications">
+            <button type="button" class="app-shell-icon-button w-[34px] h-[34px] rounded-[10px] grid place-items-center shadow-[0_1px_2px_rgba(16,24,40,0.04)] max-sm:w-8 max-sm:h-8" [attr.aria-label]="'app.shell.notifications' | transloco" [title]="'app.shell.notifications' | transloco">
               <svg lucideBell aria-hidden="true"></svg>
             </button>
             <div class="app-shell-avatar w-[34px] h-[34px] rounded-full grid place-items-center text-[12px] max-sm:w-8 max-sm:h-8">IT</div>

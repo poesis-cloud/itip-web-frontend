@@ -1,0 +1,29 @@
+<p-select
+  inputId="language-switcher-select"
+  [options]="locale.availableLanguages()"
+  optionLabel="endonym"
+  optionValue="code"
+  [ngModel]="locale.currentLanguage()"
+  (ngModelChange)="onLanguageChange($event)"
+  [ariaLabel]="'language.selectorAriaLabel' | transloco"
+  [showClear]="false"
+  [checkmark]="false"
+  appendTo="body"
+  panelStyleClass="itip-lang-panel"
+  [styleClass]="compact() ? 'itip-lang-select itip-lang-select-compact' : 'itip-lang-select'"
+>
+  <ng-template #selectedItem let-selectedOption>
+    <span class="itip-lang-selected">
+      <i class="pi pi-globe" aria-hidden="true"></i>
+      <span class="itip-lang-text">{{ selectedOption?.endonym }}</span>
+    </span>
+  </ng-template>
+
+  <ng-template #item let-option>
+    <span class="itip-lang-option">{{ option.endonym }}</span>
+  </ng-template>
+
+  <ng-template #dropdownicon>
+    <i class="pi pi-chevron-down" aria-hidden="true"></i>
+  </ng-template>
+</p-select>
