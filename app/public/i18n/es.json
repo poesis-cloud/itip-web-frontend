@@ -14,14 +14,14 @@
     "shell": {
       "overview": "Resumen",
       "dashboard": "Panel",
-      "admin": "Administracion",
+      "admin": "Administración",
       "users": "Usuarios",
       "searchPlaceholder": "Buscar en ITIP",
       "searchAria": "Buscar en ITIP",
-      "closeMenu": "Cerrar menu",
-      "openMenu": "Abrir menu",
+      "closeMenu": "Cerrar menú",
+      "openMenu": "Abrir menú",
       "notifications": "Notificaciones",
-      "sidebarNavigation": "Navegacion lateral",
+      "sidebarNavigation": "Navegación lateral",
       "sidebarFooterLine1": "Plataforma de inteligencia TI",
       "sidebarFooterLine2": "por"
     }
@@ -29,60 +29,60 @@
   "login": {
     "brand": {
       "kicker": "Plataforma de inteligencia TI",
-      "title": "Disena, gobierna y evalua tu arquitectura empresarial.",
-      "subtitle": "Estructuras, reglas de gestion y cumplimiento - administrados de extremo a extremo."
+      "title": "Diseña, gobierna y evalúa tu arquitectura empresarial.",
+      "subtitle": "Estructuras, reglas de gestión y cumplimiento - administrados de extremo a extremo."
     },
     "header": {
-      "overline": "Iniciar sesion",
+      "overline": "Iniciar sesión",
       "title": "Bienvenido de nuevo",
-      "subtitle": "Inicia sesion en el espacio acme-corp."
+      "subtitle": "Inicia sesión en el espacio acme-corp."
     },
     "form": {
-      "emailLabel": "Correo electronico",
-      "passwordLabel": "Contrasena",
-      "keepSignedIn": "Mantener sesion iniciada (pronto)",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "keepSignedIn": "Mantener sesión iniciada (pronto)",
       "signIn": "Entrar",
       "or": "O",
       "sso": "Continuar con SSO empresarial"
     },
     "errors": {
-      "invalidEmail": "Correo electronico no valido.",
-      "passwordRequired": "La contrasena es obligatoria.",
-      "invalidCredentials": "Correo o contrasena invalidos.",
-      "generic": "El inicio de sesion ha fallado. Intentalo de nuevo mas tarde."
+      "invalidEmail": "Correo electrónico no válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "invalidCredentials": "Correo o contraseña inválidos.",
+      "generic": "El inicio de sesión ha fallado. Inténtalo de nuevo más tarde."
     }
   },
   "dashboard": {
-    "metricsAriaLabel": "Metricas de resumen",
+    "metricsAriaLabel": "Métricas de resumen",
     "header": {
       "overview": "Resumen",
       "title": "Panel",
       "subtitle": "Gobernanza, cumplimiento y salud de arquitectura - instancia ITIP"
     },
     "actions": {
-      "last12Months": "Ultimos 12 meses",
-      "newDefinition": "+ Nueva definicion"
+      "last12Months": "Últimos 12 meses",
+      "newDefinition": "+ Nueva definición"
     },
     "stats": {
       "structures": {
         "label": "Estructuras",
-        "caption": "Se alimentara desde la API de resumen de estructuras"
+        "caption": "Se alimentará desde la API de resumen de estructuras"
       },
       "directives": {
         "label": "Directivas",
-        "caption": "Se alimentara desde la API de metricas de gobernanza"
+        "caption": "Se alimentará desde la API de métricas de gobernanza"
       },
       "ascriptions": {
         "label": "Ascripciones",
-        "caption": "Se alimentara desde la API de snapshot en ejecucion"
+        "caption": "Se alimentará desde la API de snapshot en ejecución"
       },
       "compliance": {
         "label": "Cumplimiento",
-        "caption": "Se alimentara desde la API de agregacion de cumplimiento"
+        "caption": "Se alimentará desde la API de agregación de cumplimiento"
       },
       "openViolations": {
         "label": "Incumplimientos abiertos",
-        "caption": "Se alimentara desde la API de hallazgos"
+        "caption": "Se alimentará desde la API de hallazgos"
       }
     },
     "legend": {
@@ -97,7 +97,7 @@
     },
     "complianceTrend": {
       "title": "Tendencia de cumplimiento",
-      "subtitle": "Tasa global de aprobacion mensual"
+      "subtitle": "Tasa global de aprobación mensual"
     },
     "chart": {
       "months": ["Jul", "Oct", "Ene", "Abr", "Jun"]
@@ -108,15 +108,15 @@
     },
     "findings": {
       "title": "Hallazgos por clase",
-      "subtitle": "Tarjetas listas para futuras API de agregacion por clase"
+      "subtitle": "Tarjetas listas para futuras API de agregación por clase"
     },
     "approvals": {
       "heading": "Aprobaciones pendientes",
-      "subtitle": "Filas temporales para la proxima API de revision",
+      "subtitle": "Filas temporales para la próxima API de revisión",
       "pendingCount": "5 pendientes",
       "approve": "Aprobar",
       "review": "Revisar",
-      "directiveTitle": "Directiva - API Gateway DEBE APLICAR limitacion de tasa",
+      "directiveTitle": "Directiva - API Gateway DEBE APLICAR limitación de tasa",
       "normTitle": "Norma - encryption_at_rest en DataStore",
       "structureTitle": "Estructura - Servicio de Pagos (nuevo)"
     },
