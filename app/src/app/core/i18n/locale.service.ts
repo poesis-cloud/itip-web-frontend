@@ -54,8 +54,13 @@ export class LocaleService {
       this.document.documentElement.setAttribute('lang', resolvedLanguage);
       this.writeSavedLanguage(resolvedLanguage);
       this.transloco.setActiveLang(resolvedLanguage);
-      this.applyPrimeNgTranslation(resolvedLanguage, sequence);
-      this.ready.set(true);
+      this.applyPrimeNgTranslation(resolvedLanguage, sequence).subscribe(() => {
+        if (sequence !== this.loadSequence) {
+          return;
+        }
+
+        this.ready.set(true);
+      });
     });
   }
 
@@ -91,8 +96,8 @@ export class LocaleService {
     return DEFAULT_LANGUAGE;
   }
 
-  private applyPrimeNgTranslation(language: SupportedLanguage, sequence: number): void {
-    this.http
+  private applyPrimeNgTranslation(language: SupportedLanguage, sequence: number): Observable<void> {
+    return this.http
       .get<PrimeNgTranslation>(`/i18n/primeng/${language}.json`)
       .pipe(
         catchError(() => {
@@ -104,14 +109,14 @@ export class LocaleService {
             .get<PrimeNgTranslation>(`/i18n/primeng/${DEFAULT_LANGUAGE}.json`)
             .pipe(catchError(() => of({} as PrimeNgTranslation)));
         }),
-      )
-      .subscribe((translation) => {
+        map((translation) => {
         if (sequence !== this.loadSequence) {
           return;
         }
 
         this.primeNg.setTranslation(translation);
-      });
+      }),
+      );
   }
 
   private readSavedLanguage(): string | null {
