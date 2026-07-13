@@ -49,16 +49,16 @@ export class LocaleService {
         return;
       }
 
-      this.lang.set(resolvedLanguage);
       this.translocoLocale.setLocale(getLocaleForLanguage(resolvedLanguage));
-      this.document.documentElement.setAttribute('lang', resolvedLanguage);
-      this.writeSavedLanguage(resolvedLanguage);
       this.transloco.setActiveLang(resolvedLanguage);
       this.applyPrimeNgTranslation(resolvedLanguage, sequence).subscribe(() => {
         if (sequence !== this.loadSequence) {
           return;
         }
 
+        this.lang.set(resolvedLanguage);
+        this.document.documentElement.setAttribute('lang', resolvedLanguage);
+        this.writeSavedLanguage(resolvedLanguage);
         this.ready.set(true);
       });
     });
