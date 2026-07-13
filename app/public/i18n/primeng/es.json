@@ -1,5 +1,5 @@
 {
-  "accept": "Si",
+  "accept": "Sí",
   "reject": "No",
   "choose": "Elegir",
   "upload": "Subir",
@@ -8,7 +8,7 @@
   "today": "Hoy",
   "weekHeader": "Sem",
   "firstDayOfWeek": 1,
-  "dayNames": ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+  "dayNames": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
   "dayNamesShort": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
   "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
   "monthNames": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
@@ -16,7 +16,7 @@
   "dateFormat": "dd/mm/yy",
   "emptyMessage": "No hay opciones disponibles",
   "emptyFilterMessage": "No se encontraron resultados",
-  "emptySearchMessage": "Sin resultados de busqueda",
+  "emptySearchMessage": "Sin resultados de búsqueda",
   "selectionMessage": "{0} elementos seleccionados",
   "emptySelectionMessage": "Ningun elemento seleccionado",
   "searchMessage": "{0} resultados disponibles"
