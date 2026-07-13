@@ -6,12 +6,14 @@ import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/auth/auth.interceptor';
+import { provideAuthzBootstrap } from './core/authz/bootstrap-authz';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
+    provideAuthzBootstrap(),
     providePrimeNG({
       theme: {
         preset: Aura,

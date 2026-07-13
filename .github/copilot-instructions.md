@@ -29,7 +29,48 @@ These rules are mandatory for all future Copilot work in this repository.
 - Store JWT in memory only (no localStorage or sessionStorage for auth token).
 - Attach Authorization header only to trusted API endpoints.
 - On `401` from protected API, clear session and redirect to `/login`.
+- On `403` from protected API, do NOT clear the session (the session is valid, the action is not permitted): redirect to `/forbidden`.
 - Do not leak bearer tokens to third-party origins.
+- Never decode the JWT for authorization. The JWT is a lean, opaque bearer credential (`sub/jti/iat/exp`); it carries no roles or privileges.
+
+## Authorization (authz) and RBAC policy
+
+Authorization is separate from authentication. It lives under `src/app/core/authz/` (do not mix it into `core/auth/`, which owns session/token lifecycle). See ADR-001 (`portfolio/itip/architecture/ADR-001-frontend-authorization-delivery-contract.md`) and ADR-002 (session rehydration).
+
+### Backend RBAC model (source of truth)
+
+The backend (`itip-web-backend`, Spring Boot) exposes a temporal RBAC model:
+
+```
+Account ──< AccountRoleAssignment >── Role ──< RolePrivilegeAssignment >── Privilege
+ (email,      (expiresAt, revoked_at)  (name)   (revoked_at)              (code, unique)
+  fullName)
+```
+
+- The **authority unit is the privilege `code`** (unique string), NOT the role name. Roles are display/grouping only. There is no `ROLE_` prefix.
+- Assignments are **temporal**: an assignment counts only if `revoked_at == null` AND (`expires_at == null` OR `expires_at` is in the future). Authorities are re-resolved server-side on every request.
+- Backend endpoints are enforced with `@PreAuthorize("hasAuthority('<PRIVILEGE_CODE>')")` (method security is enabled).
+
+### The delivery contract — `GET /api/auth/me`
+
+- Roles + privilege codes reach the frontend ONLY via the authenticated endpoint `GET /api/auth/me` → `{ id, email, fullName, roles: string[], privileges: string[] }`. Privileges are the codes to gate on; roles are display-only.
+- `401` = authentication failure (no/invalid/expired token) → clear session + redirect `/login`. `403` = authenticated but lacking a privilege → `/forbidden`, session preserved.
+
+### Frontend authz building blocks (use these; do not reinvent)
+
+- **`AuthzService`** (`core/authz/authz.service.ts`, signals): holds `identity`, `roles`, `privileges` (as `Set<string>` for O(1) checks). Use `hasPrivilege(code)`, `hasAny(codes)`, `hasAll(codes)`, `hasRole(name)`. It hydrates from `/api/auth/me` via an `effect()` on `AuthService.isAuthenticated()` and clears on logout/401. **Fail-closed**: if `/me` fails, privileges stay empty (never assume all-access).
+- **Route gating** — `privilegeGuard` (`core/authz/privilege.guard.ts`): declare required codes in `route.data` as `PrivilegeRouteData` (`{ privileges, mode?: 'any'|'all', redirectTo? }`). Chain it after `authGuard`.
+- **UI gating** — the structural directive `*hasPrivilege="'CODE'"` (or an array with `mode:'all'`) for buttons/menus/sections.
+- **Resource gating** — pre-check with `AuthzService` in the `rxResource` `params` (return `undefined` to skip firing a doomed request), but always treat the backend `403` as the real answer.
+- **Privilege codes** — reference them through the typed catalog `core/authz/privilege.catalog.ts` (`Privilege.*` / `PrivilegeCode`), never as magic strings. This catalog is a small hand-authored typed reference of the codes this UI gates; the backend seed CSV (`structural-privileges.csv`) is the source of truth, and parity is enforced backend-side (a G3 test asserts every `@PreAuthorize` code exists in the seed). There is no cross-repo codegen (deferred/optional).
+
+### Cardinal security principle (non-negotiable)
+
+**Frontend authorization is UX/convenience only.** It hides what the user cannot do and avoids firing doomed requests — it never _prevents_ anything. The sole enforcement boundary is the backend `@PreAuthorize`. Parity rule: every privilege code gated in the frontend MUST correspond to a backend endpoint enforced with the same code. A hidden button in front of an unprotected endpoint is a vulnerability, not a feature.
+
+### Rehydration (F5)
+
+Token is in memory only, so a page refresh loses both token and privileges. Interim posture (ADR-002 Strategy A): refresh = re-login. The `AuthzService.hydrate()` + `bootstrapAuthz` initializer are staged so a future silent-refresh (HttpOnly refresh cookie) is a drop-in. Never persist privileges to storage.
 
 ## Routing policy
 
