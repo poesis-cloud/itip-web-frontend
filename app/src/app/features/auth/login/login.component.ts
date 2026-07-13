@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -36,11 +36,10 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly transloco = inject(TranslocoService);
 
   readonly theme = inject(ThemeService);
   readonly loading = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  readonly errorMessageKey = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -53,7 +52,7 @@ export class LoginComponent {
       return;
     }
 
-    this.errorMessage.set(null);
+    this.errorMessageKey.set(null);
     this.loading.set(true);
 
     this.auth
@@ -65,11 +64,11 @@ export class LoginComponent {
         },
         error: (error: unknown) => {
           if (error instanceof HttpErrorResponse && error.status === 401) {
-            this.errorMessage.set(this.transloco.translate('login.errors.invalidCredentials'));
+            this.errorMessageKey.set('login.errors.invalidCredentials');
             return;
           }
 
-          this.errorMessage.set(this.transloco.translate('login.errors.generic'));
+          this.errorMessageKey.set('login.errors.generic');
         },
       });
   }

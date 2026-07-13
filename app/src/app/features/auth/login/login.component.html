@@ -66,8 +66,8 @@
           {{ 'login.form.keepSignedIn' | transloco }}
         </label>
 
-        @if (errorMessage()) {
-          <p class="auth-error m-0 px-[13px] py-[11px]">{{ errorMessage() }}</p>
+        @if (errorMessageKey()) {
+          <p class="auth-error m-0 px-[13px] py-[11px]">{{ errorMessageKey() | transloco }}</p>
         }
 
         <p-button

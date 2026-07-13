@@ -91,6 +91,6 @@ describe('LoginComponent', () => {
     loginReq.flush({}, { status: 401, statusText: 'Unauthorized' });
 
     fixture.detectChanges();
-    expect(fixture.componentInstance.errorMessage()).toBe('Invalid email or password.');
+    expect(fixture.componentInstance.errorMessageKey()).toBe('login.errors.invalidCredentials');
   });
 });
