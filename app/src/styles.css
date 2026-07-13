@@ -32,6 +32,10 @@
   --app-font-family: var(--itip-font-ui);
   --app-font-mono: var(--itip-font-mono);
   --p-font-family: var(--app-font-family);
+  --itip-control-height: 2.75rem;
+  --itip-control-radius: var(--itip-radius-input);
+  --itip-control-border: 1px solid var(--itip-border-strong);
+  --itip-control-focus-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 
 [data-theme='dark'] {
@@ -98,13 +102,14 @@ body {
     font-family: var(--app-font-family);
   }
 
-  :where(.p-inputtext, .p-password-input, .p-select-label, .p-select) {
+  :where(input.p-inputtext, .p-password-input, .p-select, .p-datepicker-input) {
     background: var(--itip-surface);
-    border: 1px solid var(--itip-border-strong);
-    border-radius: var(--itip-radius-input);
+    border: var(--itip-control-border);
+    border-radius: var(--itip-control-radius);
     font-size: var(--itip-fs-base);
     color: var(--itip-text);
-    min-height: 2.75rem;
+    min-height: var(--itip-control-height);
+    height: var(--itip-control-height);
     padding-block: 0.875rem;
     padding-inline: 1rem;
     box-sizing: border-box;
@@ -113,19 +118,127 @@ body {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   }
 
-  :where([data-theme='dark']) :where(.p-inputtext, .p-password-input, .p-select) {
+  :where(.p-select .p-select-label) {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    min-height: 0;
+    padding: 0;
+    line-height: 1.2;
+  }
+
+  :where([data-theme='dark']) :where(input.p-inputtext, .p-password-input, .p-select, .p-datepicker-input) {
     background: var(--itip-surface-muted);
-    border: 1px solid var(--itip-border-strong);
+    border: var(--itip-control-border);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  :where(.p-inputtext:enabled:focus, .p-password-input:enabled:focus, .p-select:not(.p-disabled).p-focus) {
+  :where(input.p-inputtext:enabled:focus, .p-password-input:enabled:focus, .p-select:not(.p-disabled).p-focus, .p-datepicker-input:enabled:focus) {
     border-color: var(--itip-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    box-shadow: var(--itip-control-focus-shadow);
   }
 
-  :where(.p-password, .p-inputtext, .p-password-input, .p-select) {
+  :where(.p-password, input.p-inputtext, .p-password-input, .p-select, .p-datepicker) {
     width: 100%;
+  }
+
+  :where(.p-datepicker .p-datepicker-dropdown) {
+    min-height: var(--itip-control-height);
+    height: var(--itip-control-height);
+    border: var(--itip-control-border);
+    border-left: 0;
+    border-radius: 0 var(--itip-control-radius) var(--itip-control-radius) 0;
+  }
+
+  :where(.itip-lang-select.p-select) {
+    width: auto;
+    min-width: 8.3rem;
+    max-width: 10rem;
+    min-height: var(--itip-control-height);
+    height: var(--itip-control-height);
+    padding: 0 0.35rem;
+    border-radius: var(--itip-control-radius);
+    border: var(--itip-control-border);
+  }
+
+  :where(.itip-lang-select-compact.p-select) {
+    min-width: 7.6rem;
+    max-width: 9rem;
+    min-height: var(--itip-control-height);
+    height: var(--itip-control-height);
+    padding: 0 0.28rem;
+  }
+
+  :where(.itip-lang-select .p-select-label) {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.32rem 0.35rem;
+  }
+
+  :where(.itip-lang-select .p-select-dropdown) {
+    width: 1.45rem;
+    color: var(--itip-text-muted);
+  }
+
+  :where(.itip-lang-selected) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    max-width: 100%;
+    color: var(--itip-text-muted);
+    font-size: 0.8rem;
+    font-weight: var(--itip-fw-semibold);
+  }
+
+  :where(.itip-lang-select-compact .itip-lang-selected) {
+    gap: 0.32rem;
+    font-size: 0.78rem;
+  }
+
+  :where(.itip-lang-selected .pi) {
+    font-size: 0.8rem;
+  }
+
+  :where(.itip-lang-text) {
+    max-width: 5.35rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :where(.itip-lang-panel .p-select-option) {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.82rem;
+    border-radius: var(--itip-control-radius);
+  }
+
+  :where(.itip-lang-panel .p-select-option.p-select-option-selected) {
+    background: var(--itip-primary-tint);
+    color: var(--itip-primary-tint-text);
+  }
+
+  :where(.itip-lang-panel .p-select-option.p-select-option-selected .itip-lang-option) {
+    color: var(--itip-primary-tint-text);
+    font-weight: var(--itip-fw-semibold);
+  }
+
+  :where(.itip-lang-panel .p-select-option:not(.p-disabled):hover) {
+    background: color-mix(in srgb, var(--itip-primary-tint) 45%, var(--itip-surface) 55%);
+  }
+
+  :where(.itip-lang-panel.p-select-overlay) {
+    border: var(--itip-control-border);
+    border-radius: var(--itip-control-radius);
+  }
+
+  :where(.p-datepicker-panel) {
+    border: var(--itip-control-border);
+    border-radius: var(--itip-control-radius);
+  }
+
+  :where(.itip-lang-option) {
+    font-weight: var(--itip-fw-medium);
   }
 
   :where(.p-password-toggle-mask-icon, .p-password-clear-icon) {
@@ -349,11 +462,21 @@ body {
 
   .app-shell-search {
     background: var(--itip-surface-muted);
-    border: 1px solid var(--itip-border);
+    border: var(--itip-control-border);
+    border-radius: var(--itip-control-radius);
+    min-height: var(--itip-control-height);
+    height: var(--itip-control-height);
+    padding-inline: 1rem;
     color: var(--itip-text-light);
   }
 
   .app-shell-search-input {
+    min-height: 0;
+    height: auto;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
     color: var(--itip-text);
     font: inherit;
   }

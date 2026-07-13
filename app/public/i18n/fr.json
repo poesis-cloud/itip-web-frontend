@@ -1,0 +1,131 @@
+{
+  "language": {
+    "label": "Langue",
+    "selectorAriaLabel": "Sélecteur de langue"
+  },
+  "common": {
+    "soon": "BIENTÔT"
+  },
+  "theme": {
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair"
+  },
+  "app": {
+    "shell": {
+      "overview": "Vue générale",
+      "dashboard": "Tableau de bord",
+      "admin": "Administration",
+      "users": "Utilisateurs",
+      "searchPlaceholder": "Rechercher ITIP",
+      "searchAria": "Rechercher ITIP",
+      "closeMenu": "Fermer le menu",
+      "openMenu": "Ouvrir le menu",
+      "notifications": "Alertes",
+      "sidebarNavigation": "Navigation latérale",
+      "sidebarFooterLine1": "Plateforme d'intelligence IT",
+      "sidebarFooterLine2": "par"
+    }
+  },
+  "login": {
+    "brand": {
+      "kicker": "Plateforme d'intelligence IT",
+      "title": "Concevez, gouvernez et évaluez votre architecture d'entreprise.",
+      "subtitle": "Structures, règles de gestion et conformité - administrées de bout en bout."
+    },
+    "header": {
+      "overline": "Connexion",
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous à l'espace acme-corp."
+    },
+    "form": {
+      "emailLabel": "Adresse e-mail",
+      "passwordLabel": "Mot de passe",
+      "keepSignedIn": "Rester connecté (bientôt)",
+      "signIn": "Se connecter",
+      "or": "OU",
+      "sso": "Continuer avec le SSO entreprise"
+    },
+    "errors": {
+      "invalidEmail": "Adresse e-mail invalide.",
+      "passwordRequired": "Mot de passe requis.",
+      "invalidCredentials": "Adresse e-mail ou mot de passe invalide.",
+      "generic": "La connexion a échoué. Veuillez réessayer plus tard."
+    }
+  },
+  "dashboard": {
+    "metricsAriaLabel": "Métriques de vue générale",
+    "header": {
+      "overview": "Vue générale",
+      "title": "Tableau de bord",
+      "subtitle": "Gouvernance, conformité et santé de l'architecture - instance ITIP"
+    },
+    "actions": {
+      "last12Months": "12 derniers mois",
+      "newDefinition": "+ Nouvelle définition"
+    },
+    "stats": {
+      "structures": {
+        "label": "Structures",
+        "caption": "Alimenté par l'API de synthèse des structures"
+      },
+      "directives": {
+        "label": "Directives",
+        "caption": "Alimenté par l'API des métriques de gouvernance"
+      },
+      "ascriptions": {
+        "label": "Ascriptions",
+        "caption": "Alimenté par l'API de capture runtime"
+      },
+      "compliance": {
+        "label": "Conformité",
+        "caption": "Alimenté par l'API d'agrégation de conformité"
+      },
+      "openViolations": {
+        "label": "Violations ouvertes",
+        "caption": "Alimenté par l'API des constats"
+      }
+    },
+    "legend": {
+      "overall": "Global",
+      "target": "Cible"
+    },
+    "lifecycle": {
+      "active": "Actif",
+      "draft": "Brouillon",
+      "deprecated": "Obsolète",
+      "proposed": "Proposé"
+    },
+    "complianceTrend": {
+      "title": "Tendance de conformité",
+      "subtitle": "Taux global de réussite par mois"
+    },
+    "chart": {
+      "months": ["Juil", "Oct", "Jan", "Avr", "Juin"]
+    },
+    "lifecyclePanel": {
+      "title": "Ascriptions par cycle de vie",
+      "subtitle": "142 structures"
+    },
+    "findings": {
+      "title": "Constats par classe",
+      "subtitle": "Cartes prêtes pour les futures API d'agrégation"
+    },
+    "approvals": {
+      "heading": "Approbations en attente",
+      "subtitle": "Lignes temporaires pour la future API de revue",
+      "pendingCount": "5 en attente",
+      "approve": "Approuver",
+      "review": "Revoir",
+      "directiveTitle": "Directive - API Gateway DOIT APPLIQUER la limitation de débit",
+      "normTitle": "Norme - encryption_at_rest sur DataStore",
+      "structureTitle": "Structure - Service Paiement (nouveau)"
+    },
+    "placeholders": {
+      "api": "API",
+      "slot": "emplacement",
+      "apiSlot": "Emplacement API",
+      "findingsFeedSlot": "Emplacement du flux de constats",
+      "approvalFeedSlot": "Emplacement du flux d'approbation"
+    }
+  }
+}
