@@ -1,0 +1,23 @@
+{
+  "accept": "Oui",
+  "reject": "Non",
+  "choose": "Choisir",
+  "upload": "Televerser",
+  "cancel": "Annuler",
+  "clear": "Effacer",
+  "today": "Aujourd hui",
+  "weekHeader": "Sem",
+  "firstDayOfWeek": 1,
+  "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+  "dayNamesShort": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+  "dayNamesMin": ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+  "monthNames": ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"],
+  "monthNamesShort": ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Aou", "Sep", "Oct", "Nov", "Dec"],
+  "dateFormat": "dd/mm/yy",
+  "emptyMessage": "Aucune option disponible",
+  "emptyFilterMessage": "Aucun resultat",
+  "emptySearchMessage": "Aucun resultat de recherche",
+  "selectionMessage": "{0} elements selectionnes",
+  "emptySelectionMessage": "Aucun element selectionne",
+  "searchMessage": "{0} resultats disponibles"
+}

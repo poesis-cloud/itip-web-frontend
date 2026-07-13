@@ -1,0 +1,131 @@
+{
+  "language": {
+    "label": "Language",
+    "selectorAriaLabel": "Language selector"
+  },
+  "common": {
+    "soon": "SOON"
+  },
+  "theme": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "app": {
+    "shell": {
+      "overview": "Overview",
+      "dashboard": "Dashboard",
+      "admin": "Admin",
+      "users": "Users",
+      "searchPlaceholder": "Search ITIP",
+      "searchAria": "Search ITIP",
+      "closeMenu": "Close menu",
+      "openMenu": "Open menu",
+      "notifications": "Notifications",
+      "sidebarNavigation": "Sidebar navigation",
+      "sidebarFooterLine1": "IT intelligence platform",
+      "sidebarFooterLine2": "by"
+    }
+  },
+  "login": {
+    "brand": {
+      "kicker": "IT Intelligence Platform",
+      "title": "Design, govern and evaluate your enterprise architecture.",
+      "subtitle": "Structures, management rules and compliance - administered end to end."
+    },
+    "header": {
+      "overline": "Sign in",
+      "title": "Welcome back",
+      "subtitle": "Sign in to the acme-corp workspace."
+    },
+    "form": {
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "keepSignedIn": "Keep me signed in (soon)",
+      "signIn": "Sign in",
+      "or": "OR",
+      "sso": "Continue with Enterprise SSO"
+    },
+    "errors": {
+      "invalidEmail": "Invalid email address.",
+      "passwordRequired": "Password is required.",
+      "invalidCredentials": "Invalid email or password.",
+      "generic": "Sign in failed. Please try again later."
+    }
+  },
+  "dashboard": {
+    "metricsAriaLabel": "Overview metrics",
+    "header": {
+      "overview": "Overview",
+      "title": "Dashboard",
+      "subtitle": "Governance, compliance and architecture health - ITIP instance"
+    },
+    "actions": {
+      "last12Months": "Last 12 months",
+      "newDefinition": "+ New definition"
+    },
+    "stats": {
+      "structures": {
+        "label": "Structures",
+        "caption": "Will be fed by structure summary API"
+      },
+      "directives": {
+        "label": "Directives",
+        "caption": "Will be fed by governance metrics API"
+      },
+      "ascriptions": {
+        "label": "Ascriptions",
+        "caption": "Will be fed by runtime snapshot API"
+      },
+      "compliance": {
+        "label": "Compliance",
+        "caption": "Will be fed by compliance aggregation API"
+      },
+      "openViolations": {
+        "label": "Open violations",
+        "caption": "Will be fed by findings API"
+      }
+    },
+    "legend": {
+      "overall": "Overall",
+      "target": "Target"
+    },
+    "lifecycle": {
+      "active": "Active",
+      "draft": "Draft",
+      "deprecated": "Deprecated",
+      "proposed": "Proposed"
+    },
+    "complianceTrend": {
+      "title": "Compliance trend",
+      "subtitle": "Overall pass rate, monthly"
+    },
+    "chart": {
+      "months": ["Jul", "Oct", "Jan", "Apr", "Jun"]
+    },
+    "lifecyclePanel": {
+      "title": "Ascriptions by lifecycle",
+      "subtitle": "142 structures"
+    },
+    "findings": {
+      "title": "Findings by class",
+      "subtitle": "Feed-ready cards for future class aggregation APIs"
+    },
+    "approvals": {
+      "heading": "Pending approvals",
+      "subtitle": "Placeholder rows for the upcoming review API",
+      "pendingCount": "5 pending",
+      "approve": "Approve",
+      "review": "Review",
+      "directiveTitle": "Directive - API Gateway MUST ENFORCE rate limiting",
+      "normTitle": "Norm - encryption_at_rest on DataStore",
+      "structureTitle": "Structure - Payment Service (new)"
+    },
+    "placeholders": {
+      "api": "API",
+      "slot": "slot",
+      "apiSlot": "API slot",
+      "findingsFeedSlot": "Findings feed slot",
+      "approvalFeedSlot": "Approval feed slot"
+    }
+  }
+}
