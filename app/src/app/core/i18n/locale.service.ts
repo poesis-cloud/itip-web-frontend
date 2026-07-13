@@ -44,18 +44,17 @@ export class LocaleService {
     const sequence = ++this.loadSequence;
     this.ready.set(false);
 
-    this.translocoLocale.setLocale(getLocaleForLanguage(language));
-    this.document.documentElement.setAttribute('lang', language);
-    this.writeSavedLanguage(language);
-
     this.loadLanguage(language).subscribe((resolvedLanguage) => {
       if (sequence !== this.loadSequence) {
         return;
       }
 
       this.lang.set(resolvedLanguage);
+      this.translocoLocale.setLocale(getLocaleForLanguage(resolvedLanguage));
+      this.document.documentElement.setAttribute('lang', resolvedLanguage);
+      this.writeSavedLanguage(resolvedLanguage);
       this.transloco.setActiveLang(resolvedLanguage);
-      this.applyPrimeNgTranslation(resolvedLanguage);
+      this.applyPrimeNgTranslation(resolvedLanguage, sequence);
       this.ready.set(true);
     });
   }
@@ -92,7 +91,7 @@ export class LocaleService {
     return DEFAULT_LANGUAGE;
   }
 
-  private applyPrimeNgTranslation(language: SupportedLanguage): void {
+  private applyPrimeNgTranslation(language: SupportedLanguage, sequence: number): void {
     this.http
       .get<PrimeNgTranslation>(`/i18n/primeng/${language}.json`)
       .pipe(
@@ -107,6 +106,10 @@ export class LocaleService {
         }),
       )
       .subscribe((translation) => {
+        if (sequence !== this.loadSequence) {
+          return;
+        }
+
         this.primeNg.setTranslation(translation);
       });
   }
