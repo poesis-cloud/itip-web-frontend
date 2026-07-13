@@ -57,10 +57,22 @@ describe('privilegeGuard', () => {
 
   it('allows while the /me fetch is still in flight (fail-open on in-flight)', () => {
     authenticate();
+    TestBed.flushEffects();
+
+    const meRequest = httpMock.expectOne('/api/auth/me');
 
     // No profile flushed yet: hydration has not completed.
     expect(authz.hydrationComplete()).toBe(false);
     expect(runGuard({ privileges: ['dashboard:view'] })).toBe(true);
+
+    // Complete the pending request to satisfy httpMock.verify() for this spec.
+    meRequest.flush({
+      id: 'u',
+      email: 'e',
+      fullName: null,
+      roles: [],
+      privileges: [],
+    });
   });
 
   it('denies with /forbidden once hydration completes with no privilege (fail-closed)', () => {
