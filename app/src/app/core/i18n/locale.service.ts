@@ -110,12 +110,13 @@ export class LocaleService {
             .pipe(catchError(() => of({} as PrimeNgTranslation)));
         }),
         map((translation) => {
-        if (sequence !== this.loadSequence) {
-          return;
-        }
+          if (sequence !== this.loadSequence) {
+            return void 0;
+          }
 
-        this.primeNg.setTranslation(translation);
-      }),
+          this.primeNg.setTranslation(translation);
+          return void 0;
+        }),
       );
   }
 
