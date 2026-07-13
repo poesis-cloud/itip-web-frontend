@@ -35,7 +35,7 @@ These rules are mandatory for all future Copilot work in this repository.
 
 ## Authorization (authz) and RBAC policy
 
-Authorization is separate from authentication. It lives under `src/app/core/authz/` (do not mix it into `core/auth/`, which owns session/token lifecycle). See ADR-001 (`portfolio/itip/architecture/ADR-001-frontend-authorization-delivery-contract.md`) and ADR-002 (session rehydration).
+Authorization is separate from authentication. It lives under `core/authz/` (do not mix it into `core/auth/`, which owns session/token lifecycle). See ADR-001 (`portfolio/itip/architecture/ADR-001-frontend-authorization-delivery-contract.md`) and ADR-002 (session rehydration).
 
 ### Backend RBAC model (source of truth)
 

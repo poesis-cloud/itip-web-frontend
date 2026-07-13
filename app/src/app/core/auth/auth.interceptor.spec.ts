@@ -213,4 +213,29 @@ describe('authInterceptor', () => {
     expect(unauthorizedSpy).toHaveBeenCalled();
     expect(navigateSpy).not.toHaveBeenCalledWith(['/forbidden']);
   });
+
+  it('treats a 403 from /api/auth/me as unauthorized even if token looks authenticated', () => {
+    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    httpMock
+      .expectOne('/api/auth/login')
+      .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
+
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const unauthorizedSpy = vi.spyOn(authService, 'handleUnauthorized').mockImplementation(() => {
+      // Prevent router side effects in isolated interceptor test.
+    });
+
+    http.get('/api/auth/me').subscribe({
+      error: () => {
+        // expected
+      },
+    });
+
+    const request = httpMock.expectOne('/api/auth/me');
+    request.flush({}, { status: 403, statusText: 'Forbidden' });
+
+    expect(unauthorizedSpy).toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalledWith(['/forbidden']);
+  });
 });

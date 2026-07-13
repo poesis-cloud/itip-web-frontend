@@ -50,6 +50,28 @@ function isProtectedApiRequest(request: HttpRequest<unknown>, apiBaseUrl: string
   );
 }
 
+function isSessionBootstrapRequest(request: HttpRequest<unknown>, apiBaseUrl: string): boolean {
+  const requestUrl = new URL(request.url, window.location.origin);
+
+  if (!apiBaseUrl) {
+    return requestUrl.origin === window.location.origin && requestUrl.pathname === '/api/auth/me';
+  }
+
+  const baseUrl = new URL(apiBaseUrl, window.location.origin);
+
+  if (requestUrl.origin !== baseUrl.origin) {
+    return false;
+  }
+
+  const basePath = baseUrl.pathname.replace(/\/$/, '');
+
+  if (!basePath) {
+    return requestUrl.pathname === '/api/auth/me';
+  }
+
+  return requestUrl.pathname === `${basePath}/api/auth/me`;
+}
+
 export const authInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn,
@@ -75,6 +97,14 @@ export const authInterceptor: HttpInterceptorFn = (
           // Authentication failure: clear the session and send to /login.
           auth.handleUnauthorized();
         } else if (error.status === 403) {
+          // The session bootstrap endpoint (/api/auth/me) should never return
+          // a legitimate authorization denial. A 403 here is effectively an
+          // authentication failure (revoked/invalid session): clear and relogin.
+          if (isSessionBootstrapRequest(request, auth.apiBaseUrl)) {
+            auth.handleUnauthorized();
+            return throwError(() => error);
+          }
+
           // Authorization denial. The session stays VALID, so we must NOT log
           // the user out on a legitimate 403 — route them to /forbidden instead.
           //
