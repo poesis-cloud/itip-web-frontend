@@ -1701,7 +1701,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: LogicalApplicationComponent',
-            uri: 'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1', since: '2024-09-15',
+            uri: 'gsmarc://gsm-frameworks/togaf/application-architecture/LogicalApplicationComponent/v1', since: '2024-09-15',
             slots: [
               { k: 'architectureTier', t: 'enum', v: 'APPLICATION' },
               { k: 'functionalDomain', t: 'string', v: 'Edge Ingress' },
@@ -1709,8 +1709,8 @@
           },
           {
             kind: 'swtech', name: 'SoftwareTechnology: API_GATEWAY',
-            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-09-15',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-09-15',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'API_GATEWAY' },
               { k: 'settings', t: 'object[]', v: ['{name:worker_processes,value:auto}', '{name:keepalive_timeout,value:75s}'] },
@@ -1718,7 +1718,7 @@
           },
           {
             kind: 'scap', name: 'ScapPlatformIdentifier',
-            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-12-01',
+            uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-12-01',
             slots: [
               { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:nginx:nginx:1.25:*:*:*:*:*:*:*' },
               { k: 'part', t: 'enum', v: 'APPLICATION' },
@@ -1729,7 +1729,7 @@
           },
           {
             kind: 'iso', name: 'ISO 25010: ProductSecurity',
-            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1', since: '2024-10-01',
+            uri: 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1', since: '2024-10-01',
             slots: [
               { k: 'dataClassification', t: 'enum', v: 'CONFIDENTIAL' },
               { k: 'tlsEnabled', t: 'bool', v: true },
@@ -1740,7 +1740,7 @@
           },
           {
             kind: 'nis2', name: 'NIS2: RiskManagementMeasure (Access Control)',
-            uri: 'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1', since: '2024-11-01',
+            uri: 'gsmarc://gsm-frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1', since: '2024-11-01',
             slots: [
               { k: 'measureCategory', t: 'enum', v: 'HR_SECURITY_AND_ACCESS_CONTROL' },
               { k: 'implementationLevel', t: 'enum', v: 'IMPLEMENTED' },
@@ -1811,7 +1811,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: DataEntity',
-            uri: 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-08-02',
+            uri: 'gsmarc://gsm-frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-08-02',
             slots: [
               { k: 'dataCategory', t: 'enum', v: 'MASTER' },
               { k: 'dataFormat', t: 'enum', v: 'STRUCTURED' },
@@ -1821,8 +1821,8 @@
           },
           {
             kind: 'swtech', name: 'SoftwareTechnology: RELATIONAL_DATABASE',
-            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-08-02',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-08-02',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'RELATIONAL_DATABASE' },
               { k: 'settings', t: 'object[]', v: ['{name:max_connections,value:500}', '{name:shared_buffers,value:8GB}'] },
@@ -1830,7 +1830,7 @@
           },
           {
             kind: 'scap', name: 'ScapPlatformIdentifier',
-            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-10-12',
+            uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-10-12',
             slots: [
               { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:postgresql:postgresql:16:*:*:*:*:*:*:*' },
               { k: 'part', t: 'enum', v: 'APPLICATION' },
@@ -1841,7 +1841,7 @@
           },
           {
             kind: 'iso', name: 'ISO 25012: DataAccuracy',
-            uri: 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1', since: '2024-10-12',
+            uri: 'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1', since: '2024-10-12',
             slots: [
               { k: 'accuracyLevel', t: 'enum', v: 'PRECISE' },
               { k: 'tolerancePercent', t: 'number', v: 0.5 },
@@ -1850,7 +1850,7 @@
           },
           {
             kind: 'gdpr', name: 'GDPR: LawfulBasis',
-            uri: 'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1', since: '2024-09-01',
+            uri: 'gsmarc://gsm-frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1', since: '2024-09-01',
             slots: [
               { k: 'lawfulBasis', t: 'enum', v: 'CONTRACT' },
               { k: 'lawfulBasisDocumented', t: 'bool', v: true },
@@ -1906,7 +1906,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: OrganizationUnit',
-            uri: 'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1', since: '2024-06-01',
+            uri: 'gsmarc://gsm-frameworks/togaf/business-architecture/OrganizationUnit/v1', since: '2024-06-01',
             slots: [
               { k: 'unitType', t: 'enum', v: 'DIVISION' },
               { k: 'level', t: 'enum', v: 'OPERATIONAL' },
@@ -1914,7 +1914,7 @@
           },
           {
             kind: 'nis2', name: 'NIS2: EntityClassification (Essential)',
-            uri: 'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1', since: '2024-09-15',
+            uri: 'gsmarc://gsm-frameworks/nis2/entity-classification/Nis2EntityClassification/v1', since: '2024-09-15',
             slots: [
               { k: 'entityTier', t: 'enum', v: 'ESSENTIAL' },
               { k: 'sizeCategory', t: 'enum', v: 'LARGE' },
@@ -1969,7 +1969,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: ApplicationService',
-            uri: 'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1', since: '2024-07-19',
+            uri: 'gsmarc://gsm-frameworks/togaf/application-architecture/ApplicationService/v1', since: '2024-07-19',
             slots: [
               { k: 'serviceType', t: 'enum', v: 'TRANSACTIONAL' },
               { k: 'exposureLevel', t: 'enum', v: 'PARTNER' },
@@ -1979,8 +1979,8 @@
           },
           {
             kind: 'swtech', name: 'SoftwareTechnology: APPLICATION_FRAMEWORK',
-            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-07-19',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-07-19',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'APPLICATION_FRAMEWORK' },
               { k: 'settings', t: 'object[]', v: ['{name:replicas,value:6}', '{name:jvm,value:21}'] },
@@ -1988,7 +1988,7 @@
           },
           {
             kind: 'scap', name: 'ScapPlatformIdentifier',
-            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-07-19',
+            uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-07-19',
             slots: [
               { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:pivotal_software:spring_boot:3.5:*:*:*:*:*:*:*' },
               { k: 'part', t: 'enum', v: 'APPLICATION' },
@@ -1999,7 +1999,7 @@
           },
           {
             kind: 'iso', name: 'ISO 25010: ProductFunctionalSuitability',
-            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1', since: '2024-10-01',
+            uri: 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1', since: '2024-10-01',
             slots: [
               { k: 'completeness', t: 'number', v: 96.4 },
               { k: 'correctness', t: 'number', v: 99.1 },
@@ -2008,7 +2008,7 @@
           },
           {
             kind: 'gdpr', name: 'GDPR: ControllerProcessorRole',
-            uri: 'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1', since: '2024-08-15',
+            uri: 'gsmarc://gsm-frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1', since: '2024-08-15',
             slots: [
               { k: 'role', t: 'enum', v: 'PROCESSOR' },
               { k: 'establishedInEU', t: 'bool', v: true },
@@ -2065,8 +2065,8 @@
         archetypes: [
           {
             kind: 'swtech', name: 'SoftwareTechnology: MESSAGE_BROKER',
-            uri: 'gsmarc://itip/SoftwareTechnology/v1', since: '2024-05-04',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-05-04',
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'MESSAGE_BROKER' },
               { k: 'settings', t: 'object[]', v: ['{name:replication_factor,value:3}', '{name:min_insync_replicas,value:2}', '{name:num_partitions,value:64}'] },
@@ -2074,7 +2074,7 @@
           },
           {
             kind: 'scap', name: 'ScapPlatformIdentifier',
-            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-05-04',
+            uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-05-04',
             slots: [
               { k: 'cpeUri', t: 'uri', v: 'cpe:2.3:a:apache:kafka:3.7:*:*:*:*:*:*:*' },
               { k: 'part', t: 'enum', v: 'APPLICATION' },
@@ -2085,7 +2085,7 @@
           },
           {
             kind: 'iso', name: 'ISO 25010: ProductReliability',
-            uri: 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1', since: '2024-10-01',
+            uri: 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductReliability/v1', since: '2024-10-01',
             slots: [
               { k: 'faultToleranceLevel', t: 'enum', v: 'HIGH' },
               { k: 'circuitBreakerEnabled', t: 'bool', v: true },
@@ -2133,7 +2133,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: DataEntity',
-            uri: 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-09-30',
+            uri: 'gsmarc://gsm-frameworks/togaf/data-architecture/DataEntity/v1', since: '2024-09-30',
             slots: [
               { k: 'dataCategory', t: 'enum', v: 'TRANSACTIONAL' },
               { k: 'dataFormat', t: 'enum', v: 'STRUCTURED' },
@@ -2143,7 +2143,7 @@
           },
           {
             kind: 'gdpr', name: 'GDPR: TransferMechanism',
-            uri: 'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1', since: '2024-10-05',
+            uri: 'gsmarc://gsm-frameworks/gdpr/transfers/GdprTransferMechanism/v1', since: '2024-10-05',
             slots: [
               { k: 'internationalTransfer', t: 'bool', v: true },
               { k: 'transferMechanism', t: 'enum', v: 'STANDARD_CONTRACTUAL_CLAUSES' },
@@ -2154,7 +2154,7 @@
           },
           {
             kind: 'iso', name: 'ISO 25012: DataCompleteness',
-            uri: 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1', since: '2024-11-12',
+            uri: 'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1', since: '2024-11-12',
             slots: [
               { k: 'completenessLevel', t: 'enum', v: 'SUBSTANTIAL' },
               { k: 'mandatoryFieldCoverage', t: 'number', v: 98.0 },
@@ -2202,7 +2202,7 @@
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: Actor',
-            uri: 'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1', since: '2024-04-15',
+            uri: 'gsmarc://gsm-frameworks/togaf/business-architecture/Actor/v1', since: '2024-04-15',
             slots: [
               { k: 'actorType', t: 'enum', v: 'PERSON' },
               { k: 'scope', t: 'enum', v: 'INTERNAL' },
@@ -2210,7 +2210,7 @@
           },
           {
             kind: 'nis2', name: 'NIS2: GovernanceAccountability',
-            uri: 'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1', since: '2024-09-15',
+            uri: 'gsmarc://gsm-frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1', since: '2024-09-15',
             slots: [
               { k: 'managementApproval', t: 'bool', v: true },
               { k: 'trainingCompleted', t: 'bool', v: true },
@@ -2536,7 +2536,7 @@
 
     // Archetype graph: horizontal flow rendered into #arc-graph.
     // Per-slot archetype annotations — sourced from the framework JSON schemas
-    // (itip/itip-frameworks/frameworks/<kind>/.../*.schema.json). Surface $gsm:* keywords, pattern,
+    // (gsm-frameworks/frameworks/<kind>/.../*.schema.json). Surface $gsm:* keywords, pattern,
     // enum, format, source, required, minLength inherited from the contributing archetype.
     var SLOT_ANNOTATIONS = {
       cpe_uri: { '$schema': 'gsmarc://gsm/Structure/v1', type: 'string', pattern: '^cpe:2\\.3:[aoh*-]:', '$gsm:queryable': true, '$gsm:identityBound': true, required: true, source: 'NIST IR 7695 §5 (CPE 2.3 Formatted String Binding)' },
@@ -2581,7 +2581,7 @@
 
     function annotateSlot(sl, archetype) {
       var base = {
-        '$ref': archetype.uri || 'gsmarc://itip/frameworks/' + archetype.kind + '/' + archetype.name + '/v1',
+        '$ref': archetype.uri || 'gsmarc://gsm-frameworks/' + archetype.kind + '/' + archetype.name + '/v1',
         type: sl.t
       };
       var known = SLOT_ANNOTATIONS[sl.k] || SLOT_ANNOTATIONS[sl.k.toLowerCase()] || {};
@@ -2602,7 +2602,7 @@
     // Schema-driven archetype rendering
     // -----------------------------------------------------------------------
     // SCHEMA_REGISTRY caches loaded JSON Schemas keyed by their canonical $id
-    // (e.g. gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1).
+    // (e.g. gsmarc://gsm-frameworks/togaf/business-architecture/Actor/v1).
     // The mockup ships sample data referencing real schema $ids; renderArcCard
     // walks the schema's properties to render every archetype-defined field,
     // showing a muted "—" placeholder for fields the sample didn't set.
@@ -2621,17 +2621,17 @@
       m = uri.match(/^gsmarc:\/\/itip\/(SoftwareTechnology|AppraisalMeasure|AppraisalFinding|AppraisalTrigger|SourcedDirective|SourcedNorm)\/v\d+$/);
       if (m) {
         var subdir = m[1] === 'SoftwareTechnology' ? 'technology' : 'meta-governance';
-        return '../../../../../itip/itip-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
+        return '../../../../../gsm-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
       }
       // ITIP base archetypes and the ITIP-wide ascription facet
       m = uri.match(/^gsmarc:\/\/itip\/(Ascription|Structure|Mechanism|Effector|Receptor|Interaction|Directive|Norm)\/v\d+$/);
       if (m) {
-        return '../../../../../itip/itip-frameworks/frameworks/itip/base/' + m[1] + '.archetype.json';
+        return '../../../../../gsm-frameworks/frameworks/itip/base/' + m[1] + '.archetype.json';
       }
-      // Framework schemas: $id path = file path under itip/itip-frameworks/frameworks/
+      // Framework schemas: $id path = file path under gsm-frameworks/frameworks/
       m = uri.match(/^gsmarc:\/\/itip\/frameworks\/(.+)\/v\d+$/);
       if (m) {
-        return '../../../../../itip/itip-frameworks/frameworks/' + m[1] + '.archetype.json';
+        return '../../../../../gsm-frameworks/frameworks/' + m[1] + '.archetype.json';
       }
       return null;
     }
@@ -2696,7 +2696,7 @@
     // mockup. Used as the primary source so the collapsible "schema" block
     // always renders (works on file:// without HTTP serving). Mirrors the
     // top-level meta fields of each *.schema.json file under sie/.../statement/
-    // and itip/itip-frameworks/frameworks/.
+    // and gsm-frameworks/frameworks/.
     var SCHEMA_GLOBALS = {
       'gsmarc://gsm/Structure/v1': {
         '$schema': 'https://json-schema.org/draft/2020-12/schema',
@@ -2737,114 +2737,114 @@
         description: 'A Norm is an evaluable assertion against a Structure with a tolerance mode.',
         type: 'object', required: ['structure', 'qualifier', 'assertion', 'toleranceMode'], unevaluatedProperties: false,
       },
-      'gsmarc://itip/SoftwareTechnology/v1': {
-        '$id': 'gsmarc://itip/SoftwareTechnology/v1', title: 'ITIP SoftwareTechnology',
+      'gsmarc://gsm-frameworks/SoftwareTechnology/v1': {
+        '$id': 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', title: 'ITIP SoftwareTechnology',
         description: 'A piece of running software identified by CPE (extends gsm/Structure + scap/ScapPlatformIdentifier).',
         type: 'object', required: ['type'],
-        allOf: ['gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1'],
+        allOf: ['gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1'],
       },
-      'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1': {
-        '$id': 'gsmarc://itip/frameworks/togaf/application-architecture/LogicalApplicationComponent/v1',
+      'gsmarc://gsm-frameworks/togaf/application-architecture/LogicalApplicationComponent/v1': {
+        '$id': 'gsmarc://gsm-frameworks/togaf/application-architecture/LogicalApplicationComponent/v1',
         title: 'TOGAF LogicalApplicationComponent',
         description: 'A logical component in the TOGAF Application Architecture viewpoint.',
         type: 'object', required: ['architectureTier'],
         '$ref': 'gsmarc://gsm/Structure/v1',
       },
-      'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1': {
-        '$id': 'gsmarc://itip/frameworks/togaf/data-architecture/DataEntity/v1',
+      'gsmarc://gsm-frameworks/togaf/data-architecture/DataEntity/v1': {
+        '$id': 'gsmarc://gsm-frameworks/togaf/data-architecture/DataEntity/v1',
         title: 'TOGAF DataEntity',
         description: 'A persistent data entity in the TOGAF Data Architecture viewpoint.',
         type: 'object', required: ['dataCategory'],
       },
-      'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1': {
-        '$id': 'gsmarc://itip/frameworks/togaf/business-architecture/OrganizationUnit/v1',
+      'gsmarc://gsm-frameworks/togaf/business-architecture/OrganizationUnit/v1': {
+        '$id': 'gsmarc://gsm-frameworks/togaf/business-architecture/OrganizationUnit/v1',
         title: 'TOGAF OrganizationUnit',
         description: 'An organizational unit in the TOGAF Business Architecture viewpoint.',
         type: 'object', required: ['unitType'],
         '$ref': 'gsmarc://gsm/Structure/v1',
       },
-      'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1': {
-        '$id': 'gsmarc://itip/frameworks/togaf/business-architecture/Actor/v1',
+      'gsmarc://gsm-frameworks/togaf/business-architecture/Actor/v1': {
+        '$id': 'gsmarc://gsm-frameworks/togaf/business-architecture/Actor/v1',
         title: 'TOGAF Actor',
         description: 'A person, organization or system acting in the TOGAF Business Architecture.',
         type: 'object', required: ['actorType'],
         '$ref': 'gsmarc://gsm/Structure/v1',
       },
-      'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1': {
-        '$id': 'gsmarc://itip/frameworks/togaf/application-architecture/ApplicationService/v1',
+      'gsmarc://gsm-frameworks/togaf/application-architecture/ApplicationService/v1': {
+        '$id': 'gsmarc://gsm-frameworks/togaf/application-architecture/ApplicationService/v1',
         title: 'TOGAF ApplicationService',
         description: 'A service exposed by an application in the TOGAF Application Architecture viewpoint.',
         type: 'object', required: ['serviceType'],
         '$ref': 'gsmarc://gsm/Structure/v1',
       },
-      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1': {
-        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1',
+      'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1': {
+        '$id': 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductSecurity/v1',
         title: 'ISO 25010 ProductSecurity',
         description: 'Security characteristic of the ISO 25010 product quality model.',
         type: 'object', required: ['dataClassification'],
       },
-      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1': {
-        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1',
+      'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1': {
+        '$id': 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductFunctionalSuitability/v1',
         title: 'ISO 25010 ProductFunctionalSuitability',
         description: 'Functional suitability characteristic of the ISO 25010 product quality model.',
         type: 'object', required: ['completeness'],
       },
-      'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1': {
-        '$id': 'gsmarc://itip/frameworks/iso25000/iso25010/product-quality/ProductReliability/v1',
+      'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductReliability/v1': {
+        '$id': 'gsmarc://gsm-frameworks/iso25000/iso25010/product-quality/ProductReliability/v1',
         title: 'ISO 25010 ProductReliability',
         description: 'Reliability characteristic of the ISO 25010 product quality model.',
         type: 'object', required: ['faultToleranceLevel'],
       },
-      'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1': {
-        '$id': 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1',
+      'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1': {
+        '$id': 'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataAccuracy/v1',
         title: 'ISO 25012 DataAccuracy',
         description: 'Inherent data-quality characteristic: accuracy.',
         type: 'object', required: ['accuracyLevel'],
       },
-      'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1': {
-        '$id': 'gsmarc://itip/frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1',
+      'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1': {
+        '$id': 'gsmarc://gsm-frameworks/iso25000/iso25012/inherent-quality/DataCompleteness/v1',
         title: 'ISO 25012 DataCompleteness',
         description: 'Inherent data-quality characteristic: completeness.',
         type: 'object', required: ['completenessLevel'],
       },
-      'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1': {
-        '$id': 'gsmarc://itip/frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1',
+      'gsmarc://gsm-frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1': {
+        '$id': 'gsmarc://gsm-frameworks/nis2/risk-management/Nis2RiskManagementMeasure/v1',
         title: 'NIS2 Nis2RiskManagementMeasure',
         description: 'A risk-management measure under NIS2 Art.21 §2.',
         type: 'object', required: ['measureCategory', 'implementationLevel'],
       },
-      'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1': {
-        '$id': 'gsmarc://itip/frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1',
+      'gsmarc://gsm-frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1': {
+        '$id': 'gsmarc://gsm-frameworks/nis2/risk-management/Nis2GovernanceAccountability/v1',
         title: 'NIS2 Nis2GovernanceAccountability',
         description: 'Management-body accountability under NIS2 Art.20.',
         type: 'object', required: ['managementApproval'],
       },
-      'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1': {
-        '$id': 'gsmarc://itip/frameworks/nis2/entity-classification/Nis2EntityClassification/v1',
+      'gsmarc://gsm-frameworks/nis2/entity-classification/Nis2EntityClassification/v1': {
+        '$id': 'gsmarc://gsm-frameworks/nis2/entity-classification/Nis2EntityClassification/v1',
         title: 'NIS2 Nis2EntityClassification',
         description: 'NIS2 entity-tier classification (Annex I / Annex II).',
         type: 'object', required: ['entityTier'],
       },
-      'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1': {
-        '$id': 'gsmarc://itip/frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1',
+      'gsmarc://gsm-frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1': {
+        '$id': 'gsmarc://gsm-frameworks/gdpr/controller-processor/GdprControllerProcessorRole/v1',
         title: 'GDPR GdprControllerProcessorRole',
         description: 'Controller/processor role under GDPR Art.4 / Art.26 / Art.28.',
         type: 'object', required: ['role'],
       },
-      'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1': {
-        '$id': 'gsmarc://itip/frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1',
+      'gsmarc://gsm-frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1': {
+        '$id': 'gsmarc://gsm-frameworks/gdpr/lawful-basis/GdprLawfulBasis/v1',
         title: 'GDPR GdprLawfulBasis',
         description: 'Lawful basis for processing under GDPR Art.6.',
         type: 'object', required: ['lawfulBasis'],
       },
-      'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1': {
-        '$id': 'gsmarc://itip/frameworks/gdpr/transfers/GdprTransferMechanism/v1',
+      'gsmarc://gsm-frameworks/gdpr/transfers/GdprTransferMechanism/v1': {
+        '$id': 'gsmarc://gsm-frameworks/gdpr/transfers/GdprTransferMechanism/v1',
         title: 'GDPR GdprTransferMechanism',
         description: 'International transfer mechanism under GDPR Chapter V.',
         type: 'object', required: ['internationalTransfer'],
       },
-      'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1': {
-        '$id': 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1',
+      'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1': {
+        '$id': 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1',
         title: 'SCAP ScapPlatformIdentifier',
         description: 'CPE 2.3 Formatted String Binding (NIST IR 7695).',
         type: 'object', required: ['cpeUri', 'part', 'vendor', 'product'],
