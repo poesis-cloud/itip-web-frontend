@@ -2536,7 +2536,7 @@
 
     // Archetype graph: horizontal flow rendered into #arc-graph.
     // Per-slot archetype annotations — sourced from the framework JSON schemas
-    // (itip/itip-frameworks/def/<kind>/.../*.schema.json). Surface $gsm:* keywords, pattern,
+    // (itip/itip-frameworks/frameworks/<kind>/.../*.schema.json). Surface $gsm:* keywords, pattern,
     // enum, format, source, required, minLength inherited from the contributing archetype.
     var SLOT_ANNOTATIONS = {
       cpe_uri: { '$schema': 'gsmarc://gsm/Structure/v1', type: 'string', pattern: '^cpe:2\\.3:[aoh*-]:', '$gsm:queryable': true, '$gsm:identityBound': true, required: true, source: 'NIST IR 7695 §5 (CPE 2.3 Formatted String Binding)' },
@@ -2621,12 +2621,17 @@
       m = uri.match(/^gsmarc:\/\/itip\/(SoftwareTechnology|AppraisalMeasure|AppraisalFinding|AppraisalTrigger|SourcedDirective|SourcedNorm)\/v\d+$/);
       if (m) {
         var subdir = m[1] === 'SoftwareTechnology' ? 'technology' : 'meta-governance';
-        return '../../../../../itip/itip-frameworks/def/itip/' + subdir + '/' + m[1] + '.schema.json';
+        return '../../../../../itip/itip-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
       }
-      // Framework schemas: $id path = file path under itip/itip-frameworks/def/
+      // ITIP base archetypes and the ITIP-wide ascription facet
+      m = uri.match(/^gsmarc:\/\/itip\/(Ascription|Structure|Mechanism|Effector|Receptor|Interaction|Directive|Norm)\/v\d+$/);
+      if (m) {
+        return '../../../../../itip/itip-frameworks/frameworks/itip/base/' + m[1] + '.archetype.json';
+      }
+      // Framework schemas: $id path = file path under itip/itip-frameworks/frameworks/
       m = uri.match(/^gsmarc:\/\/itip\/frameworks\/(.+)\/v\d+$/);
       if (m) {
-        return '../../../../../itip/itip-frameworks/def/' + m[1] + '.schema.json';
+        return '../../../../../itip/itip-frameworks/frameworks/' + m[1] + '.archetype.json';
       }
       return null;
     }
@@ -2691,7 +2696,7 @@
     // mockup. Used as the primary source so the collapsible "schema" block
     // always renders (works on file:// without HTTP serving). Mirrors the
     // top-level meta fields of each *.schema.json file under sie/.../statement/
-    // and itip/itip-frameworks/def/.
+    // and itip/itip-frameworks/frameworks/.
     var SCHEMA_GLOBALS = {
       'gsmarc://gsm/Structure/v1': {
         '$schema': 'https://json-schema.org/draft/2020-12/schema',
