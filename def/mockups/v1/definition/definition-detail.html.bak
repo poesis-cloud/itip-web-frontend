@@ -1203,7 +1203,7 @@
           {
             kind: 'swtech', name: 'SoftwareTechnology: APPLICATION_SERVER',
             uri: 'swtech:archetype/APPLICATION_SERVER/v1', since: '2024-09-15',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'functional_type', t: 'enum', v: 'HTTP/gRPC server' },
               { k: 'runtime_engine', t: 'string', v: 'nginx 1.25' },
@@ -1213,7 +1213,7 @@
           },
           {
             kind: 'scap', name: 'ScapPlatformIdentifier',
-            uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-12-01',
+            uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1', since: '2024-12-01',
             slots: [
               { k: 'cpe_uri', t: 'uri', v: 'cpe:2.3:a:nginx:nginx:1.25:*:*:*:*:*:*:*' },
               { k: 'vulnerability_feed', t: 'enum', v: 'NVD' },
@@ -1281,7 +1281,7 @@
           {
             kind: 'swtech', name: 'SoftwareTechnology: RELATIONAL_DATABASE',
             uri: 'swtech:archetype/RELATIONAL_DATABASE/v1', since: '2024-08-02',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'engine', t: 'string', v: 'PostgreSQL 16' },
               { k: 'deployment_mode', t: 'string', v: 'Primary + 2 replicas' },
@@ -1393,7 +1393,7 @@
           {
             kind: 'swtech', name: 'SoftwareTechnology: MICROSERVICE',
             uri: 'swtech:archetype/MICROSERVICE/v1', since: '2024-07-19',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'runtime', t: 'string', v: 'JVM 21' },
               { k: 'framework', t: 'string', v: 'Spring Boot 3.5' },
@@ -1450,7 +1450,7 @@
           {
             kind: 'swtech', name: 'SoftwareTechnology: MESSAGE_BROKER',
             uri: 'swtech:archetype/MESSAGE_BROKER/v1', since: '2024-05-04',
-            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://itip/frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
+            facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'engine', t: 'string', v: 'Apache Kafka 3.7' },
               { k: 'topology', t: 'string', v: '3 brokers · RF=3 · ISR=2' },
@@ -1741,7 +1741,7 @@
 
     function annotateSlot(sl, archetype) {
       var base = {
-        '$ref': archetype.uri || 'gsmarc://itip/frameworks/' + archetype.kind + '/' + archetype.name + '/v1',
+        '$ref': archetype.uri || 'gsmarc://gsm-frameworks/' + archetype.kind + '/' + archetype.name + '/v1',
         type: sl.t
       };
       var known = SLOT_ANNOTATIONS[sl.k] || SLOT_ANNOTATIONS[sl.k.toLowerCase()] || {};
