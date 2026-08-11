@@ -2615,23 +2615,23 @@
       // GSM base archetypes live in sie-definition-manager/def/statement/
       var m = uri.match(/^gsmarc:\/\/gsm\/([^/]+)\/v\d+$/);
       if (m) {
-        return '../../../../../sie/sie-definition-manager/def/statement/' + m[1] + '.schema.json';
+        return '../../../../../../sie/sie-definition-manager/def/statement/' + m[1] + '.schema.json';
       }
       // ITIP root-level schemas (no /frameworks/itip/ prefix in $id)
       m = uri.match(/^gsmarc:\/\/itip\/(SoftwareTechnology|AppraisalMeasure|AppraisalFinding|AppraisalTrigger|SourcedDirective|SourcedNorm)\/v\d+$/);
       if (m) {
         var subdir = m[1] === 'SoftwareTechnology' ? 'technology' : 'meta-governance';
-        return '../../../../../gsm-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
+        return '../../../../../../gsm/gsm-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
       }
       // framework base archetypes and the catalogue-wide ascription facet
       m = uri.match(/^gsmarc:\/\/itip\/(Ascription|Structure|Mechanism|Effector|Receptor|Interaction|Directive|Norm)\/v\d+$/);
       if (m) {
-        return '../../../../../gsm-frameworks/frameworks/base/' + m[1] + '.archetype.json';
+        return '../../../../../../gsm/gsm-frameworks/frameworks/base/' + m[1] + '.archetype.json';
       }
       // Framework schemas: $id path = file path under gsm-frameworks/frameworks/
       m = uri.match(/^gsmarc:\/\/itip\/frameworks\/(.+)\/v\d+$/);
       if (m) {
-        return '../../../../../gsm-frameworks/frameworks/' + m[1] + '.archetype.json';
+        return '../../../../../../gsm/gsm-frameworks/frameworks/' + m[1] + '.archetype.json';
       }
       return null;
     }
