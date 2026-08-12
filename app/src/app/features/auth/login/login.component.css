@@ -25,6 +25,23 @@
 	background-size: 22px 22px, auto;
 }
 
+:host-context([data-theme='dark']) .login-brand-panel {
+	/* Keep decorative dots visible in dark mode with a brighter radial layer. */
+	background:
+		radial-gradient(
+			circle at 1px 1px,
+			rgba(255, 255, 255, 0.22) 1px,
+			transparent 0
+		),
+		linear-gradient(
+			160deg,
+			var(--itip-sidebar-bg),
+			color-mix(in srgb, var(--itip-sidebar-bg) 84%, var(--itip-surface) 16%) 55%,
+			color-mix(in srgb, var(--itip-sidebar-bg) 72%, var(--itip-surface) 28%)
+		);
+	background-size: 22px 22px, auto;
+}
+
 .brand-mark {
 	background: var(--itip-brand-gradient);
 	color: var(--itip-surface);
@@ -56,6 +73,11 @@
 
 .login-form-panel {
 	border-left: 1px solid var(--itip-border-hairline);
+}
+
+.login-language-switch {
+	display: inline-flex;
+	align-items: center;
 }
 
 .login-overline {

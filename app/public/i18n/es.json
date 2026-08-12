@@ -1,0 +1,131 @@
+{
+  "language": {
+    "label": "Idioma",
+    "selectorAriaLabel": "Selector de idioma"
+  },
+  "common": {
+    "soon": "PRONTO"
+  },
+  "theme": {
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro"
+  },
+  "app": {
+    "shell": {
+      "overview": "Resumen",
+      "dashboard": "Panel",
+      "admin": "Administración",
+      "users": "Usuarios",
+      "searchPlaceholder": "Buscar en ITIP",
+      "searchAria": "Buscar en ITIP",
+      "closeMenu": "Cerrar menú",
+      "openMenu": "Abrir menú",
+      "notifications": "Notificaciones",
+      "sidebarNavigation": "Navegación lateral",
+      "sidebarFooterLine1": "Plataforma de inteligencia TI",
+      "sidebarFooterLine2": "por"
+    }
+  },
+  "login": {
+    "brand": {
+      "kicker": "Plataforma de inteligencia TI",
+      "title": "Diseña, gobierna y evalúa tu arquitectura empresarial.",
+      "subtitle": "Estructuras, reglas de gestión y cumplimiento - administrados de extremo a extremo."
+    },
+    "header": {
+      "overline": "Iniciar sesión",
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en el espacio acme-corp."
+    },
+    "form": {
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "keepSignedIn": "Mantener sesión iniciada (pronto)",
+      "signIn": "Entrar",
+      "or": "O",
+      "sso": "Continuar con SSO empresarial"
+    },
+    "errors": {
+      "invalidEmail": "Correo electrónico no válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "invalidCredentials": "Correo o contraseña inválidos.",
+      "generic": "El inicio de sesión ha fallado. Inténtalo de nuevo más tarde."
+    }
+  },
+  "dashboard": {
+    "metricsAriaLabel": "Métricas de resumen",
+    "header": {
+      "overview": "Resumen",
+      "title": "Panel",
+      "subtitle": "Gobernanza, cumplimiento y salud de arquitectura - instancia ITIP"
+    },
+    "actions": {
+      "last12Months": "Últimos 12 meses",
+      "newDefinition": "+ Nueva definición"
+    },
+    "stats": {
+      "structures": {
+        "label": "Estructuras",
+        "caption": "Se alimentará desde la API de resumen de estructuras"
+      },
+      "directives": {
+        "label": "Directivas",
+        "caption": "Se alimentará desde la API de métricas de gobernanza"
+      },
+      "ascriptions": {
+        "label": "Ascripciones",
+        "caption": "Se alimentará desde la API de snapshot en ejecución"
+      },
+      "compliance": {
+        "label": "Cumplimiento",
+        "caption": "Se alimentará desde la API de agregación de cumplimiento"
+      },
+      "openViolations": {
+        "label": "Incumplimientos abiertos",
+        "caption": "Se alimentará desde la API de hallazgos"
+      }
+    },
+    "legend": {
+      "overall": "General",
+      "target": "Objetivo"
+    },
+    "lifecycle": {
+      "active": "Activo",
+      "draft": "Borrador",
+      "deprecated": "Obsoleto",
+      "proposed": "Propuesto"
+    },
+    "complianceTrend": {
+      "title": "Tendencia de cumplimiento",
+      "subtitle": "Tasa global de aprobación mensual"
+    },
+    "chart": {
+      "months": ["Jul", "Oct", "Ene", "Abr", "Jun"]
+    },
+    "lifecyclePanel": {
+      "title": "Ascripciones por ciclo de vida",
+      "subtitle": "142 estructuras"
+    },
+    "findings": {
+      "title": "Hallazgos por clase",
+      "subtitle": "Tarjetas listas para futuras API de agregación por clase"
+    },
+    "approvals": {
+      "heading": "Aprobaciones pendientes",
+      "subtitle": "Filas temporales para la próxima API de revisión",
+      "pendingCount": "5 pendientes",
+      "approve": "Aprobar",
+      "review": "Revisar",
+      "directiveTitle": "Directiva - API Gateway DEBE APLICAR limitación de tasa",
+      "normTitle": "Norma - encryption_at_rest en DataStore",
+      "structureTitle": "Estructura - Servicio de Pagos (nuevo)"
+    },
+    "placeholders": {
+      "api": "API",
+      "slot": "espacio",
+      "apiSlot": "Ranura API",
+      "findingsFeedSlot": "Ranura de feed de hallazgos",
+      "approvalFeedSlot": "Ranura de feed de aprobaciones"
+    }
+  }
+}

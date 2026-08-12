@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../../core/auth/auth.service';
+import { LanguageSwitcherComponent } from '../../../core/layout/language-switcher/language-switcher.component';
 import { ThemeService } from '../../../core/theme/theme.service';
 
 @Component({
@@ -19,9 +22,12 @@ import { ThemeService } from '../../../core/theme/theme.service';
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
+    CheckboxModule,
     InputTextModule,
     PasswordModule,
     ToggleSwitchModule,
+    TranslocoPipe,
+    LanguageSwitcherComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -33,7 +39,7 @@ export class LoginComponent {
 
   readonly theme = inject(ThemeService);
   readonly loading = signal(false);
-  readonly errorMessage = signal<string | null>(null);
+  readonly errorMessageKey = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -46,7 +52,7 @@ export class LoginComponent {
       return;
     }
 
-    this.errorMessage.set(null);
+    this.errorMessageKey.set(null);
     this.loading.set(true);
 
     this.auth
@@ -58,11 +64,11 @@ export class LoginComponent {
         },
         error: (error: unknown) => {
           if (error instanceof HttpErrorResponse && error.status === 401) {
-            this.errorMessage.set('Adresse email ou mot de passe invalide.');
+            this.errorMessageKey.set('login.errors.invalidCredentials');
             return;
           }
 
-          this.errorMessage.set('La connexion a echoue. Veuillez reessayer plus tard.');
+          this.errorMessageKey.set('login.errors.generic');
         },
       });
   }
