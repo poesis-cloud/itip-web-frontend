@@ -18,7 +18,8 @@ service:
 
 runtime:
   envName: dev
-  apiBaseUrl: "http://localhost:8080"
+  # Empty => SPA issues relative /api calls, proxied same-origin by nginx to itip-web-backend:8080
+  apiBaseUrl: ""
 
 resources:
   requests:

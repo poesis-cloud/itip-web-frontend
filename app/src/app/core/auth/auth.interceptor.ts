@@ -6,6 +6,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
@@ -49,11 +50,34 @@ function isProtectedApiRequest(request: HttpRequest<unknown>, apiBaseUrl: string
   );
 }
 
+function isSessionBootstrapRequest(request: HttpRequest<unknown>, apiBaseUrl: string): boolean {
+  const requestUrl = new URL(request.url, window.location.origin);
+
+  if (!apiBaseUrl) {
+    return requestUrl.origin === window.location.origin && requestUrl.pathname === '/api/auth/me';
+  }
+
+  const baseUrl = new URL(apiBaseUrl, window.location.origin);
+
+  if (requestUrl.origin !== baseUrl.origin) {
+    return false;
+  }
+
+  const basePath = baseUrl.pathname.replace(/\/$/, '');
+
+  if (!basePath) {
+    return requestUrl.pathname === '/api/auth/me';
+  }
+
+  return requestUrl.pathname === `${basePath}/api/auth/me`;
+}
+
 export const authInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
   const auth = inject(AuthService);
+  const router = inject(Router);
   const token = auth.getValidAccessToken();
   const isProtected = isProtectedApiRequest(request, auth.apiBaseUrl);
 
@@ -68,8 +92,33 @@ export const authInterceptor: HttpInterceptorFn = (
 
   return next(authRequest).pipe(
     catchError((error: unknown) => {
-      if (error instanceof HttpErrorResponse && error.status === 401 && isProtected) {
-        auth.handleUnauthorized();
+      if (error instanceof HttpErrorResponse && isProtected) {
+        if (error.status === 401) {
+          // Authentication failure: clear the session and send to /login.
+          auth.handleUnauthorized();
+        } else if (error.status === 403) {
+          // The session bootstrap endpoint (/api/auth/me) should never return
+          // a legitimate authorization denial. A 403 here is effectively an
+          // authentication failure (revoked/invalid session): clear and relogin.
+          if (isSessionBootstrapRequest(request, auth.apiBaseUrl)) {
+            auth.handleUnauthorized();
+            return throwError(() => error);
+          }
+
+          // Authorization denial. The session stays VALID, so we must NOT log
+          // the user out on a legitimate 403 — route them to /forbidden instead.
+          //
+          // Caveat: the backend may currently emit 403 (not 401) for a
+          // missing/invalid token, i.e. an *unauthenticated* 403. We can only
+          // treat a 403 as a pure authorization denial when we actually hold a
+          // valid session; otherwise we fall back to the 401 path so the stale
+          // session is cleared and the user re-authenticates.
+          if (auth.isAuthenticated()) {
+            void router.navigate(['/forbidden']);
+          } else {
+            auth.handleUnauthorized();
+          }
+        }
       }
 
       return throwError(() => error);
