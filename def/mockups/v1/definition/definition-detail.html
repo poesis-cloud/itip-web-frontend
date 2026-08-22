@@ -1697,7 +1697,7 @@
         ],
         primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Application Component' },
         owner: 'Platform Engineering', created: '2024-09-15 by E. Adams', updated: '2026-04-12 by R. Singh',
-        subtitle: 'Edge HTTP/gRPC entrypoint. Applied archetypes from TOGAF, SoftwareTechnology, ISO 25010, NIS2, SCAP.',
+        subtitle: 'Edge HTTP/gRPC entrypoint. Applied archetypes from TOGAF, ItSoftwareTechnology, ISO 25010, NIS2, SCAP.',
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: LogicalApplicationComponent',
@@ -1708,8 +1708,8 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: API_GATEWAY',
-            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-09-15',
+            kind: 'swtech', name: 'ItSoftwareTechnology: API_GATEWAY',
+            uri: 'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1', since: '2024-09-15',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'API_GATEWAY' },
@@ -1820,8 +1820,8 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: RELATIONAL_DATABASE',
-            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-08-02',
+            kind: 'swtech', name: 'ItSoftwareTechnology: RELATIONAL_DATABASE',
+            uri: 'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1', since: '2024-08-02',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'RELATIONAL_DATABASE' },
@@ -1978,8 +1978,8 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: APPLICATION_FRAMEWORK',
-            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-07-19',
+            kind: 'swtech', name: 'ItSoftwareTechnology: APPLICATION_FRAMEWORK',
+            uri: 'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1', since: '2024-07-19',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'APPLICATION_FRAMEWORK' },
@@ -2064,8 +2064,8 @@
         subtitle: 'Domain event backbone (Kafka). Backbone for asynchronous integration across services.',
         archetypes: [
           {
-            kind: 'swtech', name: 'SoftwareTechnology: MESSAGE_BROKER',
-            uri: 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', since: '2024-05-04',
+            kind: 'swtech', name: 'ItSoftwareTechnology: MESSAGE_BROKER',
+            uri: 'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1', since: '2024-05-04',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
               { k: 'type', t: 'enum', v: 'MESSAGE_BROKER' },
@@ -2618,10 +2618,9 @@
         return '../../../../../../sie/sie-definition-manager/def/statement/' + m[1] + '.schema.json';
       }
       // ITIP root-level schemas (no /frameworks/itip/ prefix in $id)
-      m = uri.match(/^gsmarc:\/\/itip\/(SoftwareTechnology|AppraisalMeasure|AppraisalFinding|AppraisalTrigger|SourcedDirective|SourcedNorm)\/v\d+$/);
+      m = uri.match(/^gsmarc:\/\/gsm-frameworks\/it\/(technology|meta-governance)\/(It[A-Za-z]+)\/v\d+$/);
       if (m) {
-        var subdir = m[1] === 'SoftwareTechnology' ? 'technology' : 'meta-governance';
-        return '../../../../../../gsm/gsm-frameworks/frameworks/itip/' + subdir + '/' + m[1] + '.archetype.json';
+        return '../../../../../../gsm/gsm-frameworks/frameworks/it/' + m[1] + '/' + m[2] + '.archetype.json';
       }
       // framework base archetypes and the catalogue-wide ascription facet
       m = uri.match(/^gsmarc:\/\/itip\/(Ascription|Structure|Mechanism|Effector|Receptor|Interaction|Directive|Norm)\/v\d+$/);
@@ -2737,8 +2736,8 @@
         description: 'A Norm is an evaluable assertion against a Structure with a tolerance mode.',
         type: 'object', required: ['structure', 'qualifier', 'assertion', 'toleranceMode'], unevaluatedProperties: false,
       },
-      'gsmarc://gsm-frameworks/SoftwareTechnology/v1': {
-        '$id': 'gsmarc://gsm-frameworks/SoftwareTechnology/v1', title: 'ITIP SoftwareTechnology',
+      'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1': {
+        '$id': 'gsmarc://gsm-frameworks/it/technology/ItSoftwareTechnology/v1', title: 'ITIP ItSoftwareTechnology',
         description: 'A piece of running software identified by CPE (extends gsm/Structure + scap/ScapPlatformIdentifier).',
         type: 'object', required: ['type'],
         allOf: ['gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1'],

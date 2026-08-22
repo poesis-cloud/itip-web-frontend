@@ -1188,7 +1188,7 @@
         ],
         primitive: { gsm: 'gsm/Structure/v1', label: 'Structure · Application Component' },
         owner: 'Platform Engineering', created: '2024-09-15 by E. Adams', updated: '2026-04-12 by R. Singh',
-        subtitle: 'Edge HTTP/gRPC entrypoint. Applied archetypes from TOGAF, SoftwareTechnology, ISO 25010, NIS2, SCAP.',
+        subtitle: 'Edge HTTP/gRPC entrypoint. Applied archetypes from TOGAF, ItSoftwareTechnology, ISO 25010, NIS2, SCAP.',
         archetypes: [
           {
             kind: 'togaf', name: 'TOGAF: LogicalApplicationComponent',
@@ -1201,7 +1201,7 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: APPLICATION_SERVER',
+            kind: 'swtech', name: 'ItSoftwareTechnology: APPLICATION_SERVER',
             uri: 'swtech:archetype/APPLICATION_SERVER/v1', since: '2024-09-15',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
@@ -1279,7 +1279,7 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: RELATIONAL_DATABASE',
+            kind: 'swtech', name: 'ItSoftwareTechnology: RELATIONAL_DATABASE',
             uri: 'swtech:archetype/RELATIONAL_DATABASE/v1', since: '2024-08-02',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
@@ -1391,7 +1391,7 @@
             ],
           },
           {
-            kind: 'swtech', name: 'SoftwareTechnology: MICROSERVICE',
+            kind: 'swtech', name: 'ItSoftwareTechnology: MICROSERVICE',
             uri: 'swtech:archetype/MICROSERVICE/v1', since: '2024-07-19',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
@@ -1448,7 +1448,7 @@
         subtitle: 'Domain event backbone (Kafka). Backbone for asynchronous integration across services.',
         archetypes: [
           {
-            kind: 'swtech', name: 'SoftwareTechnology: MESSAGE_BROKER',
+            kind: 'swtech', name: 'ItSoftwareTechnology: MESSAGE_BROKER',
             uri: 'swtech:archetype/MESSAGE_BROKER/v1', since: '2024-05-04',
             facets: [{ kind: 'scap', name: 'ScapPlatformIdentifier', uri: 'gsmarc://gsm-frameworks/scap/cpe/ScapPlatformIdentifier/v1' }],
             slots: [
