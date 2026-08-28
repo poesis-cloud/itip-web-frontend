@@ -1,33 +1,17 @@
 /**
- * Client-side authorization (authz) contracts.
- *
- * Mirrors the backend `GET /api/auth/me` payload. Privilege CODES are the
- * authority unit; roles are display-only.
+ * Route authorization metadata. Decisions are resolved by the backend
+ * `POST /api/authorization/check-many` endpoint.
  */
-
-export interface AuthzProfile {
-  id: string;
-  email: string;
-  fullName: string | null;
-  roles: string[];
-  privileges: string[];
-}
-
-export interface AuthzIdentity {
-  id: string;
-  email: string;
-  fullName: string | null;
-}
 
 /**
  * Route `data` contract read by `privilegeGuard`.
  *
- * - `privileges`: required privilege codes; empty/undefined means "no gate".
+ * - `checks`: authorization decisions required by the route; empty/undefined means "no gate".
  * - `mode`: `'all'` requires every code, `'any'` (default) requires one.
  * - `redirectTo`: where to send a denied navigation (defaults to `/forbidden`).
  */
 export interface PrivilegeRouteData {
-  privileges?: string[];
+  checks?: import('../authorization/authorization.models').AuthorizationCheck[];
   mode?: 'any' | 'all';
   redirectTo?: string;
 }

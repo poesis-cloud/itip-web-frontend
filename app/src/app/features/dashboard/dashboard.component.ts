@@ -3,6 +3,8 @@ import { Component, computed, inject } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { LocaleService } from '../../core/i18n/locale.service';
+import { AuthorizationCheck } from '../../core/authorization/authorization.models';
+import { HasAuthorizationDirective } from '../../core/authorization/has-authorization.directive';
 
 type StatCard = {
   id: string;
@@ -24,13 +26,19 @@ type SectionRow = {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TranslocoPipe],
+  imports: [CommonModule, ButtonModule, TranslocoPipe, HasAuthorizationDirective],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
   private readonly transloco = inject(TranslocoService);
   private readonly locale = inject(LocaleService);
+
+  readonly newDefinitionCheck: AuthorizationCheck = {
+    origin: 'DEFMAN',
+    resource: 'DEFINITION',
+    action: 'CREATE',
+  };
 
   readonly statCards = computed<StatCard[]>(() => {
     this.locale.currentLanguage();

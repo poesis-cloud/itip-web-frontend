@@ -3,17 +3,19 @@ import { provideRouter, Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AuthService } from '../auth/auth.service';
-import { PrivilegeRouteData } from './authz.models';
-import { AuthzService } from './authz.service';
+import { AuthorizationCheck } from '../authorization/authorization.models';
 import { privilegeGuard } from './privilege.guard';
 
-function runGuard(data: PrivilegeRouteData) {
-  return TestBed.runInInjectionContext(() => privilegeGuard({ data } as never, {} as never));
+const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', action: 'READ' };
+
+function runGuard(checks: AuthorizationCheck[], mode?: 'any' | 'all') {
+  return TestBed.runInInjectionContext(() =>
+    privilegeGuard({ data: { checks, mode } } as never, {} as never),
+  );
 }
 
 describe('privilegeGuard', () => {
   let auth: AuthService;
-  let authz: AuthzService;
   let router: Router;
   let httpMock: HttpTestingController;
 
@@ -25,7 +27,6 @@ describe('privilegeGuard', () => {
     });
 
     auth = TestBed.inject(AuthService);
-    authz = TestBed.inject(AuthzService);
     router = TestBed.inject(Router);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -42,85 +43,34 @@ describe('privilegeGuard', () => {
   }
 
   it('allows when no privileges are required', () => {
-    expect(runGuard({})).toBe(true);
-    expect(runGuard({ privileges: [] })).toBe(true);
-  });
-
-  it('allows when the route carries no data at all', () => {
-    const result = TestBed.runInInjectionContext(() => privilegeGuard({} as never, {} as never));
-    expect(result).toBe(true);
+    expect(runGuard([])).toBe(true);
   });
 
   it('redirects to /login when not authenticated', () => {
-    expect(runGuard({ privileges: ['dashboard:view'] })).toEqual(router.parseUrl('/login'));
+    expect(runGuard([CHECK])).toEqual(router.parseUrl('/login'));
   });
 
-  it('allows while the /me fetch is still in flight (fail-open on in-flight)', () => {
+  it('asks the backend for a batch and allows an allowed decision', () => {
     authenticate();
-    TestBed.flushEffects();
-
-    const meRequest = httpMock.expectOne('/api/auth/me');
-
-    // No profile flushed yet: hydration has not completed.
-    expect(authz.hydrationComplete()).toBe(false);
-    expect(runGuard({ privileges: ['dashboard:view'] })).toBe(true);
-
-    // Complete the pending request to satisfy httpMock.verify() for this spec.
-    meRequest.flush({
-      id: 'u',
-      email: 'e',
-      fullName: null,
-      roles: [],
-      privileges: [],
-    });
-  });
-
-  it('denies with /forbidden once hydration completes with no privilege (fail-closed)', () => {
-    authenticate();
-
-    // Simulate a failed /me: hydration completes but privileges stay empty.
-    authz.loadProfile();
-    httpMock.expectOne('/api/auth/me').flush({}, { status: 500, statusText: 'Server Error' });
-
-    expect(authz.hydrationComplete()).toBe(true);
-    expect(authz.privileges().size).toBe(0);
-    expect(runGuard({ privileges: ['dashboard:view'] })).toEqual(router.parseUrl('/forbidden'));
-  });
-
-  it('mode any: allows when at least one privilege is held', () => {
-    authenticate();
-    authz.hydrate({
-      id: 'u',
-      email: 'e',
-      fullName: null,
-      roles: [],
-      privileges: ['dashboard:view'],
-    });
-
-    expect(runGuard({ privileges: ['dashboard:view', 'other:code'] })).toBe(true);
-  });
-
-  it('mode any: denies with /forbidden when no privilege is held', () => {
-    authenticate();
-    authz.hydrate({ id: 'u', email: 'e', fullName: null, roles: [], privileges: ['a'] });
-
-    expect(runGuard({ privileges: ['x', 'y'] })).toEqual(router.parseUrl('/forbidden'));
-  });
-
-  it('mode all: allows only when every privilege is held', () => {
-    authenticate();
-    authz.hydrate({ id: 'u', email: 'e', fullName: null, roles: [], privileges: ['a', 'b'] });
-
-    expect(runGuard({ privileges: ['a', 'b'], mode: 'all' })).toBe(true);
-    expect(runGuard({ privileges: ['a', 'c'], mode: 'all' })).toEqual(
-      router.parseUrl('/forbidden'),
+    const result = runGuard([CHECK]);
+    let resolved: unknown;
+    (result as never as { subscribe: (callback: (value: unknown) => void) => void }).subscribe(
+      (value) => (resolved = value),
     );
+    const request = httpMock.expectOne('/api/authorization/check-many');
+    expect(request.request.body).toEqual({ checks: [CHECK] });
+    request.flush({ decisions: [{ ...CHECK, allowed: true }] });
+    expect(resolved).toBe(true);
   });
 
-  it('denied navigation honours a custom redirectTo', () => {
+  it('redirects when the backend denies a decision', () => {
     authenticate();
-    authz.hydrate({ id: 'u', email: 'e', fullName: null, roles: [], privileges: ['a'] });
-
-    expect(runGuard({ privileges: ['x'], redirectTo: '/nope' })).toEqual(router.parseUrl('/nope'));
+    const result = runGuard([CHECK]);
+    let resolved: unknown;
+    (result as never as { subscribe: (callback: (value: unknown) => void) => void }).subscribe(
+      (value) => (resolved = value),
+    );
+    httpMock.expectOne('/api/authorization/check-many').flush({ decisions: [{ ...CHECK, allowed: false }] });
+    expect(resolved).toEqual(router.parseUrl('/forbidden'));
   });
 });
