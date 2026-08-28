@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import {
   LucideBell,
   LucideLayoutDashboard,
@@ -11,7 +12,10 @@ import {
   LucideX,
 } from '@lucide/angular';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 import { filter, map, startWith } from 'rxjs';
+import { LocaleService } from './core/i18n/locale.service';
+import { LanguageSwitcherComponent } from './core/layout/language-switcher/language-switcher.component';
 import { ShellService } from './core/layout/shell.service';
 import { ThemeService } from './core/theme/theme.service';
 
@@ -32,16 +36,33 @@ const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1279px)';
     LucideBell,
     LucideSun,
     LucideMoon,
+    InputTextModule,
+    TranslocoPipe,
+    LanguageSwitcherComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
+  private readonly routeSegmentTranslationKey: Record<string, string> = {
+    dashboard: 'app.shell.dashboard',
+    users: 'app.shell.users',
+    admin: 'app.shell.admin',
+    login: 'login.header.overline',
+  };
+
   private readonly router = inject(Router);
+  private readonly transloco = inject(TranslocoService);
   readonly shell = inject(ShellService);
+  readonly locale = inject(LocaleService);
   readonly theme = inject(ThemeService);
   readonly isMobileViewport = signal(false);
-  readonly themeToggleLabel = computed(() => (this.theme.isDark() ? 'Light mode' : 'Dark mode'));
+  readonly themeToggleLabel = computed(() => {
+    this.locale.currentLanguage();
+    return this.theme.isDark()
+      ? this.transloco.translate('theme.lightMode')
+      : this.transloco.translate('theme.darkMode');
+  });
   readonly breadcrumb = computed(() => this.buildBreadcrumb(this.currentUrl()));
 
   private readonly currentUrl = toSignal(
@@ -115,6 +136,8 @@ export class App {
   }
 
   private buildBreadcrumb(url: string): { section: string; current: string } {
+    this.locale.currentLanguage();
+
     const cleanUrl = url.split('?')[0]?.split('#')[0] ?? '';
     const segments = cleanUrl
       .split('/')
@@ -122,11 +145,17 @@ export class App {
       .map((segment) => this.formatSegment(segment));
 
     if (segments.length === 0) {
-      return { section: 'Overview', current: 'Dashboard' };
+      return {
+        section: this.transloco.translate('app.shell.overview'),
+        current: this.transloco.translate('app.shell.dashboard'),
+      };
     }
 
     if (segments.length === 1) {
-      return { section: 'Overview', current: segments[0] };
+      return {
+        section: this.transloco.translate('app.shell.overview'),
+        current: segments[0],
+      };
     }
 
     return {
@@ -136,6 +165,11 @@ export class App {
   }
 
   private formatSegment(segment: string): string {
+    const translationKey = this.routeSegmentTranslationKey[segment.toLowerCase()];
+    if (translationKey) {
+      return this.transloco.translate(translationKey);
+    }
+
     return segment
       .replace(/[-_]+/g, ' ')
       .replace(/\b\w/g, (match) => match.toUpperCase());

@@ -3,27 +3,31 @@
     <aside class="login-brand-panel relative flex flex-col justify-center p-9 max-lg:hidden">
       <div class="brand-top absolute top-9 left-9">
         <div class="brand-mark flex h-[52px] w-[52px] items-center justify-center rounded-[11px] text-[13px] tracking-[0.06em]">ITIP</div>
-        <p class="brand-kicker m-0 pt-2 uppercase">IT Intelligence Platform</p>
+        <p class="brand-kicker m-0 pt-2 uppercase">{{ 'login.brand.kicker' | transloco }}</p>
       </div>
 
       <div class="brand-copy w-full max-w-[760px]">
-        <h1 class="m-0 mb-[10px] text-[clamp(44px,3.4vw,56px)] leading-[1.1]">Design, govern and evaluate your enterprise architecture.</h1>
-        <p class="m-0 text-[clamp(18px,1.3vw,24px)] leading-[1.35]">Structures, management rules and compliance &mdash; administered end to end.</p>
+        <h1 class="m-0 mb-[10px] text-[clamp(44px,3.4vw,56px)] leading-[1.1]">{{ 'login.brand.title' | transloco }}</h1>
+        <p class="m-0 text-[clamp(18px,1.3vw,24px)] leading-[1.35]">{{ 'login.brand.subtitle' | transloco }}</p>
       </div>
     </aside>
 
-    <div class="login-form-panel flex flex-col items-center justify-center overflow-y-auto px-14 py-12 max-lg:px-5 max-lg:pt-6 max-lg:pb-7 max-lg:border-l-0">
+    <div class="login-form-panel relative flex flex-col items-center justify-center overflow-y-auto px-14 py-12 max-lg:px-5 max-lg:pt-6 max-lg:pb-7 max-lg:border-l-0">
+      <div class="login-language-switch absolute top-4 right-5 z-[2] max-lg:top-3 max-lg:right-3">
+        <app-language-switcher [compact]="true"></app-language-switcher>
+      </div>
+
       <div class="login-head flex items-start gap-4 mb-7 w-full max-w-[500px] max-lg:mx-auto">
         <div>
-          <p class="login-overline">Connexion</p>
-          <h2 class="m-0 text-[22px]">Welcome back</h2>
-          <p>Sign in to the acme-corp workspace.</p>
+          <p class="login-overline">{{ 'login.header.overline' | transloco }}</p>
+          <h2 class="m-0 text-[22px]">{{ 'login.header.title' | transloco }}</h2>
+          <p>{{ 'login.header.subtitle' | transloco }}</p>
         </div>
       </div>
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="login-form grid w-full max-w-[500px] gap-[14px] max-lg:mx-auto">
         <div class="field-group grid gap-[7px]">
-          <label for="email">Adresse email</label>
+          <label for="email">{{ 'login.form.emailLabel' | transloco }}</label>
           <input
             id="email"
             pInputText
@@ -32,12 +36,12 @@
             autocomplete="email"
           />
           @if (form.controls.email.invalid && form.controls.email.touched) {
-            <small class="field-error">Adresse email invalide.</small>
+            <small class="field-error">{{ 'login.errors.invalidEmail' | transloco }}</small>
           }
         </div>
 
         <div class="field-group grid gap-[7px]">
-          <label for="password">Mot de passe</label>
+          <label for="password">{{ 'login.form.passwordLabel' | transloco }}</label>
           <p-password
             inputId="password"
             formControlName="password"
@@ -47,37 +51,43 @@
             autocomplete="current-password"
           />
           @if (form.controls.password.invalid && form.controls.password.touched) {
-            <small class="field-error">Mot de passe requis.</small>
+            <small class="field-error">{{ 'login.errors.passwordRequired' | transloco }}</small>
           }
         </div>
 
         <label class="keep-session">
-          <input type="checkbox" disabled aria-disabled="true" />
-          Keep me signed in (soon)
+          <p-checkbox
+            [binary]="true"
+            [disabled]="true"
+            [ngModel]="false"
+            [ngModelOptions]="{ standalone: true }"
+            aria-disabled="true"
+          />
+          {{ 'login.form.keepSignedIn' | transloco }}
         </label>
 
-        @if (errorMessage()) {
-          <p class="auth-error m-0 px-[13px] py-[11px]">{{ errorMessage() }}</p>
+        @if (errorMessageKey()) {
+          <p class="auth-error m-0 px-[13px] py-[11px]">{{ errorMessageKey() | transloco }}</p>
         }
 
         <p-button
           type="submit"
-          label="Se connecter"
+          [label]="'login.form.signIn' | transloco"
           [loading]="loading()"
           [disabled]="loading()"
           styleClass="w-full"
         />
 
-        <div class="divider text-center">OR</div>
+        <div class="divider text-center">{{ 'login.form.or' | transloco }}</div>
 
         <button type="button" class="sso-btn flex min-h-11 items-center justify-center gap-2 px-4 py-3.5" disabled>
           <i class="pi pi-lock"></i>
-          Continue with Enterprise SSO
-          <span class="soon-pill ml-[3px] px-2 py-[2px]">SOON</span>
+          {{ 'login.form.sso' | transloco }}
+          <span class="soon-pill ml-[3px] px-2 py-[2px]">{{ 'common.soon' | transloco }}</span>
         </button>
 
         <div class="theme-switch mt-3 flex min-h-11 items-center justify-end gap-2">
-          <label id="theme-switch-label" for="theme-switch-toggle">Mode sombre</label>
+          <label id="theme-switch-label" for="theme-switch-toggle">{{ 'theme.darkMode' | transloco }}</label>
           <p-toggleswitch
             inputId="theme-switch-toggle"
             [ngModel]="theme.isDark()"
