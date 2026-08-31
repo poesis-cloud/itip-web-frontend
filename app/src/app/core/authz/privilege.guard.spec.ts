@@ -6,7 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { AuthorizationCheck } from '../authorization/authorization.models';
 import { privilegeGuard } from './privilege.guard';
 
-const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', action: 'READ' };
+const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'READ' };
 
 function runGuard(checks: AuthorizationCheck[], mode?: 'any' | 'all') {
   return TestBed.runInInjectionContext(() =>

@@ -37,7 +37,7 @@ export class DashboardComponent {
   readonly newDefinitionCheck: AuthorizationCheck = {
     origin: 'DEFMAN',
     resource: 'DEFINITION',
-    action: 'CREATE',
+    operation: 'CREATE',
   };
 
   readonly statCards = computed<StatCard[]>(() => {

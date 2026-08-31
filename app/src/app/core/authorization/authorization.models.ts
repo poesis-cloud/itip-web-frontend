@@ -1,6 +1,6 @@
 export type AuthorizationOrigin = 'DEFMAN' | 'ITIP' | 'UI';
 
-export type AuthorizationAction =
+export type AuthorizationOperation =
   | 'CREATE'
   | 'READ'
   | 'SUBMIT'
@@ -13,7 +13,7 @@ export type AuthorizationAction =
 export interface AuthorizationCheck {
   origin: AuthorizationOrigin;
   resource: string;
-  action: AuthorizationAction;
+  operation: AuthorizationOperation;
   resourceId?: string;
 }
 
@@ -26,5 +26,5 @@ export interface AuthorizationCheckManyResponse {
 }
 
 export function authorizationKey(check: AuthorizationCheck): string {
-  return [check.origin, check.resource, check.action, check.resourceId ?? ''].join(':');
+  return [check.origin, check.resource, check.operation, check.resourceId ?? ''].join(':');
 }

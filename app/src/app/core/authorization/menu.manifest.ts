@@ -8,7 +8,7 @@ export interface MenuAuthorizationItem {
 export const USERS_MENU_CHECK: AuthorizationCheck = {
   origin: 'ITIP',
   resource: 'ACCOUNT',
-  action: 'READ',
+  operation: 'READ',
 };
 
 export const SHELL_MENU_AUTHORIZATION: readonly MenuAuthorizationItem[] = [

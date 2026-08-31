@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 const CHECK: AuthorizationCheck = {
   origin: 'ITIP',
   resource: 'PRIVILEGE',
-  action: 'CREATE',
+  operation: 'CREATE',
 };
 
 describe('AuthorizationService', () => {
