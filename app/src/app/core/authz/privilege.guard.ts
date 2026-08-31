@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { AuthorizationService } from '../authorization/authorization.service';
+import { authorizationKey } from '../authorization/authorization.models';
 import { PrivilegeRouteData } from './authz.models';
 import { catchError, map } from 'rxjs';
 
@@ -33,9 +34,10 @@ export const privilegeGuard: CanActivateFn = (route) => {
 
   return authorization.canMany(required).pipe(
     map((decisions) => {
+      const decisionByKey = new Map(decisions.map((decision) => [authorizationKey(decision), decision]));
       const granted =
         data.mode === 'all'
-          ? decisions.every((decision) => decision.allowed)
+          ? required.every((check) => decisionByKey.get(authorizationKey(check))?.allowed === true)
           : decisions.some((decision) => decision.allowed);
       return granted ? true : router.parseUrl(data.redirectTo ?? '/forbidden');
     }),

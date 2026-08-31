@@ -19,6 +19,8 @@ export class AuthorizationService {
   );
   private readonly pendingSignal = signal<ReadonlySet<string>>(new Set());
   private readonly errorSignal = signal<unknown | null>(null);
+  private authSessionGeneration = -1;
+  private generation = 0;
 
   readonly decisions = this.decisionsSignal.asReadonly();
   readonly pending = this.pendingSignal.asReadonly();
@@ -27,15 +29,15 @@ export class AuthorizationService {
 
   constructor() {
     effect(() => {
-      if (!this.auth.isAuthenticated()) {
-        this.clear();
-      }
+      this.synchronizeSession(this.auth.sessionGeneration());
     });
   }
 
   canMany(checks: readonly AuthorizationCheck[]): Observable<AuthorizationDecision[]> {
+    this.synchronizeSession(this.auth.sessionGeneration());
     const uniqueChecks = [...new Map(checks.map((check) => [authorizationKey(check), check])).values()];
     const keys = new Set(uniqueChecks.map(authorizationKey));
+    const requestGeneration = this.generation;
     this.pendingSignal.update((pending) => new Set([...pending, ...keys]));
     this.errorSignal.set(null);
 
@@ -45,34 +47,37 @@ export class AuthorizationService {
         { checks: uniqueChecks },
       )
       .pipe(
-        map((response) => response.decisions),
-        tap((decisions) =>
-          this.decisionsSignal.update((current) => {
-            const next = new Map(current);
-            decisions.forEach((decision) => next.set(authorizationKey(decision), decision));
-            return next;
-          }),
-        ),
-        catchError((error: unknown) => {
-          this.errorSignal.set(error);
-          this.decisionsSignal.update((current) => {
-            const next = new Map(current);
-            uniqueChecks.forEach((check) =>
-              next.set(authorizationKey(check), { ...check, allowed: false }),
-            );
-            return next;
-          });
-          return of(
-            uniqueChecks.map((check) => ({ ...check, allowed: false })),
-          );
+        map((response) => this.normalizeDecisions(uniqueChecks, response)),
+        tap((decisions) => {
+          if (this.isCurrentGeneration(requestGeneration)) {
+            this.decisionsSignal.update((current) => {
+              const next = new Map(current);
+              decisions.forEach((decision) => next.set(authorizationKey(decision), decision));
+              return next;
+            });
+          }
         }),
-        finalize(() =>
-          this.pendingSignal.update((pending) => {
-            const next = new Set(pending);
-            keys.forEach((key) => next.delete(key));
-            return next;
-          }),
-        ),
+        catchError((error: unknown) => {
+          const denied = this.deniedDecisions(uniqueChecks);
+          if (this.isCurrentGeneration(requestGeneration)) {
+            this.errorSignal.set(error);
+            this.decisionsSignal.update((current) => {
+              const next = new Map(current);
+              denied.forEach((decision) => next.set(authorizationKey(decision), decision));
+              return next;
+            });
+          }
+          return of(denied);
+        }),
+        finalize(() => {
+          if (this.isCurrentGeneration(requestGeneration)) {
+            this.pendingSignal.update((pending) => {
+              const next = new Set(pending);
+              keys.forEach((key) => next.delete(key));
+              return next;
+            });
+          }
+        }),
       );
   }
 
@@ -81,6 +86,46 @@ export class AuthorizationService {
   }
 
   clear(): void {
+    this.generation += 1;
+    this.resetState();
+  }
+
+  private synchronizeSession(sessionGeneration: number): void {
+    if (sessionGeneration !== this.authSessionGeneration) {
+      this.authSessionGeneration = sessionGeneration;
+      this.clear();
+    }
+  }
+
+  private isCurrentGeneration(requestGeneration: number): boolean {
+    return requestGeneration === this.generation;
+  }
+
+  private normalizeDecisions(
+    checks: readonly AuthorizationCheck[],
+    response: AuthorizationCheckManyResponse,
+  ): AuthorizationDecision[] {
+    const requestedKeys = new Set(checks.map(authorizationKey));
+    const byKey = new Map<string, AuthorizationDecision>();
+    const decisions = Array.isArray(response?.decisions) ? response.decisions : [];
+
+    decisions.forEach((decision) => {
+      if (decision && requestedKeys.has(authorizationKey(decision))) {
+        byKey.set(authorizationKey(decision), decision);
+      }
+    });
+
+    return checks.map((check) => ({
+      ...check,
+      allowed: byKey.get(authorizationKey(check))?.allowed === true,
+    }));
+  }
+
+  private deniedDecisions(checks: readonly AuthorizationCheck[]): AuthorizationDecision[] {
+    return checks.map((check) => ({ ...check, allowed: false }));
+  }
+
+  private resetState(): void {
     this.decisionsSignal.set(new Map());
     this.pendingSignal.set(new Set());
     this.errorSignal.set(null);

@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { AuthorizationCheck } from './authorization.models';
+import { Router } from '@angular/router';
+import { vi } from 'vitest';
+import { AuthorizationCheck, AuthorizationDecision } from './authorization.models';
 import { AuthorizationService } from './authorization.service';
 import { authInterceptor } from '../auth/auth.interceptor';
 import { AuthService } from '../auth/auth.service';
@@ -10,6 +12,12 @@ const CHECK: AuthorizationCheck = {
   origin: 'ITIP',
   resource: 'PRIVILEGE',
   operation: 'CREATE',
+};
+
+const SECOND_CHECK: AuthorizationCheck = {
+  origin: 'ITIP',
+  resource: 'PRIVILEGE',
+  operation: 'READ',
 };
 
 describe('AuthorizationService', () => {
@@ -50,6 +58,41 @@ describe('AuthorizationService', () => {
     const request = httpMock.expectOne('/api/authorization/check-many');
     expect(request.request.body).toEqual({ checks: [CHECK] });
     request.flush({ decisions: [{ ...CHECK, allowed: false }] });
+  });
+
+  it('fails closed and caches denied decisions when a successful response omits a requested check', () => {
+    let result: AuthorizationDecision[] | undefined;
+    authorization.canMany([CHECK, SECOND_CHECK, CHECK]).subscribe((decisions) => (result = decisions));
+
+    httpMock.expectOne('/api/authorization/check-many').flush({ decisions: [{ ...CHECK, allowed: true }] });
+
+    expect(result).toEqual([
+      { ...CHECK, allowed: true },
+      { ...SECOND_CHECK, allowed: false },
+    ]);
+    expect(authorization.decisionFor(SECOND_CHECK)).toEqual({ ...SECOND_CHECK, allowed: false });
+  });
+
+  it('does not let an earlier session response update the current session cache', () => {
+    const auth = TestBed.inject(AuthService);
+    vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    auth.login({ email: 'first@itip.local', password: 'secret' }).subscribe();
+    httpMock.expectOne('/api/auth/login').flush({ token: 'first-token', expiresAt: Date.now() + 60_000 });
+
+    authorization.canMany([CHECK]).subscribe();
+    const firstRequest = httpMock.expectOne('/api/authorization/check-many');
+
+    auth.logout();
+    auth.login({ email: 'second@itip.local', password: 'secret' }).subscribe();
+    httpMock.expectOne('/api/auth/login').flush({ token: 'second-token', expiresAt: Date.now() + 60_000 });
+    authorization.canMany([CHECK]).subscribe();
+    const secondRequest = httpMock.expectOne('/api/authorization/check-many');
+
+    firstRequest.flush({ decisions: [{ ...CHECK, allowed: true }] });
+    expect(authorization.decisionFor(CHECK)).toBeUndefined();
+
+    secondRequest.flush({ decisions: [{ ...CHECK, allowed: false }] });
+    expect(authorization.decisionFor(CHECK)).toEqual({ ...CHECK, allowed: false });
   });
 
   it('adds the current JWT to check-many requests', () => {

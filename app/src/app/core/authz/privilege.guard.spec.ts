@@ -7,6 +7,7 @@ import { AuthorizationCheck } from '../authorization/authorization.models';
 import { privilegeGuard } from './privilege.guard';
 
 const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'READ' };
+const SECOND_CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'UPDATE' };
 
 function runGuard(checks: AuthorizationCheck[], mode?: 'any' | 'all') {
   return TestBed.runInInjectionContext(() =>
@@ -71,6 +72,19 @@ describe('privilegeGuard', () => {
       (value) => (resolved = value),
     );
     httpMock.expectOne('/api/authorization/check-many').flush({ decisions: [{ ...CHECK, allowed: false }] });
+    expect(resolved).toEqual(router.parseUrl('/forbidden'));
+  });
+
+  it('redirects in all mode when a successful response omits a required decision', () => {
+    authenticate();
+    const result = runGuard([CHECK, SECOND_CHECK], 'all');
+    let resolved: unknown;
+    (result as never as { subscribe: (callback: (value: unknown) => void) => void }).subscribe(
+      (value) => (resolved = value),
+    );
+
+    httpMock.expectOne('/api/authorization/check-many').flush({ decisions: [{ ...CHECK, allowed: true }] });
+
     expect(resolved).toEqual(router.parseUrl('/forbidden'));
   });
 });
