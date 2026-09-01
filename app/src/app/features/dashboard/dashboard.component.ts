@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
-import { LocaleService } from '../../core/i18n/locale.service';
 import { AuthorizationCheck } from '../../core/authorization/authorization.models';
 import { HasAuthorizationDirective } from '../../core/authorization/has-authorization.directive';
+import { LocaleService } from '../../core/i18n/locale.service';
 
 type StatCard = {
   id: string;
