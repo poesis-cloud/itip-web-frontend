@@ -13,7 +13,10 @@
               icon="pi pi-chevron-down"
               iconPos="right"
             />
-            <p-button [label]="'dashboard.actions.newDefinition' | transloco" />
+            <p-button
+              *hasAuthorization="newDefinitionCheck"
+              [label]="'dashboard.actions.newDefinition' | transloco"
+            />
           </div>
         </section>
 

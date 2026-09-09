@@ -13,6 +13,7 @@ export class AuthService {
 
   private readonly token = signal<string | null>(null);
   private readonly expiresAt = signal<number | null>(null);
+  private readonly sessionGenerationSignal = signal(0);
 
   readonly isAuthenticated = computed(() => {
     const token = this.token();
@@ -23,6 +24,7 @@ export class AuthService {
 
   readonly apiBaseUrl = this.config.apiBaseUrl;
   readonly accessToken = this.token.asReadonly();
+  readonly sessionGeneration = this.sessionGenerationSignal.asReadonly();
 
   getValidAccessToken(): string | null {
     if (!this.isAuthenticated()) {
@@ -73,6 +75,7 @@ export class AuthService {
 
     this.token.set(response.token);
     this.expiresAt.set(expiresAt);
+    this.sessionGenerationSignal.update((generation) => generation + 1);
 
     return true;
   }
@@ -80,5 +83,6 @@ export class AuthService {
   private clearSession() {
     this.token.set(null);
     this.expiresAt.set(null);
+    this.sessionGenerationSignal.update((generation) => generation + 1);
   }
 }

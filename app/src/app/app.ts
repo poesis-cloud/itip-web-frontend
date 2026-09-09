@@ -15,6 +15,8 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { InputTextModule } from 'primeng/inputtext';
 import { filter, map, startWith } from 'rxjs';
 import { LocaleService } from './core/i18n/locale.service';
+import { HasAuthorizationDirective } from './core/authorization/has-authorization.directive';
+import { SHELL_MENU_AUTHORIZATION, USERS_MENU_CHECK } from './core/authorization/menu.manifest';
 import { LanguageSwitcherComponent } from './core/layout/language-switcher/language-switcher.component';
 import { ShellService } from './core/layout/shell.service';
 import { ThemeService } from './core/theme/theme.service';
@@ -39,6 +41,7 @@ const MOBILE_SHELL_MEDIA_QUERY = '(max-width: 1279px)';
     InputTextModule,
     TranslocoPipe,
     LanguageSwitcherComponent,
+    HasAuthorizationDirective,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -75,6 +78,8 @@ export class App {
   );
 
   readonly isShellRoute = computed(() => !this.currentUrl().startsWith('/login'));
+  readonly menuAuthorization = SHELL_MENU_AUTHORIZATION;
+  readonly usersMenuCheck = USERS_MENU_CHECK;
 
   constructor() {
     this.updateViewportFlags();

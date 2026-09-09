@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { vi } from 'vitest';
 import { authInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
@@ -164,5 +164,78 @@ describe('authInterceptor', () => {
     request.flush({}, { status: 401, statusText: 'Unauthorized' });
 
     expect(unauthorizedSpy).not.toHaveBeenCalled();
+  });
+
+  it('redirects to /forbidden on 403 for an authenticated session without clearing it', () => {
+    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    httpMock
+      .expectOne('/api/auth/login')
+      .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
+
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const unauthorizedSpy = vi.spyOn(authService, 'handleUnauthorized').mockImplementation(() => {
+      // Fail the test intent if invoked: 403 must not log the user out.
+    });
+
+    http.get('/api/protected').subscribe({
+      error: () => {
+        // expected
+      },
+    });
+
+    const request = httpMock.expectOne('/api/protected');
+    request.flush({}, { status: 403, statusText: 'Forbidden' });
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/forbidden']);
+    expect(unauthorizedSpy).not.toHaveBeenCalled();
+    // Session stays valid.
+    expect(authService.isAuthenticated()).toBe(true);
+    expect(authService.accessToken()).toBe('jwt-token');
+  });
+
+  it('treats a 403 as unauthorized when the session is not authenticated', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const unauthorizedSpy = vi.spyOn(authService, 'handleUnauthorized').mockImplementation(() => {
+      // Prevent router side effects in isolated interceptor test.
+    });
+
+    http.get('/api/protected').subscribe({
+      error: () => {
+        // expected
+      },
+    });
+
+    const request = httpMock.expectOne('/api/protected');
+    request.flush({}, { status: 403, statusText: 'Forbidden' });
+
+    expect(unauthorizedSpy).toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalledWith(['/forbidden']);
+  });
+
+  it('treats a 403 from /api/auth/me as unauthorized even if token looks authenticated', () => {
+    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    httpMock
+      .expectOne('/api/auth/login')
+      .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
+
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const unauthorizedSpy = vi.spyOn(authService, 'handleUnauthorized').mockImplementation(() => {
+      // Prevent router side effects in isolated interceptor test.
+    });
+
+    http.get('/api/auth/me').subscribe({
+      error: () => {
+        // expected
+      },
+    });
+
+    const request = httpMock.expectOne('/api/auth/me');
+    request.flush({}, { status: 403, statusText: 'Forbidden' });
+
+    expect(unauthorizedSpy).toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalledWith(['/forbidden']);
   });
 });
