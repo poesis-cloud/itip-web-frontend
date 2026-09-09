@@ -10,13 +10,13 @@ import { AuthService } from '../auth/auth.service';
 
 const CHECK: AuthorizationCheck = {
   origin: 'ITIP',
-  resource: 'PRIVILEGE',
+  resource: 'CAPABILITY',
   operation: 'CREATE',
 };
 
 const SECOND_CHECK: AuthorizationCheck = {
   origin: 'ITIP',
-  resource: 'PRIVILEGE',
+  resource: 'CAPABILITY',
   operation: 'READ',
 };
 

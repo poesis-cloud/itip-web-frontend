@@ -3,12 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { AuthorizationService } from '../authorization/authorization.service';
 import { authorizationKey } from '../authorization/authorization.models';
-import { PrivilegeRouteData } from './authz.models';
+import { AuthorizationRouteData } from './authz.models';
 import { catchError, map } from 'rxjs';
 
 /**
- * Route guard that enforces privilege requirements declared in `route.data`
- * (see `PrivilegeRouteData`).
+ * Route guard that enforces capability requirements declared in `route.data`
+ * (see `AuthorizationRouteData`).
  *
  * Decisions:
  * - No required checks -> allow (the route is not gated).
@@ -16,12 +16,12 @@ import { catchError, map } from 'rxjs';
  * - The backend resolves all checks and the guard fails closed on transport or
  *   decision errors. `mode 'all'` requires every check, otherwise any one check.
  */
-export const privilegeGuard: CanActivateFn = (route) => {
+export const authorizationGuard: CanActivateFn = (route) => {
   const auth = inject(AuthService);
   const authorization = inject(AuthorizationService);
   const router = inject(Router);
 
-  const data = (route.data ?? {}) as PrivilegeRouteData;
+  const data = (route.data ?? {}) as AuthorizationRouteData;
   const required = data.checks ?? [];
 
   if (required.length === 0) {

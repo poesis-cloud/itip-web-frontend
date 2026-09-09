@@ -4,18 +4,18 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AuthService } from '../auth/auth.service';
 import { AuthorizationCheck } from '../authorization/authorization.models';
-import { privilegeGuard } from './privilege.guard';
+import { authorizationGuard } from './authorization.guard';
 
-const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'READ' };
-const SECOND_CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'UPDATE' };
+const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'CAPABILITY', operation: 'READ' };
+const SECOND_CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'CAPABILITY', operation: 'UPDATE' };
 
 function runGuard(checks: AuthorizationCheck[], mode?: 'any' | 'all') {
   return TestBed.runInInjectionContext(() =>
-    privilegeGuard({ data: { checks, mode } } as never, {} as never),
+    authorizationGuard({ data: { checks, mode } } as never, {} as never),
   );
 }
 
-describe('privilegeGuard', () => {
+describe('authorizationGuard', () => {
   let auth: AuthService;
   let router: Router;
   let httpMock: HttpTestingController;
@@ -43,7 +43,7 @@ describe('privilegeGuard', () => {
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
   }
 
-  it('allows when no privileges are required', () => {
+  it('allows when no capabilities are required', () => {
     expect(runGuard([])).toBe(true);
   });
 

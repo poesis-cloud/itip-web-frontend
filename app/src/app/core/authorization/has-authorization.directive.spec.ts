@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { AuthorizationCheck } from './authorization.models';
 import { HasAuthorizationDirective } from './has-authorization.directive';
 
-const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'PRIVILEGE', operation: 'READ' };
+const CHECK: AuthorizationCheck = { origin: 'ITIP', resource: 'CAPABILITY', operation: 'READ' };
 
 @Component({
   standalone: true,
