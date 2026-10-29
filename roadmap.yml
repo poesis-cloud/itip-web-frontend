@@ -1,0 +1,29 @@
+scope: product
+name: OIP Web Application
+repos: [itip-web-frontend, itip-web-backend]
+milestones:
+  - version: v0.1.0
+    current: true
+  - version: v1.0.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/5
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/6
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/7
+  - version: v1.1.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/8
+  - version: v1.2.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/9
+  - version: v1.3.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/10
+  - version: v1.4.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/11
+  - version: v1.5.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/12
+  - version: v1.6.0
+    features:
+      - https://github.com/poesis-cloud/itip-web-frontend/issues/13
