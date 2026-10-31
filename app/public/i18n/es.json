@@ -16,19 +16,19 @@
       "dashboard": "Panel",
       "admin": "Administración",
       "users": "Usuarios",
-      "searchPlaceholder": "Buscar en ITIP",
-      "searchAria": "Buscar en ITIP",
+      "searchPlaceholder": "Buscar en OIP",
+      "searchAria": "Buscar en OIP",
       "closeMenu": "Cerrar menú",
       "openMenu": "Abrir menú",
       "notifications": "Notificaciones",
       "sidebarNavigation": "Navegación lateral",
-      "sidebarFooterLine1": "Plataforma de inteligencia TI",
+      "sidebarFooterLine1": "Plataforma de inteligencia organizacional",
       "sidebarFooterLine2": "por"
     }
   },
   "login": {
     "brand": {
-      "kicker": "Plataforma de inteligencia TI",
+      "kicker": "Plataforma de inteligencia organizacional",
       "title": "Diseña, gobierna y evalúa tu arquitectura empresarial.",
       "subtitle": "Estructuras, reglas de gestión y cumplimiento - administrados de extremo a extremo."
     },
@@ -57,7 +57,7 @@
     "header": {
       "overview": "Resumen",
       "title": "Panel",
-      "subtitle": "Gobernanza, cumplimiento y salud de arquitectura - instancia ITIP"
+      "subtitle": "Gobernanza, cumplimiento y salud de arquitectura - instancia OIP"
     },
     "actions": {
       "last12Months": "Últimos 12 meses",

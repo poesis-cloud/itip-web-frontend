@@ -8,7 +8,7 @@ describe('Authentication flow', () => {
     cy.mockAuthLoginSuccess('login');
 
     cy.visit('/login');
-    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#email').type('john.doe@oip.local');
     cy.get('input#password').type('secret');
     cy.contains('button', 'Se connecter').click();
 
@@ -20,7 +20,7 @@ describe('Authentication flow', () => {
     cy.mockAuthLoginSuccess('login');
 
     cy.visit('/login');
-    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#email').type('john.doe@oip.local');
     cy.get('input#password').type('secret');
     cy.contains('button', 'Se connecter').click();
 
@@ -35,7 +35,7 @@ describe('Authentication flow', () => {
     cy.mockAuthLoginFailure('loginFailed');
 
     cy.visit('/login');
-    cy.get('input#email').type('john.doe@itip.local');
+    cy.get('input#email').type('john.doe@oip.local');
     cy.get('input#password').type('wrong');
     cy.contains('button', 'Se connecter').click();
 
@@ -49,7 +49,7 @@ describe('Authentication flow', () => {
     cy.visit('/login');
     cy.contains('Connexion').should('be.visible');
 
-    cy.get('input#email').type('e2e@itip.local');
+    cy.get('input#email').type('e2e@oip.local');
     cy.get('input#password').type('wrong');
     cy.contains('button', 'Se connecter').click();
 

@@ -12,7 +12,7 @@ describe('ThemeService', () => {
   });
 
   it('uses saved dark theme on initialization', () => {
-    localStorage.setItem('itip-theme', 'dark');
+    localStorage.setItem('oip-theme', 'dark');
 
     TestBed.configureTestingModule({});
     const service = TestBed.inject(ThemeService);
@@ -48,7 +48,7 @@ describe('ThemeService', () => {
   });
 
   it('toggles theme and persists selected value', () => {
-    localStorage.setItem('itip-theme', 'light');
+    localStorage.setItem('oip-theme', 'light');
 
     TestBed.configureTestingModule({});
     const service = TestBed.inject(ThemeService);
@@ -56,13 +56,13 @@ describe('ThemeService', () => {
     service.toggle();
 
     expect(service.isDark()).toBe(true);
-    expect(localStorage.getItem('itip-theme')).toBe('dark');
+    expect(localStorage.getItem('oip-theme')).toBe('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(document.body.getAttribute('data-theme')).toBe('dark');
   });
 
   it('writes and applies light mode when setDarkMode(false) is called', () => {
-    localStorage.setItem('itip-theme', 'dark');
+    localStorage.setItem('oip-theme', 'dark');
 
     TestBed.configureTestingModule({
       providers: [{ provide: DOCUMENT, useValue: document }],
@@ -72,7 +72,7 @@ describe('ThemeService', () => {
     service.setDarkMode(false);
 
     expect(service.isDark()).toBe(false);
-    expect(localStorage.getItem('itip-theme')).toBe('light');
+    expect(localStorage.getItem('oip-theme')).toBe('light');
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     expect(document.body.getAttribute('data-theme')).toBe('light');
   });

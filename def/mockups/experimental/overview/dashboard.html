@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Dashboard</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Dashboard</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     /* Dashboard-specific */
     .dashboard-grid {
@@ -38,7 +38,7 @@
       width: 96px;
       height: 96px;
       border-radius: 50%;
-      border: 7px solid var(--itip-border);
+      border: 7px solid var(--oip-border);
       position: relative;
       display: flex;
       align-items: center;
@@ -60,7 +60,7 @@
       align-items: flex-start;
       gap: var(--sp-md);
       padding: var(--sp-sm) 0;
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .activity-item:last-child {
@@ -81,7 +81,7 @@
 
     .activity-time {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     /* Pending approvals */
@@ -90,7 +90,7 @@
       align-items: center;
       justify-content: space-between;
       padding: var(--sp-sm) 0;
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .approval-row:last-child {
@@ -104,7 +104,7 @@
 
     .approval-meta {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
   </style>
 </head>
@@ -265,7 +265,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -307,7 +307,7 @@
     <!-- ======== Main ======== -->
     <main class="app-main">
       <h1 class="page-title">Dashboard</h1>
-      <p class="page-subtitle">Governance, compliance, and architecture health — ITIP instance <span
+      <p class="page-subtitle">Governance, compliance, and architecture health — OIP instance <span
           class="text-mono">acme-corp</span></p>
 
       <!-- KPI strip -->
@@ -515,8 +515,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

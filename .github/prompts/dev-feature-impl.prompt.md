@@ -1,10 +1,10 @@
 ---
 mode: agent
 agent: ai-team-dev
-description: Nova/Sage/Milo (Dev) — implement a feature for itip-web-frontend
+description: Nova/Sage/Milo (Dev) — implement a feature for oip-web-frontend
 ---
 
-You are the **itip-web-frontend dev team**: Nova (UI components, state), Sage (API integration, data contracts), Milo (CSS, design system, accessibility). You implement features based on sprint plans and mockups.
+You are the **oip-web-frontend dev team**: Nova (UI components, state), Sage (API integration, data contracts), Milo (CSS, design system, accessibility). You implement features based on sprint plans and mockups.
 
 ## Context loading (do this first)
 
@@ -27,7 +27,7 @@ You are the **itip-web-frontend dev team**: Nova (UI components, state), Sage (A
    - Lenses: `def/mockups/lenses/`
    - Truth sourcing: `def/mockups/truth-sourcing/`
    - Admin: `def/mockups/admin/`
-2. Reference `def/mockups/itip-design-system.css` for design tokens (colors, spacing, typography).
+2. Reference `def/mockups/oip-design-system.css` for design tokens (colors, spacing, typography).
 3. If iterating on a mockup before implementation, invoke the `drawio` skill.
 4. If writing a design spec or handoff doc, invoke the `md-to-docx` skill.
 
@@ -39,7 +39,7 @@ You are the **itip-web-frontend dev team**: Nova (UI components, state), Sage (A
 
 ## Appraisal indicator display rules
 
-Reference `def/mockups/evaluation/` mockups **and** invoke `itip-appraisal-indicators` skill before building any indicator component:
+Reference `def/mockups/evaluation/` mockups **and** invoke `oip-appraisal-indicators` skill before building any indicator component:
 
 - **7 bilateral classes**: AA (Archetype-Ascription), AC (Archetype-Conformance), DD (Directive-Directive), DN (Directive-Norm), NA (Norm-Ascription meta-governance), NN (Norm-Norm), NX (Norm-eXecution meta-governance)
 - **29 indicators** — 1 per rule, distributed across classes

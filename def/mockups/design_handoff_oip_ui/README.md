@@ -1,6 +1,6 @@
-# ITIP UI — Design System & Screen Specification (v1, final)
+# OIP UI — Design System & Screen Specification (v1, final)
 
-Definitive design system and screen specs for the **IT Intelligence Platform (ITIP)** web frontend.
+Definitive design system and screen specs for the **Organizational Intelligence Platform (OIP)** web frontend.
 This is the single source of truth. Build to it exactly. There is no prior/legacy system to reconcile —
 everything below is the decision.
 
@@ -9,10 +9,10 @@ cleanly to Angular or Vue (see *Framework note*).
 
 ### Start here (agents)
 1. Read **`AGENTS.md`** — build order + conformance checklist.
-2. Load the tokens: **`tokens/itip-tokens.css`** (CSS custom properties + card classes) and
-   **`tokens/itip-tokens.json`** (same values, machine-readable). **The token files are the source of
+2. Load the tokens: **`tokens/oip-tokens.css`** (CSS custom properties + card classes) and
+   **`tokens/oip-tokens.json`** (same values, machine-readable). **The token files are the source of
    truth for values;** this README is the human-readable spec.
-3. Use **`ITIP Screens.dc.html`** as the visual reference — open in a browser, read exact values with
+3. Use **`OIP Screens.dc.html`** as the visual reference — open in a browser, read exact values with
    devtools. It is a *reference prototype*, not production code to copy; re-implement in the repo stack.
 
 **Fidelity: high.** Colors, typography, spacing, radii and copy are final and exact — recreate at the
@@ -25,33 +25,33 @@ pixel level. Interactions in the reference are static; implement the behavior in
 ### Primary — Indigo
 | Token | Value | Usage |
 |---|---|---|
-| `--itip-primary` | **`#4F46E5`** (Indigo 600) | primary buttons, active nav, links, focus ring, selected states |
-| `--itip-primary-hover` | **`#4338CA`** (Indigo 700) | primary button/link hover |
-| `--itip-primary-tint` | **`#EEF2FF`** (Indigo 50) | tinted chips, info banners, selected node fill, avatar-badge bg |
-| `--itip-primary-tint-border` | **`#DFE3FF`** | border for tinted chips / banners |
-| `--itip-primary-tint-text` | **`#4338CA`** | text on indigo tint |
+| `--oip-primary` | **`#4F46E5`** (Indigo 600) | primary buttons, active nav, links, focus ring, selected states |
+| `--oip-primary-hover` | **`#4338CA`** (Indigo 700) | primary button/link hover |
+| `--oip-primary-tint` | **`#EEF2FF`** (Indigo 50) | tinted chips, info banners, selected node fill, avatar-badge bg |
+| `--oip-primary-tint-border` | **`#DFE3FF`** | border for tinted chips / banners |
+| `--oip-primary-tint-text` | **`#4338CA`** | text on indigo tint |
 | brand gradient | **`linear-gradient(135deg, #6366F1, #4F46E5)`** | logo mark, avatar |
 
 ### AI / Copilot — Violet (RESERVED)
-`--itip-copilot: linear-gradient(135deg, #7C3AED, #6366F1)` — Copilot buttons and the AI assistant
+`--oip-copilot: linear-gradient(135deg, #7C3AED, #6366F1)` — Copilot buttons and the AI assistant
 affordance **only**. Never use violet as a primary/action color.
 
 ### Surfaces / text / border (light)
 | Token | Value |
 |---|---|
-| `--itip-bg` | `#F5F6F8` |
-| `--itip-surface` | `#FFFFFF` |
-| `--itip-surface-muted` | `#FAFBFC` (table header, footer strips) |
-| `--itip-surface-sunken` | `#F8F9FB` (nested property boxes) |
-| `--itip-sidebar-bg` | `#0F1729` |
-| `--itip-sidebar-text` | `#94A3B8` |
-| `--itip-sidebar-section` | `#4B5A73` (uppercase group labels) |
-| `--itip-text` | `#0F172A` |
-| `--itip-text-muted` | `#64748B` |
-| `--itip-text-light` | `#94A3B8` |
-| `--itip-border` | `#E6E8EC` |
-| `--itip-border-hairline` | `#EEF0F3` (in-card dividers, card border) |
-| `--itip-border-strong` | `#D3D8E0` (inputs) |
+| `--oip-bg` | `#F5F6F8` |
+| `--oip-surface` | `#FFFFFF` |
+| `--oip-surface-muted` | `#FAFBFC` (table header, footer strips) |
+| `--oip-surface-sunken` | `#F8F9FB` (nested property boxes) |
+| `--oip-sidebar-bg` | `#0F1729` |
+| `--oip-sidebar-text` | `#94A3B8` |
+| `--oip-sidebar-section` | `#4B5A73` (uppercase group labels) |
+| `--oip-text` | `#0F172A` |
+| `--oip-text-muted` | `#64748B` |
+| `--oip-text-light` | `#94A3B8` |
+| `--oip-border` | `#E6E8EC` |
+| `--oip-border-hairline` | `#EEF0F3` (in-card dividers, card border) |
+| `--oip-border-strong` | `#D3D8E0` (inputs) |
 
 ### Lifecycle status
 draft `#94A3B8` · proposed `#3B82F6` · active/approved `#16A34A` · deprecated `#D97706` (text `#A16207`) · retired `#9CA3AF`.
@@ -65,7 +65,7 @@ structure `#4F46E5` · mechanism `#7C3AED` · interaction `#059669` · effector 
 ### Dark theme
 Full first-class dark theme — activate with `data-theme="dark"` on the root; **Light is the default**,
 dark is opt-in. Same elevation system (surfaces separated by hairline borders + deeper soft shadows).
-Full palette in `tokens/itip-tokens.css` (`[data-theme="dark"]`) and `tokens/itip-tokens.json`
+Full palette in `tokens/oip-tokens.css` (`[data-theme="dark"]`) and `tokens/oip-tokens.json`
 (`darkTheme`). Key values: bg `#0A0F1C`, surface `#141B2D`, text `#EAEEF6`, muted `#9AA5B8`,
 border `#2A3450`, indigo tint `#1F2547`. Semantic text lightens on dark: pass `#22C55E`, warn `#FBBF24`,
 fail `#F87171`, proposed `#60A5FA`. **Unchanged across themes:** the sidebar `#0F1729`, solid lifecycle
@@ -92,9 +92,9 @@ badge fills, and the brand + Copilot gradients. Every screen must render correct
 
 ## 4. Card system
 Cards use **layered elevation**, not a hard border: surface `#FFFFFF`, hairline border `#EEF0F3`
-(the shadow does the lifting), radius per `--itip-card-radius`.
-- **`.itip-stat`** — number/KPI cards. **Lift on hover** (`translateY(-3px)` + deeper shadow, 180ms).
-- **`.itip-panel`** — content panels. **Static — no hover animation** (dense, stable surfaces).
+(the shadow does the lifting), radius per `--oip-card-radius`.
+- **`.oip-stat`** — number/KPI cards. **Lift on hover** (`translateY(-3px)` + deeper shadow, 180ms).
+- **`.oip-panel`** — content panels. **Static — no hover animation** (dense, stable surfaces).
 - **Treatments** (selectable, applies to stat cards): **Elevated** (default) · **Outline** (1.5px
   `#E3E7EE` border, no shadow, border→accent on hover) · **Accent** (elevated + 4px top gradient bar).
 - **Tokens/tweaks:** `cardStyle` (Elevated/Outline/Accent, default Accent), `cardRadius` (8–22, default 13),
@@ -107,8 +107,8 @@ header + main on the right.
 - **Sidebar** `236px`, `#0F1729`, full height. 60px logo row (30px gradient mark + org name, 800/14).
   Nav grouped by uppercase labels (700/10, `#4B5A73`). Item: `9px 20px`, 13px, 17px icon + label,
   `border-left:3px solid transparent`. **Active:** color `#fff`, bg `rgba(79,70,229,.18)`,
-  `border-left-color:#4F46E5`, weight 600, optional right-aligned count pill. Footer: “IT Intelligence
-  Platform / by Poesis”, 10.5px, `#4B5A73`, top hairline.
+  `border-left-color:#4F46E5`, weight 600, optional right-aligned count pill. Footer: “Organizational
+  Intelligence Platform / by Poesis”, 10.5px, `#4B5A73`, top hairline.
 - **Header** 60px, surface, bottom border `#E6E8EC`, `0 24px`. Left: breadcrumb (muted segments + `/`
   + bold current). Right: search pill (⌘K hint), notification bell (red dot), optional Copilot button,
   34px round avatar (brand gradient + initials).
@@ -116,13 +116,13 @@ header + main on the right.
   right-aligned actions, then content.
 
 Icons: **Feather/Lucide** line set (`fill:none; stroke:currentColor; stroke-width:2; viewBox 0 0 24 24`)
-via `lucide-react`/`lucide-angular` — do not hand-draw SVGs. The only bespoke mark is the ITIP logo
+via `lucide-react`/`lucide-angular` — do not hand-draw SVGs. The only bespoke mark is the OIP logo
 (3-node graph: 3 circles + connecting lines) on the indigo gradient.
 
 ---
 
 ## 6. Screens
-IDs in parentheses match the reference file `ITIP Screens.dc.html`.
+IDs in parentheses match the reference file `OIP Screens.dc.html`.
 
 ### Sign in — split-screen (`2a`)
 - Username/password. **Enterprise SSO** button present but **disabled** with a “SOON” badge —
@@ -137,7 +137,7 @@ IDs in parentheses match the reference file `ITIP Screens.dc.html`.
   focus border `#4F46E5` + `box-shadow:0 0 0 3px rgba(79,70,229,.12)`.
 
 ### Overview dashboard (`1d`)
-- **KPI row:** 5 stat cards (`.itip-stat`): caps label (600/11 muted), value (800/27), detail (500/11).
+- **KPI row:** 5 stat cards (`.oip-stat`): caps label (600/11 muted), value (800/27), detail (500/11).
   Compliance value green with “▲ 3%”; violations value red.
 - **Compliance trend:** wide panel. Line+area chart, 12 monthly points, y ~70–95%. Line `#4F46E5` 2.5px,
   area gradient `#4F46E5` .20→0, gridlines `#EEF0F3`, dashed target line at 85% (`#CBD5E1`), end dots.
@@ -185,15 +185,15 @@ IDs in parentheses match the reference file `ITIP Screens.dc.html`.
 
 ### Activity Log (`4a`)
 - Header + filter bar (All Types ▾ / date range ▾ / All Users ▾ / search + range count).
-- **Grouped timeline** (Today / Yesterday / 2 days ago…) inside one `.itip-panel`: a vertical rail with
+- **Grouped timeline** (Today / Yesterday / 2 days ago…) inside one `.oip-panel`: a vertical rail with
   a status dot per event (color = event kind: approved green, proposed/created blue, violation/blocked
   red, warning amber). Each event: bold title + inline lifecycle badge where relevant, then meta
   (“time · actor (role) · framework ref”). Violations show a red remediation callout
   (`#FEF2F2` bg, `#FECACA` border). Footer: “Showing 1–N of M” + Previous.
 
 ### Framework Catalog (`4b`)
-- KPI row (`.itip-stat`): Sourced frameworks, Total archetypes, Total directives, Total norms.
-- **Framework cards** (`.itip-panel`, 3-col grid): icon tile + name + mono version/source; description;
+- KPI row (`.oip-stat`): Sourced frameworks, Total archetypes, Total directives, Total norms.
+- **Framework cards** (`.oip-panel`, 3-col grid): icon tile + name + mono version/source; description;
   a 3-stat row (Archetypes / Directives / Norms, 800/18); footer tag pills (top hairline divider).
 
 ### Structure detail (`4c`)
@@ -255,13 +255,13 @@ icons via `lucide-angular`.
 
 ## 10. Assets
 - **Fonts:** Hanken Grotesk + JetBrains Mono (Google Fonts).
-- **Icons:** Feather/Lucide line set. The only bespoke mark is the ITIP logo (3-node graph).
+- **Icons:** Feather/Lucide line set. The only bespoke mark is the OIP logo (3-node graph).
 - **Charts:** the project chart library, styled per §6.
 - No raster images or brand photography.
 
 ## Files in this package
 - `AGENTS.md` — build order + conformance checklist (read first).
 - `INTEGRATION-angular-primeng-tailwind.md` — how to wire Tailwind + PrimeNG to the tokens (preset, dark selector, component map).
-- `tokens/itip-tokens.css` — CSS custom properties + `.itip-stat`/`.itip-panel` classes + dark theme. Import at root.
-- `tokens/itip-tokens.json` — same values, machine-readable.
-- `ITIP Screens.dc.html` — visual reference (open in a browser; Light default, `theme` tweak for Dark).
+- `tokens/oip-tokens.css` — CSS custom properties + `.oip-stat`/`.oip-panel` classes + dark theme. Import at root.
+- `tokens/oip-tokens.json` — same values, machine-readable.
+- `OIP Screens.dc.html` — visual reference (open in a browser; Light default, `theme` tweak for Dark).

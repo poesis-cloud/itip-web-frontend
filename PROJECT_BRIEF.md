@@ -1,14 +1,14 @@
-# PROJECT_BRIEF.md — itip-web-frontend
+# PROJECT_BRIEF.md — oip-web-frontend
 
 > Last updated: 2026-07 | Sprint 1 | Status: Active Development
 
 ## 1. Project Overview
 
-`itip-web-frontend` is the web frontend for the **IT Intelligence Platform (ITIP)** — a domain application that translates the Generative System Model (GSM) for IT governance. It provides dashboards for appraisal indicators, governance framework compliance, GSM definition browsing, and Ascription lifecycle visualization. The UI is driven by mockups in `def/mockups/` and connects to the `itip-web-backend` REST API.
+`oip-web-frontend` is the web frontend for the **Organizational Intelligence Platform (OIP)** — a domain application that translates the Generative System Model (GSM) for IT governance. It provides dashboards for appraisal indicators, governance framework compliance, GSM definition browsing, and Ascription lifecycle visualization. The UI is driven by mockups in `def/mockups/` and connects to the `oip-web-backend` REST API.
 
 ## 2. Concept / Product Description
 
-ITIP surfaces GSM concepts for IT governance practitioners:
+OIP surfaces GSM concepts for IT governance practitioners:
 
 - **Appraisal Dashboard**: 29 appraisal indicators organized across 7 bilateral classes (AA, AC, DD, DN, NA, NN, NX). Each indicator has a measure type (percent / count / days / ratio) and produces findings. Two zones: meta-governance and governance.
 - **Governance Frameworks**: Catalog and detail views for TOGAF, ISO 25010, ISO 25012, SAFe, ITIL, GDPR, NIS2, DORA. Framework stacking (composing multiple frameworks) and adherence matrix.
@@ -19,23 +19,23 @@ ITIP surfaces GSM concepts for IT governance practitioners:
 - **Lenses**: Diagram views, lens editing and browsing.
 - **Admin**: User management, integrations.
 
-UI mockups for all sections live in `def/mockups/`. The design system CSS is `def/mockups/itip-design-system.css`.
+UI mockups for all sections live in `def/mockups/`. The design system CSS is `def/mockups/oip-design-system.css`.
 
 ## 3. Tech Stack
 
 - **Frontend:** Angular 21 + TypeScript
-- **Styling:** Tailwind CSS + PrimeNG + ITIP design tokens
+- **Styling:** Tailwind CSS + PrimeNG + OIP design tokens
 - **State Management:** Angular signals + RxJS
 - **Routing:** Angular Router
 - **Testing:** Vitest (unit) + Cypress (E2E mock)
-- **Backend (external):** `itip-web-backend` REST API
+- **Backend (external):** `oip-web-backend` REST API
 - **CI/CD:** GitHub Actions
 
 ## 4. Architecture
 
 ```
 +-------------------------------------------------------------+
-|  Browser — itip-web-frontend (Angular + TypeScript)          |
+|  Browser — oip-web-frontend (Angular + TypeScript)          |
 |                                                             |
 |  Pages/Routes                                               |
 |  +-- /overview            — Activity dashboard              |
@@ -52,13 +52,13 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 +----------------------------+--------------------------------+
                              | REST / HTTPS
 +----------------------------v--------------------------------+
-|  itip-web-backend REST API                                  |
-|  (separate repo: poesis/itip-web-backend)                   |
+|  oip-web-backend REST API                                  |
+|  (separate repo: poesis/oip-web-backend)                   |
 +----------------------------+--------------------------------+
                              |
 +----------------------------v--------------------------------+
 |  SIE — Definition Manager (GSM runtime, Ascription engine)  |
-|  + Definition Blackboard Manager (sourcing)                 |
+|  + Blackboard Manager (sourcing)                 |
 +-------------------------------------------------------------+
 ```
 
@@ -70,7 +70,7 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 | Entry point   | `app/src/main.ts`         | Angular bootstrap                                                  |
 | Routes        | `app/src/app/app.routes.ts` | Public/protected route definitions                              |
 | Global styles | `app/src/styles.css`      | Tailwind + PrimeNG + token bridge + shell styling                 |
-| Tokens        | `app/src/itip-tokens.css` | Local design token source                                          |
+| Tokens        | `app/src/oip-tokens.css` | Local design token source                                          |
 | E2E tests     | `app/cypress/e2e/`        | Cypress full-mock auth/UI end-to-end tests                        |
 | Helm assets   | `ops/helm/`               | Chart templates + dev/preprod/prod values                         |
 
@@ -111,7 +111,7 @@ UI mockups for all sections live in `def/mockups/`. The design system CSS is `de
 ## 9. Security Rules
 
 1. Secrets live in environment variables only — never in source code or git.
-2. API keys / tokens for `itip-web-backend` go in `.env.local` (gitignored).
+2. API keys / tokens for `oip-web-backend` go in `.env.local` (gitignored).
 3. No PII in frontend logs or error messages.
 4. WCAG 2.1 AA accessibility is a hard requirement — not optional polish.
 
@@ -148,7 +148,7 @@ Continue from where it left off.
 
 ## 13. Bug & Fix Tracking
 
-Bugs are tracked as GitHub Issues on `poesis-cloud/itip-web-frontend`.
+Bugs are tracked as GitHub Issues on `poesis-cloud/oip-web-frontend`.
 
 - **QA (Ivy):** File bugs with labels `bug` + `severity:blocker|major|minor`. Include: component, steps to reproduce, expected vs actual. No-blocker sprints: write `docs/qa/sprint-N-signoff.md`.
 - **Dev:** Check GitHub Issues before starting. Fix blockers + majors before polish. Use closing keywords: `fix: description (Fixes #NN)`.
@@ -159,8 +159,8 @@ Bugs are tracked as GitHub Issues on `poesis-cloud/itip-web-frontend`.
 Each team works in their own separate clone. No worktrees.
 
 ```bash
-git clone git@github.com:poesis-cloud/itip-web-frontend.git itip-web-frontend-dev
-git clone git@github.com:poesis-cloud/itip-web-frontend.git itip-web-frontend-qa
+git clone git@github.com:poesis-cloud/oip-web-frontend.git oip-web-frontend-dev
+git clone git@github.com:poesis-cloud/oip-web-frontend.git oip-web-frontend-qa
 ```
 
 **Branch strategy:**

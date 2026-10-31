@@ -1,0 +1,206 @@
+/* ============================================================================
+   OIP UI — Design tokens (v1, Indigo system)
+   Source of truth for the OIP visual system.
+   Import once at the app root. Every color/space/radius/shadow in the UI
+   MUST come from a token below — no hard-coded hex values in components.
+   ============================================================================ */
+
+:root {
+  /* ---- Brand / primary (indigo) ---- */
+  --oip-primary:            #4F46E5;   /* buttons, active nav, links, focus, selected */
+  --oip-primary-hover:      #4338CA;
+  --oip-primary-tint:       #EEF2FF;   /* tinted chips, info banners, selected node, avatar bg */
+  --oip-primary-tint-border:#DFE3FF;
+  --oip-primary-tint-text:  #4338CA;
+  --oip-brand-gradient:     linear-gradient(135deg, #6366F1, #4F46E5);
+
+  /* ---- AI / Copilot (RESERVED — never use as primary) ---- */
+  --oip-copilot-gradient:   linear-gradient(135deg, #7C3AED, #6366F1);
+
+  /* ---- Surfaces ---- */
+  --oip-bg:            #F5F6F8;
+  --oip-surface:       #FFFFFF;
+  --oip-surface-muted: #FAFBFC;   /* table header, footer strips */
+  --oip-surface-sunken:#F8F9FB;   /* nested property boxes */
+
+  /* ---- Sidebar (dark shell) ---- */
+  --oip-sidebar-bg:      #0F1729;
+  --oip-sidebar-text:    #94A3B8;
+  --oip-sidebar-section: #4B5A73;  /* uppercase group labels */
+  --oip-sidebar-active-bg:     rgba(79,70,229,.18);
+  --oip-sidebar-active-border: #4F46E5;
+
+  /* ---- Text ---- */
+  --oip-text:        #0F172A;
+  --oip-text-muted:  #64748B;
+  --oip-text-light:  #94A3B8;
+
+  /* ---- Borders ---- */
+  --oip-border:          #E6E8EC;
+  --oip-border-hairline: #EEF0F3;  /* in-card dividers, card border in Elevated */
+  --oip-border-strong:   #D3D8E0;  /* inputs */
+  --oip-border-outline:  #E3E7EE;  /* Outline card treatment */
+
+  /* ---- Lifecycle status ---- */
+  --oip-life-draft:      #94A3B8;
+  --oip-life-proposed:   #3B82F6;
+  --oip-life-active:     #16A34A;
+  --oip-life-deprecated: #D97706;
+  --oip-life-deprecated-text: #A16207;
+  --oip-life-retired:    #9CA3AF;
+
+  /* ---- Compliance ---- */
+  --oip-pass:      #16A34A;
+  --oip-warn:      #F59E0B;
+  --oip-warn-text: #B45309;
+  --oip-fail:      #EF4444;
+  --oip-fail-text: #DC2626;
+
+  /* ---- Diagram node types (2px border) ---- */
+  --oip-node-structure:   #4F46E5;
+  --oip-node-mechanism:   #7C3AED;
+  --oip-node-interaction: #059669;
+  --oip-node-effector:    #EA580C;
+  --oip-node-receptor:    #0891B2;
+
+  /* ---- Typography ---- */
+  --oip-font-ui:   'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --oip-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --oip-fw-regular: 400;
+  --oip-fw-medium:  500;
+  --oip-fw-semibold:600;
+  --oip-fw-bold:    700;
+  --oip-fw-black:   800;
+  --oip-fs-cap:    10px;  /* chip/label caps */
+  --oip-fs-meta:   11px;
+  --oip-fs-sm:     12px;
+  --oip-fs-body:   13px;  /* table / body */
+  --oip-fs-base:   14px;  /* inputs, buttons */
+  --oip-fs-card-title: 16px;
+  --oip-fs-modal-title:18px;
+  --oip-fs-h1:     25px;  /* page title */
+  --oip-ls-tight:  -.02em; /* headings */
+  --oip-ls-caps:    .05em; /* uppercase labels */
+
+  /* ---- Spacing (4px base) ---- */
+  --oip-space-1: 4px;
+  --oip-space-2: 8px;
+  --oip-space-3: 12px;
+  --oip-space-4: 16px;
+  --oip-space-5: 20px;
+  --oip-space-6: 24px;
+  --oip-space-7: 28px;
+  --oip-main-padding: 26px 28px;
+  --oip-card-padding: 16px 17px;
+  --oip-panel-padding: 18px 20px;
+
+  /* ---- Radius ---- */
+  --oip-radius-input:  9px;
+  --oip-radius-card:   16px;  /* tweakable 8–22 via --oip-card-radius */
+  --oip-radius-modal:  16px;
+  --oip-radius-pill:   9999px;
+  --oip-card-radius:   13px;  /* current card radius (tweakable) */
+
+  /* ---- Shadows ---- */
+  --oip-shadow-card:  0 1px 2px rgba(16,24,40,.04), 0 10px 26px -14px rgba(15,23,42,.16);
+  --oip-shadow-card-hover: 0 6px 12px rgba(16,24,40,.07), 0 22px 46px -18px rgba(15,23,42,.28);
+  --oip-shadow-raised:0 6px 24px -8px rgba(15,23,42,.14);
+  --oip-shadow-node:  0 4px 10px -3px rgba(15,23,42,.15);
+  --oip-shadow-node-selected: 0 6px 16px -4px rgba(79,70,229,.4);
+  --oip-shadow-modal: 0 30px 60px -15px rgba(15,23,42,.4);
+
+  /* ---- Card accent (themeable) ---- */
+  --oip-card-accent:   #4F46E5;   /* top bar / hover border; indigo default */
+  --oip-card-treatment: elevated; /* elevated | outline | accent */
+
+  /* ---- Motion ---- */
+  --oip-ease: cubic-bezier(.2,.6,.2,1);
+  --oip-dur:  .18s;
+}
+
+/* ============================================================================
+   DARK THEME — set data-theme="dark" on <html>/<body>. Clear, legible, calm.
+   Surfaces are defined by elevation + hairline borders (same system as light).
+   ============================================================================ */
+[data-theme="dark"] {
+  --oip-bg:            #0A0F1C;   /* app canvas */
+  --oip-bg-deep:       #05070D;   /* behind cards */
+  --oip-surface:       #141B2D;
+  --oip-surface-muted: #1A2236;
+  --oip-surface-sunken:#182031;
+  --oip-diagram-canvas:#0F1524;
+
+  --oip-text:        #EAEEF6;
+  --oip-text-2:      #C6CEDD;   /* was #334155 */
+  --oip-text-muted:  #9AA5B8;   /* was #64748B */
+  --oip-text-light:  #94A3B8;   /* unchanged — legible on dark */
+
+  --oip-border:          #2A3450;
+  --oip-border-hairline: #232C42;
+  --oip-border-strong:   #38456A;  /* inputs */
+  --oip-border-outline:  #38456A;
+
+  --oip-primary-tint:       #1F2547;
+  --oip-primary-tint-border:#37407B;
+  --oip-primary-tint-text:  #B7BEF7;
+
+  /* semantic text lightened for contrast on dark */
+  --oip-pass:  #22C55E;
+  --oip-warn:  #FBBF24;
+  --oip-fail:  #F87171;
+  --oip-life-proposed: #60A5FA;
+
+  /* diagram relation lines */
+  --oip-node-edge: #46527A;
+
+  /* card shadows go deeper/softer on dark */
+  --oip-shadow-card:       0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.65);
+  --oip-shadow-card-hover: 0 8px 16px rgba(0,0,0,.5), 0 24px 50px -18px rgba(0,0,0,.8);
+}
+/* The dark sidebar (#0F1729) is intentionally unchanged — it already reads as the
+   nav shell in both themes. Lifecycle SOLID badges (green/amber/red fills) also
+   stay as-is; only their TEXT-on-transparent uses lighten to the semantic vars. */
+
+/* ============================================================================
+   Card system — apply .oip-stat to number/KPI cards, .oip-panel to content
+   panels. Only stat cards lift on hover; panels stay static.
+   ============================================================================ */
+.oip-stat,
+.oip-panel {
+  background: var(--oip-surface);
+  border: 1px solid var(--oip-border-hairline);
+  border-radius: var(--oip-card-radius);
+  box-shadow: var(--oip-shadow-card);
+}
+.oip-stat {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--oip-dur) var(--oip-ease),
+              box-shadow var(--oip-dur) var(--oip-ease),
+              border-color var(--oip-dur) var(--oip-ease);
+}
+.oip-stat:hover {                 /* number cards animate */
+  transform: translateY(-3px);
+  box-shadow: var(--oip-shadow-card-hover);
+}
+/* .oip-panel intentionally has NO :hover rule — content panels are static. */
+
+/* Accent treatment: colored top bar on stat cards */
+[data-card-treatment="accent"] .oip-stat { padding-top: 19px; }
+[data-card-treatment="accent"] .oip-stat::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: linear-gradient(90deg, var(--oip-card-accent),
+              color-mix(in srgb, var(--oip-card-accent) 45%, #a5b4fc));
+}
+
+/* Outline treatment: crisp border, no shadow */
+[data-card-treatment="outline"] .oip-stat,
+[data-card-treatment="outline"] .oip-panel {
+  border: 1.5px solid var(--oip-border-outline);
+  box-shadow: none;
+}
+[data-card-treatment="outline"] .oip-stat:hover {
+  border-color: var(--oip-card-accent);
+  transform: translateY(-2px);
+}

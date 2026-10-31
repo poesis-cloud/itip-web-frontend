@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITIP — Artifact Template</title>
-    <link rel="stylesheet" href="../itip-design-system.css">
+    <title>OIP — Artifact Template</title>
+    <link rel="stylesheet" href="../oip-design-system.css">
     <style>
         .back-link {
             font-size: var(--fs-xs);
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             text-decoration: none;
             display: inline-flex;
             gap: 4px;
@@ -18,11 +18,11 @@
         }
 
         .back-link:hover {
-            color: var(--itip-primary);
+            color: var(--oip-primary);
         }
 
         .back-link:focus-visible {
-            outline: 2px solid var(--itip-primary);
+            outline: 2px solid var(--oip-primary);
             outline-offset: 2px;
         }
 
@@ -54,10 +54,10 @@
             gap: 6px;
             padding: 6px 14px;
             font-size: var(--fs-xs);
-            color: var(--itip-text-muted);
-            border: 1px solid var(--itip-border);
+            color: var(--oip-text-muted);
+            border: 1px solid var(--oip-border);
             border-right: none;
-            background: var(--itip-surface);
+            background: var(--oip-surface);
         }
 
         .lifecycle__step:first-child {
@@ -65,14 +65,14 @@
         }
 
         .lifecycle__step:last-child {
-            border-right: 1px solid var(--itip-border);
+            border-right: 1px solid var(--oip-border);
             border-radius: 0 var(--radius-md) var(--radius-md) 0;
         }
 
         .lifecycle__step--current {
-            background: var(--itip-primary);
+            background: var(--oip-primary);
             color: #fff;
-            border-color: var(--itip-primary);
+            border-color: var(--oip-primary);
             font-weight: 700;
         }
 
@@ -97,16 +97,16 @@
         }
 
         .card {
-            border: 1px solid var(--itip-border);
+            border: 1px solid var(--oip-border);
             border-radius: var(--radius-lg);
-            background: var(--itip-surface);
+            background: var(--oip-surface);
             margin-bottom: var(--sp-lg);
         }
 
         .card__header {
             padding: 10px var(--sp-md);
-            background: var(--itip-bg);
-            border-bottom: 1px solid var(--itip-border);
+            background: var(--oip-bg);
+            border-bottom: 1px solid var(--oip-border);
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             font-weight: 700;
             font-size: var(--fs-sm);
@@ -122,7 +122,7 @@
             gap: var(--sp-md);
             padding: 6px 0;
             font-size: var(--fs-sm);
-            border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+            border-bottom: 1px solid color-mix(in srgb, var(--oip-border) 50%, transparent);
         }
 
         .meta-row:last-child {
@@ -130,7 +130,7 @@
         }
 
         .meta-row__label {
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
         }
 
         .chips {
@@ -146,7 +146,7 @@
         .path-inline {
             font-family: var(--font-mono);
             font-size: 11px;
-            background: var(--itip-bg);
+            background: var(--oip-bg);
             padding: 1px 4px;
             border-radius: var(--radius-sm);
         }
@@ -160,15 +160,15 @@
             font-size: var(--fs-xs);
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             text-align: left;
             padding: var(--sp-xs) var(--sp-sm);
-            border-bottom: 2px solid var(--itip-border);
+            border-bottom: 2px solid var(--oip-border);
         }
 
         .prop-table td {
             padding: var(--sp-sm);
-            border-bottom: 1px solid color-mix(in srgb, var(--itip-border) 50%, transparent);
+            border-bottom: 1px solid color-mix(in srgb, var(--oip-border) 50%, transparent);
             font-size: var(--fs-xs);
             vertical-align: top;
         }
@@ -192,19 +192,19 @@
         }
 
         .binding-badge--det {
-            background: var(--itip-border);
-            color: var(--itip-text);
+            background: var(--oip-border);
+            color: var(--oip-text);
         }
 
         .resolution-preview {
-            background: var(--itip-bg);
+            background: var(--oip-bg);
             padding: var(--sp-md);
             border-radius: var(--radius-md);
         }
 
         .resolution-preview__row {
             padding: var(--sp-sm);
-            border-bottom: 1px solid var(--itip-border);
+            border-bottom: 1px solid var(--oip-border);
             display: grid;
             grid-template-columns: 170px 1fr 110px;
             gap: var(--sp-md);
@@ -220,7 +220,7 @@
         }
 
         .resolution-preview__value {
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             font-family: var(--font-mono);
             font-size: var(--fs-xs);
         }
@@ -232,15 +232,15 @@
         }
 
         .resolution-preview__mode--det {
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             font-size: var(--fs-xs);
         }
 
         .preview-note {
             margin-top: var(--sp-md);
             padding: var(--sp-sm);
-            background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
-            border-left: 3px solid var(--itip-primary);
+            background: color-mix(in srgb, var(--oip-primary) 8%, transparent);
+            border-left: 3px solid var(--oip-primary);
             border-radius: var(--radius-sm);
             font-size: var(--fs-xs);
         }
@@ -304,8 +304,8 @@
         }
 
         .modal {
-            background: var(--itip-surface);
-            border: 1px solid var(--itip-border);
+            background: var(--oip-surface);
+            border: 1px solid var(--oip-border);
             border-radius: var(--radius-lg);
             width: 100%;
             max-width: 560px;
@@ -320,7 +320,7 @@
             align-items: flex-start;
             gap: var(--sp-md);
             padding: var(--sp-lg);
-            border-bottom: 1px solid var(--itip-border);
+            border-bottom: 1px solid var(--oip-border);
         }
 
         .modal__title {
@@ -330,7 +330,7 @@
 
         .modal__subtitle {
             font-size: var(--fs-xs);
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             margin-top: 2px;
         }
 
@@ -341,7 +341,7 @@
             border: none;
             background: transparent;
             cursor: pointer;
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
@@ -349,8 +349,8 @@
         }
 
         .modal__close:hover {
-            background: var(--itip-bg);
-            color: var(--itip-text);
+            background: var(--oip-bg);
+            color: var(--oip-text);
         }
 
         .modal__body {
@@ -365,7 +365,7 @@
             justify-content: flex-end;
             gap: var(--sp-sm);
             padding: var(--sp-lg);
-            border-top: 1px solid var(--itip-border);
+            border-top: 1px solid var(--oip-border);
         }
 
         .modal-field {
@@ -383,15 +383,15 @@
         .modal-field select {
             font-size: var(--fs-sm);
             padding: 8px 12px;
-            border: 1px solid var(--itip-border);
+            border: 1px solid var(--oip-border);
             border-radius: var(--radius-md);
-            background: var(--itip-surface);
-            color: var(--itip-text);
+            background: var(--oip-surface);
+            color: var(--oip-text);
         }
 
         .modal-field .form-help {
             font-size: var(--fs-xs);
-            color: var(--itip-text-muted);
+            color: var(--oip-text-muted);
         }
 
         .scope-readout {
@@ -405,7 +405,7 @@
         }
 
         .adv-section {
-            border: 1px solid var(--itip-border);
+            border: 1px solid var(--oip-border);
             border-radius: var(--radius-md);
         }
 
@@ -425,17 +425,17 @@
         }
 
         .adv-section>summary:hover {
-            background: var(--itip-bg);
+            background: var(--oip-bg);
         }
 
         .adv-section>summary:focus-visible {
-            outline: 2px solid var(--itip-primary);
+            outline: 2px solid var(--oip-primary);
             outline-offset: -2px;
         }
 
         .adv-section__body {
             padding: var(--sp-md);
-            border-top: 1px solid var(--itip-border);
+            border-top: 1px solid var(--oip-border);
             display: flex;
             flex-direction: column;
             gap: var(--sp-md);
@@ -532,7 +532,7 @@
                         <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
                     </svg>Integrations</a>
             </nav>
-            <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong>
+            <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong>
                     &middot; &copy; 2024&ndash;2026</span></div>
         </aside>
 
@@ -614,7 +614,7 @@
                     <div class="card">
                         <div class="card__header">Recent Runs</div>
                         <div class="card__body">
-                            <p style="font-size:var(--fs-sm); color:var(--itip-text-muted); margin-top:0;">No runs
+                            <p style="font-size:var(--fs-sm); color:var(--oip-text-muted); margin-top:0;">No runs
                                 recorded for the current state.</p>
                             <a class="btn btn--secondary btn--sm" href="jobs.html">View Generation Jobs</a>
                         </div>
@@ -652,7 +652,7 @@
                         accepted types.</div>
                 </div>
                 <div class="modal-field"><span
-                        style="font-size:var(--fs-xs); color:var(--itip-text-muted);">Accepts</span>
+                        style="font-size:var(--fs-xs); color:var(--oip-text-muted);">Accepts</span>
                     <div class="scope-readout" id="gen-scope-readout"></div>
                 </div>
                 <details class="adv-section">
@@ -667,7 +667,7 @@
                                     Current state</label><label><input type="radio" name="gen-asof" value="snapshot">
                                     Named snapshot</label></div>
                             <label for="gen-snapshot"
-                                style="font-weight:400; font-size:var(--fs-xs); color:var(--itip-text-muted);">Snapshot</label>
+                                style="font-weight:400; font-size:var(--fs-xs); color:var(--oip-text-muted);">Snapshot</label>
                             <select id="gen-snapshot" disabled>
                                 <option>2026-Q1 Baseline</option>
                                 <option>NIS2 Controls Sprint 12</option>
@@ -708,8 +708,8 @@
     </div>
 
     <script>
-        (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-        function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+        (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+        function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
         function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 
         // Per-class output property shapes (grounded source paths).
@@ -855,7 +855,7 @@
                 // Fall back to the first template if the slug is unknown.
                 slug = Object.keys(TEMPLATES)[0]; tpl = TEMPLATES[slug];
             }
-            document.title = 'ITIP — ' + tpl.name;
+            document.title = 'OIP — ' + tpl.name;
             document.getElementById('bc-name').textContent = tpl.name;
             document.getElementById('t-name').textContent = tpl.name;
             document.getElementById('t-desc').textContent = tpl.desc;

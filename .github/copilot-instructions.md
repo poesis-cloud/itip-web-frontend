@@ -1,4 +1,4 @@
-# Copilot Instructions - itip-web-frontend
+# Copilot Instructions - oip-web-frontend
 
 These rules are mandatory for all future Copilot work in this repository.
 
@@ -8,7 +8,7 @@ These rules are mandatory for all future Copilot work in this repository.
 - Runtime baseline is Node 22 or higher LTS.
 - Always run npm commands with the Node 22 or higher LTS toolchain (npm bundled with Node 22). Do not run npm commands from older Node runtimes.
 - UI stack is PrimeNG + Tailwind.
-- Primary visual references are in `def/mockups/` and `def/mockups/*/itip-design-system.css`.
+- Primary visual references are in `def/mockups/` and `def/mockups/*/oip-design-system.css`.
 - Keep custom CSS to a minimum. Prefer PrimeNG components and Tailwind utilities.
 - For responsive behavior across screen sizes, prefer Tailwind responsive utilities directly in templates (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`, and `max-[...]` when needed).
 - Prefer Tailwind responsive utilities over component-level `@media` rules whenever the same result can be achieved cleanly.

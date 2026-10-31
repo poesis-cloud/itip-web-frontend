@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP Workflow — Security Officer: Framework Stack Composition</title>
-  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <title>OIP Workflow — Security Officer: Framework Stack Composition</title>
+  <link rel="stylesheet" href="../mockups/oip-design-system.css">
   <style>
-    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+    body { background: var(--oip-bg); padding: var(--sp-2xl); }
 
     .workflow-header {
       margin-bottom: var(--sp-2xl);
@@ -46,7 +46,7 @@
     .flow-number {
       width: 40px; height: 40px;
       border-radius: 50%;
-      background: var(--itip-primary);
+      background: var(--oip-primary);
       color: #fff;
       display: flex; align-items: center; justify-content: center;
       font-weight: 700;
@@ -57,20 +57,20 @@
     .flow-line {
       flex: 1;
       width: 2px;
-      background: var(--itip-border-strong);
+      background: var(--oip-border-strong);
     }
     .flow-step:last-child .flow-line { display: none; }
 
     .step-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg);
       padding: var(--sp-lg);
       margin-bottom: var(--sp-lg);
       box-shadow: var(--shadow-sm);
     }
     .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
-    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+    .step-card p { font-size: var(--fs-sm); color: var(--oip-text-muted); margin-bottom: var(--sp-md); }
 
     /* Screen reference */
     .screen-ref {
@@ -78,7 +78,7 @@
       align-items: center;
       gap: var(--sp-xs);
       font-size: var(--fs-xs);
-      color: var(--itip-primary);
+      color: var(--oip-primary);
       background: #eff6ff;
       padding: 3px 10px;
       border-radius: var(--radius-full);
@@ -88,12 +88,12 @@
     /* Step wireframe sketch */
     .step-sketch {
       background: #f8fafc;
-      border: 1px dashed var(--itip-border-strong);
+      border: 1px dashed var(--oip-border-strong);
       border-radius: var(--radius-md);
       padding: var(--sp-md);
       margin-top: var(--sp-md);
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       font-family: var(--font-mono);
       white-space: pre-line;
     }
@@ -282,8 +282,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

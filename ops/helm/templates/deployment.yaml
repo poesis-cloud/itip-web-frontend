@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "itip-web-frontend.fullname" . }}
+  name: {{ include "oip-web-frontend.fullname" . }}
   labels:
-    app: {{ include "itip-web-frontend.fullname" . }}
+    app: {{ include "oip-web-frontend.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "itip-web-frontend.fullname" . }}
+      app: {{ include "oip-web-frontend.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ include "itip-web-frontend.fullname" . }}
+        app: {{ include "oip-web-frontend.fullname" . }}
       annotations:
         checksum/runtime-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/nginx-config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
@@ -31,7 +31,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: itip-web-frontend
+        - name: oip-web-frontend
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -61,8 +61,8 @@ spec:
       volumes:
         - name: runtime-config
           configMap:
-            name: {{ include "itip-web-frontend.fullname" . }}-runtime
+            name: {{ include "oip-web-frontend.fullname" . }}-runtime
         - name: nginx-config
           configMap:
-            name: {{ include "itip-web-frontend.fullname" . }}-nginx
+            name: {{ include "oip-web-frontend.fullname" . }}-nginx
 {{- end }}

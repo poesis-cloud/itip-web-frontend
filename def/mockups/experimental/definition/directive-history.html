@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Directive History</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Directive History</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
-    .history-entry { display:flex; gap:var(--sp-md); padding:var(--sp-md) 0; border-bottom:1px solid var(--itip-border); }
+    .history-entry { display:flex; gap:var(--sp-md); padding:var(--sp-md) 0; border-bottom:1px solid var(--oip-border); }
     .history-entry:last-child { border-bottom:none; }
-    .history-dot { width:12px; height:12px; border-radius:50%; margin-top:4px; flex-shrink:0; border:2px solid var(--itip-primary); background:var(--itip-surface); }
-    .history-dot--state { background:var(--itip-primary); }
+    .history-dot { width:12px; height:12px; border-radius:50%; margin-top:4px; flex-shrink:0; border:2px solid var(--oip-primary); background:var(--oip-surface); }
+    .history-dot--state { background:var(--oip-primary); }
     .history-line { position:relative; }
-    .history-line::before { content:''; position:absolute; left:5px; top:16px; bottom:0; width:2px; background:var(--itip-border); }
+    .history-line::before { content:''; position:absolute; left:5px; top:16px; bottom:0; width:2px; background:var(--oip-border); }
     .history-entry:last-child .history-line::before { display:none; }
-    .history-meta { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:2px; }
-    .history-detail { font-size:var(--fs-sm); margin-top:var(--sp-xs); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); }
+    .history-meta { font-size:var(--fs-xs); color:var(--oip-text-muted); margin-top:2px; }
+    .history-detail { font-size:var(--fs-sm); margin-top:var(--sp-xs); padding:var(--sp-sm); background:var(--oip-bg); border-radius:var(--radius-md); }
     .diff-add { color:var(--compliance-pass); }
     .diff-remove { color:var(--compliance-fail); text-decoration:line-through; }
   </style>
@@ -109,7 +109,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -251,8 +251,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

@@ -4,48 +4,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — NX · Execution Compliance · Governance</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — NX · Execution Compliance · Governance</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .sub-dashboard { padding: var(--sp-lg); overflow-y: auto; }
 
-    .back-link { font-size: var(--fs-sm); color: var(--itip-text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: var(--sp-xs); margin-bottom: var(--sp-sm); }
-    .back-link:hover { color: var(--itip-primary); }
+    .back-link { font-size: var(--fs-sm); color: var(--oip-text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: var(--sp-xs); margin-bottom: var(--sp-sm); }
+    .back-link:hover { color: var(--oip-primary); }
 
-    .indicator { display: flex; align-items: center; gap: var(--sp-xl); padding: var(--sp-lg) var(--sp-xl); background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-xl); margin-bottom: var(--sp-lg); }
+    .indicator { display: flex; align-items: center; gap: var(--sp-xl); padding: var(--sp-lg) var(--sp-xl); background: var(--oip-surface); border: 1px solid var(--oip-border); border-radius: var(--radius-xl); margin-bottom: var(--sp-lg); }
     .indicator__ring { width: 96px; height: 96px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .indicator__ring::after { content: ''; width: 72px; height: 72px; border-radius: 50%; background: var(--itip-surface); position: absolute; }
+    .indicator__ring::after { content: ''; width: 72px; height: 72px; border-radius: 50%; background: var(--oip-surface); position: absolute; }
     .indicator__value { position: relative; z-index: 1; font-size: 1.5rem; font-weight: 800; }
     .indicator__meta { flex: 1; }
     .indicator__title { font-size: var(--fs-lg); font-weight: 700; margin-bottom: var(--sp-xs); }
-    .indicator__subtitle { font-size: var(--fs-sm); color: var(--itip-text-muted); line-height: 1.6; }
+    .indicator__subtitle { font-size: var(--fs-sm); color: var(--oip-text-muted); line-height: 1.6; }
     .indicator__badge { display: inline-flex; align-items: center; gap: var(--sp-xs); padding: 2px 10px; border-radius: var(--radius-full); font-size: var(--fs-xs); font-weight: 600; }
     .badge-nx { background: #fdf4ff; color: #a21caf; }
 
-    .breakdown { background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); margin-bottom: var(--sp-lg); }
+    .breakdown { background: var(--oip-surface); border: 1px solid var(--oip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); margin-bottom: var(--sp-lg); }
     .breakdown__title { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-md); }
     .breakdown table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
-    .breakdown th { text-align: left; padding: var(--sp-xs) var(--sp-sm); font-weight: 600; color: var(--itip-text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--fs-xs); border-bottom: 2px solid var(--itip-border); }
-    .breakdown td { padding: var(--sp-sm); border-bottom: 1px solid var(--itip-border); vertical-align: top; }
+    .breakdown th { text-align: left; padding: var(--sp-xs) var(--sp-sm); font-weight: 600; color: var(--oip-text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--fs-xs); border-bottom: 2px solid var(--oip-border); }
+    .breakdown td { padding: var(--sp-sm); border-bottom: 1px solid var(--oip-border); vertical-align: top; }
     .breakdown tr:last-child td { border-bottom: none; }
 
     .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: var(--sp-xs); }
     .dot-pass { background: var(--compliance-pass); }
     .dot-fail { background: var(--compliance-fail); }
 
-    .assertion-trace { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); padding: 4px 8px; background: color-mix(in srgb, var(--itip-text) 5%, transparent); border-radius: var(--radius-sm); display: inline-block; }
+    .assertion-trace { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); padding: 4px 8px; background: color-mix(in srgb, var(--oip-text) 5%, transparent); border-radius: var(--radius-sm); display: inline-block; }
 
     .chip { display: inline-block; padding: 1px 6px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; }
     .chip--pass { background: color-mix(in srgb, var(--compliance-pass) 12%, transparent); color: var(--compliance-pass); }
     .chip--fail { background: color-mix(in srgb, var(--compliance-fail) 12%, transparent); color: var(--compliance-fail); }
-    .chip--muted { background: color-mix(in srgb, var(--itip-text) 6%, transparent); color: var(--itip-text-muted); }
+    .chip--muted { background: color-mix(in srgb, var(--oip-text) 6%, transparent); color: var(--oip-text-muted); }
     .mono { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); }
 
-    .observed-value { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); color: var(--itip-text-muted); display: block; margin-top: 2px; }
+    .observed-value { font-family: var(--font-mono, monospace); font-size: var(--fs-xs); color: var(--oip-text-muted); display: block; margin-top: 2px; }
 
-    .findings-section { background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); }
+    .findings-section { background: var(--oip-surface); border: 1px solid var(--oip-border); border-radius: var(--radius-lg); padding: var(--sp-lg); }
     .findings-section__title { font-size: var(--fs-base); font-weight: 700; margin-bottom: var(--sp-md); }
-    .finding-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-sm) 0; border-bottom: 1px solid var(--itip-border); font-size: var(--fs-sm); }
+    .finding-row { display: flex; align-items: flex-start; gap: var(--sp-md); padding: var(--sp-sm) 0; border-bottom: 1px solid var(--oip-border); font-size: var(--fs-sm); }
     .finding-row:last-child { border-bottom: none; }
     .finding-icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
     .finding-message { flex: 1; line-height: 1.5; }
@@ -142,7 +142,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong></span></div>
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong></span></div>
     </aside>
 
     <header class="app-header">
@@ -183,7 +183,7 @@
           <div class="indicator__subtitle">
             <strong style="color:var(--compliance-pass)">8</strong> satisfied ·
             <strong style="color:var(--compliance-fail)">4</strong> violated out of <strong>12</strong> evaluated execution assertions across 3 observable entities.<br>
-            <span style="color:var(--itip-text-muted)">2 Norms excluded — no observation sources (see NX Meta-governance).</span>
+            <span style="color:var(--oip-text-muted)">2 Norms excluded — no observation sources (see NX Meta-governance).</span>
           </div>
         </div>
       </div>

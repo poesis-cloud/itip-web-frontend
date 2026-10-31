@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Framework Catalog</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Framework Catalog</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .catalog-grid {
       display: grid;
@@ -15,7 +15,7 @@
 
     .framework-version {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       font-family: var(--font-mono);
     }
 
@@ -31,7 +31,7 @@
       border-radius: 12px;
       font-size: 10px;
       background: #f1f5f9;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .authority-icon {
@@ -43,7 +43,7 @@
 
     .framework-detail {
       margin-top: auto;
-      border-top: 1px solid var(--itip-border);
+      border-top: 1px solid var(--oip-border);
       padding-top: var(--sp-md);
     }
   </style>
@@ -92,7 +92,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -381,8 +381,8 @@
           </div>
         </div>
 
-        <!-- ITIP -->
-        <div class="framework-card" style="cursor:pointer" onclick="location.href='framework-detail-itip.html'">
+        <!-- OIP -->
+        <div class="framework-card" style="cursor:pointer" onclick="location.href='framework-detail-oip.html'">
           <div style="display:flex;align-items:flex-start;gap:10px">
             <svg class="authority-icon" viewBox="0 0 32 32" fill="none">
               <rect width="32" height="32" rx="6" fill="#00695c" />
@@ -390,9 +390,9 @@
               <circle cx="16" cy="16" r="2.5" fill="white" opacity=".9" />
             </svg>
             <div>
-              <div class="framework-card__title">ITIP</div>
+              <div class="framework-card__title">OIP</div>
               <div class="framework-version">v1.0 · Poesis</div>
-              <div class="text-xs text-muted mt-sm">IT Intelligence Platform meta-governance framework. Governance
+              <div class="text-xs text-muted mt-sm">Organizational Intelligence Platform meta-governance framework. Governance
                 infrastructure schemas, evaluation rules, sourcing templates, and technology vocabulary powering all
                 other frameworks.</div>
             </div>
@@ -477,8 +477,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

@@ -4,16 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Evaluation Findings</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Evaluation Findings</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     /* ── Score strip ── */
     .score-strip {
       display: flex;
       gap: var(--sp-sm);
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
-      background: var(--itip-surface);
+      border-bottom: 1px solid var(--oip-border);
+      background: var(--oip-surface);
       flex-wrap: wrap;
       align-items: center;
     }
@@ -23,7 +23,7 @@
       align-items: center;
       gap: 6px;
       padding: var(--sp-xs) var(--sp-md);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-full);
       font-size: var(--fs-xs);
       font-weight: 600;
@@ -33,13 +33,13 @@
     }
 
     .score-chip:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
     }
 
     .score-chip.active {
-      border-color: var(--itip-primary);
-      background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
-      color: var(--itip-primary);
+      border-color: var(--oip-primary);
+      background: color-mix(in srgb, var(--oip-primary) 8%, transparent);
+      color: var(--oip-primary);
     }
 
     .score-chip__value {
@@ -126,7 +126,7 @@
       align-items: center;
       padding: var(--sp-md) var(--sp-lg);
       flex-wrap: wrap;
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .findings-toolbar .form-input {
@@ -154,8 +154,8 @@
       align-items: center;
       gap: var(--sp-md);
       padding: var(--sp-md) var(--sp-lg);
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       margin-bottom: var(--sp-sm);
       cursor: pointer;
@@ -163,7 +163,7 @@
     }
 
     .finding-row:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
       box-shadow: var(--shadow-md);
     }
 
@@ -181,7 +181,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .findings-header>span:nth-child(n+3) {
@@ -211,8 +211,8 @@
     }
 
     .finding-icon--drift {
-      background: color-mix(in srgb, var(--itip-primary) 12%, transparent);
-      color: var(--itip-primary);
+      background: color-mix(in srgb, var(--oip-primary) 12%, transparent);
+      color: var(--oip-primary);
     }
 
     .finding-icon--violation {
@@ -221,8 +221,8 @@
     }
 
     .finding-icon--metric {
-      background: color-mix(in srgb, var(--itip-text) 8%, transparent);
-      color: var(--itip-text-muted);
+      background: color-mix(in srgb, var(--oip-text) 8%, transparent);
+      color: var(--oip-text-muted);
     }
 
     .finding-title {
@@ -232,7 +232,7 @@
 
     .finding-subject {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     /* Severity badges */
@@ -270,8 +270,8 @@
     /* ── Detail panel ── */
     .detail-panel {
       width: 440px;
-      background: var(--itip-surface);
-      border-left: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border-left: 1px solid var(--oip-border);
       display: none;
       flex-direction: column;
     }
@@ -282,7 +282,7 @@
 
     .detail-panel__header {
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -302,7 +302,7 @@
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
     }
 
@@ -311,10 +311,10 @@
       align-items: center;
       gap: 6px;
       padding: var(--sp-xs) var(--sp-sm);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       background: transparent;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       cursor: pointer;
       transition: all 0.15s;
       font-size: var(--fs-xs);
@@ -323,14 +323,14 @@
     }
 
     .panel-toggle:hover {
-      color: var(--itip-primary);
-      border-color: var(--itip-primary);
+      color: var(--oip-primary);
+      border-color: var(--oip-primary);
     }
 
     .panel-toggle.active {
-      color: var(--itip-primary);
-      border-color: var(--itip-primary);
-      background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
+      color: var(--oip-primary);
+      border-color: var(--oip-primary);
+      background: color-mix(in srgb, var(--oip-primary) 8%, transparent);
     }
 
     .panel-toggle svg {
@@ -347,14 +347,14 @@
       border: none;
       border-radius: var(--radius-sm);
       background: transparent;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .panel-close:hover {
-      background: color-mix(in srgb, var(--itip-text) 8%, transparent);
-      color: var(--itip-text);
+      background: color-mix(in srgb, var(--oip-text) 8%, transparent);
+      color: var(--oip-text);
     }
 
     .panel-close svg {
@@ -364,8 +364,8 @@
 
     /* ── Resolution action ── */
     .resolution-box {
-      background: color-mix(in srgb, var(--itip-primary) 4%, transparent);
-      border: 1px solid color-mix(in srgb, var(--itip-primary) 20%, transparent);
+      background: color-mix(in srgb, var(--oip-primary) 4%, transparent);
+      border: 1px solid color-mix(in srgb, var(--oip-primary) 20%, transparent);
       border-radius: var(--radius-md);
       padding: var(--sp-md);
     }
@@ -378,7 +378,7 @@
 
     .resolution-box__desc {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
     }
 
@@ -392,7 +392,7 @@
 
     .conflict-side {
       padding: var(--sp-sm);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       font-size: var(--fs-xs);
     }
@@ -406,7 +406,7 @@
 
     /* ── CEL evaluation trace (NC-D) ── */
     .eval-trace {
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       overflow: hidden;
     }
@@ -418,7 +418,7 @@
       align-items: center;
       padding: var(--sp-sm) var(--sp-md);
       font-size: var(--fs-xs);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .eval-trace__row:last-child {
@@ -427,7 +427,7 @@
 
     .eval-trace__label {
       font-weight: 600;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 0.04em;
@@ -463,7 +463,7 @@
     }
 
     .severity-chain__arrow {
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       font-size: 10px;
     }
 
@@ -478,7 +478,7 @@
       gap: var(--sp-sm);
       padding: var(--sp-xs) 0;
       font-size: var(--fs-xs);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .property-list li:last-child {
@@ -590,7 +590,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
           &copy; 2024&ndash;2026</span></div>
     </aside>
 
@@ -654,7 +654,7 @@
       <button class="score-chip" onclick="this.classList.toggle('active')">
         <span class="score-chip__dot dot-ac"></span> AC <span class="score-chip__value">76%</span>
       </button>
-      <span style="margin-left:auto;font-size:var(--fs-xs);color:var(--itip-text-muted)">29 rules &middot; 149 findings &middot; 22 open
+      <span style="margin-left:auto;font-size:var(--fs-xs);color:var(--oip-text-muted)">29 rules &middot; 149 findings &middot; 22 open
         resolutions</span>
     </div>
 
@@ -724,7 +724,7 @@
           <!-- ── Critical findings ── -->
 
           <!-- DD: DIRECTIVE_MODAL_COMPATIBILITY -->
-          <div class="finding-row" style="border-color:var(--itip-primary)"
+          <div class="finding-row" style="border-color:var(--oip-primary)"
             onclick="document.getElementById('detailPanel').classList.add('open');document.querySelector('.panel-toggle').classList.add('active')">
             <div class="finding-icon finding-icon--conflict">⚡</div>
             <div>
@@ -735,8 +735,8 @@
             <div><span class="badge cat-dd" style="font-size:10px">DD</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_MODAL_COMPATIBILITY</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">3d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">DIRECTIVE_MODAL_COMPATIBILITY</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">3d</div>
           </div>
 
           <!-- NN: NORM_ASSERTION_COMPATIBILITY -->
@@ -751,8 +751,8 @@
             <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NORM_ASSERTION_COMPATIBILITY</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">2d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">NORM_ASSERTION_COMPATIBILITY</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">2d</div>
           </div>
 
           <!-- NA: ASCRIPTION_STATEMENT_NORM_COMPLIANCE -->
@@ -760,13 +760,13 @@
             <div class="finding-icon finding-icon--violation">✕</div>
             <div>
               <div class="finding-title">Statement Norm compliance failure — UserDatabase v3</div>
-              <div class="finding-subject">Ascription statement violates CEL assertion <code style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">stmt.encryption.atRest == true</code> from Norm encryption_at_rest</div>
+              <div class="finding-subject">Ascription statement violates CEL assertion <code style="font-size:10px;padding:1px 4px;background:var(--oip-border);border-radius:3px">stmt.encryption.atRest == true</code> from Norm encryption_at_rest</div>
             </div>
             <div><span class="badge cat-na" style="font-size:10px">NA</span></div>
             <div><span class="badge sev-critical" style="font-size:10px">Critical</span></div>
             <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_STATEMENT_NORM_COMPLIANCE</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">ASCRIPTION_STATEMENT_NORM_COMPLIANCE</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">5d</div>
           </div>
 
           <!-- ── Warning findings ── -->
@@ -782,8 +782,8 @@
             <div><span class="badge cat-dn" style="font-size:10px">DN</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_QUALIFIER_COVERAGE</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">14d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">DIRECTIVE_QUALIFIER_COVERAGE</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">14d</div>
           </div>
 
           <!-- NN: NORM_ASCRIPTION_BINDING -->
@@ -797,8 +797,8 @@
             <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">NORM_ASCRIPTION_BINDING</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">7d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">NORM_ASCRIPTION_BINDING</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">7d</div>
           </div>
 
           <!-- NN: STRUCTURE_GOVERNANCE_PROPORTIONALITY -->
@@ -811,8 +811,8 @@
             <div><span class="badge cat-nn" style="font-size:10px">NN</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">STRUCTURE_GOVERNANCE_PROPORTIONALITY</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">8d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">STRUCTURE_GOVERNANCE_PROPORTIONALITY</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">8d</div>
           </div>
 
           <!-- AA: SOURCED_SYNC_FRESHNESS -->
@@ -825,8 +825,8 @@
             <div><span class="badge cat-aa" style="font-size:10px">AA</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">SOURCED_SYNC_FRESHNESS</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">12d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">SOURCED_SYNC_FRESHNESS</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">12d</div>
           </div>
 
           <!-- AC: ASCRIPTION_DRAFT_PROGRESSION -->
@@ -839,8 +839,8 @@
             <div><span class="badge cat-ac" style="font-size:10px">AC</span></div>
             <div><span class="badge sev-warning" style="font-size:10px">Warning</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_DRAFT_PROGRESSION</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">45d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">ASCRIPTION_DRAFT_PROGRESSION</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">45d</div>
           </div>
 
           <!-- ── Advisory findings ── -->
@@ -856,8 +856,8 @@
             <div><span class="badge cat-dn" style="font-size:10px">DN</span></div>
             <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_NORM_OPERATIONALIZATION</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">28d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">DIRECTIVE_NORM_OPERATIONALIZATION</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">28d</div>
           </div>
 
           <!-- AA: SOURCED_SYNC_DIVERGENCE -->
@@ -870,8 +870,8 @@
             <div><span class="badge cat-aa" style="font-size:10px">AA</span></div>
             <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
             <div class="res-in-progress" style="font-size:var(--fs-xs);font-weight:600">◐ In Progress</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">SOURCED_SYNC_DIVERGENCE</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">5d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">SOURCED_SYNC_DIVERGENCE</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">5d</div>
           </div>
 
           <!-- DD: DIRECTIVE_PURPOSE_TARGETING -->
@@ -884,8 +884,8 @@
             <div><span class="badge cat-dd" style="font-size:10px">DD</span></div>
             <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">DIRECTIVE_PURPOSE_TARGETING</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">15d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">DIRECTIVE_PURPOSE_TARGETING</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">15d</div>
           </div>
 
           <!-- AC: ASCRIPTION_DEPRECATION_SUCCESSION -->
@@ -898,13 +898,13 @@
             <div><span class="badge cat-ac" style="font-size:10px">AC</span></div>
             <div><span class="badge sev-info" style="font-size:10px">Advisory</span></div>
             <div class="res-open" style="font-size:var(--fs-xs);font-weight:600">● Open</div>
-            <div style="font-size:10px;color:var(--itip-text-muted);font-family:monospace">ASCRIPTION_DEPRECATION_SUCCESSION</div>
-            <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">10d</div>
+            <div style="font-size:10px;color:var(--oip-text-muted);font-family:monospace">ASCRIPTION_DEPRECATION_SUCCESSION</div>
+            <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">10d</div>
           </div>
 
             <!-- Pagination -->
             <div
-              style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--itip-text-muted)">
+              style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--sp-md); font-size:var(--fs-sm); color:var(--oip-text-muted)">
               <span>Showing 12 of 149 findings</span>
               <div style="display:flex; gap:var(--sp-xs)">
                 <button class="btn btn--ghost btn--sm" disabled>&larr; Prev</button>
@@ -943,9 +943,9 @@
               <div class="detail-section">
                 <div class="detail-label">Rule Type</div>
                 <div style="font-size:var(--fs-xs)">
-                  <code style="font-size:11px;padding:2px 6px;background:var(--itip-border);border-radius:3px;font-family:'JetBrains Mono',monospace">DIRECTIVE_MODAL_COMPATIBILITY</code>
-                  <div style="margin-top:4px;color:var(--itip-text-muted)">gsm:rul../evaluation/directive/modal/compatibility</div>
-                  <div style="margin-top:4px;color:var(--itip-text-muted)">Two Directives with incompatible modals (e.g., MUST vs MUST_NOT) governing the same Subject with the same verb and overlapping qualifiers.</div>
+                  <code style="font-size:11px;padding:2px 6px;background:var(--oip-border);border-radius:3px;font-family:'JetBrains Mono',monospace">DIRECTIVE_MODAL_COMPATIBILITY</code>
+                  <div style="margin-top:4px;color:var(--oip-text-muted)">gsm:rul../evaluation/directive/modal/compatibility</div>
+                  <div style="margin-top:4px;color:var(--oip-text-muted)">Two Directives with incompatible modals (e.g., MUST vs MUST_NOT) governing the same Subject with the same verb and overlapping qualifiers.</div>
                 </div>
               </div>
 
@@ -954,13 +954,13 @@
                 <div class="conflict-pair">
                   <div class="conflict-side">
                     <div style="font-weight:600;margin-bottom:4px">Data Encryption Standard</div>
-                    <div style="color:var(--itip-text-muted)">SecurityTeam <strong>MUST ENSURE</strong> Encryption ON
+                    <div style="color:var(--oip-text-muted)">SecurityTeam <strong>MUST ENSURE</strong> Encryption ON
                       UserDatabase</div>
                   </div>
                   <div class="conflict-vs">VS</div>
                   <div class="conflict-side">
                     <div style="font-weight:600;margin-bottom:4px">Legacy Compatibility</div>
-                    <div style="color:var(--itip-text-muted)">MigrationTeam <strong>MUST_NOT ENSURE</strong> Encryption
+                    <div style="color:var(--oip-text-muted)">MigrationTeam <strong>MUST_NOT ENSURE</strong> Encryption
                       ON UserDatabase</div>
                   </div>
                 </div>
@@ -971,27 +971,27 @@
                 <div class="text-xs text-muted">
                   Same governed Structure (<strong>UserDatabase</strong>), same qualifier (<strong>Encryption</strong>).
                   Modals <code
-                    style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">MUST</code>
+                    style="font-size:10px;padding:1px 4px;background:var(--oip-border);border-radius:3px">MUST</code>
                   and
                   <code
-                    style="font-size:10px;padding:1px 4px;background:var(--itip-border);border-radius:3px">MUST_NOT</code>
+                    style="font-size:10px;padding:1px 4px;background:var(--oip-border);border-radius:3px">MUST_NOT</code>
                   with identical verb produce a <strong>direct modal contradiction</strong>. No Ascription can satisfy both
                   simultaneously.
                 </div>
                 <div style="margin-top:var(--sp-sm);display:flex;gap:var(--sp-sm);align-items:center">
                   <span class="badge cat-dd" style="font-size:10px">Directive Coherence</span>
-                  <span style="font-size:10px;color:var(--itip-text-muted)">Class: DD · 5 rules in class</span>
+                  <span style="font-size:10px;color:var(--oip-text-muted)">Class: DD · 5 rules in class</span>
                 </div>
               </div>
 
               <div class="detail-section">
                 <div class="detail-label">Affected Norms (3)</div>
                 <div style="font-size:var(--fs-xs)">
-                  <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                  <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--oip-border)">
                     <a href="../definition/norms-list.html" style="font-weight:600">encryption_at_rest</a> <span
                       class="text-muted">← Data Encryption</span>
                   </div>
-                  <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                  <div style="padding:var(--sp-xs) 0;border-bottom:1px solid var(--oip-border)">
                     <a href="../definition/norms-list.html" style="font-weight:600">encryption_in_transit</a> <span
                       class="text-muted">← Data Encryption</span>
                   </div>
@@ -1018,7 +1018,7 @@
 
               <div class="detail-section">
                 <div class="detail-label">History</div>
-                <div style="font-size:var(--fs-xs);color:var(--itip-text-muted)">
+                <div style="font-size:var(--fs-xs);color:var(--oip-text-muted)">
                   <div style="padding:2px 0">Mar 28 — Finding detected (auto-evaluation)</div>
                   <div style="padding:2px 0">Mar 28 — Severity escalated to Critical (MUST ↔ MUST_NOT)</div>
                 </div>
@@ -1032,8 +1032,8 @@
 
   </div>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

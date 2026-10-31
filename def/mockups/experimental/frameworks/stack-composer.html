@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Stack Composer</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Stack Composer</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .composer-layout {
       display: grid;
@@ -14,14 +14,14 @@
     }
 
     .composer-source {
-      border: 2px dashed var(--itip-border);
+      border: 2px dashed var(--oip-border);
       border-radius: var(--radius-md);
       padding: var(--sp-md);
       min-height: 400px;
     }
 
     .composer-canvas {
-      background: var(--itip-bg-muted);
+      background: var(--oip-bg-muted);
       border-radius: var(--radius-md);
       padding: var(--sp-lg);
       min-height: 400px;
@@ -35,7 +35,7 @@
 
     .stack-item {
       background: white;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
       padding: var(--sp-sm) var(--sp-md);
       cursor: grab;
@@ -50,17 +50,17 @@
     }
 
     .stack-item--in-stack {
-      border-left: 3px solid var(--itip-accent);
+      border-left: 3px solid var(--oip-accent);
       background: #f0faf8;
     }
 
     .stack-item__drag {
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       font-size: 14px;
     }
 
     .stack-layer {
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       padding: var(--sp-md);
       margin-bottom: var(--sp-sm);
@@ -74,7 +74,7 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--itip-accent);
+      background: var(--oip-accent);
       color: white;
       display: flex;
       align-items: center;
@@ -85,7 +85,7 @@
 
     .stack-layer__remove {
       cursor: pointer;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .stack-layer__remove:hover {
@@ -298,7 +298,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -452,7 +452,7 @@
           </div>
 
           <!-- Coverage map -->
-          <div style="margin-top:var(--sp-lg);border-top:1px solid var(--itip-border);padding-top:var(--sp-md)">
+          <div style="margin-top:var(--sp-lg);border-top:1px solid var(--oip-border);padding-top:var(--sp-md)">
             <div class="text-sm" style="font-weight:600;margin-bottom:var(--sp-sm)">Coverage Map</div>
             <div class="text-xs text-muted">How much of your structure landscape each framework covers</div>
             <div class="coverage-bar" style="margin-top:var(--sp-sm)">
@@ -530,15 +530,15 @@
             <div class="card__header"><span class="card__title">Stack Health</span></div>
             <div class="card__body">
               <div
-                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--oip-border)">
                 <span class="text-sm">Frameworks</span><span class="text-sm" style="font-weight:700">5 / 6</span>
               </div>
               <div
-                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--oip-border)">
                 <span class="text-sm">Total Norms</span><span class="text-sm" style="font-weight:700">147</span>
               </div>
               <div
-                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--itip-border)">
+                style="display:flex;justify-content:space-between;padding:var(--sp-xs) 0;border-bottom:1px solid var(--oip-border)">
                 <span class="text-sm">Overlaps</span><span class="text-sm badge badge--warn"
                   style="font-weight:700">4</span>
               </div>
@@ -561,8 +561,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 
