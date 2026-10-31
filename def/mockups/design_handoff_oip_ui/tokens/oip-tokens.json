@@ -1,9 +1,9 @@
 {
   "$meta": {
-    "name": "ITIP UI Design Tokens",
+    "name": "OIP UI Design Tokens",
     "version": "1.0.0",
     "system": "Indigo",
-    "note": "Machine-readable mirror of tokens/itip-tokens.css. Source of truth for values. No component may hard-code a color/space/radius outside this set."
+    "note": "Machine-readable mirror of tokens/oip-tokens.css. Source of truth for values. No component may hard-code a color/space/radius outside this set."
   },
   "color": {
     "primary":            "#4F46E5",
@@ -110,8 +110,8 @@
     "notes": "Sidebar (#0F1729) unchanged across themes. Solid lifecycle badge fills unchanged; only text-on-transparent lightens. Brand/Copilot gradients unchanged. Default theme is Light; dark is opt-in."
   },
   "cards": {
-    "statClass": "itip-stat",
-    "panelClass": "itip-panel",
+    "statClass": "oip-stat",
+    "panelClass": "oip-panel",
     "hover": "stat cards lift (translateY(-3px) + cardHover shadow); panels are STATIC (no hover)",
     "treatments": ["elevated", "outline", "accent"],
     "tweakable": {

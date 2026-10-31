@@ -4,35 +4,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — NX Findings · Norm ↔ eXecution</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — NX Findings · Norm ↔ eXecution</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
-    .findings-toolbar { display:flex; gap:var(--sp-md); align-items:center; padding:var(--sp-md) var(--sp-lg); flex-wrap:wrap; border-bottom:1px solid var(--itip-border); }
+    .findings-toolbar { display:flex; gap:var(--sp-md); align-items:center; padding:var(--sp-md) var(--sp-lg); flex-wrap:wrap; border-bottom:1px solid var(--oip-border); }
     .findings-toolbar .form-input { flex:1; min-width:180px; }
     .findings-layout { display:flex; flex:1; min-height:0; }
     .findings-list { flex:1; overflow-y:auto; padding:var(--sp-md) var(--sp-lg); }
-    .findings-header { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg); font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--itip-text-muted); }
+    .findings-header { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-sm) var(--sp-lg); font-size:var(--fs-xs); font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--oip-text-muted); }
     .findings-header>span:nth-child(n+3) { text-align:center; }
-    .finding-row { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); background:var(--itip-surface); border:1px solid var(--itip-border); border-radius:var(--radius-md); margin-bottom:var(--sp-sm); cursor:pointer; transition:box-shadow .15s,border-color .15s; }
-    .finding-row:hover { border-color:var(--itip-primary); box-shadow:var(--shadow-md); }
+    .finding-row { display:grid; grid-template-columns:28px 1fr 80px 80px 100px 120px 80px; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); background:var(--oip-surface); border:1px solid var(--oip-border); border-radius:var(--radius-md); margin-bottom:var(--sp-sm); cursor:pointer; transition:box-shadow .15s,border-color .15s; }
+    .finding-row:hover { border-color:var(--oip-primary); box-shadow:var(--shadow-md); }
     .finding-row>div:nth-child(n+3) { text-align:center; }
     .finding-icon { width:28px; height:28px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; }
     .finding-title { font-weight:600; font-size:var(--fs-sm); }
-    .finding-subject { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .finding-subject { font-size:var(--fs-xs); color:var(--oip-text-muted); }
     .cat-nx { background:#fdf4ff; color:#a21caf; }
-    .back-link { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-sm); color:var(--itip-text-muted); text-decoration:none; padding:var(--sp-sm) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
-    .back-link:hover { color:var(--itip-primary); }
-    .class-banner { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--itip-border); }
+    .back-link { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-sm); color:var(--oip-text-muted); text-decoration:none; padding:var(--sp-sm) var(--sp-lg); border-bottom:1px solid var(--oip-border); }
+    .back-link:hover { color:var(--oip-primary); }
+    .class-banner { display:flex; align-items:center; gap:var(--sp-md); padding:var(--sp-md) var(--sp-lg); border-bottom:1px solid var(--oip-border); }
     .class-banner__code { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); font-size:13px; font-weight:800; background:#fdf4ff; color:#a21caf; }
     .class-banner__title { font-size:var(--fs-lg); font-weight:700; }
-    .class-banner__subtitle { font-size:var(--fs-xs); color:var(--itip-text-muted); }
-    .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:var(--sp-2xl) var(--sp-lg); text-align:center; color:var(--itip-text-muted); }
+    .class-banner__subtitle { font-size:var(--fs-xs); color:var(--oip-text-muted); }
+    .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:var(--sp-2xl) var(--sp-lg); text-align:center; color:var(--oip-text-muted); }
     .empty-state__icon { width:64px; height:64px; border-radius:var(--radius-lg); background:color-mix(in srgb,#a21caf 8%,transparent); display:flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:var(--sp-md); }
-    .empty-state__title { font-size:var(--fs-md); font-weight:600; color:var(--itip-text); margin-bottom:var(--sp-xs); }
+    .empty-state__title { font-size:var(--fs-md); font-weight:600; color:var(--oip-text); margin-bottom:var(--sp-xs); }
     .empty-state__desc { font-size:var(--fs-sm); max-width:420px; line-height:1.6; }
     .zone-tag { display:inline-block; padding:1px 6px; border-radius:var(--radius-full); font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-left:6px; }
     .zone-tag--meta { background:color-mix(in srgb,var(--compliance-warn) 10%,transparent); color:var(--compliance-warn); }
-    .zone-tag--gov { background:color-mix(in srgb,var(--itip-primary) 10%,transparent); color:var(--itip-primary); }
+    .zone-tag--gov { background:color-mix(in srgb,var(--oip-primary) 10%,transparent); color:var(--oip-primary); }
   </style>
 </head>
 
@@ -162,7 +162,7 @@
               Once runtime execution data flows into SIE, NX rules will evaluate
               Norm compliance against actual execution behaviour and findings will appear here.
             </div>
-            <div style="margin-top:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+            <div style="margin-top:var(--sp-md); font-size:var(--fs-xs); color:var(--oip-text-muted)">
               3 rules waiting: NX:20 · NX:21 · NX:22
             </div>
           </div>
@@ -171,8 +171,8 @@
     </main>
   </div>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Evaluation Dashboard</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Evaluation Dashboard</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .evaluation-dashboard {
       padding: var(--sp-lg);
@@ -18,8 +18,8 @@
       align-items: center;
       gap: var(--sp-xl);
       padding: var(--sp-lg) var(--sp-xl);
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-xl);
       margin-bottom: var(--sp-lg);
     }
@@ -41,7 +41,7 @@
       width: 84px;
       height: 84px;
       border-radius: 50%;
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       position: absolute;
     }
 
@@ -50,7 +50,7 @@
       z-index: 1;
       font-size: 1.75rem;
       font-weight: 800;
-      color: var(--itip-text);
+      color: var(--oip-text);
     }
 
     .overall-score__meta {
@@ -65,7 +65,7 @@
 
     .overall-score__subtitle {
       font-size: var(--fs-sm);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     /* ── Zone headings ── */
@@ -74,11 +74,11 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       padding: var(--sp-sm) 0;
       margin-top: var(--sp-md);
       margin-bottom: var(--sp-sm);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     /* ── Category cards ── */
@@ -97,8 +97,8 @@
     }
 
     .cat-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg);
       padding: var(--sp-lg);
       cursor: pointer;
@@ -109,7 +109,7 @@
     }
 
     .cat-card:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
       box-shadow: var(--shadow-md);
     }
 
@@ -137,7 +137,7 @@
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       font-weight: 600;
     }
 
@@ -164,13 +164,13 @@
     }
 
     .trend-flat {
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .cat-card__bar {
       height: 6px;
       border-radius: 3px;
-      background: var(--itip-border);
+      background: var(--oip-border);
       overflow: hidden;
       margin-bottom: var(--sp-sm);
     }
@@ -196,13 +196,13 @@
       border-radius: var(--radius-full);
       font-size: 10px;
       font-weight: 600;
-      background: color-mix(in srgb, var(--itip-text) 6%, transparent);
-      color: var(--itip-text-muted);
+      background: color-mix(in srgb, var(--oip-text) 6%, transparent);
+      color: var(--oip-text-muted);
     }
 
     .cat-card__detail {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       line-height: 1.5;
     }
 
@@ -211,13 +211,13 @@
       gap: var(--sp-sm);
       margin-top: var(--sp-sm);
       padding-top: var(--sp-sm);
-      border-top: 1px solid var(--itip-border);
+      border-top: 1px solid var(--oip-border);
     }
 
     .cat-card__link {
       font-size: var(--fs-xs);
       font-weight: 600;
-      color: var(--itip-primary);
+      color: var(--oip-primary);
       text-decoration: none;
       padding: 2px 8px;
       border-radius: var(--radius-sm);
@@ -225,7 +225,7 @@
     }
 
     .cat-card__link:hover {
-      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
+      background: color-mix(in srgb, var(--oip-primary) 10%, transparent);
     }
 
     .score-good {
@@ -295,7 +295,7 @@
     }
 
     .cat-card--unavailable .cat-card__score {
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .unavailable-notice {
@@ -303,10 +303,10 @@
       align-items: center;
       gap: var(--sp-sm);
       padding: var(--sp-sm);
-      background: color-mix(in srgb, var(--itip-text) 4%, transparent);
+      background: color-mix(in srgb, var(--oip-text) 4%, transparent);
       border-radius: var(--radius-md);
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .unavailable-notice svg {
@@ -325,8 +325,8 @@
     }
 
     .chart-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg);
       padding: var(--sp-lg);
     }
@@ -359,7 +359,7 @@
       padding: var(--sp-xs) var(--sp-sm);
       font-weight: 600;
       text-align: left;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
       white-space: nowrap;
@@ -396,15 +396,15 @@
     }
 
     .heatmap-cell--na {
-      background: var(--itip-border);
-      color: var(--itip-text-muted);
+      background: var(--oip-border);
+      color: var(--oip-text-muted);
       font-size: 9px;
     }
 
     /* ── Hotspots ── */
     .hotspots-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg);
       padding: var(--sp-lg);
       margin-bottom: var(--sp-lg);
@@ -421,7 +421,7 @@
       align-items: center;
       gap: var(--sp-md);
       padding: var(--sp-sm) 0;
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       font-size: var(--fs-sm);
     }
 
@@ -433,7 +433,7 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: var(--itip-border);
+      background: var(--oip-border);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -617,7 +617,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
           &copy; 2024&ndash;2026</span></div>
     </aside>
 
@@ -714,7 +714,7 @@
           </div>
           <div class="cat-card__score">—</div>
           <div class="cat-card__bar">
-            <div class="cat-card__bar-fill" style="width:0%;background:var(--itip-border)"></div>
+            <div class="cat-card__bar-fill" style="width:0%;background:var(--oip-border)"></div>
           </div>
           <div class="unavailable-notice">
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -880,7 +880,7 @@
           </div>
           <div class="cat-card__score">—</div>
           <div class="cat-card__bar">
-            <div class="cat-card__bar-fill" style="width:0%;background:var(--itip-border)"></div>
+            <div class="cat-card__bar-fill" style="width:0%;background:var(--oip-border)"></div>
           </div>
           <div class="unavailable-notice">
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -904,47 +904,47 @@
           <div class="chart-card__title">Coherence Radar</div>
           <svg class="radar-svg" viewBox="0 0 360 340" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Grid rings: 3 concentric heptagons -->
-            <polygon points="180,30 292,80 320,190 260,290 100,290 40,190 68,80" stroke="var(--itip-border)"
+            <polygon points="180,30 292,80 320,190 260,290 100,290 40,190 68,80" stroke="var(--oip-border)"
               stroke-width="1" fill="none" />
-            <polygon points="180,70 254,107 273,190 227,263 133,263 87,190 106,107" stroke="var(--itip-border)"
+            <polygon points="180,70 254,107 273,190 227,263 133,263 87,190 106,107" stroke="var(--oip-border)"
               stroke-width="1" fill="none" />
-            <polygon points="180,110 217,133 226,190 193,237 167,237 134,190 143,133" stroke="var(--itip-border)"
+            <polygon points="180,110 217,133 226,190 193,237 167,237 134,190 143,133" stroke="var(--oip-border)"
               stroke-width="1" fill="none" />
-            <circle cx="180" cy="170" r="2" fill="var(--itip-border)" />
+            <circle cx="180" cy="170" r="2" fill="var(--oip-border)" />
             <!-- Axis lines -->
-            <line x1="180" y1="170" x2="180" y2="30" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="292" y2="80" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="320" y2="190" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="260" y2="290" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="100" y2="290" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="40" y2="190" stroke="var(--itip-border)" stroke-width="0.5" />
-            <line x1="180" y1="170" x2="68" y2="80" stroke="var(--itip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="180" y2="30" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="292" y2="80" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="320" y2="190" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="260" y2="290" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="100" y2="290" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="40" y2="190" stroke="var(--oip-border)" stroke-width="0.5" />
+            <line x1="180" y1="170" x2="68" y2="80" stroke="var(--oip-border)" stroke-width="0.5" />
             <!-- Data polygon (NX excluded — collapsed to center on that axis) -->
             <polygon points="180,42 274,92 299,192 228,276 112,275 62,186 82,94"
-              fill="color-mix(in srgb, var(--itip-primary) 12%, transparent)" stroke="var(--itip-primary)"
+              fill="color-mix(in srgb, var(--oip-primary) 12%, transparent)" stroke="var(--oip-primary)"
               stroke-width="2" />
             <!-- Data dots -->
-            <circle cx="180" cy="42" r="4" fill="var(--itip-primary)" />
-            <circle cx="274" cy="92" r="4" fill="var(--itip-primary)" />
-            <circle cx="299" cy="192" r="4" fill="var(--itip-primary)" />
-            <circle cx="228" cy="276" r="4" fill="var(--itip-primary)" />
-            <circle cx="112" cy="275" r="4" fill="var(--itip-primary)" />
-            <circle cx="62" cy="186" r="4" fill="var(--itip-primary)" />
-            <circle cx="82" cy="94" r="4" fill="var(--itip-text-muted)" opacity="0.4" />
+            <circle cx="180" cy="42" r="4" fill="var(--oip-primary)" />
+            <circle cx="274" cy="92" r="4" fill="var(--oip-primary)" />
+            <circle cx="299" cy="192" r="4" fill="var(--oip-primary)" />
+            <circle cx="228" cy="276" r="4" fill="var(--oip-primary)" />
+            <circle cx="112" cy="275" r="4" fill="var(--oip-primary)" />
+            <circle cx="62" cy="186" r="4" fill="var(--oip-primary)" />
+            <circle cx="82" cy="94" r="4" fill="var(--oip-text-muted)" opacity="0.4" />
             <!-- Labels -->
-            <text x="180" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--itip-text)">DD
+            <text x="180" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--oip-text)">DD
               81%</text>
-            <text x="306" y="76" text-anchor="start" font-size="11" font-weight="600" fill="var(--itip-text)">DN
+            <text x="306" y="76" text-anchor="start" font-size="11" font-weight="600" fill="var(--oip-text)">DN
               91%</text>
-            <text x="332" y="194" text-anchor="start" font-size="11" font-weight="600" fill="var(--itip-text)">NN
+            <text x="332" y="194" text-anchor="start" font-size="11" font-weight="600" fill="var(--oip-text)">NN
               78%</text>
-            <text x="268" y="304" text-anchor="middle" font-size="11" font-weight="600" fill="var(--itip-text)">NA
+            <text x="268" y="304" text-anchor="middle" font-size="11" font-weight="600" fill="var(--oip-text)">NA
               82%</text>
-            <text x="92" y="304" text-anchor="middle" font-size="11" font-weight="600" fill="var(--itip-text)">AA
+            <text x="92" y="304" text-anchor="middle" font-size="11" font-weight="600" fill="var(--oip-text)">AA
               88%</text>
-            <text x="24" y="194" text-anchor="end" font-size="11" font-weight="600" fill="var(--itip-text)">AC
+            <text x="24" y="194" text-anchor="end" font-size="11" font-weight="600" fill="var(--oip-text)">AC
               76%</text>
-            <text x="54" y="76" text-anchor="end" font-size="11" font-weight="600" fill="var(--itip-text-muted)">NX
+            <text x="54" y="76" text-anchor="end" font-size="11" font-weight="600" fill="var(--oip-text-muted)">NX
               —</text>
           </svg>
         </div>
@@ -1105,8 +1105,8 @@
 
   </div>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

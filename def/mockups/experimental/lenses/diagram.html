@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Diagram</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Diagram</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     /* ── Layout ────────────────────────────────────────── */
     .view-layout {
@@ -16,15 +16,15 @@
     }
 
     .composer {
-      background: var(--itip-surface);
-      border-right: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border-right: 1px solid var(--oip-border);
       overflow-y: auto;
       padding: 0;
     }
 
     .composer__section {
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
     }
 
     .composer__section:last-child {
@@ -36,7 +36,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
       display: flex;
       align-items: center;
@@ -64,9 +64,9 @@
       flex: 1;
       font-size: var(--fs-xs);
       padding: 4px 8px;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-bg);
+      background: var(--oip-bg);
     }
 
     .saved-views button {
@@ -79,17 +79,17 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       cursor: pointer;
       font-size: 14px;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .icon-btn:hover {
-      border-color: var(--itip-primary);
-      color: var(--itip-primary);
+      border-color: var(--oip-primary);
+      color: var(--oip-primary);
     }
 
     /* ── Scope ────────────────────────────────────────── */
@@ -97,7 +97,7 @@
       display: flex;
       gap: 2px;
       margin-bottom: var(--sp-sm);
-      background: var(--itip-bg);
+      background: var(--oip-bg);
       border-radius: var(--radius-sm);
       padding: 2px;
     }
@@ -112,13 +112,13 @@
       cursor: pointer;
       border: none;
       background: transparent;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       transition: all 0.15s;
       white-space: nowrap;
     }
 
     .scope-tab--active {
-      background: var(--itip-primary);
+      background: var(--oip-primary);
       color: white;
     }
 
@@ -142,9 +142,9 @@
       width: 100%;
       font-size: var(--fs-xs);
       padding: 4px 8px;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-bg);
+      background: var(--oip-bg);
     }
 
     .depth-slider {
@@ -155,7 +155,7 @@
 
     .depth-slider input[type="range"] {
       flex: 1;
-      accent-color: var(--itip-primary);
+      accent-color: var(--oip-primary);
     }
 
     .depth-slider__val {
@@ -176,7 +176,7 @@
     }
 
     .filter-row input[type="checkbox"] {
-      accent-color: var(--itip-primary);
+      accent-color: var(--oip-primary);
       margin: 0;
     }
 
@@ -234,7 +234,7 @@
     }
 
     .toggle-switch input:checked+.toggle-switch__track {
-      background: var(--itip-primary);
+      background: var(--oip-primary);
     }
 
     .toggle-switch input:checked+.toggle-switch__track::before {
@@ -252,17 +252,17 @@
       padding: 6px 8px;
       font-size: 10px;
       font-weight: 600;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       cursor: pointer;
       text-align: center;
       transition: border-color 0.15s;
     }
 
     .export-btn:hover {
-      border-color: var(--itip-primary);
-      color: var(--itip-primary);
+      border-color: var(--oip-primary);
+      color: var(--oip-primary);
     }
 
     .export-btn__icon {
@@ -273,12 +273,12 @@
 
     .export-btn--deliverable {
       grid-column: 1 / -1;
-      border-color: var(--itip-accent);
-      background: color-mix(in srgb, var(--itip-accent) 6%, var(--itip-surface));
+      border-color: var(--oip-accent);
+      background: color-mix(in srgb, var(--oip-accent) 6%, var(--oip-surface));
     }
 
     .export-btn--deliverable:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
     }
 
     /* ── Toolbar ──────────────────────────────────────── */
@@ -287,8 +287,8 @@
       gap: var(--sp-sm);
       align-items: center;
       padding: var(--sp-sm) var(--sp-md);
-      background: var(--itip-bg);
-      border-bottom: 1px solid var(--itip-border);
+      background: var(--oip-bg);
+      border-bottom: 1px solid var(--oip-border);
       flex-wrap: wrap;
     }
 
@@ -299,24 +299,24 @@
 
     .tb-btn {
       padding: 4px 10px;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       font-size: 11px;
       cursor: pointer;
       font-weight: 500;
     }
 
     .tb-btn--active {
-      background: var(--itip-primary);
+      background: var(--oip-primary);
       color: white;
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
     }
 
     .tb-sep {
       width: 1px;
       height: 18px;
-      background: var(--itip-border);
+      background: var(--oip-border);
       margin: 0 var(--sp-xs);
     }
 
@@ -325,7 +325,7 @@
       position: relative;
       flex: 1;
       overflow: auto;
-      background: var(--itip-bg);
+      background: var(--oip-bg);
       background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
       background-size: 20px 20px;
     }
@@ -339,7 +339,7 @@
       text-align: center;
       cursor: pointer;
       border: 2px solid;
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
     }
 
@@ -372,7 +372,7 @@
       align-items: center;
       justify-content: center;
       color: white;
-      border: 2px solid var(--itip-surface);
+      border: 2px solid var(--oip-surface);
     }
 
     .node__compliance--pass {
@@ -412,7 +412,7 @@
       align-items: center;
       gap: 6px;
       padding: 5px 8px;
-      background: var(--itip-bg);
+      background: var(--oip-bg);
       border: 1px solid #bfdbfe;
       border-radius: var(--radius-sm);
       font-size: 10px;
@@ -543,8 +543,8 @@
       right: 16px;
       top: 16px;
       width: 280px;
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg);
       overflow: hidden;
@@ -552,7 +552,7 @@
 
     .inspector__header {
       padding: var(--sp-sm) var(--sp-md);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -576,7 +576,7 @@
     }
 
     .inspector__label {
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .inspector__layers {
@@ -592,8 +592,8 @@
       gap: var(--sp-md);
       flex-wrap: wrap;
       padding: var(--sp-xs) var(--sp-md);
-      background: var(--itip-bg);
-      border-top: 1px solid var(--itip-border);
+      background: var(--oip-bg);
+      border-top: 1px solid var(--oip-border);
       font-size: 10px;
       align-items: center;
     }
@@ -768,7 +768,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
           &copy; 2024&ndash;2026</span></div>
     </aside>
 
@@ -862,7 +862,7 @@
                   <option>Inbound only (receptors)</option>
                 </select>
               </div>
-              <div style="font-size:10px; color:var(--itip-text-muted); margin-top:var(--sp-xs)">
+              <div style="font-size:10px; color:var(--oip-text-muted); margin-top:var(--sp-xs)">
                 Following: Structure &rarr; Mechanism &rarr; Effector &rarr; Interaction &rarr; Receptor &rarr;
                 Mechanism &rarr; Structure
               </div>
@@ -914,21 +914,21 @@
               <label class="toggle-switch"><input type="checkbox" checked><span
                   class="toggle-switch__track"></span></label>
             </div>
-            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Mechanisms, Effectors &amp;
+            <div style="font-size:10px; color:var(--oip-text-muted); margin:-2px 0 6px">Mechanisms, Effectors &amp;
               Receptors render inside their owning Structure</div>
             <div class="toggle-row">
               <span>DNA Overlay</span>
               <label class="toggle-switch"><input type="checkbox" checked><span
                   class="toggle-switch__track"></span></label>
             </div>
-            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Directive scopes as boundaries,
+            <div style="font-size:10px; color:var(--oip-text-muted); margin:-2px 0 6px">Directive scopes as boundaries,
               Norm badges on governed Structures</div>
             <div class="toggle-row">
               <span>Compliance Heatmap</span>
               <label class="toggle-switch"><input type="checkbox" checked><span
                   class="toggle-switch__track"></span></label>
             </div>
-            <div style="font-size:10px; color:var(--itip-text-muted); margin:-2px 0 6px">Node border color reflects
+            <div style="font-size:10px; color:var(--oip-text-muted); margin:-2px 0 6px">Node border color reflects
               compliance status</div>
             <div class="toggle-row">
               <span>Archetype Labels</span>
@@ -955,7 +955,7 @@
           <div class="composer__section">
             <div class="composer__heading">Search</div>
             <input type="text" placeholder="Find node by name or archetype&hellip;"
-              style="width:100%;padding:5px 8px;border:1px solid var(--itip-border);border-radius:var(--radius-sm);font-size:11px;background:var(--itip-bg)">
+              style="width:100%;padding:5px 8px;border:1px solid var(--oip-border);border-radius:var(--radius-sm);font-size:11px;background:var(--oip-bg)">
           </div>
         </div>
 
@@ -1147,7 +1147,7 @@
                 <div class="inspector__row"><span class="inspector__label">Active Norms</span> <strong>4</strong></div>
                 <div style="margin-top:var(--sp-sm)">
                   <div
-                    style="font-size:10px;font-weight:600;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">
+                    style="font-size:10px;font-weight:600;color:var(--oip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">
                     Archetype Layers</div>
                   <div class="inspector__layers">
                     <span
@@ -1160,7 +1160,7 @@
                 </div>
                 <div style="margin-top:var(--sp-sm)">
                   <div
-                    style="font-size:10px;font-weight:600;color:var(--itip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">
+                    style="font-size:10px;font-weight:600;color:var(--oip-text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">
                     Governed By</div>
                   <div style="font-size:11px">&#128220; API Security Policy <span class="text-xs text-muted">(Security
                       Board)</span></div>
@@ -1196,11 +1196,11 @@
             <div class="legend-item">
               <div class="legend-dot" style="background:#e0e7ff;border-color:#6366f1"></div> Directive
             </div>
-            <span style="margin:0 4px;color:var(--itip-border)">|</span>
+            <span style="margin:0 4px;color:var(--oip-border)">|</span>
             <div class="legend-item">&mdash;&mdash; solid = structural</div>
             <div class="legend-item">- - dashed = interaction</div>
             <div class="legend-item">&middot;&middot; dotted = governance</div>
-            <span style="margin:0 4px;color:var(--itip-border)">|</span>
+            <span style="margin:0 4px;color:var(--oip-border)">|</span>
             <div class="legend-item"><span
                 style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;margin-right:3px"></span>
               Pass</div>
@@ -1223,8 +1223,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

@@ -16,19 +16,19 @@
       "dashboard": "Tableau de bord",
       "admin": "Administration",
       "users": "Utilisateurs",
-      "searchPlaceholder": "Rechercher ITIP",
-      "searchAria": "Rechercher ITIP",
+      "searchPlaceholder": "Rechercher OIP",
+      "searchAria": "Rechercher OIP",
       "closeMenu": "Fermer le menu",
       "openMenu": "Ouvrir le menu",
       "notifications": "Alertes",
       "sidebarNavigation": "Navigation latérale",
-      "sidebarFooterLine1": "Plateforme d'intelligence IT",
+      "sidebarFooterLine1": "Plateforme d'intelligence organisationnelle",
       "sidebarFooterLine2": "par"
     }
   },
   "login": {
     "brand": {
-      "kicker": "Plateforme d'intelligence IT",
+      "kicker": "Plateforme d'intelligence organisationnelle",
       "title": "Concevez, gouvernez et évaluez votre architecture d'entreprise.",
       "subtitle": "Structures, règles de gestion et conformité - administrées de bout en bout."
     },
@@ -57,7 +57,7 @@
     "header": {
       "overview": "Vue générale",
       "title": "Tableau de bord",
-      "subtitle": "Gouvernance, conformité et santé de l'architecture - instance ITIP"
+      "subtitle": "Gouvernance, conformité et santé de l'architecture - instance OIP"
     },
     "actions": {
       "last12Months": "12 derniers mois",

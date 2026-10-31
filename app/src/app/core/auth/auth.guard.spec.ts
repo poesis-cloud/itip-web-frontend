@@ -31,7 +31,7 @@ describe('auth guards', () => {
     const router = TestBed.inject(Router);
     const httpMock = TestBed.inject(HttpTestingController);
 
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });

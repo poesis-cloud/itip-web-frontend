@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "itip-web-frontend.fullname" . }}-runtime
+  name: {{ include "oip-web-frontend.fullname" . }}-runtime
   labels:
-    app: {{ include "itip-web-frontend.fullname" . }}
+    app: {{ include "oip-web-frontend.fullname" . }}
 data:
   runtime-config.js: |
     window.__APP_CONFIG__ = {

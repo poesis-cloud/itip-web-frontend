@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Sync Jobs</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Sync Jobs</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .jobs-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
     .jobs-toolbar .form-input { flex:1; min-width:200px; }
     .jobs-table { width:100%; border-collapse:collapse; }
-    .jobs-table th { text-align:left; font-size:var(--fs-xs); font-weight:600; color:var(--itip-text-muted); text-transform:uppercase; letter-spacing:.5px; padding:var(--sp-sm) var(--sp-md); border-bottom:2px solid var(--itip-border); }
-    .jobs-table td { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); vertical-align:middle; }
-    .jobs-table tr:hover td { background:var(--itip-bg); }
-    .job-id { font-family:var(--font-mono); font-size:var(--fs-xs); color:var(--itip-text-muted); }
-    .progress-bar { width:80px; height:6px; background:var(--itip-border); border-radius:3px; overflow:hidden; display:inline-block; vertical-align:middle; }
+    .jobs-table th { text-align:left; font-size:var(--fs-xs); font-weight:600; color:var(--oip-text-muted); text-transform:uppercase; letter-spacing:.5px; padding:var(--sp-sm) var(--sp-md); border-bottom:2px solid var(--oip-border); }
+    .jobs-table td { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--oip-border); font-size:var(--fs-sm); vertical-align:middle; }
+    .jobs-table tr:hover td { background:var(--oip-bg); }
+    .job-id { font-family:var(--font-mono); font-size:var(--fs-xs); color:var(--oip-text-muted); }
+    .progress-bar { width:80px; height:6px; background:var(--oip-border); border-radius:3px; overflow:hidden; display:inline-block; vertical-align:middle; }
     .progress-bar__fill { height:100%; border-radius:3px; }
     .progress-bar__fill--complete { background:var(--compliance-pass); width:100%; }
-    .progress-bar__fill--running { background:var(--itip-primary); animation:progress-pulse 1.5s infinite; }
+    .progress-bar__fill--running { background:var(--oip-primary); animation:progress-pulse 1.5s infinite; }
     .progress-bar__fill--error { background:var(--compliance-fail); }
     @keyframes progress-pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
-    .duration { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .duration { font-size:var(--fs-xs); color:var(--oip-text-muted); }
   </style>
 </head>
 <body>
@@ -91,7 +91,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
     </aside>
 
     <!-- Header -->
@@ -171,7 +171,7 @@
             </td>
             <td>58 / 89</td>
             <td><span class="duration">1m 23s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">2 min ago</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">2 min ago</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0331-000</span></td>
@@ -184,7 +184,7 @@
             </td>
             <td>47 / 47</td>
             <td><span class="duration">42s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">5 min ago</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">5 min ago</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0330-014</span></td>
@@ -197,7 +197,7 @@
             </td>
             <td>23 / 23</td>
             <td><span class="duration">28s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">2 hours ago</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">2 hours ago</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0330-013</span></td>
@@ -210,7 +210,7 @@
             </td>
             <td>4 / 34</td>
             <td><span class="duration">8s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">3 days ago</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">3 days ago</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0329-022</span></td>
@@ -223,7 +223,7 @@
             </td>
             <td>46 / 46</td>
             <td><span class="duration">39s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">Yesterday</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">Yesterday</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0329-021</span></td>
@@ -236,7 +236,7 @@
             </td>
             <td>156 / 156</td>
             <td><span class="duration">3m 12s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">Yesterday</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">Yesterday</td>
           </tr>
           <tr>
             <td><span class="job-id">sync-2026-0328-018</span></td>
@@ -249,7 +249,7 @@
             </td>
             <td>87 / 87</td>
             <td><span class="duration">1m 48s</span></td>
-            <td style="font-size:var(--fs-xs); color:var(--itip-text-muted)">2 days ago</td>
+            <td style="font-size:var(--fs-xs); color:var(--oip-text-muted)">2 days ago</td>
           </tr>
         </tbody>
       </table>
@@ -262,8 +262,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

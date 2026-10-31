@@ -1,11 +1,11 @@
 # Integration — Angular + PrimeNG + Tailwind
 
-The ITIP design system is framework-agnostic, but the app stack (Angular + **PrimeNG** + **Tailwind**)
-does affect *how* you enforce it. The tokens in `tokens/itip-tokens.css` remain the single source of
+The OIP design system is framework-agnostic, but the app stack (Angular + **PrimeNG** + **Tailwind**)
+does affect *how* you enforce it. The tokens in `tokens/oip-tokens.css` remain the single source of
 truth; PrimeNG and Tailwind must both be wired to consume them. Do this before building screens.
 
 ## 1. CSS variables are the bridge
-Import `tokens/itip-tokens.css` at the app root. Every token is a CSS custom property, and the dark
+Import `tokens/oip-tokens.css` at the app root. Every token is a CSS custom property, and the dark
 theme is `[data-theme="dark"]`. Both Tailwind and the PrimeNG preset reference these variables, so a
 single `data-theme` flip re-themes everything. Do NOT duplicate hex values into three places — point
 Tailwind and PrimeNG at the vars.
@@ -20,18 +20,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary:      'var(--itip-primary)',
-        'primary-hover':'var(--itip-primary-hover)',
-        surface:      'var(--itip-surface)',
-        bg:           'var(--itip-bg)',
-        text:         'var(--itip-text)',
-        muted:        'var(--itip-text-muted)',
-        border:       'var(--itip-border)',
+        primary:      'var(--oip-primary)',
+        'primary-hover':'var(--oip-primary-hover)',
+        surface:      'var(--oip-surface)',
+        bg:           'var(--oip-bg)',
+        text:         'var(--oip-text)',
+        muted:        'var(--oip-text-muted)',
+        border:       'var(--oip-border)',
         // lifecycle + compliance …
       },
       fontFamily: { sans: ["'Hanken Grotesk'", 'system-ui', 'sans-serif'], mono: ["'JetBrains Mono'",'monospace'] },
-      borderRadius: { card: 'var(--itip-card-radius)', input: '9px', modal: '16px' },
-      boxShadow: { card: 'var(--itip-shadow-card)', 'card-hover': 'var(--itip-shadow-card-hover)', modal: 'var(--itip-shadow-modal)' },
+      borderRadius: { card: 'var(--oip-card-radius)', input: '9px', modal: '16px' },
+      boxShadow: { card: 'var(--oip-shadow-card)', 'card-hover': 'var(--oip-shadow-card-hover)', modal: 'var(--oip-shadow-modal)' },
     },
   },
 };
@@ -46,14 +46,14 @@ export default {
 ## 3. PrimeNG (the part that actually matters)
 PrimeNG ships its own theming. Pick ONE approach and make it conform:
 
-### Recommended: styled mode + a custom ITIP preset
+### Recommended: styled mode + a custom OIP preset
 Define a preset (via `@primeng/themes` `definePreset`, based on Aura) that maps PrimeNG's semantic tokens
-to ITIP values, then bind its dark selector to ours:
+to OIP values, then bind its dark selector to ours:
 
 ```ts
 providePrimeNG({
   theme: {
-    preset: ItipPreset,               // primary.* = indigo scale; surface, content, etc.
+    preset: OipPreset,               // primary.* = indigo scale; surface, content, etc.
     options: {
       darkModeSelector: '[data-theme="dark"]',   // ALIGN with our dark theme
       cssLayer: { name: 'primeng', order: 'tailwind-base, primeng, tailwind-utilities' },
@@ -69,7 +69,7 @@ In the preset, set at minimum:
 - font family → Hanken Grotesk
 
 ### Component mapping (preset + per-component `pt` pass-through where needed)
-| ITIP spec | PrimeNG component | Notes |
+| OIP spec | PrimeNG component | Notes |
 |---|---|---|
 | Buttons (primary/secondary) | `p-button` | `severity`/`outlined`; primary = indigo, secondary = surface+`#D3D8E0` border |
 | Inputs / textarea / selects | `p-inputtext`, `p-select`, `p-textarea` | 9px radius, `#D3D8E0` border, indigo focus ring |
@@ -82,7 +82,7 @@ In the preset, set at minimum:
 | Charts | prefer **ngx-charts**/D3 over `p-chart` | match the curve/donut spec exactly |
 | Diagram | NOT a PrimeNG widget | custom (React Flow analog: `@swimlane/ngx-graph` or D3+ELK) per the alignment technique |
 
-The **cards** (`.itip-stat` / `.itip-panel`), **app shell/sidebar**, **auth split-screen**, and the
+The **cards** (`.oip-stat` / `.oip-panel`), **app shell/sidebar**, **auth split-screen**, and the
 **diagram** are NOT PrimeNG components — build them as plain Angular components styled with tokens +
 Tailwind. Use PrimeNG for the interactive widgets inside them.
 
@@ -102,4 +102,4 @@ the portal (put it on `<html>`, not a nested div).
 - Tokens (CSS vars) = source of truth; Tailwind + PrimeNG both point at them.
 - Tailwind: map tokens in config, `darkMode:['selector','[data-theme="dark"]']`, set `cssLayer` order.
 - PrimeNG: custom preset mapping primary→indigo + surfaces + radius + focus; `darkModeSelector:'[data-theme="dark"]'`; map components per the table; charts via ngx-charts; icons stay Lucide.
-- Result: PrimeNG widgets and Tailwind utilities both render 100% in the ITIP system, light and dark.
+- Result: PrimeNG widgets and Tailwind utilities both render 100% in the OIP system, light and dark.

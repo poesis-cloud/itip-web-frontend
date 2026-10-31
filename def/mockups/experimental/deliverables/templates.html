@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Deliverable Templates</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Deliverable Templates</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     /* ── Stats ────────────────────────────────────────── */
     .stats-grid {
@@ -16,8 +16,8 @@
     }
 
     .stat-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       padding: var(--sp-lg);
       text-align: center;
@@ -26,12 +26,12 @@
     .stat-card__value {
       font-size: 28px;
       font-weight: 800;
-      color: var(--itip-primary);
+      color: var(--oip-primary);
     }
 
     .stat-card__label {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-top: 2px;
     }
 
@@ -48,17 +48,17 @@
       flex: 1;
       min-width: 180px;
       padding: 8px 12px;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       font-size: var(--fs-sm);
     }
 
     .filter-bar select {
       padding: 8px 12px;
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-sm);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       font-size: var(--fs-sm);
     }
 
@@ -71,8 +71,8 @@
     }
 
     .tmpl-card {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       overflow: hidden;
       display: flex;
@@ -81,13 +81,13 @@
     }
 
     .tmpl-card:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
       box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
     }
 
     .tmpl-card__header {
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       display: flex;
       align-items: flex-start;
       gap: var(--sp-md);
@@ -132,7 +132,7 @@
 
     .tmpl-card__desc {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       line-height: 1.4;
     }
 
@@ -180,16 +180,16 @@
 
     .tmpl-sections {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .tmpl-sections strong {
-      color: var(--itip-text);
+      color: var(--oip-text);
     }
 
     .tmpl-card__footer {
       padding: var(--sp-sm) var(--sp-lg);
-      border-top: 1px solid var(--itip-border);
+      border-top: 1px solid var(--oip-border);
       display: flex;
       gap: var(--sp-sm);
       align-items: center;
@@ -208,12 +208,12 @@
       justify-content: center;
       min-height: 200px;
       cursor: pointer;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .tmpl-card--new:hover {
-      border-color: var(--itip-primary);
-      color: var(--itip-primary);
+      border-color: var(--oip-primary);
+      color: var(--oip-primary);
     }
 
     .tmpl-card--new__inner {
@@ -387,7 +387,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
           &copy; 2024&ndash;2026</span></div>
     </aside>
 
@@ -714,8 +714,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

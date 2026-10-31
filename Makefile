@@ -8,14 +8,14 @@ SHELL := /bin/bash
 
 NAMESPACE        ?= poesis
 DEPLOY_ENV       ?= preprod
-RELEASE          ?= itip-web-frontend
+RELEASE          ?= oip-web-frontend
 
 CHART            ?= ./ops/helm
 ENV_FILE         ?= $(CHART)/environments/$(DEPLOY_ENV)/values.yaml
 
 PORT_FORWARD_PID_FILE ?= .dev-port-forwards.pids
 FRONTEND_PORT ?= 4200
-PORT_FORWARD_SERVICE ?= $(shell case "$(RELEASE)" in *itip-web-frontend*) echo "$(RELEASE)";; *) echo "$(RELEASE)-itip-web-frontend";; esac)
+PORT_FORWARD_SERVICE ?= $(shell case "$(RELEASE)" in *oip-web-frontend*) echo "$(RELEASE)";; *) echo "$(RELEASE)-oip-web-frontend";; esac)
 
 dev-check:
 	@command -v kubectl >/dev/null 2>&1 || { echo "Missing required command: kubectl"; exit 1; }
@@ -43,7 +43,7 @@ dev-up:
 	-f $(CHART)/environments/dev/values.yaml \
 	$${IMAGE_REPOSITORY:+--set image.repository=$${IMAGE_REPOSITORY}} \
 	$${IMAGE_TAG:+--set image.tag=$${IMAGE_TAG}}
-	@echo "itip-web-frontend deployed. Run: make run-ui"
+	@echo "oip-web-frontend deployed. Run: make run-ui"
 
 dev-down:
 	@if [[ -f "$(PORT_FORWARD_PID_FILE)" ]]; then \

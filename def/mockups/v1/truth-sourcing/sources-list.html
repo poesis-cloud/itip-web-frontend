@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Truth Sources</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Truth Sources</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .sources-toolbar { display:flex; gap:var(--sp-md); align-items:center; margin-bottom:var(--sp-lg); flex-wrap:wrap; }
     .sources-toolbar .form-input { flex:1; min-width:200px; }
-    .source-card { border:1px solid var(--itip-border); border-radius:var(--radius-lg); padding:var(--sp-lg); margin-bottom:var(--sp-md); display:flex; align-items:center; gap:var(--sp-lg); transition:border-color .15s; }
-    .source-card:hover { border-color:var(--itip-primary); }
+    .source-card { border:1px solid var(--oip-border); border-radius:var(--radius-lg); padding:var(--sp-lg); margin-bottom:var(--sp-md); display:flex; align-items:center; gap:var(--sp-lg); transition:border-color .15s; }
+    .source-card:hover { border-color:var(--oip-primary); }
     .source-icon { width:48px; height:48px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:var(--fs-xl); font-weight:700; flex-shrink:0; }
     .source-icon--git { background:#f97316; color:#fff; }
     .source-icon--artifactory { background:#40b882; color:#fff; }
@@ -17,11 +17,11 @@
     .source-info { flex:1; }
     .source-name { font-weight:600; font-size:var(--fs-base); }
     .source-name a { color:inherit; text-decoration:none; }
-    .source-name a:hover { color:var(--itip-primary); text-decoration:underline; }
-    .source-meta { font-size:var(--fs-xs); color:var(--itip-text-muted); margin-top:2px; }
+    .source-name a:hover { color:var(--oip-primary); text-decoration:underline; }
+    .source-meta { font-size:var(--fs-xs); color:var(--oip-text-muted); margin-top:2px; }
     .source-stats { display:flex; gap:var(--sp-lg); text-align:center; }
     .source-stat__value { font-size:var(--fs-lg); font-weight:700; }
-    .source-stat__label { font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .source-stat__label { font-size:var(--fs-xs); color:var(--oip-text-muted); }
   </style>
 </head>
 <body>
@@ -93,7 +93,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
     </aside>
 
     <!-- Header -->
@@ -220,8 +220,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

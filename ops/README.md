@@ -1,6 +1,6 @@
-# itip-web-frontend deployables
+# oip-web-frontend deployables
 
-This folder contains ops/runtime assets for the itip-web-frontend service.
+This folder contains ops/runtime assets for the oip-web-frontend service.
 
 - `ops/helm/`: Helm chart for Kubernetes deployments (dev/preprod/prod)
 
@@ -11,7 +11,7 @@ Chart path: `ops/helm`
 Install with defaults:
 
 ```bash
-helm upgrade --install itip-web-frontend \
+helm upgrade --install oip-web-frontend \
   ./ops/helm \
   -n poesis --create-namespace
 ```
@@ -27,7 +27,7 @@ Each environment file is self-contained and carries the chart defaults for that 
 Recommended deploy command:
 
 ```bash
-helm upgrade --install itip-web-frontend \
+helm upgrade --install oip-web-frontend \
   ./ops/helm \
   -n poesis --create-namespace \
   -f ./ops/helm/environments/preprod/values.yaml
@@ -35,18 +35,18 @@ helm upgrade --install itip-web-frontend \
 
 ## Dev deployment
 
-Use `make dev-up` from `itip-web-frontend` to deploy the service to your local cluster.
+Use `make dev-up` from `oip-web-frontend` to deploy the service to your local cluster.
 The dev values default `runtime.apiBaseUrl` to `http://localhost:8080`, so keep the backend reachable there
 (for example via local backend run or backend port-forward).
 
 ```bash
-cd itip-web-frontend && make dev-check
-cd itip-web-frontend && make dev-up
-cd itip-web-frontend && make run-ui
+cd oip-web-frontend && make dev-check
+cd oip-web-frontend && make dev-up
+cd oip-web-frontend && make run-ui
 ```
 
 Stop:
 
 ```bash
-cd itip-web-frontend && make dev-down
+cd oip-web-frontend && make dev-down
 ```

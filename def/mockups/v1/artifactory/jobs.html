@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Artifactory Generation Jobs</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Artifactory Generation Jobs</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .jobs-table { width:100%; border-collapse:collapse; }
-    .jobs-table th { text-align:left; font-size:var(--fs-xs); color:var(--itip-text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:var(--sp-sm) var(--sp-md); border-bottom:2px solid var(--itip-border); }
-    .jobs-table td { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--itip-border); font-size:var(--fs-sm); }
-    .jobs-table tr:hover td { background:var(--itip-bg); }
-    .job-id { font-family:var(--font-mono); font-size:var(--fs-xs); color:var(--itip-text-muted); }
+    .jobs-table th { text-align:left; font-size:var(--fs-xs); color:var(--oip-text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:var(--sp-sm) var(--sp-md); border-bottom:2px solid var(--oip-border); }
+    .jobs-table td { padding:var(--sp-sm) var(--sp-md); border-bottom:1px solid var(--oip-border); font-size:var(--fs-sm); }
+    .jobs-table tr:hover td { background:var(--oip-bg); }
+    .job-id { font-family:var(--font-mono); font-size:var(--fs-xs); color:var(--oip-text-muted); }
     .output-list { display:flex; flex-wrap:wrap; gap:6px; }
     .output-list .badge { font-size:10px; }
     .provenance-hint { display:flex; gap:4px; font-size:10px; flex-wrap:wrap; }
@@ -38,7 +38,7 @@
         <a class="nav-item" href="../admin/users.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Users</a>
         <a class="nav-item" href="../admin/integrations.html"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Integrations</a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span></div>
     </aside>
 
     <header class="app-header">
@@ -71,7 +71,7 @@
             <td>Payment Core + IAM Gateway</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--syncing"></span> Running</span></td>
             <td><div class="output-list"><span class="badge badge--draft">impact-analysis.md</span><span class="badge badge--draft">interface-delta.csv</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×3</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×6</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×3</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×6</span></div></td>
             <td>2m 14s</td>
             <td>1 min ago</td>
           </tr>
@@ -81,7 +81,7 @@
             <td>Directive D-AC-027</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Completed</span></td>
             <td><div class="output-list"><span class="badge badge--approved">adr-0412.md</span><span class="badge badge--approved">decision-log.yaml</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×2</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×5</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Static ×1</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×2</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×5</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Static ×1</span></div></td>
             <td>48s</td>
             <td>6 min ago</td>
           </tr>
@@ -91,7 +91,7 @@
             <td>Customer API v2 -> v3</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--error"></span> Failed</span></td>
             <td><div class="output-list"><span class="badge badge--warn">openapi-diff.html</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×5</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Computed ×2</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×5</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Computed ×2</span></div></td>
             <td>21s</td>
             <td>17 min ago</td>
           </tr>
@@ -101,7 +101,7 @@
             <td>Data Platform Domain</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Completed</span></td>
             <td><div class="output-list"><span class="badge badge--approved">context-map.puml</span><span class="badge badge--approved">interfaces-matrix.xlsx</span><span class="badge badge--approved">ownership.md</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×6</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Computed ×2</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×6</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Computed ×2</span></div></td>
             <td>3m 03s</td>
             <td>Yesterday</td>
           </tr>
@@ -111,7 +111,7 @@
             <td>NIS2 Controls Sprint 12</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Completed</span></td>
             <td><div class="output-list"><span class="badge badge--approved">cutover-checklist.md</span><span class="badge badge--approved">rollback-plan.md</span><span class="badge badge--approved">slo-validation.json</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×7</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Static ×1</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×7</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Static ×1</span></div></td>
             <td>4m 11s</td>
             <td>Yesterday</td>
           </tr>
@@ -121,7 +121,7 @@
             <td>Payment Gateway</td>
             <td><span class="sync-status"><span class="sync-dot sync-dot--synced"></span> Completed</span></td>
             <td><div class="output-list"><span class="badge badge--approved">runbook-payment-gw.md</span><span class="badge badge--approved">escalation-tree.yaml</span></div></td>
-            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×2</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Mapped ×5</span><span style="color:var(--itip-text-muted);">·</span><span class="badge" style="background:var(--itip-border); color:var(--itip-text);">Computed ×1</span></div></td>
+            <td><div class="provenance-hint"><span class="badge" style="background:#818cf8; color:white;">AI ×2</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Mapped ×5</span><span style="color:var(--oip-text-muted);">·</span><span class="badge" style="background:var(--oip-border); color:var(--oip-text);">Computed ×1</span></div></td>
             <td>3m 27s</td>
             <td>2 days ago</td>
           </tr>

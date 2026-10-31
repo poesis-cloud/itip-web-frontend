@@ -2,7 +2,7 @@
 """Batch sidebar update: replace Definition nav items + remove View section."""
 import re, os, glob
 
-MOCKUPS = "/home/clem/repositories/poesis/itip-ui/def/mockups"
+MOCKUPS = "/home/clem/repositories/poesis/oip-ui/def/mockups"
 
 # ── The NEW Definition section (no active state — added per-file) ──
 NEW_DEF_SECTION = '''        <div class="nav-section">Definition</div>
@@ -163,7 +163,7 @@ def process_new_page(filepath):
     # Replace empty nav with full nav
     content_new = content.replace(
         '<nav class="app-sidebar__nav"></nav>',
-        '<nav class="app-sidebar__nav">\n' + full_nav + '\n      </nav>\n      <div class="app-sidebar__footer">\n        <span>IT Intelligence Platform</span>\n        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>\n      </div>'
+        '<nav class="app-sidebar__nav">\n' + full_nav + '\n      </nav>\n      <div class="app-sidebar__footer">\n        <span>Organizational Intelligence Platform</span>\n        <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>\n      </div>'
     )
 
     with open(filepath, "w") as f:

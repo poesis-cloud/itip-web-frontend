@@ -16,19 +16,19 @@
       "dashboard": "Dashboard",
       "admin": "Admin",
       "users": "Users",
-      "searchPlaceholder": "Search ITIP",
-      "searchAria": "Search ITIP",
+      "searchPlaceholder": "Search OIP",
+      "searchAria": "Search OIP",
       "closeMenu": "Close menu",
       "openMenu": "Open menu",
       "notifications": "Notifications",
       "sidebarNavigation": "Sidebar navigation",
-      "sidebarFooterLine1": "IT intelligence platform",
+      "sidebarFooterLine1": "Organizational intelligence platform",
       "sidebarFooterLine2": "by"
     }
   },
   "login": {
     "brand": {
-      "kicker": "IT Intelligence Platform",
+      "kicker": "Organizational Intelligence Platform",
       "title": "Design, govern and evaluate your enterprise architecture.",
       "subtitle": "Structures, management rules and compliance - administered end to end."
     },
@@ -57,7 +57,7 @@
     "header": {
       "overview": "Overview",
       "title": "Dashboard",
-      "subtitle": "Governance, compliance and architecture health - ITIP instance"
+      "subtitle": "Governance, compliance and architecture health - OIP instance"
     },
     "actions": {
       "last12Months": "Last 12 months",

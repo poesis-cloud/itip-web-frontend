@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Ascription Status Transition</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Ascription Status Transition</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .transition-panel {
       display: grid;
@@ -76,7 +76,7 @@
       flex-wrap: wrap;
       margin-top: var(--sp-sm);
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .sm-legend-item {
@@ -158,8 +158,8 @@
       font-size: var(--fs-xs);
       padding: 1px 8px;
       border-radius: var(--radius-full);
-      background: var(--itip-bg-muted, #f6f8fa);
-      color: var(--itip-text-muted);
+      background: var(--oip-bg-muted, #f6f8fa);
+      color: var(--oip-text-muted);
       font-weight: 500;
     }
 
@@ -174,7 +174,7 @@
       align-items: flex-start;
       gap: var(--sp-sm);
       padding: var(--sp-sm) 0;
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       font-size: var(--fs-sm);
     }
 
@@ -210,8 +210,8 @@
     }
 
     .check-icon--na {
-      background: var(--itip-border);
-      color: var(--itip-text-muted);
+      background: var(--oip-border);
+      color: var(--oip-text-muted);
     }
 
     .cascade-type {
@@ -283,7 +283,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -325,31 +325,31 @@
             <h3 style="margin-bottom:var(--sp-md)">Ascription Details</h3>
             <table style="width:100%; font-size:var(--fs-sm)">
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted); width:120px">ID</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted); width:120px">ID</td>
                 <td><span class="text-mono">MEC-0037</span></td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Type</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Type</td>
                 <td>Mechanism</td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Definition</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Definition</td>
                 <td><strong>tls_termination</strong></td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Structure</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Structure</td>
                 <td><a href="structure-detail.html">PaymentGateway</a></td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Owner</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Owner</td>
                 <td>S. Kumar</td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Created</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Created</td>
                 <td>2025-08-22</td>
               </tr>
               <tr>
-                <td style="padding:var(--sp-xs) 0; color:var(--itip-text-muted)">Status</td>
+                <td style="padding:var(--sp-xs) 0; color:var(--oip-text-muted)">Status</td>
                 <td><span class="badge" style="background:#2d1b69; color:#c4b5fd">APPROVED</span></td>
               </tr>
             </table>
@@ -446,12 +446,12 @@
             <h3 style="margin-bottom:var(--sp-md)">Transition</h3>
             <div class="transition-from-to">
               <span class="transition-badge transition-badge--from">APPROVED</span>
-              <span style="color:var(--itip-text-muted); font-size:var(--fs-lg)">→</span>
+              <span style="color:var(--oip-text-muted); font-size:var(--fs-lg)">→</span>
               <select class="form-select" style="flex:1">
                 <option selected>ACTIVE</option>
               </select>
             </div>
-            <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin:0">Only transitions permitted from
+            <p style="font-size:var(--fs-xs); color:var(--oip-text-muted); margin:0">Only transitions permitted from
               the current state are shown.</p>
           </div>
 
@@ -462,7 +462,7 @@
             <!-- Reference Preconditions -->
             <div class="rule-section">
               <h4>Reference Preconditions <span class="rule-count">1 check</span></h4>
-              <p style="font-size:var(--fs-xs); color:var(--itip-text-muted); margin-bottom:var(--sp-sm)">
+              <p style="font-size:var(--fs-xs); color:var(--oip-text-muted); margin-bottom:var(--sp-sm)">
                 APPROVED → ACTIVE requires each reference in <strong>ACTIVE</strong>
               </p>
               <ul class="evaluation-checks">
@@ -544,8 +544,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

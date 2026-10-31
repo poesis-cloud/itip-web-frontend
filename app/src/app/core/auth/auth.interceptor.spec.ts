@@ -37,7 +37,7 @@ describe('authInterceptor', () => {
   });
 
   it('adds Authorization header to protected API calls', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -50,7 +50,7 @@ describe('authInterceptor', () => {
   });
 
   it('does not add Authorization header to non-API requests', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -63,7 +63,7 @@ describe('authInterceptor', () => {
   });
 
   it('triggers unauthorized handler on 401 from protected API', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -85,7 +85,7 @@ describe('authInterceptor', () => {
   });
 
   it('adds Authorization header to protected actuator calls', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -98,7 +98,7 @@ describe('authInterceptor', () => {
   });
 
   it('triggers unauthorized handler on 401 from protected actuator endpoint', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -122,7 +122,7 @@ describe('authInterceptor', () => {
   it('does not attach token when request origin differs from configured api base url', () => {
     setup('https://api.example.com');
 
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('https://api.example.com/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -137,7 +137,7 @@ describe('authInterceptor', () => {
   it('attaches token when request matches configured api base url and api path', () => {
     setup('https://api.example.com/base');
 
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('https://api.example.com/base/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Mechanism Detail</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Mechanism Detail</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .authoring-layout {
       display: grid;
@@ -17,13 +17,13 @@
     /* Read-only display */
     .detail-value {
       font-size: var(--fs-sm);
-      color: var(--itip-text);
+      color: var(--oip-text);
       padding: 6px 0;
     }
 
     .detail-text {
       font-size: var(--fs-sm);
-      color: var(--itip-text);
+      color: var(--oip-text);
       line-height: 1.6;
     }
 
@@ -83,9 +83,9 @@
 
     .port-card {
       padding: var(--sp-md);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
-      background: var(--itip-bg);
+      background: var(--oip-bg);
     }
 
     .port-card__title {
@@ -93,7 +93,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
     }
 
@@ -113,7 +113,7 @@
 
     .port-item__type {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     /* Related item */
@@ -122,16 +122,16 @@
       align-items: center;
       gap: var(--sp-sm);
       padding: var(--sp-sm) var(--sp-md);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
-      background: var(--itip-surface);
+      background: var(--oip-surface);
       margin-bottom: var(--sp-sm);
       cursor: pointer;
       transition: border-color 0.15s;
     }
 
     .related-item:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
     }
 
     .related-item__body {
@@ -145,14 +145,14 @@
 
     .related-item__meta {
       font-size: var(--fs-xs);
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-top: 2px;
     }
 
     /* Preview panel */
     .preview-panel {
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg);
       display: flex;
       flex-direction: column;
@@ -160,7 +160,7 @@
 
     .preview-panel__header {
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       font-weight: 600;
       font-size: var(--fs-sm);
     }
@@ -179,7 +179,7 @@
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
     }
 
@@ -187,7 +187,7 @@
     .tabs {
       display: flex;
       gap: 0;
-      border-bottom: 2px solid var(--itip-border);
+      border-bottom: 2px solid var(--oip-border);
       margin-bottom: var(--sp-lg);
     }
 
@@ -195,7 +195,7 @@
       padding: var(--sp-sm) var(--sp-lg);
       font-size: var(--fs-sm);
       font-weight: 500;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       cursor: pointer;
       border-bottom: 2px solid transparent;
       margin-bottom: -2px;
@@ -203,12 +203,12 @@
     }
 
     .tab:hover {
-      color: var(--itip-text);
+      color: var(--oip-text);
     }
 
     .tab.active {
-      color: var(--itip-primary);
-      border-bottom-color: var(--itip-primary);
+      color: var(--oip-primary);
+      border-bottom-color: var(--oip-primary);
     }
   </style>
 </head>
@@ -369,7 +369,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -383,7 +383,7 @@
       <div class="app-header__actions">
         <a href="create-mechanism.html" class="btn btn--primary btn--sm">✎ Edit</a>
         <a href="ascription-transition.html" class="btn btn--sm"
-          style="border:1.5px solid var(--itip-primary); color:var(--itip-primary)">⟳ Transition</a>
+          style="border:1.5px solid var(--oip-primary); color:var(--oip-primary)">⟳ Transition</a>
         <button class="btn btn--copilot btn--sm">✦ Copilot Assist</button>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
           <svg class="theme-icon--light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -408,7 +408,7 @@
           <div class="tabs">
             <span class="tab active">Mechanism</span>
             <span class="tab">Interactions <span class="sub-tab__count"
-                style="font-size:10px;background:color-mix(in srgb, var(--itip-primary) 12%, transparent);color:var(--itip-primary);padding:1px 6px;border-radius:var(--radius-full);margin-left:4px">1</span></span>
+                style="font-size:10px;background:color-mix(in srgb, var(--oip-primary) 12%, transparent);color:var(--oip-primary);padding:1px 6px;border-radius:var(--radius-full);margin-left:4px">1</span></span>
             <span class="tab">History</span>
           </div>
 
@@ -427,7 +427,7 @@
               <div class="form-group">
                 <label class="form-label">Parent Structure</label>
                 <div class="detail-value">
-                  <a href="structure-detail.html" style="color:var(--itip-primary);text-decoration:none">API Gateway</a>
+                  <a href="structure-detail.html" style="color:var(--oip-primary);text-decoration:none">API Gateway</a>
                 </div>
               </div>
 
@@ -435,13 +435,13 @@
                 <label class="form-label">Archetyping</label>
                 <div style="display:flex; gap:6px; align-items:center; margin-top:4px">
                   <span
-                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted)">ref</span>
+                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--oip-text-muted)">ref</span>
                   <span class="arc-chip arc-chip--gsm"
-                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, var(--itip-primary) 10%, transparent);color:var(--itip-primary);border:1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent)">gsm/Mechanism/v1</span>
+                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, var(--oip-primary) 10%, transparent);color:var(--oip-primary);border:1px solid color-mix(in srgb, var(--oip-primary) 25%, transparent)">gsm/Mechanism/v1</span>
                   <span
-                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--itip-text-muted);margin-left:8px">allOf</span>
+                    style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--oip-text-muted);margin-left:8px">allOf</span>
                   <span class="arc-chip arc-chip--fw"
-                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, #d97706 10%, transparent);color:#92400e;border:1px solid color-mix(in srgb, #d97706 25%, transparent)">itip/SecurityMechanism/v1</span>
+                    style="display:inline-block;padding:1px 6px;font-size:10px;border-radius:var(--radius-full);font-family:var(--font-mono);background:color-mix(in srgb, #d97706 10%, transparent);color:#92400e;border:1px solid color-mix(in srgb, #d97706 25%, transparent)">oip/SecurityMechanism/v1</span>
                 </div>
               </div>
 
@@ -556,13 +556,13 @@
               <div class="preview-label">Port Summary</div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-sm);margin-top:4px">
                 <div
-                  style="text-align:center;padding:var(--sp-sm);background:var(--itip-bg);border-radius:var(--radius-md);border:1px solid var(--itip-border)">
-                  <div style="font-size:20px;font-weight:700;color:var(--itip-primary)">1</div>
+                  style="text-align:center;padding:var(--sp-sm);background:var(--oip-bg);border-radius:var(--radius-md);border:1px solid var(--oip-border)">
+                  <div style="font-size:20px;font-weight:700;color:var(--oip-primary)">1</div>
                   <div class="text-xs text-muted">Receptor</div>
                 </div>
                 <div
-                  style="text-align:center;padding:var(--sp-sm);background:var(--itip-bg);border-radius:var(--radius-md);border:1px solid var(--itip-border)">
-                  <div style="font-size:20px;font-weight:700;color:var(--itip-primary)">2</div>
+                  style="text-align:center;padding:var(--sp-sm);background:var(--oip-bg);border-radius:var(--radius-md);border:1px solid var(--oip-border)">
+                  <div style="font-size:20px;font-weight:700;color:var(--oip-primary)">2</div>
                   <div class="text-xs text-muted">Effectors</div>
                 </div>
               </div>
@@ -606,8 +606,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

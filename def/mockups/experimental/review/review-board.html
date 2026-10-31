@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Governance Review Board</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Governance Review Board</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     .review-layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--sp-lg); min-height: calc(100vh - 56px - var(--sp-lg) * 2); }
     .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--sp-lg); }
-    .session-meta { display: flex; gap: var(--sp-lg); font-size: var(--fs-xs); color: var(--itip-text-muted); }
-    .vote-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--itip-border-strong); background: var(--itip-surface); cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .session-meta { display: flex; gap: var(--sp-lg); font-size: var(--fs-xs); color: var(--oip-text-muted); }
+    .vote-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--oip-border-strong); background: var(--oip-surface); cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .vote-btn:hover { transform: scale(1.1); }
     .vote-btn--approve { color: var(--compliance-pass); }
     .vote-btn--approve.voted { background: var(--compliance-pass); color: #fff; border-color: var(--compliance-pass); }
     .vote-btn--reject { color: var(--compliance-fail); }
     .vote-btn--conditional { color: var(--compliance-warn); }
-    .agenda-number { width: 28px; height: 28px; border-radius: 50%; background: var(--itip-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700; flex-shrink: 0; }
-    .session-card { border: 1px solid var(--itip-border); border-radius: var(--radius-lg); padding: var(--sp-md) var(--sp-lg); margin-bottom: var(--sp-sm); cursor: pointer; transition: border-color 0.15s; }
-    .session-card:hover { border-color: var(--itip-primary); }
-    .session-card.active { border-color: var(--itip-primary); border-width: 2px; }
+    .agenda-number { width: 28px; height: 28px; border-radius: 50%; background: var(--oip-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700; flex-shrink: 0; }
+    .session-card { border: 1px solid var(--oip-border); border-radius: var(--radius-lg); padding: var(--sp-md) var(--sp-lg); margin-bottom: var(--sp-sm); cursor: pointer; transition: border-color 0.15s; }
+    .session-card:hover { border-color: var(--oip-primary); }
+    .session-card.active { border-color: var(--oip-primary); border-width: 2px; }
   </style>
 </head>
 <body>
@@ -111,7 +111,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -219,7 +219,7 @@
                 </div>
               </div>
 
-              <div class="review-agenda-item" style="border-color:var(--itip-primary)">
+              <div class="review-agenda-item" style="border-color:var(--oip-primary)">
                 <div class="agenda-number">3</div>
                 <div style="flex:1">
                   <div class="text-sm" style="font-weight:600">Directive: "API Gateway MUST ENFORCE rate limiting"</div>
@@ -238,7 +238,7 @@
               </div>
 
               <div class="review-agenda-item">
-                <div class="agenda-number" style="background:var(--itip-text-light)">4</div>
+                <div class="agenda-number" style="background:var(--oip-text-light)">4</div>
                 <div style="flex:1">
                   <div class="text-sm" style="font-weight:600">Norm: "scap_vulnerability_scan" violation review</div>
                   <div class="text-xs text-muted">3 structures failing SCAP vulnerability scans · R. Patel reporting</div>
@@ -247,7 +247,7 @@
               </div>
 
               <div class="review-agenda-item">
-                <div class="agenda-number" style="background:var(--itip-text-light)">5</div>
+                <div class="agenda-number" style="background:var(--oip-text-light)">5</div>
                 <div style="flex:1">
                   <div class="text-sm" style="font-weight:600">Framework sourcing: ISO 25011 (IT Service Quality)</div>
                   <div class="text-xs text-muted">Proposed addition to framework stack · A. Kumar presenting</div>
@@ -319,8 +319,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

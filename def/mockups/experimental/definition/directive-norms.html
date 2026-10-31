@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Directive Norms</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Directive Norms</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
 </head>
 <body>
   <div class="app-shell">
@@ -96,7 +96,7 @@
         </a>
       </nav>
       <div class="app-sidebar__footer">
-        <span>IT Intelligence Platform</span>
+        <span>Organizational Intelligence Platform</span>
         <span>by <strong>Poesis</strong> &middot; &copy; 2024&ndash;2026</span>
       </div>
     </aside>
@@ -145,13 +145,13 @@
 
       <!-- Norms list for this directive -->
       <div class="card" style="margin-bottom:var(--sp-lg)">
-        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--itip-border)">
+        <div style="padding:var(--sp-md); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--oip-border)">
           <strong>3 Norms derived from this directive</strong>
           <button class="btn btn--primary btn--sm">+ Add Norm</button>
         </div>
 
         <!-- Norm 1 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
+        <div style="padding:var(--sp-md); border-bottom:1px solid var(--oip-border)">
           <div style="display:flex; justify-content:space-between; align-items:flex-start">
             <div>
               <div style="font-weight:600">encryption_at_rest</div>
@@ -159,10 +159,10 @@
             </div>
             <span class="badge badge--active">Active</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--oip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
             ASSERT subject.encryption.algorithm in ["AES-256", "ChaCha20"] &amp;&amp; subject.encryption.keyRotationDays &lt;= 90
           </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--oip-text-muted)">
             <span>Ascriptions: <strong>12</strong></span>
             <span>Pass rate: <strong style="color:var(--compliance-pass)">92%</strong></span>
             <span>Last evaluated: 2h ago</span>
@@ -170,7 +170,7 @@
         </div>
 
         <!-- Norm 2 -->
-        <div style="padding:var(--sp-md); border-bottom:1px solid var(--itip-border)">
+        <div style="padding:var(--sp-md); border-bottom:1px solid var(--oip-border)">
           <div style="display:flex; justify-content:space-between; align-items:flex-start">
             <div>
               <div style="font-weight:600">encryption_in_transit</div>
@@ -178,10 +178,10 @@
             </div>
             <span class="badge badge--active">Active</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--oip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
             ASSERT subject.tls.version &gt;= "1.2" &amp;&amp; subject.tls.cipherSuite != "NULL"
           </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--oip-text-muted)">
             <span>Ascriptions: <strong>8</strong></span>
             <span>Pass rate: <strong style="color:var(--compliance-pass)">100%</strong></span>
             <span>Last evaluated: 2h ago</span>
@@ -197,10 +197,10 @@
             </div>
             <span class="badge badge--proposed">Proposed</span>
           </div>
-          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--itip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
+          <div style="margin-top:var(--sp-sm); padding:var(--sp-sm); background:var(--oip-bg); border-radius:var(--radius-md); font-family:var(--font-mono); font-size:var(--fs-xs)">
             ASSERT subject.keyRotation.enabled == true &amp;&amp; subject.keyRotation.intervalDays &lt;= 90
           </div>
-          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--itip-text-muted)">
+          <div style="margin-top:var(--sp-xs); display:flex; gap:var(--sp-md); font-size:var(--fs-xs); color:var(--oip-text-muted)">
             <span>Ascriptions: <strong>0</strong> (pending)</span>
             <span>Pass rate: <strong>—</strong></span>
             <span>Awaiting approval</span>
@@ -216,8 +216,8 @@
     <span class="copilot-toggle__badge">✦</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

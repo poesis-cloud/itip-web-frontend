@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP — Definition Registry</title>
-  <link rel="stylesheet" href="../itip-design-system.css">
+  <title>OIP — Definition Registry</title>
+  <link rel="stylesheet" href="../oip-design-system.css">
   <style>
     /* ── LIST MODE ─────────────────────────────────────── */
     .list-and-detail {
@@ -22,8 +22,8 @@
 
     .detail-panel {
       width: 380px;
-      background: var(--itip-surface);
-      border-left: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border-left: 1px solid var(--oip-border);
       display: none;
       flex-direction: column;
     }
@@ -34,7 +34,7 @@
 
     .detail-panel__header {
       padding: var(--sp-md) var(--sp-lg);
-      border-bottom: 1px solid var(--itip-border);
+      border-bottom: 1px solid var(--oip-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -54,7 +54,7 @@
       font-size: var(--fs-xs);
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       margin-bottom: var(--sp-sm);
     }
 
@@ -81,7 +81,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
     }
 
     .registry-row {
@@ -90,8 +90,8 @@
       align-items: center;
       gap: var(--sp-md);
       padding: var(--sp-md) var(--sp-lg);
-      background: var(--itip-surface);
-      border: 1px solid var(--itip-border);
+      background: var(--oip-surface);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       margin-bottom: var(--sp-sm);
       cursor: pointer;
@@ -99,7 +99,7 @@
     }
 
     .registry-row:hover {
-      border-color: var(--itip-primary);
+      border-color: var(--oip-primary);
       box-shadow: var(--shadow-md);
     }
 
@@ -131,7 +131,7 @@
       font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       min-width: 30px;
       flex-shrink: 0;
     }
@@ -146,9 +146,9 @@
     }
 
     .arc-chip--gsm {
-      background: color-mix(in srgb, var(--itip-primary) 10%, transparent);
-      color: var(--itip-primary);
-      border: 1px solid color-mix(in srgb, var(--itip-primary) 25%, transparent);
+      background: color-mix(in srgb, var(--oip-primary) 10%, transparent);
+      color: var(--oip-primary);
+      border: 1px solid color-mix(in srgb, var(--oip-primary) 25%, transparent);
     }
 
     .arc-chip--fw {
@@ -213,10 +213,10 @@
       align-items: center;
       gap: 6px;
       padding: var(--sp-xs) var(--sp-sm);
-      border: 1px solid var(--itip-border);
+      border: 1px solid var(--oip-border);
       border-radius: var(--radius-md);
       background: transparent;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       cursor: pointer;
       transition: all 0.15s;
       font-size: var(--fs-xs);
@@ -225,14 +225,14 @@
     }
 
     .panel-toggle:hover {
-      color: var(--itip-primary);
-      border-color: var(--itip-primary);
+      color: var(--oip-primary);
+      border-color: var(--oip-primary);
     }
 
     .panel-toggle.active {
-      color: var(--itip-primary);
-      border-color: var(--itip-primary);
-      background: color-mix(in srgb, var(--itip-primary) 8%, transparent);
+      color: var(--oip-primary);
+      border-color: var(--oip-primary);
+      background: color-mix(in srgb, var(--oip-primary) 8%, transparent);
     }
 
     .panel-toggle svg {
@@ -249,14 +249,14 @@
       border: none;
       border-radius: var(--radius-sm);
       background: transparent;
-      color: var(--itip-text-muted);
+      color: var(--oip-text-muted);
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .panel-close:hover {
-      background: color-mix(in srgb, var(--itip-text) 8%, transparent);
-      color: var(--itip-text);
+      background: color-mix(in srgb, var(--oip-text) 8%, transparent);
+      color: var(--oip-text);
     }
 
     .panel-close svg {
@@ -421,7 +421,7 @@
           Integrations
         </a>
       </nav>
-      <div class="app-sidebar__footer"><span>IT Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
+      <div class="app-sidebar__footer"><span>Organizational Intelligence Platform</span><span>by <strong>Poesis</strong> &middot;
           &copy; 2024&ndash;2026</span></div>
     </aside>
 
@@ -510,7 +510,7 @@
                 <option>togaf/LogicalAppComponent/v1</option>
                 <option>togaf/DataEntity/v1</option>
               </optgroup>
-              <optgroup label="ITIP">
+              <optgroup label="OIP">
                 <option>it/technology/ItSoftwareTechnology/v1</option>
               </optgroup>
               <optgroup label="ISO 25010">
@@ -549,7 +549,7 @@
 
           <!-- ── Directive rows ── -->
           <div class="registry-row" onclick="location.href='directive-detail.html'"
-            style="border-color:var(--itip-primary)">
+            style="border-color:var(--oip-primary)">
             <div><span class="type-pip type-pip--d">D</span></div>
             <div><strong>Data Encryption Standard</strong></div>
             <div class="text-xs">Directive</div>
@@ -642,7 +642,7 @@
               <div class="arc-row"><span class="arc-label">ref</span> <span
                   class="arc-chip arc-chip--gsm">gsm/Norm/v1</span></div>
               <div class="arc-row"><span class="arc-label">allOf</span> <span
-                  class="arc-chip arc-chip--fw">itip/ApiPerformanceNorm/v1</span></div>
+                  class="arc-chip arc-chip--fw">oip/ApiPerformanceNorm/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-05-18</div>
@@ -715,7 +715,7 @@
               <div class="arc-row"><span class="arc-label">ref</span> <span
                   class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
               <div class="arc-row"><span class="arc-label">allOf</span> <span
-                  class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+                  class="arc-chip arc-chip--fw">oip/SynchronousInteraction/v1</span></div>
             </div>
             <div><span class="badge badge--active">Active</span></div>
             <div class="text-xs text-muted">2025-10-05</div>
@@ -729,7 +729,7 @@
               <div class="arc-row"><span class="arc-label">ref</span> <span
                   class="arc-chip arc-chip--gsm">gsm/Interaction/v1</span></div>
               <div class="arc-row"><span class="arc-label">allOf</span> <span
-                  class="arc-chip arc-chip--fw">itip/SynchronousInteraction/v1</span></div>
+                  class="arc-chip arc-chip--fw">oip/SynchronousInteraction/v1</span></div>
             </div>
             <div><span class="badge badge--draft">Draft</span></div>
             <div class="text-xs text-muted">2025-11-20</div>
@@ -819,8 +819,8 @@
   </div>
 
   <script>
-    (function () { var t = localStorage.getItem('itip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
-    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('itip-theme', n) }
+    (function () { var t = localStorage.getItem('oip-theme') || 'light'; document.documentElement.setAttribute('data-theme', t) })();
+    function toggleTheme() { var c = document.documentElement.getAttribute('data-theme'), n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('oip-theme', n) }
   </script>
 </body>
 

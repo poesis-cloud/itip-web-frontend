@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP Workflow — Architect: Governance Authoring & Impact Analysis</title>
-  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <title>OIP Workflow — Architect: Governance Authoring & Impact Analysis</title>
+  <link rel="stylesheet" href="../mockups/oip-design-system.css">
   <style>
-    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+    body { background: var(--oip-bg); padding: var(--sp-2xl); }
 
     .workflow-header { margin-bottom: var(--sp-2xl); }
     .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
@@ -21,29 +21,29 @@
     .flow-step { display: grid; grid-template-columns: 56px 1fr; gap: var(--sp-md); position: relative; }
     .flow-connector { display: flex; flex-direction: column; align-items: center; }
     .flow-number {
-      width: 40px; height: 40px; border-radius: 50%; background: var(--itip-primary); color: #fff;
+      width: 40px; height: 40px; border-radius: 50%; background: var(--oip-primary); color: #fff;
       display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--fs-sm); flex-shrink: 0; z-index: 1;
     }
-    .flow-line { flex: 1; width: 2px; background: var(--itip-border-strong); }
+    .flow-line { flex: 1; width: 2px; background: var(--oip-border-strong); }
     .flow-step:last-child .flow-line { display: none; }
 
     .step-card {
-      background: var(--itip-surface); border: 1px solid var(--itip-border); border-radius: var(--radius-lg);
+      background: var(--oip-surface); border: 1px solid var(--oip-border); border-radius: var(--radius-lg);
       padding: var(--sp-lg); margin-bottom: var(--sp-lg); box-shadow: var(--shadow-sm);
     }
     .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
-    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+    .step-card p { font-size: var(--fs-sm); color: var(--oip-text-muted); margin-bottom: var(--sp-md); }
 
     .screen-ref {
       display: inline-flex; align-items: center; gap: var(--sp-xs);
-      font-size: var(--fs-xs); color: var(--itip-primary); background: #eff6ff;
+      font-size: var(--fs-xs); color: var(--oip-primary); background: #eff6ff;
       padding: 3px 10px; border-radius: var(--radius-full); font-weight: 500;
     }
 
     .step-sketch {
-      background: #f8fafc; border: 1px dashed var(--itip-border-strong); border-radius: var(--radius-md);
+      background: #f8fafc; border: 1px dashed var(--oip-border-strong); border-radius: var(--radius-md);
       padding: var(--sp-md); margin-top: var(--sp-md);
-      font-size: var(--fs-xs); color: var(--itip-text-muted); font-family: var(--font-mono); white-space: pre-line;
+      font-size: var(--fs-xs); color: var(--oip-text-muted); font-family: var(--font-mono); white-space: pre-line;
     }
 
     .decision-box {
@@ -267,8 +267,8 @@ Consequences:
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

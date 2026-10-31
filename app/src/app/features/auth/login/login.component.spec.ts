@@ -81,7 +81,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
 
     fixture.componentInstance.form.setValue({
-      email: 'john.doe@itip.local',
+      email: 'john.doe@oip.local',
       password: 'wrong',
     });
 

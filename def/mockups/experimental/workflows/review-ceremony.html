@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITIP Workflow — Governance Review Ceremony</title>
-  <link rel="stylesheet" href="../mockups/itip-design-system.css">
+  <title>OIP Workflow — Governance Review Ceremony</title>
+  <link rel="stylesheet" href="../mockups/oip-design-system.css">
   <style>
-    body { background: var(--itip-bg); padding: var(--sp-2xl); }
+    body { background: var(--oip-bg); padding: var(--sp-2xl); }
 
     .workflow-header { margin-bottom: var(--sp-2xl); }
     .workflow-header h1 { font-size: var(--fs-2xl); font-weight: 700; }
@@ -22,33 +22,33 @@
     .flow-connector { display: flex; flex-direction: column; align-items: center; }
     .flow-number {
       width: 40px; height: 40px; border-radius: 50%;
-      background: var(--itip-primary); color: #fff;
+      background: var(--oip-primary); color: #fff;
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; font-size: var(--fs-sm); flex-shrink: 0; z-index: 1;
     }
-    .flow-line { flex: 1; width: 2px; background: var(--itip-border-strong); }
+    .flow-line { flex: 1; width: 2px; background: var(--oip-border-strong); }
     .flow-step:last-child .flow-line { display: none; }
 
     .step-card {
-      background: var(--itip-surface); border: 1px solid var(--itip-border);
+      background: var(--oip-surface); border: 1px solid var(--oip-border);
       border-radius: var(--radius-lg); padding: var(--sp-lg);
       margin-bottom: var(--sp-lg); box-shadow: var(--shadow-sm);
     }
     .step-card h3 { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-xs); }
-    .step-card p { font-size: var(--fs-sm); color: var(--itip-text-muted); margin-bottom: var(--sp-md); }
+    .step-card p { font-size: var(--fs-sm); color: var(--oip-text-muted); margin-bottom: var(--sp-md); }
 
     .screen-ref {
       display: inline-flex; align-items: center; gap: var(--sp-xs);
-      font-size: var(--fs-xs); color: var(--itip-primary);
+      font-size: var(--fs-xs); color: var(--oip-primary);
       background: #eff6ff; padding: 3px 10px;
       border-radius: var(--radius-full); font-weight: 500;
     }
 
     .step-sketch {
-      background: #f8fafc; border: 1px dashed var(--itip-border-strong);
+      background: #f8fafc; border: 1px dashed var(--oip-border-strong);
       border-radius: var(--radius-md); padding: var(--sp-md);
       margin-top: var(--sp-md); font-size: var(--fs-xs);
-      color: var(--itip-text-muted); font-family: var(--font-mono); white-space: pre-line;
+      color: var(--oip-text-muted); font-family: var(--font-mono); white-space: pre-line;
     }
 
     .decision-box {
@@ -69,7 +69,7 @@
     .participant {
       display: flex; align-items: center; gap: 4px;
       padding: 4px 10px; border-radius: var(--radius-full);
-      font-size: 11px; background: #f1f5f9; border: 1px solid var(--itip-border);
+      font-size: 11px; background: #f1f5f9; border: 1px solid var(--oip-border);
     }
     .participant__role { font-weight: 600; }
   </style>
@@ -78,7 +78,7 @@
 
   <div class="workflow-header">
     <h1>Governance Review Ceremony</h1>
-    <p style="color:var(--itip-text-muted);font-size:var(--fs-sm);max-width:700px;margin-top:var(--sp-sm)">
+    <p style="color:var(--oip-text-muted);font-size:var(--fs-sm);max-width:700px;margin-top:var(--sp-sm)">
       Periodic session where governance stakeholders review pending directive proposals,
       norm changes, and ascription transitions. Decisions are recorded and enforced via
       the Ascription lifecycle.
@@ -242,8 +242,8 @@
     <span class="copilot-toggle__badge">&#10022;</span>
   </button>
   <script>
-    (function(){var t=localStorage.getItem('itip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
-    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('itip-theme',n)}
+    (function(){var t=localStorage.getItem('oip-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+    function toggleTheme(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('oip-theme',n)}
   </script>
 </body>
 </html>

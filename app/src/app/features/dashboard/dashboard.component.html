@@ -19,7 +19,7 @@
 
         <section class="stat-grid grid grid-cols-5 gap-[14px] max-xl:grid-cols-2 max-md:grid-cols-1" [attr.aria-label]="'dashboard.metricsAriaLabel' | transloco">
           @for (card of statCards(); track card.id) {
-            <article class="dashboard-card dashboard-stat-card itip-stat relative min-h-[118px] overflow-hidden px-4 pt-[18px] pb-4 max-md:px-[14px]">
+            <article class="dashboard-card dashboard-stat-card oip-stat relative min-h-[118px] overflow-hidden px-4 pt-[18px] pb-4 max-md:px-[14px]">
               <div class="dashboard-card-accent"></div>
               <p class="dashboard-card-label m-0 mb-[10px] uppercase">{{ card.label }}</p>
               <div class="dashboard-card-value-shell min-h-10 flex items-center">
@@ -31,7 +31,7 @@
         </section>
 
         <section class="content-grid grid grid-cols-[minmax(0,1.5fr)_minmax(320px,0.9fr)] gap-[14px] max-xl:grid-cols-1">
-          <article class="dashboard-card dashboard-panel dashboard-chart-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+          <article class="dashboard-card dashboard-panel dashboard-chart-panel oip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
             <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
               <div>
                 <h2>{{ 'dashboard.complianceTrend.title' | transloco }}</h2>
@@ -59,7 +59,7 @@
             </div>
           </article>
 
-          <article class="dashboard-card dashboard-panel dashboard-donut-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+          <article class="dashboard-card dashboard-panel dashboard-donut-panel oip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
             <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
               <div>
                 <h2>{{ 'dashboard.lifecyclePanel.title' | transloco }}</h2>
@@ -87,7 +87,7 @@
         </section>
 
         <section class="bottom-grid grid grid-cols-2 gap-[14px] max-xl:grid-cols-1">
-          <article class="dashboard-card dashboard-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+          <article class="dashboard-card dashboard-panel oip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
             <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
               <div>
                 <h2>{{ 'dashboard.findings.title' | transloco }}</h2>
@@ -110,7 +110,7 @@
             </div>
           </article>
 
-          <article class="dashboard-card dashboard-panel itip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
+          <article class="dashboard-card dashboard-panel oip-panel px-[18px] pt-[18px] pb-4 max-md:px-[14px]">
             <div class="dashboard-panel-header flex items-start justify-between gap-[14px] mb-4">
               <div>
                 <h2>{{ 'dashboard.approvals.heading' | transloco }}</h2>

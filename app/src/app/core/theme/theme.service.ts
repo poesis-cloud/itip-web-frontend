@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Injectable, inject, signal } from '@angular/core';
 
-const THEME_STORAGE_KEY = 'itip-theme';
+const THEME_STORAGE_KEY = 'oip-theme';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {

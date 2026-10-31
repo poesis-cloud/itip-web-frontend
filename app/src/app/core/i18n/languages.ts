@@ -6,7 +6,7 @@ export type LanguageOption = {
   locale: string;
 };
 
-export const LANGUAGE_STORAGE_KEY = 'itip-lang';
+export const LANGUAGE_STORAGE_KEY = 'oip-lang';
 export const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
 
 export const SUPPORTED_LANGUAGES: readonly LanguageOption[] = [

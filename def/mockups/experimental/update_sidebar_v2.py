@@ -7,7 +7,7 @@ Handles two modes:
 """
 import re, os, glob
 
-MOCKUPS = "/home/clem/repositories/poesis/itip-ui/def/mockups"
+MOCKUPS = "/home/clem/repositories/poesis/oip-ui/def/mockups"
 
 
 # ── Active state mapping: filename → (section, item_label) ──
@@ -211,7 +211,7 @@ def process_existing(filepath):
 all_html = sorted(glob.glob(f"{MOCKUPS}/**/*.html", recursive=True))
 
 # Skip design system CSS, Python scripts, and the batch scripts themselves
-skip_files = {"itip-design-system.css"}
+skip_files = {"oip-design-system.css"}
 
 ok = 0
 skip = 0

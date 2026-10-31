@@ -33,7 +33,7 @@ describe('DashboardHealthResource', () => {
   });
 
   it('loads backend health after authentication', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -47,7 +47,7 @@ describe('DashboardHealthResource', () => {
   });
 
   it('reloads health resource when refresh is called', () => {
-    authService.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    authService.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
     httpMock
       .expectOne('/api/auth/login')
       .flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });

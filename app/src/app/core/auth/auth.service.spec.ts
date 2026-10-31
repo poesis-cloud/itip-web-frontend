@@ -28,7 +28,7 @@ describe('AuthService', () => {
   });
 
   it('stores JWT in memory on login success', () => {
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe();
+    service.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe();
 
     const request = httpMock.expectOne('/api/auth/login');
     request.flush({ token: 'jwt-token', expiresAt: Date.now() + 60_000 });
@@ -40,7 +40,7 @@ describe('AuthService', () => {
 
   it('clears session if login response expiresAt is invalid', () => {
     let error: unknown;
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+    service.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe({
       error: (err) => {
         error = err;
       },
@@ -56,7 +56,7 @@ describe('AuthService', () => {
 
   it('clears session if login response token is empty', () => {
     let error: unknown;
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+    service.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe({
       error: (err) => {
         error = err;
       },
@@ -71,7 +71,7 @@ describe('AuthService', () => {
   });
 
   it('returns null token when expired and clears session', () => {
-    service.login({ email: 'john.doe@itip.local', password: 'secret' }).subscribe({
+    service.login({ email: 'john.doe@oip.local', password: 'secret' }).subscribe({
       error: () => {
         // expected invalid session payload
       },
