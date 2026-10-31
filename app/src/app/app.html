@@ -32,11 +32,13 @@
             {{ 'app.shell.dashboard' | transloco }}
           </a>
 
-          <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">{{ 'app.shell.admin' | transloco }}</div>
-          <button type="button" class="app-shell-sidebar-link flex items-center gap-[11px] py-2 px-5 text-[13px] border-l-[3px] border-l-transparent w-full bg-transparent border-t-0 border-r-0 border-b-0 text-left cursor-pointer" (click)="closeMobileSidebar()">
-            <svg lucideUsers aria-hidden="true"></svg>
-            {{ 'app.shell.users' | transloco }}
-          </button>
+          <div *hasAuthorization="usersMenuCheck">
+            <div class="app-shell-sidebar-section py-[5px] px-5 mt-[10px] text-[10px] uppercase">{{ 'app.shell.admin' | transloco }}</div>
+            <button type="button" class="app-shell-sidebar-link flex items-center gap-[11px] py-2 px-5 text-[13px] border-l-[3px] border-l-transparent w-full bg-transparent border-t-0 border-r-0 border-b-0 text-left cursor-pointer" (click)="closeMobileSidebar()">
+              <svg lucideUsers aria-hidden="true"></svg>
+              {{ 'app.shell.users' | transloco }}
+            </button>
+          </div>
         </nav>
 
         <div class="app-shell-sidebar-footer mt-auto py-3 px-5 text-[12px] leading-[1.45]">
